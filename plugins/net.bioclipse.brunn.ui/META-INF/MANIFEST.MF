@@ -11,9 +11,9 @@ Require-Bundle: org.eclipse.ui,
  net.bioclipse.lis,
  net.bioclipse,
  org.eclipse.ui.workbench.texteditor,
- de.kupzog.ktable,
  net.bioclipse.keyring,
  org.junit4,
  net.bioclipse.expression
 Eclipse-LazyStart: true
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ jars/KTable.jar
