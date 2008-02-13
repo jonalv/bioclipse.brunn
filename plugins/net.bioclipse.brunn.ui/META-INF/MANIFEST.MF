@@ -8,12 +8,11 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.views.properties.tabbed,
- net.bioclipse.lis,
- net.bioclipse,
  org.eclipse.ui.workbench.texteditor,
  net.bioclipse.keyring,
  org.junit4,
- net.bioclipse.expression
+ net.bioclipse.expression,
+ net.bioclipse.brunn.core
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  jars/KTable.jar

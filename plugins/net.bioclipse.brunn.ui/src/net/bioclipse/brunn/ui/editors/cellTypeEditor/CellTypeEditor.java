@@ -2,44 +2,23 @@ package net.bioclipse.brunn.ui.editors.cellTypeEditor;
 
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.origin.IOriginManager;
-import net.bioclipse.brunn.business.plateLayout.IPlateLayoutManager;
 import net.bioclipse.brunn.pojos.CellOrigin;
-import net.bioclipse.brunn.pojos.CellSample;
-import net.bioclipse.brunn.pojos.PlateType;
 import net.bioclipse.brunn.ui.Activator;
-import net.bioclipse.brunn.ui.editors.plateEditor.PlateEditorContentProvider;
-import net.bioclipse.brunn.ui.editors.plateEditor.PlateEditorNumberLabelProvider;
-import net.bioclipse.editors.TextEditor;
-import net.bioclipse.model.BioResourceChangeListener;
+import net.bioclipse.brunn.ui.dialogs.ConsistencyFailure;
+import net.bioclipse.brunn.ui.explorer.model.nonFolders.CellType;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
-
-import net.bioclipse.brunn.ui.explorer.model.nonFolders.CellType;
-import net.bioclipse.brunn.ui.dialogs.ConsistencyFailure;
 
 public class CellTypeEditor extends EditorPart {
 	
