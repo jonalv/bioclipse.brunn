@@ -1,0 +1,952 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-lazy-init="true">
+
+<!-- DataSource bean -->
+	<bean 
+		id="dataSource"
+	   	class="org.apache.commons.dbcp.BasicDataSource"
+	   	destroy-method="close"
+	>
+
+	   	<property name="driverClassName">
+	   		<value>com.mysql.jdbc.Driver</value>
+	   	</property>
+
+
+	   	<property name="url">
+	   		<value>jdbc:mysql://localhost:3306/lis</value>
+	   	</property>
+	   	<property name="username">
+	   		<value>lis</value>
+	   	</property>
+	   	<property name="password">
+	   		<value>lislis</value>
+	   	</property>
+
+
+<!--   
+ 		<property name="url">
+	   		<value>jdbc:mysql://bob.cpi.medsci.uu.se/brunn</value>
+	   	</property>
+	   	<property name="username">
+	   		<value>jonathan</value>
+	   	</property>
+	   	<property name="password">
+	   		<value>tomtelims</value>
+	   	</property>
+-->
+ 
+<!-- 
+	  	<property name="initialSize">
+			<value>2</value>
+		</property>
+		<property name="maxActive">
+			<value>10</value>
+		</property>
+			<property name="maxIdle">
+			<value>2</value>
+		</property>
+ -->	   	
+  </bean>
+
+<!-- SessionFactory bean -->	   	
+	<bean 
+	 id="sessionFactory"
+	 class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+	   	<property name="dataSource">
+	   		<ref local="dataSource"/>
+	   	</property>
+	   	
+	   	<property 
+	   	 name="useTransactionAwareDataSource" 
+	   	 value="true" />
+	   	 
+	   	<property name="mappingResources">
+			<list>
+				<value>AbstractAnnotationInstance.hbm.xml</value>
+				<value>AbstractBaseObject.hbm.xml</value>
+				<value>AuditLog.hbm.xml</value>
+				<value>SampleContainer.hbm.xml</value>
+				<value>LayoutMarker.hbm.xml</value>
+				<value>namedQueries.hbm.xml</value>
+				<value>AbstractWell.hbm.xml</value>
+				<value>SampleMarker.hbm.xml</value>
+				<value>PlateFunction.hbm.xml</value>
+				<value>WellFunction.hbm.xml</value>
+				<value>Result.hbm.xml</value>
+				<value>WorkList.hbm.xml</value>
+			</list>
+	   	</property>
+	   	<property name="hibernateProperties">
+	   		<props>
+	   			<prop key="hibernate.dialect">
+	   				org.hibernate.dialect.MySQLDialect
+	   			</prop>
+	   			<!--prop key="hibernate.max_fetch_depth">
+	   				10
+	   			</prop-->
+	   		</props>
+	   	</property>
+	</bean>
+	
+<!-- NiceSessionFactory bean -->	   	
+	<bean 
+	 id="niceSessionFactory"
+	 class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+	   	<property name="dataSource">
+	   		<ref local="dataSource"/>
+	   	</property>
+	   		   	 
+	   	<property name="mappingResources">
+			<list>
+				<value>AbstractAnnotationInstance.hbm.xml</value>
+				<value>AbstractBaseObject.hbm.xml</value>
+				<value>AuditLog.hbm.xml</value>
+				<value>SampleContainer.hbm.xml</value>
+				<value>LayoutMarker.hbm.xml</value>
+				<value>namedQueries.hbm.xml</value>
+				<value>AbstractWell.hbm.xml</value>
+				<value>SampleMarker.hbm.xml</value>
+				<value>PlateFunction.hbm.xml</value>
+				<value>WellFunction.hbm.xml</value>
+				<value>Result.hbm.xml</value>
+				<value>WorkList.hbm.xml</value>
+			</list>
+	   	</property>
+	   	<property name="hibernateProperties">
+	   		<props>
+	   			<prop key="hibernate.dialect">
+	   				org.hibernate.dialect.MySQLDialect
+	   			</prop>
+	   			<!--prop key="hibernate.max_fetch_depth">
+	   				10
+	   			</prop-->
+	   		</props>
+	   	</property>
+	</bean>
+<!-- PlateLayoutManagerTarget bean  -->
+  	<bean
+  	 id="plateLayoutManagerTarget"
+  	 class="net.bioclipse.brunn.business.plateLayout.PlateLayoutManager">
+  	 	<property name="plateLayoutDAO">
+  	 		<ref local="plateLayoutDAO" />
+  	 	</property>
+  	 	<property name="plateTypeDAO">
+  	 		<ref local="plateTypeDAO" />
+  	 	</property>
+  	 	<property name="annotationInstanceDAO">
+  	 		<ref local="annotationInstanceDAO" />
+  	 	</property>
+  	 	<property name="uniqueFolderDAO">
+  	 		<ref local="uniqueFolderDAO"/>
+  	 	</property>
+  	 	<property name="folderDAO">
+  	 		<ref local="folderDAO"/>
+  	 	</property>
+  	 	<property name="layoutWellDAO">
+  	 		<ref local="layoutWellDAO"/>
+  	 	</property>
+  	 	<property name="auditService">
+	 		<ref local="auditService" />
+		</property>
+		<property name="userDAO">
+	 		<ref local="userDAO" />
+		</property>
+  	</bean>
+
+<!-- PlateLayoutManager bean -->
+	<bean
+	 id="plateLayoutManager"
+	 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+	 	<property name="transactionManager">
+	 		<ref local="transactionManager" />
+	 	</property>
+	 	<property name="target">
+	 		<ref local="plateLayoutManagerTarget"/>
+	 	</property>
+	 	<property name="transactionAttributes">
+	 		<props>
+	 			<prop key="create*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="delete*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="edit*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="get*">
+  	 				readOnly, PROPAGATION_NOT_SUPPORTED
+  	 			</prop>
+	 		</props>
+	 	</property>
+	</bean>
+
+<!-- OriginManagerTarget bean  -->
+  	<bean
+  	 id="originManagerTarget"
+  	 class="net.bioclipse.brunn.business.origin.OriginManager">
+  	 	<property name="cellOriginDAO">
+  	 		<ref local="cellOriginDAO" />
+  	 	</property>
+  	 	<property name="drugOriginDAO">
+  	 		<ref local="drugOriginDAO" />
+  	 	</property>
+  	 	<property name="uniqueFolderDAO">
+  	 		<ref local="uniqueFolderDAO" />
+  	 	</property>
+  	 	<property name="folderDAO">
+  	 		<ref local="folderDAO" />
+  	 	</property>
+  	 	<property name="auditService">
+	 		<ref local="auditService" />
+		</property>
+  	</bean>
+
+<!-- OriginManager bean -->
+	<bean
+	 id="originManager"
+	 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+	 	<property name="transactionManager">
+	 		<ref local="transactionManager" />
+	 	</property>
+	 	<property name="target">
+	 		<ref local="originManagerTarget"/>
+	 	</property>
+	 	<property name="transactionAttributes">
+	 		<props>
+		 		<prop key="create*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="delete*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="edit*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="get*">
+  	 				readOnly, PROPAGATION_NOT_SUPPORTED
+  	 			</prop>
+	 		</props>
+	 	</property>
+	</bean>
+
+<!-- AuditManagerTarget bean  -->
+  	<bean
+  	 id="auditManagerTarget"
+  	 class="net.bioclipse.brunn.business.audit.AuditManager">
+  	 	<property name="userDAO">
+  	 		<ref local="userDAO" />
+  	 	</property>
+  	 	<property name="auditLogDAO">
+  	 		<ref local="auditLogDAO" />
+  	 	</property>
+  	 	<property name="auditService">
+	 		<ref local="auditService" />
+		</property>
+  	</bean>
+
+<!-- AuditManager bean -->
+	<bean
+	 id="auditManager"
+	 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+	 	<property name="transactionManager">
+	 		<ref local="transactionManager" />
+	 	</property>
+	 	<property name="target">
+	 		<ref local="auditManagerTarget"/>
+	 	</property>
+	 	<property name="transactionAttributes">
+	 		<props>
+	 			<prop key="create*">
+	 				PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	 			</prop>
+	 			<prop key="edit*">
+	 				PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	 			</prop>
+	 			<prop key="delete*">
+	 				PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	 			</prop>
+	 			<prop key="get*">
+  	 				readOnly, PROPAGATION_NOT_SUPPORTED
+  	 			</prop>
+	 		</props>
+	 	</property>
+	</bean>
+
+<!-- OperationManagerTarget bean  -->
+  	<bean
+  	 id="operationManagerTarget"
+  	 class="net.bioclipse.brunn.business.operation.OperationManager">
+  	 	<property name="instrumentDAO">
+  	 		<ref local="instrumentDAO" />
+  	 	</property>
+  	 	<property name="measurementDAO">
+  	 		<ref local="measurementDAO" />
+  	 	</property>
+  	 	<property name="auditService">
+	 		<ref local="auditService" />
+		</property>
+		<property name="sampleContainerDAO">
+  	 		<ref local="sampleContainerDAO" />
+  	 	</property>
+  	 	<property name="resultTypeDAO">
+  	 		<ref local="resultTypeDAO" />
+  	 	</property>
+		<property name="plateDAO">
+			<ref local="plateDAO" />
+		</property>
+  	</bean>
+
+<!-- OperationManager bean -->
+	<bean
+	 id="operationManager"
+	 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+	 	<property name="transactionManager">
+	 		<ref local="transactionManager" />
+	 	</property>
+	 	<property name="target">
+	 		<ref local="operationManagerTarget"/>
+	 	</property>
+	 	<property name="transactionAttributes">
+	 		<props>
+	 			<prop key="create*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="createMeasurement*">
+	  	 			PROPAGATION_NESTED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="delete*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="edit*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="add*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="get*">
+  	 				readOnly, PROPAGATION_NOT_SUPPORTED
+  	 			</prop>
+	 		</props>
+	 	</property>
+	</bean>
+
+<!--  PlateManagerTarget bean -->
+  	<bean 
+  	 id="plateManagerTarget"
+  	 class="net.bioclipse.brunn.business.plate.PlateManager">
+  	 	<property name="masterPlateDAO">
+  	 		<ref local="masterPlateDAO" />
+  	 	</property>
+  	 	<property name="plateDAO">
+  	 		<ref local="plateDAO" />
+  	 	</property>
+  	 	<property name="annotationInstanceDAO">
+  	 		<ref local="annotationInstanceDAO" />
+  	 	</property>
+  	 	<property name="auditService">
+  	 		<ref local="auditService" />
+  	 	</property>
+  	 	<property name="folderDAO">
+  	 		<ref local="folderDAO" />
+  	 	</property>
+  	 	<property name="userDAO">
+  	 		<ref local="userDAO" />
+  	 	</property>
+  	 	<property name="sampleContainerDAO">
+  	 		<ref local="sampleContainerDAO"/>
+  	 	</property>
+  	 	<property name="cellSampleDAO">
+  	 		<ref local="cellSampleDAO"/>
+  	 	</property>
+  	 	<property name="drugSampleDAO">
+  	 		<ref local="drugSampleDAO"/>
+  	 	</property>
+  	 	<property name="wellDAO">
+  	 		<ref local="wellDAO" />
+  	 	</property>
+  	</bean>
+  	
+<!--  PlateManager bean -->
+  	<bean 
+  	 id="plateManager"
+  	 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+  	 <property name="transactionManager">
+  	 	<ref local="transactionManager" />
+  	 </property>
+  	 <property name="target">
+  	 	<ref local="plateManagerTarget"/>
+  	 </property>
+  	 <property name="transactionAttributes">
+  	 	<props>
+  	 		<prop key="create*">
+  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+  	 		</prop>
+  	 		<prop key="delete*">
+  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+  	 		</prop>
+  	 		<prop key="edit*">
+  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+  	 		</prop>
+  	 		<prop key="add*">
+  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+  	 		</prop>
+  	 		<prop key="get*">
+  	 			readOnly, PROPAGATION_NOT_SUPPORTED
+  	 		</prop>
+  	 	</props>
+  	 </property>
+  	</bean>
+
+<!--  SampleManagerTarget bean -->
+  	<bean 
+  	 id="sampleManagerTarget"
+  	 class="net.bioclipse.brunn.business.sample.SampleManager">
+  	 	<property name="sampleContainerDAO">
+  	 		<ref local="sampleContainerDAO" />
+  	 	</property>
+  	 	<property name="auditService">
+  	 		<ref local="auditService" />
+  	 	</property>
+  	</bean>
+  	
+<!--  SampleManager bean -->
+  	<bean 
+  	 id="sampleManager"
+  	 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+  	 <property name="transactionManager">
+  	 	<ref local="transactionManager" />
+  	 </property>
+  	 <property name="target">
+  	 	<ref local="sampleManagerTarget"/>
+  	 </property>
+  	 <property name="transactionAttributes">
+  	 	<props>
+  	 		<prop key="add*">
+  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+  	 		</prop>
+  	 		<prop key="get*">
+ 				readOnly, PROPAGATION_NOT_SUPPORTED
+ 			</prop>
+  	 	</props>
+  	 </property>
+  	</bean>
+ 
+ <!--  ExportScriptManagerTarget bean -->
+  	<bean 
+  	 id="exportScriptManagerTarget"
+  	 class="net.bioclipse.brunn.business.exportScript.ExportScriptManager">
+  	 	<property name="folderDAO">
+  	 		<ref local="folderDAO" />
+  	 	</property>
+  	 	<property name="uniqueFolderDAO">
+  	 		<ref local="uniqueFolderDAO" />
+  	 	</property>
+  	 	<property name="exportScriptDAO">
+  	 		<ref local="exportScriptDAO" />
+  	 	</property>
+  	 	<property name="auditService">
+  	 		<ref local="auditService" />
+  	 	</property>
+  	</bean>
+  	
+<!--  ExportScriptManager bean -->
+  	<bean 
+  	 id="exportScriptManager"
+  	 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+  	 <property name="transactionManager">
+  	 	<ref local="transactionManager" />
+  	 </property>
+  	 <property name="target">
+  	 	<ref local="exportScriptManagerTarget"/>
+  	 </property>
+  	 <property name="transactionAttributes">
+  	 	<props>
+  	 		<prop key="create*">
+  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+  	 		</prop>
+  	 		<prop key="delete*">
+  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+  	 		</prop>
+  	 		<prop key="edit*">
+  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+  	 		</prop>
+  	 		<prop key="get*">
+ 				readOnly, PROPAGATION_NOT_SUPPORTED
+ 			</prop>
+  	 	</props>
+  	 </property>
+  	</bean>  	 	
+  	
+ <!--  FolderManagerTarget bean -->
+  	<bean 
+  	 id="folderManagerTarget"
+  	 class="net.bioclipse.brunn.business.folder.FolderManager">
+  	 	<property name="folderDAO">
+  	 		<ref local="folderDAO" />
+  	 	</property>
+  	 	<property name="uniqueFolderDAO">
+  	 		<ref local="uniqueFolderDAO" />
+  	 	</property>
+  	 	<property name="auditService">
+  	 		<ref local="auditService" />
+  	 	</property>
+  	</bean> 	
+
+<!--  FolderManager bean -->
+  	<bean 
+  	 id="folderManager"
+  	 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+  	 <property name="transactionManager">
+  	 	<ref local="transactionManager" />
+  	 </property>
+  	 <property name="target">
+  	 	<ref local="folderManagerTarget"/>
+  	 </property>
+  	 <property name="transactionAttributes">
+  	 	<props>
+  	 		<prop key="create*">
+  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+  	 		</prop>
+  	 		<prop key="delete*">
+  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+  	 		</prop>
+  	 		<prop key="edit*">
+  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+  	 		</prop>
+  	 		<prop key="get*">
+ 				readOnly, PROPAGATION_NOT_SUPPORTED
+ 			</prop>
+  	 	</props>
+  	 </property>
+  	</bean>
+  		
+<!-- AnnotationManagerTarget bean -->
+  	<bean 
+  	 id="annotationManagerTarget"
+  	 class="net.bioclipse.brunn.business.annotation.AnnotationManager">
+  	 <property name="annotationDAO">
+  	 	<ref local="annotationDAO"/>
+  	 </property>
+  	 <property name="annotationInstanceDAO">
+  	 	<ref local="annotationInstanceDAO"/>
+  	 </property>
+  	 <property name="auditService">
+  	 	<ref local="auditService" />
+  	 </property>
+  	</bean>
+  	
+<!-- AnnotationManager bean -->
+  	<bean 
+  	 id="annotationManager"
+  	 class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+  	 	<property name="transactionManager">
+  	 		<ref local="transactionManager" />
+  	 	</property>
+  	 	<property name="target">
+  	 		<ref local="annotationManagerTarget" />
+  	 	</property>
+  	 	<property name="transactionAttributes">
+  	 		<props>
+  	 			<prop key="create*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="delete*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="edit*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="annotate*">
+	  	 			PROPAGATION_REQUIRED, ISOLATION_SERIALIZABLE
+	  	 		</prop>
+	  	 		<prop key="get*">
+  	 				readOnly, PROPAGATION_NOT_SUPPORTED
+  	 			</prop>
+  	 		</props>
+  	 	</property>
+  	</bean>
+  		
+<!--  TransactionManager bean -->
+	<bean 
+	 id="transactionManager"
+	 class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" >
+			<ref local="sessionFactory"/>
+		</property>
+		<property name="nestedTransactionAllowed">
+			<value>true</value>
+		</property>
+  	</bean>
+	  	
+<!--  AuditService bean -->
+  	<bean 
+  	 id="auditService"
+  	 class="net.bioclipse.brunn.business.AuditService">
+  	 	<property name="auditLogDAO">
+  	 		<ref local="auditLogDAO" />
+  	 	</property>
+  	</bean>
+
+<!--  UserDAO bean -->
+	<bean id="userDAO" parent="abstractDAO">
+        <property name="proxyInterfaces">
+        	<value>net.bioclipse.brunn.genericDAO.IUserDAO</value>
+    	</property>
+    	<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.User</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!--  PlateDAO bean -->
+	<bean id="plateDAO" parent="abstractDAO">
+        <property name="proxyInterfaces">
+        	<value>net.bioclipse.brunn.genericDAO.IPlateDAO</value>
+    	</property>
+    	<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.Plate</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- AuditLogDAO bean -->
+	
+	<bean id="auditLogDAO" parent="abstractDAO">
+        <property name="proxyInterfaces">
+        	<value>net.bioclipse.brunn.genericDAO.IAuditLogDAO</value>
+    	</property>
+    	<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.AuditLog</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!--  AnnotationInstanceDAO bean -->
+	<bean id="annotationInstanceDAO" parent="abstractDAO">
+        <property name="proxyInterfaces">
+        	<value>net.bioclipse.brunn.genericDAO.IAnnotationInstanceDAO</value>
+    	</property>
+    	<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.AbstractAnnotationInstance</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+
+  	
+<!-- PlateLayoutDAO -->  	
+	<bean id="plateLayoutDAO" parent="abstractDAO">
+        <property name="proxyInterfaces">
+        	<value>net.bioclipse.brunn.genericDAO.IPlateLayoutDAO</value>
+    	</property>
+    	<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.PlateLayout</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- PlateTypeDAO -->
+	<bean id="plateTypeDAO" parent="abstractDAO">
+        <property name="proxyInterfaces">
+        	<value>net.bioclipse.brunn.genericDAO.IPlateTypeDAO</value>
+    	</property>
+    	<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.PlateType</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- AnnotationDAO -->
+	<bean id="annotationDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IAnnotationDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.Annotation</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+
+<!-- MasterPlateDAO -->
+	<bean id="masterPlateDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IMasterPlateDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.MasterPlate</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>		
+
+<!-- LayoutWellDAO -->
+	<bean id="layoutWellDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.ILayoutWellDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.LayoutWell</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- CellOriginDAO -->
+	<bean id="cellOriginDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.ICellOriginDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.CellOrigin</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- DrugOriginDAO -->
+	<bean id="drugOriginDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IDrugOriginDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.DrugOrigin</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- InstrumentDAO -->
+	<bean id="instrumentDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IInstrumentDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.Instrument</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- SampleContainerDAO -->
+	<bean id="sampleContainerDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.ISampleContainerDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.SampleContainer</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- ResultTypeDAO -->
+	<bean id="resultTypeDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IResultTypeDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.ResultType</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- MeasurementDAO -->
+	<bean id="measurementDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IMeasurementDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.Measurement</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- FolderDAO -->
+	<bean id="folderDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IFolderDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.Folder</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- CellSampleDAO -->
+	<bean id="cellSampleDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.ICellSampleDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.CellSample</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- CellSampleDAO -->
+	<bean id="drugSampleDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IDrugSampleDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.DrugSample</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- PickListDAO -->
+	<bean id="pickListDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IPickListDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.PickList</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- UniqueFolderDAO -->
+	<bean id="uniqueFolderDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IUniqueFolderDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.UniqueFolder</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- ExportScriptDAO -->
+	<bean id="exportScriptDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IExportScriptDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.ExportScript</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- WellDAO -->
+	<bean id="wellDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IWellDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.Well</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- PatientOriginDAO -->
+	<bean id="patientOriginDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IPatientOriginDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.PatientOrigin</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+
+<!-- PatientOriginDAO -->
+	<bean id="patientSampleDAO" parent="abstractDAO">
+		<property name="proxyInterfaces">
+			<value>net.bioclipse.brunn.genericDAO.IPatientSampleDAO</value>
+		</property>
+		<property name="target">
+        	<bean parent="abstractDAOTarget">
+            	<constructor-arg>
+                	<value>net.bioclipse.brunn.pojos.PatientSample</value>
+            	</constructor-arg>
+        	</bean>
+    	</property>
+	</bean>
+	
+<!-- FinderIntroductionAdvisor -->
+	<bean id="finderIntroductionAdvisor" 
+	 class="net.bioclipse.brunn.genericDAO.FinderIntroductionAdvisor" />
+
+<!-- AbstractDAOTarget -->
+	<bean id="abstractDAOTarget"
+        class="net.bioclipse.brunn.genericDAO.GenericDAO" abstract="true">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+	</bean>
+
+<!-- AbstractDAO -->
+	<bean id="abstractDAO"
+        class="org.springframework.aop.framework.ProxyFactoryBean" abstract="true">
+        <property name="interceptorNames">
+            <list>
+                <value>finderIntroductionAdvisor</value>
+            </list>
+        </property>
+	</bean>
+</beans>

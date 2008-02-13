@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+	<session-factory>
+			
+		<!-- local connection properties -->
+
+<!-- 
+		<property name="hibernate.connection.url">
+			jdbc:mysql://bob.cpi.medsci.uu.se/brunn
+		</property>
+		<property name="hibernate.connection.driver_class">
+			com.mysql.jdbc.Driver
+		</property>
+		<property name="hibernate.connection.username">jonathan</property>
+		<property name="hibernate.connection.password">tomtelims</property>
+-->	 	 
+
+
+		<property name="hibernate.connection.url">
+			jdbc:mysql://localhost/lis
+		</property>
+		<property name="hibernate.connection.driver_class">
+			com.mysql.jdbc.Driver
+		</property>
+		<property name="hibernate.connection.username">lis</property>
+		<property name="hibernate.connection.password">lislis</property>
+
+ 
+		<!-- property name="hibernate.connection.pool_size"></property -->
+		<!-- dialect for MySQL -->
+		<property name="dialect">
+			org.hibernate.dialect.MySQLInnoDBDialect
+		</property>
+		<property name="hibernate.show_sql">false</property>
+		<property name="hibernate.transaction.factory_class">
+			org.hibernate.transaction.JDBCTransactionFactory
+		</property>
+		<mapping resource="AbstractBaseObject.hbm.xml" />
+		<mapping resource="AbstractAnnotationInstance.hbm.xml" />
+		<mapping resource="AuditLog.hbm.xml" />
+		<mapping resource="SampleContainer.hbm.xml" />
+		<mapping resource="LayoutMarker.hbm.xml"/>
+		<mapping resource="namedQueries.hbm.xml"/>
+		<mapping resource="AbstractWell.hbm.xml"/>
+		<mapping resource="SampleMarker.hbm.xml"/>
+		<mapping resource="PlateFunction.hbm.xml"/>
+		<mapping resource="WellFunction.hbm.xml"/>
+		<mapping resource="Result.hbm.xml"/>
+		<mapping resource="WorkList.hbm.xml"/>
+	</session-factory>
+</hibernate-configuration>

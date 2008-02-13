@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping auto-import="true" package="net.bioclipse.brunn.pojos">
+<!-- AbstractWell -->
+	<class
+		name="AbstractWell"
+		table="ABSTRACTWELL"
+	>
+		<id 
+		 name="id"
+		 column="id"
+		 type="long">
+			<generator class="native" />
+		</id>
+		
+		<property 
+		 name="name"
+		 column="name"
+		 type="string" />
+		
+		<property
+		 name="hashCode"
+		 column="hashCode"
+		 type="int" />
+		
+		<property
+		 name="deleted"
+		 column="deleted"
+		 type="boolean" />
+		
+		<many-to-one
+		 name="creator"
+		 column="creator"
+		 class="User"
+		 cascade="none"
+		 lazy="false" />
+		
+		<property
+		 name="col"
+		 column="col"
+		 type="integer"/>
+		
+		<property
+		 name="row"
+		 column="row"
+		 type="char"/>
+		
+		<set 
+		 name="wellFunctions" 
+		 cascade="all"
+		 lazy="false">
+		 	<key column="wellFunctionId"/>
+				<one-to-many class="net.bioclipse.brunn.pojos.WellFunction" />
+		</set>
+		
+		<joined-subclass
+		 name="Well"
+		 table="WELL">
+			
+			<key column="id" />
+			
+			<many-to-one
+			 name="plate"
+			 column="plate"
+			 class="AbstractPlate"
+			 cascade="all"
+		 	 lazy="false" />
+			
+			<many-to-one
+			 name="sampleContainer"
+			 column="sampleContainer"
+			 class="SampleContainer"
+			 cascade="all"
+		 	 lazy="false" />
+			 
+			<set 
+			 name="sampleMarkers" 
+		 	 cascade="all"
+			 lazy="false">
+				<key column="sampleMarkerId"/>
+				<one-to-many class="net.bioclipse.brunn.pojos.SampleMarker"/>
+			</set>
+		 
+		</joined-subclass>
+		
+		<joined-subclass
+		 name="LayoutWell"
+		 table="LAYOUTWELL">
+		 
+			<key column="id" />
+		 
+		 <many-to-one 
+		  name="plateLayout"
+		  column="plateLayout"
+		  class="net.bioclipse.brunn.pojos.PlateLayout"
+		  lazy="false" />
+		
+		<set 
+		 name="layoutMarkers" 
+		 cascade="all"
+		 lazy="false">
+			<key column="layoutMarkerId"/>
+			<one-to-many class="net.bioclipse.brunn.pojos.LayoutMarker"/>
+		</set>
+		 
+		</joined-subclass>
+	</class>
+</hibernate-mapping>
