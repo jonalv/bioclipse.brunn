@@ -55,4 +55,5 @@ public interface IPlateLayoutManager {
 	public Collection<PlateType> getAllPlateTypesNotDeleted();
 	
 	public Collection<PlateLayout> getAllPlateLayoutsNotDeleted();
+	public void evictFromLazyLoading(PlateLayout toBeSaved);
 }

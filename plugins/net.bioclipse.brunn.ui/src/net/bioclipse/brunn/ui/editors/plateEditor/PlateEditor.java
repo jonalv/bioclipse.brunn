@@ -85,6 +85,7 @@ public class PlateEditor extends EditorPart {
 	private TableViewer markerTableViewer;
 	private TableViewer plateFunctionsTableViewer;
 	private PlateResults plateResults;
+	private IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
 	
 	private final Clipboard cb = new Clipboard(
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay() );
@@ -98,22 +99,20 @@ public class PlateEditor extends EditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		System.out.println("PlateEditor.doSave()");
-		((IPlateManager) Springcontact.getBean("plateManager")).editMerging(
-				Activator.getDefault().getCurrentUser(), 
-				toBeSaved);
+		
+		pm.editMerging( Activator.getDefault().getCurrentUser(), toBeSaved);
 		referencePlate = toBeSaved.deepCopy();
 		firePropertyChange(PROP_DIRTY);
 		plate.getParent().fireUpdate();
 	}
-
+	
 	@Override
 	public void doSaveAs() {
 		System.out.println("PlateEditor.doSaveAs()");
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
@@ -123,6 +122,7 @@ public class PlateEditor extends EditorPart {
 		PlateResults plateResults = plate.getPlateResults();
 		toBeSaved = plateResults.getPlate().deepCopy();
 		referencePlate = toBeSaved.deepCopy();
+		pm.evictfromLazyLoading(toBeSaved);
 	}
 
 	@Override

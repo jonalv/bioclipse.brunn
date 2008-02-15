@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.plateLayout.IPlateLayoutManager;
+import net.bioclipse.brunn.genericDAO.IPlateLayoutDAO;
 import net.bioclipse.brunn.pojos.LayoutWell;
 import net.bioclipse.brunn.pojos.PlateFunction;
 import net.bioclipse.brunn.pojos.WellFunction;
@@ -66,9 +67,10 @@ public class PlateLayoutEditor extends EditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		((IPlateLayoutManager) Springcontact.getBean("plateLayoutManager")).edit(
-				Activator.getDefault().getCurrentUser(), 
-				toBeSaved);
+		IPlateLayoutManager plm 
+			= (IPlateLayoutManager) Springcontact.getBean("plateLayoutManager");
+		plm.edit( Activator.getDefault().getCurrentUser(), toBeSaved );
+		plm.evictFromLazyLoading(toBeSaved);
 		referencePlateLayout = toBeSaved.deepCopy();
 		firePropertyChange(PROP_DIRTY);
 		plateLayout.getParent().fireUpdate();
@@ -89,10 +91,12 @@ public class PlateLayoutEditor extends EditorPart {
 
 		plateLayout = (PlateLayout) input;
 		setPartName(plateLayout.getName());
+		
 		toBeSaved = ((net.bioclipse.brunn.pojos.PlateLayout) ((PlateLayout) input)
 				.getPOJO()).deepCopy();
 		toBeSaved.setId(((net.bioclipse.brunn.pojos.PlateLayout) ((PlateLayout) input)
 				.getPOJO()).getId());
+		
 		referencePlateLayout = toBeSaved.deepCopy();
 		calculator = new Calculator();
 		PlateResults.createFunctionBodies(calculator);

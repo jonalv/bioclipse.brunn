@@ -287,4 +287,10 @@ public class PlateManager extends
 		
 		getAuditService().audit(editor, AuditType.UPDATE_EVENT, plate);
     }
+
+	@Override
+    public void evictfromLazyLoading(Plate toBeSaved) {
+		LazyLoadingSessionHolder.getInstance().evict( toBeSaved );
+		LazyLoadingSessionHolder.getInstance().evict( toBeSaved.getCreator() );
+    }
 }

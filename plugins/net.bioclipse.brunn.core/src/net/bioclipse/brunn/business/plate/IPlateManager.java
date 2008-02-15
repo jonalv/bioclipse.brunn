@@ -86,4 +86,5 @@ public interface IPlateManager {
 	public Collection<Plate> getAllPlatesNotDeleted();
 	public Collection<MasterPlate> getAllMasterPlatesNotDeleted();
 	public void editMerging(User currentUser, Plate toBeSaved);
+	public void evictfromLazyLoading(Plate toBeSaved);
 }
