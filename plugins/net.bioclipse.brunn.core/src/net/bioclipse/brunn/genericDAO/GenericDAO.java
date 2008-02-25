@@ -85,4 +85,9 @@ public class GenericDAO<T> extends HibernateDaoSupport
     public <T2> T2 mergeObject(T2 o) {
 	    return (T2) getSession().merge(o);
     }
+
+	@Override
+    public void evict(T o) {
+		getSession().evict(o);
+    }
 }

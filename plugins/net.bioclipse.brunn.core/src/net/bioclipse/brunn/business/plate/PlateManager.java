@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import net.bioclipse.brunn.business.IAuditService;
 import net.bioclipse.brunn.business.LazyLoadingSessionHolder;
 import net.bioclipse.brunn.genericDAO.IPlateDAO;
+import net.bioclipse.brunn.pojos.AbstractBasePlate;
 import net.bioclipse.brunn.pojos.AbstractPlate;
 import net.bioclipse.brunn.pojos.AbstractSample;
 import net.bioclipse.brunn.pojos.AuditType;
@@ -72,8 +73,7 @@ public class PlateManager extends
 	                         CellOrigin cellOrigin, 
 	                         Timestamp defrostingDate ) {
 	
-		
-		creator = userDAO.merge(creator);
+//		creator = userDAO.merge(creator);
 		masterPlate = masterPlateDAO.merge(masterPlate);
 		folder = folderDAO.merge(folder);
 		
@@ -118,10 +118,10 @@ public class PlateManager extends
     }
 	
 	public long createMasterPlate( User creator, 
-	                                String name, 
-	                                PlateLayout plateLayout, 
-	                                Folder folder, 
-	                                int numOfPlates ) {
+	                               String name, 
+	                               PlateLayout plateLayout, 
+	                               Folder folder, 
+	                               int numOfPlates ) {
 	    
 		folder  = folderDAO.merge(folder);
 		creator = userDAO.merge(creator);
@@ -133,11 +133,20 @@ public class PlateManager extends
 				                             folder, 
 				                             numOfPlates );
 		
+		for ( PlateFunction pf : masterPlate.getPlateFunctions() ) {
+			//TODO FIXME: This is a terrible hack but since the creator of 
+			//            a platefunction is not used for anything it works.
+			//            However unless this is fixed it can never be used 
+			//            for anything.
+			pf.setCreator(null); 
+		}
+		
 		masterPlateDAO.save(masterPlate);
 		folderDAO.save(folder);
 		
 		getAuditService().audit(creator, AuditType.CREATE_EVENT, masterPlate);
-		LazyLoadingSessionHolder.getInstance().evict(plateLayout);
+		evictfromLazyLoading(masterPlate);
+		evictfromLazyLoading(plateLayout);
 	    return masterPlate.getId();
     }
 	
@@ -288,9 +297,18 @@ public class PlateManager extends
 		getAuditService().audit(editor, AuditType.UPDATE_EVENT, plate);
     }
 
+//	@Override
+//    public void evictfromLazyLoading(Plate toBeSaved) {
+//		LazyLoadingSessionHolder.getInstance().evict( toBeSaved );
+//		LazyLoadingSessionHolder.getInstance().evict( toBeSaved.getCreator() );
+//    }
+
 	@Override
-    public void evictfromLazyLoading(Plate toBeSaved) {
+    public void evictfromLazyLoading(AbstractBasePlate toBeSaved) {
 		LazyLoadingSessionHolder.getInstance().evict( toBeSaved );
 		LazyLoadingSessionHolder.getInstance().evict( toBeSaved.getCreator() );
+		for(PlateFunction pf : toBeSaved.getPlateFunctions()) {
+			LazyLoadingSessionHolder.getInstance().evict(pf.getCreator());
+		}
     }
 }

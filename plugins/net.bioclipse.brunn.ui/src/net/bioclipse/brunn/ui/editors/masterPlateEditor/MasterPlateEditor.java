@@ -80,9 +80,10 @@ public class MasterPlateEditor extends EditorPart {
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		((IPlateManager) Springcontact.getBean("plateManager")).edit(
-				Activator.getDefault().getCurrentUser(), 
-				toBeSaved);
+		IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
+		pm.edit( Activator.getDefault().getCurrentUser(), toBeSaved );
+		pm.evictfromLazyLoading(toBeSaved);
+		
 		referenceMasterPlate = toBeSaved.deepCopy();
 		firePropertyChange(PROP_DIRTY);
 		masterPlate.getParent().fireUpdate();

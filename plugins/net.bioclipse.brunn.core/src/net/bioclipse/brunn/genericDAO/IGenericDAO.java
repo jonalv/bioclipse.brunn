@@ -1,6 +1,7 @@
 package net.bioclipse.brunn.genericDAO;
 
 import net.bioclipse.brunn.pojos.ILISObject;
+import net.bioclipse.brunn.pojos.User;
 
 import org.hibernate.SessionFactory;
 
@@ -36,4 +37,6 @@ public interface IGenericDAO<T> {
     public T merge(T instance);
     
     public <T2> T2 mergeObject(T2 o);
+    
+    public void evict(T o);
 }

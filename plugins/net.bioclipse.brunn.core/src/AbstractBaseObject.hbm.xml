@@ -46,7 +46,7 @@
 		 name="creator"
 		 column="creator"
 		 class="User"
-		 cascade="none" />
+		 cascade="evict" />
 
 <!-- Picking -->
 		<joined-subclass 

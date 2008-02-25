@@ -906,7 +906,13 @@ public class AuditInvokedTest extends BaseTest {
         }
 
 		@Override
-        public Object mergeObject(Object o) {
+        public void evict(PlateLayout o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
+		@Override
+        public <T2> T2 mergeObject(T2 o) {
 	        // TODO Auto-generated method stub
 	        return null;
         }
@@ -983,7 +989,14 @@ public class AuditInvokedTest extends BaseTest {
         public Object mergeObject(Object o) {
 	        // TODO Auto-generated method stub
 	        return null;
-        }	
+        }
+
+		@Override
+        public void evict(Plate o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
 	}
 	
 	
@@ -1056,7 +1069,13 @@ public class AuditInvokedTest extends BaseTest {
         }
 
 		@Override
-        public Object mergeObject(Object o) {
+        public void evict(MasterPlate o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
+		@Override
+        public <T2> T2 mergeObject(T2 o) {
 	        // TODO Auto-generated method stub
 	        return null;
         }
@@ -1108,6 +1127,13 @@ public class AuditInvokedTest extends BaseTest {
 	        // TODO Auto-generated method stub
 	        return null;
         }
+
+		@Override
+        public void evict(PlateType o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
 	}
 	
 	private class MockSampleContainerDAO implements ISampleContainerDAO {
@@ -1150,6 +1176,12 @@ public class AuditInvokedTest extends BaseTest {
         public Object mergeObject(Object o) {
 	        // TODO Auto-generated method stub
 	        return null;
+        }
+
+		@Override
+        public void evict(SampleContainer o) {
+	        // TODO Auto-generated method stub
+	        
         }
 	}
 	
@@ -1195,7 +1227,13 @@ public class AuditInvokedTest extends BaseTest {
         }
 
 		@Override
-        public Object mergeObject(Object o) {
+        public void evict(DrugOrigin o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
+		@Override
+        public <T2> T2 mergeObject(T2 o) {
 	        // TODO Auto-generated method stub
 	        return null;
         }
@@ -1247,6 +1285,13 @@ public class AuditInvokedTest extends BaseTest {
 	        // TODO Auto-generated method stub
 	        return null;
         }
+
+		@Override
+        public void evict(CellOrigin o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
 	}
 		
 	private class MockInstrumentDAO implements IInstrumentDAO {
@@ -1295,6 +1340,13 @@ public class AuditInvokedTest extends BaseTest {
 	        // TODO Auto-generated method stub
 	        return null;
         }
+
+		@Override
+        public void evict(Instrument o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
 	}
 	
 	private class MockMeasurementDAO implements IMeasurementDAO {
@@ -1334,7 +1386,13 @@ public class AuditInvokedTest extends BaseTest {
         }
 
 		@Override
-        public Object mergeObject(Object o) {
+        public void evict(Measurement o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
+		@Override
+        public <T2> T2 mergeObject(T2 o) {
 	        // TODO Auto-generated method stub
 	        return null;
         }
@@ -1386,6 +1444,13 @@ public class AuditInvokedTest extends BaseTest {
 	        // TODO Auto-generated method stub
 	        return null;
         }
+
+		@Override
+        public void evict(ResultType o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
 	}
 	
 	private class MockUserDAO implements IUserDAO {
@@ -1429,7 +1494,13 @@ public class AuditInvokedTest extends BaseTest {
         }
 
 		@Override
-        public Object mergeObject(Object o) {
+        public void evict(User o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
+		@Override
+        public <T2> T2 mergeObject(T2 o) {
 	        // TODO Auto-generated method stub
 	        return null;
         }
@@ -1472,7 +1543,13 @@ public class AuditInvokedTest extends BaseTest {
         }
 
 		@Override
-        public Object mergeObject(Object o) {
+        public void evict(AuditLog o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
+		@Override
+        public <T2> T2 mergeObject(T2 o) {
 	        // TODO Auto-generated method stub
 	        return null;
         }
@@ -1519,6 +1596,13 @@ public class AuditInvokedTest extends BaseTest {
 	        // TODO Auto-generated method stub
 	        return null;
         }
+
+		@Override
+        public void evict(Annotation o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
 	}
 	
 	private class MockWellDAO implements IWellDAO {
@@ -1559,6 +1643,13 @@ public class AuditInvokedTest extends BaseTest {
 	        // TODO Auto-generated method stub
 	        return null;
         }
+
+		@Override
+        public void evict(Well o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
 	}
 	
 	private class MockAnnotationInstanceDAO implements IAnnotationInstanceDAO {
@@ -1602,5 +1693,12 @@ public class AuditInvokedTest extends BaseTest {
 	        // TODO Auto-generated method stub
 	        return null;
         }
+
+		@Override
+        public void evict(AbstractAnnotationInstance o) {
+	        // TODO Auto-generated method stub
+	        
+        }
+
 	}
 }

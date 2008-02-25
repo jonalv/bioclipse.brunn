@@ -9,6 +9,7 @@ import net.bioclipse.brunn.business.LazyLoadingSessionHolder;
 import net.bioclipse.brunn.pojos.AbstractAnnotationInstance;
 import net.bioclipse.brunn.pojos.AbstractBasePlate;
 import net.bioclipse.brunn.pojos.AbstractPlate;
+import net.bioclipse.brunn.pojos.AbstractWell;
 import net.bioclipse.brunn.pojos.AuditType;
 import net.bioclipse.brunn.pojos.Folder;
 import net.bioclipse.brunn.pojos.LayoutWell;
@@ -62,7 +63,7 @@ public class PlateLayoutManager extends AbstractDAOBasedPlateLayoutManager imple
 		plateLayoutDAO.save(plateLayout);
 		
 		auditService.audit(creator, AuditType.CREATE_EVENT, plateLayout);
-		
+		evictFromLazyLoading(plateLayout);
 		return plateLayout.getId();
     }
 	
@@ -147,5 +148,8 @@ public class PlateLayoutManager extends AbstractDAOBasedPlateLayoutManager imple
     public void evictFromLazyLoading(PlateLayout toBeSaved) {
 	    LazyLoadingSessionHolder.getInstance().evict( toBeSaved );
 	    LazyLoadingSessionHolder.getInstance().evict( toBeSaved.getCreator() );
+	    for ( PlateFunction pf : toBeSaved.getPlateFunctions() ) {
+	    	LazyLoadingSessionHolder.getInstance().evict( pf.getCreator() );
+	    }
     }
 }

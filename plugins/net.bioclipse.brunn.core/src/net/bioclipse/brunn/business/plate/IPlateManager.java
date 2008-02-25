@@ -8,6 +8,8 @@ import java.util.Set;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.bioclipse.brunn.business.IAuditService;
+import net.bioclipse.brunn.pojos.AbstractBasePlate;
+import net.bioclipse.brunn.pojos.AbstractPlate;
 import net.bioclipse.brunn.pojos.CellOrigin;
 import net.bioclipse.brunn.pojos.Folder;
 import net.bioclipse.brunn.pojos.MasterPlate;
@@ -86,5 +88,6 @@ public interface IPlateManager {
 	public Collection<Plate> getAllPlatesNotDeleted();
 	public Collection<MasterPlate> getAllMasterPlatesNotDeleted();
 	public void editMerging(User currentUser, Plate toBeSaved);
-	public void evictfromLazyLoading(Plate toBeSaved);
+//	public void evictfromLazyLoading(Plate toBeSaved);
+	public void evictfromLazyLoading(AbstractBasePlate toBeSaved);
 }
