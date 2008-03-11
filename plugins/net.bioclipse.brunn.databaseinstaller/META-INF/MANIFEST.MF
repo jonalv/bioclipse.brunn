@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Databaseinstaller Plugin
+Bundle-SymbolicName: net.bioclipse.brunn.databaseinstaller; singleton:=true
+Bundle-Version: 0.1.0
+Bundle-Activator: net.bioclipse.brunn.databaseinstaller.DatabaseinstallerPlugin
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ net.bioclipse.brunn.core
+Eclipse-AutoStart: true

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="net.bioclipse.brunn.databaseinstaller.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Perspective"
+            class="net.bioclipse.brunn.databaseinstaller.Perspective"
+            id="net.bioclipse.brunn.databaseinstaller.perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="View"
+            class="net.bioclipse.brunn.databaseinstaller.View"
+            id="net.bioclipse.brunn.databaseinstaller.view">
+      </view>
+   </extension>
+
+</plugin>
