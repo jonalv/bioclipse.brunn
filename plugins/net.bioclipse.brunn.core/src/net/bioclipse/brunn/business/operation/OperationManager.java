@@ -106,6 +106,8 @@ public class OperationManager extends AbstractDAOBasedOperationManager
 	                               Instrument instrument, 
 	                               ResultType resultType ) {
 
+		workList = plateDAO.mergeObject(workList);
+		instrument = instrumentDAO.merge(instrument);
 		Measurement measurement = new Measurement( creator, name, workList, instrument, resultType );
 		measurementDAO.save(measurement);
 		instrument = instrumentDAO.merge(instrument);

@@ -35,22 +35,27 @@ public class Activator extends AbstractUIPlugin implements IKeyringListener {
 	 */
 	public Activator() {
 		plugin = this;
-		if( KeyRing.getInstance().isLoggedInWithAccountType("lisAccountType") ) {
-			setLoggedInUser();
-		}
+//		if( KeyRing.getInstance().isLoggedInWithAccountType("BrunnAccountType") ) {
+//			setLoggedInUser();
+//		}
+//		else {
+//			System.out.println("could not log in correctly");
+//		}
 		KeyRing.getInstance().addListener(this);
 	}
 
 	private void setLoggedInUser() {
+		System.out.println("Activator.setLoggedInUser()");
 		for ( User user : ( (IAuditManager)Springcontact.getBean("auditManager") ).getAllUsers() ) {
-			if( user.getName().equals( KeyRing.getInstance().getUserNameByAccountType("LisAccountType") ) ) {
-				if( user.passwordMatch( KeyRing.getInstance().getKeyByAccountType("LisAccountType") ) ) {
+			if( user.getName().equals( KeyRing.getInstance().getUserNameByAccountType("BrunnAccountType") ) ) {
+				if( user.passwordMatch( KeyRing.getInstance().getKeyByAccountType("BrunnAccountType") ) ) {
 					currentUser = user;
+					System.out.println(currentUser.getName() + " has logged in");
 					return;
 				}
 			}
 		}
-		throw new IllegalStateException("Did not find user in lis-database or password did not match");
+		throw new IllegalStateException("Did not find user in database or password did not match");
 	}
 
 	/*
@@ -112,7 +117,7 @@ public class Activator extends AbstractUIPlugin implements IKeyringListener {
 	public void keyringEventOccur(KeyringEvent event) {
 		switch (event) {
 		case LOGIN:
-			if( KeyRing.getInstance().isLoggedInWithAccountType("LisAccountType") ) {
+			if( KeyRing.getInstance().isLoggedInWithAccountType("BrunnAccountType") ) {
 				setLoggedInUser();
 			}
 			break;

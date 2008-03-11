@@ -13,7 +13,7 @@
 	   		<value>com.mysql.jdbc.Driver</value>
 	   	</property>
 
-
+<!-- 
 	   	<property name="url">
 	   		<value>jdbc:mysql://localhost:3306/lis</value>
 	   	</property>
@@ -23,9 +23,9 @@
 	   	<property name="password">
 	   		<value>lislis</value>
 	   	</property>
+-->
 
-
-<!--   
+  
  		<property name="url">
 	   		<value>jdbc:mysql://bob.cpi.medsci.uu.se/brunn</value>
 	   	</property>
@@ -35,7 +35,7 @@
 	   	<property name="password">
 	   		<value>tomtelims</value>
 	   	</property>
--->
+
  
 <!-- 
 	  	<property name="initialSize">

@@ -193,15 +193,22 @@ public class View extends ViewPart implements IKeyringListener {
 	}
 
 	private void fillMenu(IMenuManager mgr) {
+		
 		if( !KeyRing.getInstance().isLoggedIn() ) {
 			mgr.add(login);
 			return;
 		}
 		mgr.add(importOrcaResultsAction);
         mgr.add(toggleShowDeletedAction);
-        if( Activator.getDefault().getCurrentUser().isAdmin() ) {
-        	mgr.add(createUserAction);
+        try {
+        	if( Activator.getDefault().getCurrentUser().isAdmin() ) {
+            	mgr.add(createUserAction);
+            }
         }
+        catch (Exception e) {
+        	e.printStackTrace();
+        	System.out.println(Activator.getDefault().getCurrentUser());
+		}
 	}
 	
 	private void addDragAndDropSupport() {
