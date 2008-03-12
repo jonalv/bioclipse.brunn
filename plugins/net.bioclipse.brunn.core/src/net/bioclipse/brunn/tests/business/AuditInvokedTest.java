@@ -345,12 +345,14 @@ public class AuditInvokedTest extends BaseTest {
 		IMeasurementDAO measurementDAO         = new MockMeasurementDAO();
 		IResultTypeDAO resultTypeDAO           = new MockResultTypeDAO();
 		ISampleContainerDAO sampleContainerDAO = new MockSampleContainerDAO();
+		IPlateDAO plateDAO                     = new MockPlateDAO();
 		
 		om.setInstrumentDAO(instrumentDAO);
 		om.setMeasurementDAO(measurementDAO);
 		om.setResultTypeDAO(resultTypeDAO);
 		om.setSampleContainerDAO(sampleContainerDAO);
 		om.setAuditService(auditService);
+		om.setPlateDAO(plateDAO);
 
 		om.createMeasurement(tester, "name", workList, instrument, resultType);
 		
@@ -959,8 +961,7 @@ public class AuditInvokedTest extends BaseTest {
         }
 
 		public Plate merge(Plate instance) {
-			return null;
-	        // TODO Auto-generated method stub
+			return instance;
 	        
         }
 
@@ -987,8 +988,7 @@ public class AuditInvokedTest extends BaseTest {
 
 		@Override
         public Object mergeObject(Object o) {
-	        // TODO Auto-generated method stub
-	        return null;
+	        return o;
         }
 
 		@Override
