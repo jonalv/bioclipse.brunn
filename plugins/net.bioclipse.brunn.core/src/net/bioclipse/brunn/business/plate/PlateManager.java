@@ -271,7 +271,9 @@ public class PlateManager extends
 			parser.addResultsTo(user, plates);
 			
 			for(Plate plate : plates) {
-				edit(user, plate);
+//				edit(user, plate);
+				plateDAO.evict(plate);
+				LazyLoadingSessionHolder.getInstance().evict(plate);
 				monitor.worked(1);
 			}
 		}

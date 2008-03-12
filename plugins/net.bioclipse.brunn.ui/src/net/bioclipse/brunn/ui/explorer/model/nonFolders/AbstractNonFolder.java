@@ -9,7 +9,7 @@ import net.bioclipse.brunn.ui.explorer.model.ITreeObject;
 import net.bioclipse.brunn.ui.explorer.model.Model;
 
 public abstract class AbstractNonFolder extends Model 
-                                       implements ITreeObject {
+                                        implements ITreeObject {
 
 	protected ITreeObject parent;
 	protected ILISObject object;

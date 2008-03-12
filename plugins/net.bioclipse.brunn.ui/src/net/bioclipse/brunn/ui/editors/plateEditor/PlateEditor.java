@@ -14,6 +14,9 @@ import net.bioclipse.brunn.ui.editors.plateEditor.MarkersContentProvider;
 import net.bioclipse.brunn.ui.editors.plateEditor.MarkersLabelProvider;
 import net.bioclipse.brunn.ui.editors.plateEditor.model.MarkersTableRow;
 import net.bioclipse.brunn.ui.editors.plateEditor.model.PlateTableModel;
+import net.bioclipse.brunn.ui.explorer.model.ITreeModelListener;
+import net.bioclipse.brunn.ui.explorer.model.ITreeObject;
+import net.bioclipse.brunn.ui.explorer.model.TreeEvent;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -123,6 +126,8 @@ public class PlateEditor extends EditorPart {
 		toBeSaved = plateResults.getPlate().deepCopy();
 		referencePlate = toBeSaved.deepCopy();
 		pm.evictfromLazyLoading(toBeSaved);
+		ITreeObject parent = plate.getParent();
+		parent.fireUpdate();
 	}
 
 	@Override
