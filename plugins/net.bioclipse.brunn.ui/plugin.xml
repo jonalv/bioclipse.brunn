@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="net.bioclipse.brunn.ui.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="Perspective"
+            class="net.bioclipse.brunn.ui.explorer.Perspective"
+            id="brunn.setup.explorer.Perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      
+      <category id="net.bioclipse.brunn.category"
+                name="Brunn" />
+      
+      <view
+            name="Brunn explorer"
+            class="net.bioclipse.brunn.ui.explorer.View"
+            id="brunn.setup.explorer.View"
+            category="net.bioclipse.brunn.category">
+      </view>
+   </extension>
+  <extension
+         point="org.eclipse.ui.editors">
+      	<editor
+            id="net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor"
+            icon="icons/sample.gif"
+            name="Plate Editor"
+            class="net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor" />
+     	<editor
+            id="net.bioclipse.brunn.ui.editors.plateLayoutEditor.PlateLayoutEditor"
+            icon="icons/sample.gif"
+            name="Plate Layout Editor"
+            class="net.bioclipse.brunn.ui.editors.plateLayoutEditor.PlateLayoutEditor" />
+     	<editor
+            id="net.bioclipse.brunn.ui.editors.plateTypeEditor.PlateTypeEditor"
+            icon="icons/sample.gif"
+            name="Plate Type Editor"
+            class="net.bioclipse.brunn.ui.editors.plateTypeEditor.PlateTypeEditor" />
+        <editor
+            id="net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateEditor"
+            icon="icons/sample.gif"
+            name="Master Plate Editor"
+            class="net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateEditor" />
+        <editor
+            id="net.bioclipse.brunn.ui.editors.compoundEditor.CompoundEditor"
+            icon="icons/sample.gif"
+            name="Compound Editor"
+            class="net.bioclipse.brunn.ui.editors.compoundEditor.CompoundEditor" />
+        <editor
+            id="net.bioclipse.brunn.ui.editors.cellTypeEditor.CellTypeEditor"
+            icon="icons/sample.gif"
+            name="Cell Type Editor"
+            class="net.bioclipse.brunn.ui.editors.cellTypeEditor.CellTypeEditor" />
+   </extension>
+  <extension
+	point="net.bioclipse.keyring.accountType">
+		<AccountType
+			id="brunn.accounttype"
+			name="BrunnAccountType">
+		<property
+			name="URL"
+			required="true"/>
+  <property
+        name="Database password"
+        required="true"/>
+  <property
+        name="Database user"
+        required="true"/>
+	 </AccountType>
+  </extension>
+</plugin>
