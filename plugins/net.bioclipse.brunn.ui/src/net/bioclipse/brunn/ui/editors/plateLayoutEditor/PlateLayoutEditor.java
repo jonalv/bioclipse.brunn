@@ -153,7 +153,7 @@ public class PlateLayoutEditor extends EditorPart {
 		final PlateLayoutEditor editor = this;
 
 		/*
-		 *  when wells are selected, update the functions table
+		 *  When wells are selected, Update the Functions Table
 		 */
 		markersTable
 				.addCellSelectionListener(new KTableCellSelectionListener() {

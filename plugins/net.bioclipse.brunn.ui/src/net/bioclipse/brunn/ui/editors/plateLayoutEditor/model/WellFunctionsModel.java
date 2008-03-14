@@ -34,6 +34,7 @@ public class WellFunctionsModel extends KTableDefaultModel {
     private int cols;
     private List<LayoutWell> layoutWells;
     private List<WellFunction> commonFunctions;
+    private boolean multipleWellsCelected;
     
     private TextCellRenderer   renderer      = new TextCellRenderer(  TextCellRenderer.INDICATION_FOCUS_ROW);
     private KTableCellRenderer fixedRenderer = new FixedCellRenderer( FixedCellRenderer.STYLE_PUSH);
@@ -42,20 +43,22 @@ public class WellFunctionsModel extends KTableDefaultModel {
     private PlateLayoutEditor editor;
 	private Calculator calculator;
     
-	public WellFunctionsModel(List<LayoutWell> layoutWells, PlateLayoutEditor editor, Calculator calculator) {
+	public WellFunctionsModel( List<LayoutWell> layoutWells, 
+			                   PlateLayoutEditor editor, 
+			                   Calculator calculator) {
 
 		cols             = 2;
 		this.calculator  = calculator;
 		this.layoutWells = layoutWells;
 		this.editor      = editor;
-		commonFunctions  = extractCommonFunctions(layoutWells);
+		extractCommonFunctions(layoutWells);
 		rows             = commonFunctions.size();		
 		setupMatrix(commonFunctions);
 		
 		initialize();
 	}
 	
-	private List<WellFunction> extractCommonFunctions(
+	private void extractCommonFunctions(
 			List<LayoutWell> layoutWells) {
 
 		Map<String, WellFunction> commonWellFunctions = new HashMap<String, WellFunction>();
@@ -67,14 +70,14 @@ public class WellFunctionsModel extends KTableDefaultModel {
 			Map<String, WellFunction> newCommonWellFunctions = new HashMap<String, WellFunction>();
 			
 			for ( WellFunction lwf : lw.getWellFunctions() ) 
-				if ( commonWellFunctions.keySet().contains(lwf.getName() ) && 
-					commonWellFunctions.get( lwf.getName()).getExpression().equals(lwf.getExpression()) )
+				if ( commonWellFunctions.keySet().contains(lwf.getName() ) )
 						newCommonWellFunctions.put(lwf.getName(), lwf);
 			
 			commonWellFunctions = newCommonWellFunctions;
 		}
-
-		return new ArrayList<WellFunction>(commonWellFunctions.values());
+		
+		multipleWellsCelected = layoutWells.size() != 1;
+		commonFunctions =  new ArrayList<WellFunction>(commonWellFunctions.values());
 	}
 
 	public WellFunctionsModel(String[][] matrix, PlateLayoutEditor editor) {
@@ -102,7 +105,10 @@ public class WellFunctionsModel extends KTableDefaultModel {
 			
 			wellFunctions.put(i + "", function);
 			matrix[0][i]   = function.getName();
-			matrix[1][i++] = function.getExpression();
+			if(!multipleWellsCelected) {
+				matrix[1][i] = function.getExpression();
+			}
+			i++;
 		}
 		
 		this.matrix = matrix;
@@ -115,6 +121,9 @@ public class WellFunctionsModel extends KTableDefaultModel {
             return null; // no editor
 		if ( matrix[0][row-1].equals("raw") ) 
 			return null;
+		if ( col == 1 && multipleWellsCelected ) {
+			return null;
+		}
         return new KTableCellEditorText2() {
         	@Override
         	public void close(boolean save) {
