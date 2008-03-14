@@ -171,6 +171,9 @@ public class CreateCompound extends TitleAreaDialog {
 		return structureURL;
 	}
 	protected void buttonPressed(int buttonId) {
+		if (buttonId == IDialogConstants.CANCEL_ID) {
+			keepAddingCompounds = false;
+		}
 		if (buttonId == IDialogConstants.OK_ID) {
 			if(!textMW.getText().equals("")) {
 				try {

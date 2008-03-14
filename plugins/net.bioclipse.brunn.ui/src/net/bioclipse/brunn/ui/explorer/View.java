@@ -139,6 +139,11 @@ public class View extends ViewPart implements IKeyringListener {
 	
 	private TreeRoot treeRoot;
 	private boolean showPojosMarkedAsDeleted;
+	/*
+	 * Used while creating many compounds by automagicly opening a new dialog 
+	 * after the first
+	 */
+	private static IStructuredSelection treeSelection;
 
 	private Action createUserAction;
 
@@ -504,14 +509,18 @@ public class View extends ViewPart implements IKeyringListener {
 					if(dialog.getReturnCode() == CreateCompound.OK) {
 	
 						if ( treeViewer.getSelection().isEmpty() ) {
-							throw new IllegalStateException( "No folder was selected in the treeviewer");
+							if(treeSelection == null) {
+								throw new IllegalStateException( "No folder" +
+										" was selected in the treeviewer");
+							}
 						}
-	
-						final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+						else {
+							treeSelection = (IStructuredSelection) treeViewer.getSelection();
+						}
 	
 						new Thread () {
 							public void run() {
-								ITreeObject selectedDomainObject = (ITreeObject) selection.getFirstElement();
+								ITreeObject selectedDomainObject = (ITreeObject) treeSelection.getFirstElement();
 								AbstractFolder recievingFolder = (AbstractFolder) selectedDomainObject.getFolder();
 								IOriginManager orm = (IOriginManager) Springcontact.getBean("originManager");
 	
