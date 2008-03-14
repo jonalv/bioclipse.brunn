@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.plate.IPlateManager;
+import net.bioclipse.brunn.pojos.ILISObject;
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.pojos.PlateFunction;
 import net.bioclipse.brunn.results.PlateResults;
@@ -328,6 +329,21 @@ public class PlateEditor extends EditorPart {
 		plateFunctionsTableViewer.setContentProvider(new PlateFunctionsContentProvider());
 		plateFunctionsTableViewer.setLabelProvider(new PlateFunctionsTableLabelProvider());
 		sashForm_1.setWeights(new int[] {1, 1 });
+		
+		plateFunctionsTableViewer.setSorter( new ViewerSorter() {
+			@Override
+			public int compare(Viewer viewer, Object e1, Object e2) {
+			
+				if( e1 instanceof ILISObject && 
+					e2 instanceof ILISObject ) {
+					
+					return ( (ILISObject)e1 ).toString().compareTo(
+							 ( (ILISObject)e2 ).toString() );
+				}
+				
+				return super.compare(viewer, e1, e2);
+			}
+		});
 		
 		for(String columnName : PLATEFUNCTIONS_TABLE_COLUMN_NAMES) {
 			TableColumn column = new TableColumn( plateFunctionsTableViewer.getTable(), SWT.LEFT);
