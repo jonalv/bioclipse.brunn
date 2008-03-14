@@ -406,10 +406,13 @@ public class PlateLayoutEditor extends EditorPart {
 									           dialog.hasSpecifiedValues(), 
 									           toBeSaved ) );
 	
+					calculator.addFunction( dialog.getName(), 
+							new PlateFunctionBody( dialog.getExpression() ) );
+					
 					plateFunctionsTable.setModel(
 							new PlateFunctionsModel( toBeSaved, 
-									                editor, 
-									                calculator ) );
+									                 editor, 
+									                 calculator ) );
 					plateFunctionsTable.redraw();
 					editor.firePropertyChange(PROP_DIRTY);
 				}
