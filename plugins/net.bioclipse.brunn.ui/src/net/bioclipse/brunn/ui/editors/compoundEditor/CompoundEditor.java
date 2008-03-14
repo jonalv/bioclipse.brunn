@@ -8,8 +8,11 @@ import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.origin.IOriginManager;
 import net.bioclipse.brunn.pojos.DrugOrigin;
 import net.bioclipse.brunn.ui.Activator;
+import net.bioclipse.brunn.ui.explorer.model.nonFolders.Compound;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -34,18 +37,33 @@ public class CompoundEditor extends EditorPart {
 	private Text structure;
 	private Text name;
 	
-	private DrugOrigin drugOrigin; 
+	private DrugOrigin drugOrigin;
+	private Compound compound; 
 	
 	public final static String ID = "net.bioclipse.brunn.ui.editors.compoundEditor.CompoundEditor"; 
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		
-		monitor.beginTask("save compound", 2);
+		monitor.beginTask("save compound", 3);
 		
-		DrugOrigin drugOrigin = (DrugOrigin)( (net.bioclipse.brunn.ui.explorer.model.nonFolders.Compound)
-		                       this.getEditorInput() ).getPOJO();
+//		DrugOrigin drugOrigin = (DrugOrigin)( (net.bioclipse.brunn.ui.explorer.model.nonFolders.Compound)
+//		                       this.getEditorInput() ).getPOJO();
 		drugOrigin.setName(name.getText());
+		try {
+			drugOrigin.setMolecularWeight( Double
+					                       .parseDouble( 
+					                    		   molecularWeight.getText()) );
+		}
+		catch (NumberFormatException e) {
+			MessageDialog.openInformation( PlatformUI
+					                       .getWorkbench()
+					                       .getActiveWorkbenchWindow()
+					                       .getShell(), 
+					                       "Could not save compound",
+					                       "molecular weight must be a " +
+					                       "decimal number (e.g. 12.0 or 12)" );
+		}
 		if(!"".equals(structure.getText())) {
 			try {
 				drugOrigin.setStructureInputStream(new FileInputStream(structure.getText()));
@@ -64,8 +82,9 @@ public class CompoundEditor extends EditorPart {
 		structure.setText("");
 		monitor.worked(2);
 		
-		monitor.done();
 		firePropertyChange(PROP_DIRTY);
+		compound.getParent().fireUpdate(new SubProgressMonitor(monitor,1));
+		monitor.done();
 	}
 
 	@Override
@@ -78,20 +97,26 @@ public class CompoundEditor extends EditorPart {
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
-		
-		drugOrigin = (DrugOrigin) ((net.bioclipse.brunn.ui.explorer.model.nonFolders.Compound) input).getPOJO(); 
+		compound = (net.bioclipse.brunn.ui.explorer.model.nonFolders.Compound) input;
+		drugOrigin = (DrugOrigin) compound.getPOJO(); 
 		setPartName(drugOrigin.getName());
 	}
 
 	@Override
 	public boolean isDirty() {
-		if( !("".equals( structure.getText() )) )
-			return true;
+//		if( !("".equals( structure.getText() )) )
+//			return true;
 		if(!name.getText().equals(drugOrigin.getName()))
 			return true;
-		if(!molecularWeight.getText().equals(drugOrigin.getMolecularWeight()+""))
+		try {
+			Double.parseDouble( molecularWeight.getText() );
+		}
+		catch (NumberFormatException e) {
 			return true;
-		return false;
+		}
+		
+		return Double.parseDouble( molecularWeight.getText() ) 
+			!= drugOrigin.getMolecularWeight();
 	}
 
 	@Override
@@ -121,6 +146,7 @@ public class CompoundEditor extends EditorPart {
 		numberOfRowsLabel.setBounds(98, 90, 60, 20);
 
 		structure = new Text(parent, SWT.BORDER);
+		structure.setEnabled(false);
 		structure.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				firePropertyChange(PROP_DIRTY);
@@ -135,11 +161,18 @@ public class CompoundEditor extends EditorPart {
 		
 		molecularWeight.setText(drugOrigin.getMolecularWeight()+"");
 
+		molecularWeight.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				firePropertyChange(PROP_DIRTY);
+			}
+		});
+		
 		final Label label = new Label(parent, SWT.NONE);
 		label.setText("Molecular weight");
 		label.setBounds(52, 132, 106, 20);
 
 		final Button button = new Button(parent, SWT.NONE);
+		button.setEnabled(false);
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog fd = 
