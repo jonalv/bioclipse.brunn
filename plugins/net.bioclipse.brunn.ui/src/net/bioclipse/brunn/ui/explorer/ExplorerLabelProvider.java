@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import net.bioclipse.brunn.ui.Activator;
+import net.bioclipse.brunn.ui.explorer.model.folders.DataSets;
 import net.bioclipse.brunn.ui.explorer.model.folders.Folder;
 import net.bioclipse.brunn.ui.explorer.model.folders.CellTypes;
 import net.bioclipse.brunn.ui.explorer.model.ITreeObject;
@@ -30,6 +31,9 @@ public class ExplorerLabelProvider implements ILabelProvider {
 
 		if(element instanceof CellTypes) {
 			return "Cell Lines";
+		}
+		if(element instanceof DataSets) {
+			return "Plates";
 		}
 		if(element instanceof ITreeObject){
 			return ( (ITreeObject) element ).getName();
