@@ -100,6 +100,7 @@ public class CompoundEditor extends EditorPart {
 		compound = (net.bioclipse.brunn.ui.explorer.model.nonFolders.Compound) input;
 		drugOrigin = (DrugOrigin) compound.getPOJO(); 
 		setPartName(drugOrigin.getName());
+		compound.getParent().fireUpdate();
 	}
 
 	@Override

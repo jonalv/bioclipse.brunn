@@ -87,6 +87,7 @@ public class CellTypeEditor extends EditorPart {
 		cellType = (CellType)input;
 		cellOrigin = (CellOrigin) ((CellType) input).getPOJO(); 
 		setPartName(cellOrigin.getName());
+		cellType.getParent().fireUpdate();
 	}
 
 	@Override

@@ -109,6 +109,7 @@ public class MasterPlateEditor extends EditorPart {
 		toBeSaved = ((IPlateManager) Springcontact.getBean("plateManager"))
 		            .getMasterPlate( plate.getId() );
 		referenceMasterPlate = toBeSaved.deepCopy();
+		masterPlate.getParent().fireUpdate();
 	}
 
 	@Override

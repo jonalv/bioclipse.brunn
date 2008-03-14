@@ -101,6 +101,7 @@ public class PlateLayoutEditor extends EditorPart {
 		calculator = new Calculator();
 		PlateResults.createFunctionBodies(calculator);
 		addVariablesAndFunctions(calculator);
+		plateLayout.getParent().fireUpdate();
 	}
 
 	private void addVariablesAndFunctions(Calculator calculator) {

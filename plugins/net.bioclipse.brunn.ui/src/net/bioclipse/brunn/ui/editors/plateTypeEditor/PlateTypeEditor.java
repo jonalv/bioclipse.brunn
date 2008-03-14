@@ -90,6 +90,7 @@ public class PlateTypeEditor extends EditorPart {
 		setPartName(plateType.getName());
 		guiPlateType = (net.bioclipse.brunn.ui.explorer.model.nonFolders.PlateType)input;
 		pm = (IPlateLayoutManager) Springcontact.getBean("plateLayoutManager");
+		guiPlateType.getParent().fireUpdate();
 	}
 
 	@Override
