@@ -315,6 +315,7 @@ public class PlateLayoutEditor extends EditorPart {
 						for(Action a : actions) {
 							a.run();
 						}
+						dirtyCheck();
 					}
 				});
 			}
