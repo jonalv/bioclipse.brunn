@@ -18,8 +18,8 @@ import org.eclipse.swt.dnd.TransferData;
 
 public class CompoundIdTransfer extends ByteArrayTransfer {
 
-	private static final String MYTYPENAME = "Compound";
-	private static final int MYTYPEID = registerType(MYTYPENAME);
+	private static final String TYPENAME = "Compound";
+	private static final int TYPEID = registerType(TYPENAME);
 	private static CompoundIdTransfer _instance = new CompoundIdTransfer();
 	
 	private CompoundIdTransfer(){
@@ -87,11 +87,11 @@ public class CompoundIdTransfer extends ByteArrayTransfer {
 	 }
 	@Override
 	protected int[] getTypeIds() {
-		return new int[] {MYTYPEID};
+		return new int[] {TYPEID};
 	}
 
 	@Override
 	protected String[] getTypeNames() {
-		return new String[] {MYTYPENAME};
+		return new String[] {TYPENAME};
 	}
 }
