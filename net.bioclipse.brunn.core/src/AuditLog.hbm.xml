@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="net.bioclipse.brunn.pojos">
+
+	<typedef name="AuditType" class="net.bioclipse.brunn.HibernateMapping.GenericEnumUserType">
+         <param name="enumClass">net.bioclipse.brunn.pojos.AuditType</param>
+    </typedef>
+
+	<class
+	 name="AuditLog"
+	 table="AUDITLOG">
+		<id 
+		 name="id"
+		 column="id"
+		 type="long">
+			<generator class="native" />
+		</id>
+		
+		<property
+		 name="timeStamp"
+		 column="timeStamp"
+		 type="java.sql.Timestamp" />
+		
+		<property
+		 name="hashCode"
+		 column="hashCode"
+		 type="int" />
+		
+		<property
+		 name="auditType"
+		 column="auditType"
+		 type="AuditType" />
+		 
+		<property 
+		 name="postAuditRepresentation"
+		 column="postAuditRepresentation"
+		 type="string"
+		 length="10000" />
+		
+		<property
+		 name="deleted"
+		 column="deleted"
+		 type="boolean" />
+
+		<many-to-one
+		 name="auditedObject"
+		 column="auditedObject"
+		 class="AbstractAuditableObject" />
+			
+		<many-to-one 
+		 name="user"
+		 column="user"
+		 class="User"
+		 cascade="none" />
+		 
+	</class>
+</hibernate-mapping>
