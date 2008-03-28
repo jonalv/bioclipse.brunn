@@ -23,10 +23,12 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jface.wizard.WizardPage;
@@ -36,6 +38,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 
 public class WizardPage2 extends WizardPage {
@@ -99,8 +102,28 @@ public class WizardPage2 extends WizardPage {
 		
 		tableViewer.setColumnProperties(COLUMN_NAMES);
 		table.setHeaderVisible(true);
+		
 		CellEditor[] editors = new CellEditor[COLUMN_NAMES.length];
-		editors[1] = new CheckboxCellEditor();
+		editors[1] = new CheckboxCellEditor(table);
+		editors[2] = new TextCellEditor(table);
+		tableViewer.setCellEditors(editors);
+		tableViewer.setCellModifier(new ICellModifier() {
+			public boolean canModify(Object element, String property) {
+				return property.equals(COLUMN_NAMES[2]);
+			}
+			public Object getValue(Object element, String property) {
+				
+				if( COLUMN_NAMES[2].equals(property) )
+					return ((PlateRead)element).getBarCode();
+				return null;
+			}
+			public void modify(Object element, String property, Object value) {
+				if( COLUMN_NAMES[2].equals(property) )
+					( (PlateRead)( (TableItem)element ).getData() )
+						.setBarCode((String)value);
+				tableViewer.refresh();
+			}
+		});
 		this.setPageComplete(false);
 	}
 
