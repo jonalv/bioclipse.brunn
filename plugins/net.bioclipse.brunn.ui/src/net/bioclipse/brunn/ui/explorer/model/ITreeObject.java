@@ -9,7 +9,7 @@ import org.eclipse.swt.graphics.Image;
 import net.bioclipse.brunn.pojos.ILISObject;
 
 /**
- * @author jonathan
+ * @author jonalv
  *
  */
 public interface ITreeObject {

@@ -5,9 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.event.TreeModelListener;
 
@@ -20,6 +23,7 @@ import net.bioclipse.brunn.business.plateLayout.IPlateLayoutManager;
 import net.bioclipse.brunn.genericDAO.ICellOriginDAO;
 import net.bioclipse.brunn.genericDAO.IUserDAO;
 import net.bioclipse.brunn.pojos.DrugOrigin;
+import net.bioclipse.brunn.pojos.ILISObject;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.results.PlateResults;
 import net.bioclipse.brunn.ui.Activator;
@@ -76,6 +80,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -218,8 +223,38 @@ public class View extends ViewPart implements IKeyringListener {
 	
 	private void addDragAndDropSupport() {
 
-		Transfer[] transfers = new Transfer[] { CompoundIdTransfer.getInstance(), PluginTransfer.getInstance() };
-		treeViewer.addDragSupport( DND.DROP_COPY | DND.DROP_MOVE, transfers, new CompoundDragListener(treeViewer) );
+		Transfer[] dragTransfers 
+			= new Transfer[] { CompoundIdTransfer.getInstance(), 
+				               PluginTransfer.getInstance(),
+				               LocalSelectionTransfer.getTransfer() };
+		treeViewer.addDragSupport( DND.DROP_COPY | DND.DROP_MOVE, 
+				                   dragTransfers, 
+				                   new ExplorerDragListener(treeViewer) );
+
+		treeViewer.addDropSupport( DND.DROP_MOVE, 
+				                   new Transfer[] { 
+								       LocalSelectionTransfer.getTransfer() }, 
+				                   new ExplorerDropAdapter(treeViewer) );
+//		treeViewer.addDragSupport( DND.DROP_MOVE, transfers, new DragSourceListener() {
+//
+//			@Override
+//			public void dragFinished(DragSourceEvent event) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//
+//			@Override
+//			public void dragSetData(DragSourceEvent event) {
+//				event.data = event.getSource();
+//			}
+//
+//			@Override
+//			public void dragStart(DragSourceEvent event) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//			
+//		});
 	}
 
 	private void addDoubleClickListeners() {
@@ -1328,41 +1363,59 @@ public class View extends ViewPart implements IKeyringListener {
         mgr.add( new Separator(IWorkbenchActionConstants.MB_ADDITIONS) );
 	}
 
-	class CompoundDragListener extends DragSourceAdapter {
+	class ExplorerDragListener extends DragSourceAdapter {
 
 		private TreeViewer treeViewer;
 
-		CompoundDragListener(TreeViewer treeViewer) {
+		ExplorerDragListener(TreeViewer treeViewer) {
 			super();
 			this.treeViewer = treeViewer;
 		}
 				
 		public void dragFinished(DragSourceEvent event) {
+			Set<ITreeObject> toBeRefreshed = new HashSet<ITreeObject>(); 
+			IStructuredSelection selection 
+				= (IStructuredSelection)treeViewer.getSelection();
+			ITreeObject[] treeObjects 
+				= (ITreeObject[])selection
+			                     .toList()
+			                     .toArray( new ITreeObject[selection.size()] );
+			for(ITreeObject t : treeObjects) {
+				toBeRefreshed.add(t.getParent());
+			}
+			for(ITreeObject t : treeObjects) {
+				t.fireUpdate();
+			}
 		}
 
+		@SuppressWarnings("unchecked")
 		public void dragSetData(DragSourceEvent event) {
 			
-			IStructuredSelection selection = (IStructuredSelection)treeViewer.getSelection();
-			Compound[] compounds = (Compound[])selection.toList().toArray(new Compound[selection.size()]);
-			List<DrugOrigin> samples = new LinkedList<DrugOrigin>();
-			for(Compound c : compounds) {
-				samples.add( (DrugOrigin)c.getPOJO() );
+			IStructuredSelection selection 
+				= (IStructuredSelection)treeViewer.getSelection();
+			ITreeObject[] treeObjects 
+				= (ITreeObject[])selection
+				              .toList()
+				              .toArray( new ITreeObject[selection.size()] );
+			List<ILISObject> domainObjects = new LinkedList<ILISObject>();
+			for(ITreeObject o : treeObjects) {
+				domainObjects.add( (ILISObject)o.getPOJO() );
 			}
-			if (CompoundIdTransfer.getInstance().isSupportedType(event.dataType)) {
-				event.data = samples.toArray();
-			} 
+//			if (CompoundIdTransfer.getInstance().isSupportedType(event.dataType)) {
+				event.data = domainObjects.toArray();
+//			} 
 		}
 
 		public void dragStart(DragSourceEvent event) {
 			
-			boolean allAreCompounds = true;
-			for( Object obj : ( (TreeSelection)treeViewer.getSelection() ).toList() ) {
-				if( !(obj instanceof Compound) ) {
-					allAreCompounds = false;
-				}
-			}
-			
-			event.doit = allAreCompounds;
+//			boolean allAreCompounds = true;
+//			for( Object obj : ( (TreeSelection)treeViewer.getSelection() ).toList() ) {
+//				if( !(obj instanceof Compound) ) {
+//					allAreCompounds = false;
+//				}
+//			}
+//			
+//			event.doit = allAreCompounds;
 		}
 	}
 
