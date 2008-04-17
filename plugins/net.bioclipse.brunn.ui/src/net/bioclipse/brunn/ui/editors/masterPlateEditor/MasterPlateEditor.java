@@ -17,13 +17,14 @@ import net.bioclipse.brunn.pojos.AuditType;
 import net.bioclipse.brunn.pojos.ConcUnit;
 import net.bioclipse.brunn.pojos.DrugOrigin;
 import net.bioclipse.brunn.pojos.DrugSample;
+import net.bioclipse.brunn.pojos.ILISObject;
 import net.bioclipse.brunn.pojos.MasterPlate;
 import net.bioclipse.brunn.pojos.SampleContainer;
 import net.bioclipse.brunn.pojos.SampleMarker;
 import net.bioclipse.brunn.pojos.Well;
 import net.bioclipse.brunn.ui.Activator;
 import net.bioclipse.brunn.ui.dialogs.AddDrugToMasterPlate;
-import net.bioclipse.brunn.ui.transferTypes.CompoundIdTransfer;
+import net.bioclipse.brunn.ui.transferTypes.BrunnTransfer;
 import net.bioclipse.brunn.ui.editors.masterPlateEditor.model.MarkersModel;
 import net.bioclipse.brunn.ui.editors.plateEditor.model.MarkersTableRow;
 
@@ -173,7 +174,7 @@ public class MasterPlateEditor extends EditorPart {
 		tableViewer.setCellModifier(    new CompoundsCellModifier()         );
 		tableViewer.setInput(toBeSaved);
 		
-		Transfer[] transfers = new Transfer[] { CompoundIdTransfer.getInstance() };
+		Transfer[] transfers = new Transfer[] { BrunnTransfer.getInstance() };
 		tableViewer.addDropSupport(DND.DROP_COPY | DND.DROP_MOVE, transfers, new CompoundDropAdapter(tableViewer));
 		
 		/*
@@ -331,7 +332,7 @@ public class MasterPlateEditor extends EditorPart {
 				if(sampleMarker == null) {
 					sampleMarker = (SampleMarker)getViewer().getInput();
 				}
-				DrugOrigin[] toDrop = (DrugOrigin[])data; 
+				ILISObject[] toDrop = (ILISObject[])data; 
 				createSample( sampleMarker, 
 						      toDrop, 
 						      dialog.getConcentration(), 
@@ -347,7 +348,7 @@ public class MasterPlateEditor extends EditorPart {
 		}
 
 		private void createSample( SampleMarker sampleMarker, 
-				                   DrugOrigin[] toDrop, 
+				                   ILISObject[] toDrop, 
 				                   double startConcentration, 
 				                   double dilutionfactor,
 				                   ConcUnit concUnit ) {
@@ -380,7 +381,7 @@ public class MasterPlateEditor extends EditorPart {
 							DrugSample drugSample = new DrugSample( Activator.getDefault().getCurrentUser(),
 		                                		                    toDrop[0].getName(),
 		                                		                    concentration,
-		                                		                    toDrop[0], 
+		                                		                    (DrugOrigin)toDrop[0], 
 		                                		                    well.getSampleContainer(), 
 		                                		                    concUnit );
 							drugSample.setSampleMarker(marker);
@@ -393,7 +394,7 @@ public class MasterPlateEditor extends EditorPart {
 
 		@Override
 		public boolean validateDrop(Object target, int operation, TransferData transferType) {
-			return CompoundIdTransfer.getInstance().isSupportedType(transferType);
+			return BrunnTransfer.getInstance().isSupportedType(transferType);
 		}
 	}
 	

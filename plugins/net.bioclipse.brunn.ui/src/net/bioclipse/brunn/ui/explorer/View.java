@@ -64,7 +64,7 @@ import net.bioclipse.brunn.ui.explorer.model.nonFolders.NotLoggedIn;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.PlateLayout;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.PlateType;
-import net.bioclipse.brunn.ui.transferTypes.CompoundIdTransfer;
+import net.bioclipse.brunn.ui.transferTypes.BrunnTransfer;
 import net.bioclipse.dialogs.KeyRingLoginDialog;
 import net.bioclipse.keyring.IKeyringListener;
 import net.bioclipse.keyring.KeyRing;
@@ -223,38 +223,16 @@ public class View extends ViewPart implements IKeyringListener {
 	
 	private void addDragAndDropSupport() {
 
-		Transfer[] dragTransfers 
-			= new Transfer[] { CompoundIdTransfer.getInstance(), 
-				               PluginTransfer.getInstance(),
-				               LocalSelectionTransfer.getTransfer() };
+		Transfer[] transfers 
+			= new Transfer[] { BrunnTransfer.getInstance(), 
+				               PluginTransfer.getInstance() };
 		treeViewer.addDragSupport( DND.DROP_COPY | DND.DROP_MOVE, 
-				                   dragTransfers, 
+				                   transfers, 
 				                   new ExplorerDragListener(treeViewer) );
 
 		treeViewer.addDropSupport( DND.DROP_MOVE, 
-				                   new Transfer[] { 
-								       LocalSelectionTransfer.getTransfer() }, 
+				                   transfers, 
 				                   new ExplorerDropAdapter(treeViewer) );
-//		treeViewer.addDragSupport( DND.DROP_MOVE, transfers, new DragSourceListener() {
-//
-//			@Override
-//			public void dragFinished(DragSourceEvent event) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//
-//			@Override
-//			public void dragSetData(DragSourceEvent event) {
-//				event.data = event.getSource();
-//			}
-//
-//			@Override
-//			public void dragStart(DragSourceEvent event) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//			
-//		});
 	}
 
 	private void addDoubleClickListeners() {
@@ -1366,6 +1344,7 @@ public class View extends ViewPart implements IKeyringListener {
 	class ExplorerDragListener extends DragSourceAdapter {
 
 		private TreeViewer treeViewer;
+		private Set<ITreeObject> toBeRefreshed = new HashSet<ITreeObject>(); 
 
 		ExplorerDragListener(TreeViewer treeViewer) {
 			super();
@@ -1373,19 +1352,12 @@ public class View extends ViewPart implements IKeyringListener {
 		}
 				
 		public void dragFinished(DragSourceEvent event) {
-			Set<ITreeObject> toBeRefreshed = new HashSet<ITreeObject>(); 
-			IStructuredSelection selection 
-				= (IStructuredSelection)treeViewer.getSelection();
-			ITreeObject[] treeObjects 
-				= (ITreeObject[])selection
-			                     .toList()
-			                     .toArray( new ITreeObject[selection.size()] );
-			for(ITreeObject t : treeObjects) {
-				toBeRefreshed.add(t.getParent());
-			}
-			for(ITreeObject t : treeObjects) {
+			
+			for(ITreeObject t : toBeRefreshed) {
 				t.fireUpdate();
+				View.this.treeViewer.expandToLevel(t, 1);
 			}
+			toBeRefreshed.clear();
 		}
 
 		@SuppressWarnings("unchecked")
@@ -1401,21 +1373,21 @@ public class View extends ViewPart implements IKeyringListener {
 			for(ITreeObject o : treeObjects) {
 				domainObjects.add( (ILISObject)o.getPOJO() );
 			}
-//			if (CompoundIdTransfer.getInstance().isSupportedType(event.dataType)) {
+			if (BrunnTransfer.getInstance().isSupportedType(event.dataType)) {
 				event.data = domainObjects.toArray();
-//			} 
+			} 
 		}
 
 		public void dragStart(DragSourceEvent event) {
-			
-//			boolean allAreCompounds = true;
-//			for( Object obj : ( (TreeSelection)treeViewer.getSelection() ).toList() ) {
-//				if( !(obj instanceof Compound) ) {
-//					allAreCompounds = false;
-//				}
-//			}
-//			
-//			event.doit = allAreCompounds;
+			IStructuredSelection selection 
+				= (IStructuredSelection)treeViewer.getSelection();
+			ITreeObject[] treeObjects 
+				= (ITreeObject[])selection
+		                     .toList()
+		                     .toArray( new ITreeObject[selection.size()] );
+			for(ITreeObject t : treeObjects) {
+				toBeRefreshed.add(t.getParent());
+			}
 		}
 	}
 
