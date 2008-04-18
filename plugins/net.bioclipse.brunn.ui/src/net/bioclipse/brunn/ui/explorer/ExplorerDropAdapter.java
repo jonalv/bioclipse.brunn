@@ -1,8 +1,10 @@
 package net.bioclipse.brunn.ui.explorer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import net.bioclipse.brunn.Springcontact;
@@ -10,6 +12,7 @@ import net.bioclipse.brunn.business.folder.IFolderManager;
 import net.bioclipse.brunn.pojos.Folder;
 import net.bioclipse.brunn.pojos.ILISObject;
 import net.bioclipse.brunn.ui.Activator;
+import net.bioclipse.brunn.ui.explorer.model.ITreeObject;
 import net.bioclipse.brunn.ui.explorer.model.folders.AbstractFolder;
 import net.bioclipse.brunn.ui.explorer.model.folders.AbstractUniqueFolder;
 import net.bioclipse.brunn.ui.explorer.model.folders.Resources;
@@ -36,6 +39,11 @@ public class ExplorerDropAdapter extends ViewerDropAdapter {
 	@Override
 	public boolean performDrop(Object data) {
 
+		Object target = getCurrentTarget();
+		if( !(target instanceof AbstractFolder)) {
+			return false;
+		}
+		
 		List<ILISObject> drops = new ArrayList<ILISObject>();
 
 		if (data instanceof IStructuredSelection) {
@@ -55,9 +63,7 @@ public class ExplorerDropAdapter extends ViewerDropAdapter {
 			drops.add( (ILISObject)data );
 		}
 
-		Object target = getCurrentTarget();
-
-		if( dropAttemptBetweenSorts( target, drops) ) {
+		if( dropAttemptBetweenSorts( (AbstractFolder)target, drops) ) {
 			return false;
 		}
 		
@@ -103,16 +109,47 @@ public class ExplorerDropAdapter extends ViewerDropAdapter {
 		return true;
 	}
 
-	private boolean dropAttemptBetweenSorts( Object target,
+	private boolean dropAttemptBetweenSorts( AbstractFolder target,
 			                                 List<ILISObject> drops ) {
 
-		//TODO FIXME!
-		if ( target instanceof AbstractFolder ) {
-			AbstractFolder f = (AbstractFolder) target;
-			for( ILISObject obj : drops ) {
+		Map<ILISObject, Boolean> dropsFound 
+			= new HashMap<ILISObject, Boolean>();
+		for(ILISObject drop : drops) {
+			dropsFound.put(drop, false);
+		}
+		
+		AbstractFolder f = (AbstractFolder) 
+		                 ( (AbstractFolder) target ).getUniqueFolder();
+		
+		for( ILISObject drop : drops ) {
+				dropAttempBetweenSortsHelper( f, 
+						                      dropsFound,
+						                      drop );
+		}
+		for( boolean found : dropsFound.values() ) {
+			if( !found ) {
+				return true;
 			}
 		}
 		return false;
+	}
+
+	private void dropAttempBetweenSortsHelper( 
+			AbstractFolder folder,
+		    Map<ILISObject, Boolean> dropsFound, 
+		    ILISObject drop ) {
+		
+		for( ITreeObject child : folder.getChildren() ) {
+			if ( child.getPOJO().equals(drop) ) {
+				dropsFound.put(drop, true);
+				return;
+			}
+			if( child instanceof AbstractFolder ) {
+				dropAttempBetweenSortsHelper( (AbstractFolder)child, 
+						                       dropsFound,
+						                       drop );
+			}
+		}
 	}
 
 	private boolean isSelfOrSubfolderOfSelf( ILISObject domainObject, 

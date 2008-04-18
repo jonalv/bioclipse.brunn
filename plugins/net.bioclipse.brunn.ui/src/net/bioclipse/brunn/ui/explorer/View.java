@@ -228,7 +228,7 @@ public class View extends ViewPart implements IKeyringListener {
 				               PluginTransfer.getInstance() };
 		treeViewer.addDragSupport( DND.DROP_COPY | DND.DROP_MOVE, 
 				                   transfers, 
-				                   new ExplorerDragListener(treeViewer) );
+				                   new ExplorerDragAdapter(treeViewer) );
 
 		treeViewer.addDropSupport( DND.DROP_MOVE, 
 				                   transfers, 
@@ -1339,56 +1339,6 @@ public class View extends ViewPart implements IKeyringListener {
             }
         }
         mgr.add( new Separator(IWorkbenchActionConstants.MB_ADDITIONS) );
-	}
-
-	class ExplorerDragListener extends DragSourceAdapter {
-
-		private TreeViewer treeViewer;
-		private Set<ITreeObject> toBeRefreshed = new HashSet<ITreeObject>(); 
-
-		ExplorerDragListener(TreeViewer treeViewer) {
-			super();
-			this.treeViewer = treeViewer;
-		}
-				
-		public void dragFinished(DragSourceEvent event) {
-			
-			for(ITreeObject t : toBeRefreshed) {
-				t.fireUpdate();
-				View.this.treeViewer.expandToLevel(t, 1);
-			}
-			toBeRefreshed.clear();
-		}
-
-		@SuppressWarnings("unchecked")
-		public void dragSetData(DragSourceEvent event) {
-			
-			IStructuredSelection selection 
-				= (IStructuredSelection)treeViewer.getSelection();
-			ITreeObject[] treeObjects 
-				= (ITreeObject[])selection
-				              .toList()
-				              .toArray( new ITreeObject[selection.size()] );
-			List<ILISObject> domainObjects = new LinkedList<ILISObject>();
-			for(ITreeObject o : treeObjects) {
-				domainObjects.add( (ILISObject)o.getPOJO() );
-			}
-			if (BrunnTransfer.getInstance().isSupportedType(event.dataType)) {
-				event.data = domainObjects.toArray();
-			} 
-		}
-
-		public void dragStart(DragSourceEvent event) {
-			IStructuredSelection selection 
-				= (IStructuredSelection)treeViewer.getSelection();
-			ITreeObject[] treeObjects 
-				= (ITreeObject[])selection
-		                     .toList()
-		                     .toArray( new ITreeObject[selection.size()] );
-			for(ITreeObject t : treeObjects) {
-				toBeRefreshed.add(t.getParent());
-			}
-		}
 	}
 
 	public void keyringEventOccur(KeyringEvent event) {
