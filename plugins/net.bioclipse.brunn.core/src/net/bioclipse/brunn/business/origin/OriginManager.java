@@ -9,6 +9,7 @@ import net.bioclipse.brunn.pojos.AuditType;
 import net.bioclipse.brunn.pojos.CellOrigin;
 import net.bioclipse.brunn.pojos.DrugOrigin;
 import net.bioclipse.brunn.pojos.Folder;
+import net.bioclipse.brunn.pojos.PatientOrigin;
 import net.bioclipse.brunn.pojos.UniqueFolder;
 import net.bioclipse.brunn.pojos.User;
 
@@ -22,8 +23,8 @@ import net.bioclipse.brunn.pojos.User;
 * @author jonathan
 *
 */
-public class OriginManager extends AbstractDAOBasedOriginManager implements
-        IOriginManager {
+public class OriginManager extends AbstractDAOBasedOriginManager 
+                           implements IOriginManager {
 	
 	private IAuditService auditService;
 	
@@ -124,5 +125,55 @@ public class OriginManager extends AbstractDAOBasedOriginManager implements
 
 	public Collection<DrugOrigin> getAllDrugOriginsNotDeleted() {
 	    return drugOriginDAO.findAllNotDeleted();
+    }
+
+	@Override
+    public long createPatientOrigin( User creator, 
+                                     String name, 
+                                     String lid, 
+                                     Folder folder) {
+		
+		PatientOrigin patientOrigin = new PatientOrigin( creator, 
+				                                         name, 
+				                                         lid );
+		folder.getObjects().add(patientOrigin);
+		
+		patientOriginDAO.save(patientOrigin);
+		folder = folderDAO.merge(folder);
+		folderDAO.save(folder);
+		
+		getAuditService().audit(creator, AuditType.UPDATE_EVENT, folder);
+		getAuditService().audit(creator, AuditType.CREATE_EVENT, patientOrigin);
+		
+		return patientOrigin.getId();
+    }
+
+	@Override
+    public void delete(User user, PatientOrigin patientOrigin) {
+		getAuditService().audit(user, AuditType.DELETE_EVENT, patientOrigin);
+		drugOriginDAO.delete(patientOrigin);
+    }
+
+	@Override
+    public void edit(User user, PatientOrigin patientOrigin) {
+		patientOrigin = patientOriginDAO.merge(patientOrigin);
+		patientOriginDAO.save(patientOrigin);
+	    
+		getAuditService().audit(user, AuditType.UPDATE_EVENT, patientOrigin);
+    }
+
+	@Override
+    public Collection<PatientOrigin> getAllPatientOrigins() {
+	    return patientOriginDAO.findAll();
+    }
+
+	@Override
+    public Collection<PatientOrigin> getAllPatientOriginsNotDeleted() {
+		return patientOriginDAO.findAllNotDeleted();
+	}
+
+	@Override
+    public PatientOrigin getPatientOrigin(long id) {
+		return patientOriginDAO.getById(id);
     }
 }

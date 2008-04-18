@@ -16,6 +16,7 @@ import net.bioclipse.brunn.pojos.AuditType;
 import net.bioclipse.brunn.pojos.CellOrigin;
 import net.bioclipse.brunn.pojos.DrugOrigin;
 import net.bioclipse.brunn.pojos.Folder;
+import net.bioclipse.brunn.pojos.PatientOrigin;
 import net.bioclipse.brunn.tests.BaseTest;
 import net.bioclipse.brunn.tests.TestConstants;
 
@@ -83,6 +84,36 @@ public class OriginManagerTest extends BaseTest {
 		
 		assertEquals( cellTypes, loadedFolder );
 	}
+	
+	@Test
+	public void testCreatePatientOrigin() {
+		
+		PatientOrigin patientOrigin = om.getPatientOrigin( 
+				                      	om.createPatientOrigin( tester, 
+				                      			                "name",
+				                      			                "lid",
+				                      			                folder ) );
+		
+		assertTrue( patientOrigin.getAuditLogs().size() == 1 );
+		
+		boolean hasBeenCreated = false;
+		
+		for (AuditLog auditLog : patientOrigin.getAuditLogs()) {
+	        if(auditLog.getAuditType() == AuditType.CREATE_EVENT)
+	        	hasBeenCreated = true;
+        }
+		
+		assertTrue( hasBeenCreated );
+		
+		session.flush();
+		session.clear();
+		
+		assertTrue(folder.getObjects().contains(patientOrigin));
+		
+		Folder loadedFolder = fm.getFolder(folder.getId());
+		
+		assertEquals( folder, loadedFolder );
+	}
 
 	@Test
 	public void testCreateDrugOriginUserStringStringDouble() throws FileNotFoundException, IOException {
@@ -138,6 +169,30 @@ public class OriginManagerTest extends BaseTest {
 	}
 
 	@Test
+	public void testDeletePatientOrigin() {
+		
+		PatientOrigin patientOrigin = om.getPatientOrigin( 
+										  om.createPatientOrigin( tester, 
+                                                                  "name",
+                                                                  "lid",
+                                                                  folder ) );
+		om.delete(tester, patientOrigin);
+
+		assertTrue( patientOrigin.getAuditLogs().size() == 2 );
+		
+		boolean hasBeenDeleted = false;
+		
+		for (AuditLog auditLog : patientOrigin.getAuditLogs()) {
+			if(auditLog.getAuditType() == AuditType.DELETE_EVENT)
+				hasBeenDeleted = true;
+		}
+
+		assertTrue( hasBeenDeleted );
+		assertTrue( patientOrigin.isDeleted() );
+	}
+
+	
+	@Test
 	public void testDeleteUserDrugOrigin() throws FileNotFoundException, IOException {
 		
 		DrugOrigin drugOrigin = om.getDrugOrigin( om.createDrugOrigin( tester,
@@ -184,7 +239,7 @@ public class OriginManagerTest extends BaseTest {
 		
 		assertTrue( hasBeenEdited );
 	}
-
+	
 	@Test
 	public void testEditUserDrugOrigin() throws FileNotFoundException, IOException {
 
@@ -221,6 +276,40 @@ public class OriginManagerTest extends BaseTest {
 		
 		assertTrue( cellOrigins.contains(cellOrigin1) );
 		assertTrue( cellOrigins.contains(cellOrigin2) );
+	}
+	
+	@Test
+	public void testGetAllPatientOrigins() {
+		
+		PatientOrigin patientOrigin1 = om.getPatientOrigin(om.createPatientOrigin(tester, "test", "", folder)); 
+		PatientOrigin patientOrigin2 = om.getPatientOrigin(om.createPatientOrigin(tester, "test2", "", folder));
+		
+		Collection<PatientOrigin> patientOrigins = om.getAllPatientOrigins();
+		
+		assertTrue( patientOrigins.contains(patientOrigin1) );
+		assertTrue( patientOrigins.contains(patientOrigin2) );
+	}
+	
+	@Test
+	public void testGetAllPatientOriginsNotDeleted()  {
+		assertTrue("fixme", false);
+//		DrugOrigin drugOrigin1 = om.getDrugOrigin(
+//				om.createDrugOrigin(
+//						tester, "drugOrigin1", new FileInputStream(TestConstants.getTestMolFile()), 23.0, compounds)); 
+//		DrugOrigin drugOrigin2 = om.getDrugOrigin(
+//				om.createDrugOrigin(
+//						tester, "drugOrigin2", new FileInputStream(TestConstants.getTestMolFile()), 34.0, compounds));
+//		DrugOrigin drugOrigin3 = om.getDrugOrigin(
+//				om.createDrugOrigin(
+//						tester, "deleted",     new FileInputStream(TestConstants.getTestMolFile()), 50.0, compounds));
+//		drugOrigin3.delete();
+//		om.edit(tester, drugOrigin3);
+//		
+//		Collection<DrugOrigin> drugOrigins = om.getAllDrugOriginsNotDeleted();
+//		
+//		assertTrue(  drugOrigins.contains(drugOrigin1) );
+//		assertTrue(  drugOrigins.contains(drugOrigin2) );
+//		assertFalse( drugOrigins.contains(drugOrigin3) );
 	}
 	
 	@Test
@@ -303,6 +392,19 @@ public class OriginManagerTest extends BaseTest {
 		
 		assertEquals(  cellOrigin, fetched );
 	}
+	
+	@Test
+	public void testGetPatientOrigin() {
+		
+		PatientOrigin patientOrigin = om.getPatientOrigin( om.createPatientOrigin(tester, "name", "lid", folder) );
+		
+		session.flush();
+		session.clear();
+		
+		CellOrigin fetched = om.getCellOrigin( patientOrigin.getId() );
+		
+		assertEquals(  patientOrigin, fetched );
+	}
 
 	@Test
 	public void testCreateCellOriginUserStringFolder() {
@@ -356,6 +458,20 @@ public class OriginManagerTest extends BaseTest {
 		om.edit(tester, cellOrigin);
 		
 		CellOrigin loadedOrigin = om.getCellOrigin(cellOrigin.getId());
+		
+		assertEquals(loadedOrigin.getName(), "edited");
+	}
+	
+	@Test
+	public void testEditPatientOrigin() {
+		
+		PatientOrigin patientOrigin = om.getPatientOrigin( om.createPatientOrigin(tester, "name", "lid", folder) );
+		
+		patientOrigin.setName("edited");
+		
+		om.edit(tester, patientOrigin);
+		
+		PatientOrigin loadedOrigin = om.getPatientOrigin(patientOrigin.getId());
 		
 		assertEquals(loadedOrigin.getName(), "edited");
 	}
