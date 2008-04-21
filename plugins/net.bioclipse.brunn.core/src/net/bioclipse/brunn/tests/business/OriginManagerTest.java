@@ -292,24 +292,24 @@ public class OriginManagerTest extends BaseTest {
 	
 	@Test
 	public void testGetAllPatientOriginsNotDeleted()  {
-		assertTrue("fixme", false);
-//		DrugOrigin drugOrigin1 = om.getDrugOrigin(
-//				om.createDrugOrigin(
-//						tester, "drugOrigin1", new FileInputStream(TestConstants.getTestMolFile()), 23.0, compounds)); 
-//		DrugOrigin drugOrigin2 = om.getDrugOrigin(
-//				om.createDrugOrigin(
-//						tester, "drugOrigin2", new FileInputStream(TestConstants.getTestMolFile()), 34.0, compounds));
-//		DrugOrigin drugOrigin3 = om.getDrugOrigin(
-//				om.createDrugOrigin(
-//						tester, "deleted",     new FileInputStream(TestConstants.getTestMolFile()), 50.0, compounds));
-//		drugOrigin3.delete();
-//		om.edit(tester, drugOrigin3);
-//		
-//		Collection<DrugOrigin> drugOrigins = om.getAllDrugOriginsNotDeleted();
-//		
-//		assertTrue(  drugOrigins.contains(drugOrigin1) );
-//		assertTrue(  drugOrigins.contains(drugOrigin2) );
-//		assertFalse( drugOrigins.contains(drugOrigin3) );
+		PatientOrigin patientOrigin1 = om.getPatientOrigin(
+				om.createPatientOrigin(
+						tester, "patientOrigin 1", "lid1", folder ) ); 
+		PatientOrigin patientOrigin2 = om.getPatientOrigin(
+				om.createPatientOrigin(
+						tester, "patientOrigin 2", "lid2", folder ) );
+		PatientOrigin patientOrigin3 = om.getPatientOrigin(
+				om.createPatientOrigin(
+						tester, "patientOrigin 3", "lid3", folder ) );
+		patientOrigin3.delete();
+		om.edit(tester, patientOrigin3);
+		
+		Collection<PatientOrigin> patientOrigins 
+			= om.getAllPatientOriginsNotDeleted();
+		
+		assertTrue(  patientOrigins.contains(patientOrigin1) );
+		assertTrue(  patientOrigins.contains(patientOrigin2) );
+		assertFalse( patientOrigins.contains(patientOrigin3) );
 	}
 	
 	@Test
@@ -396,12 +396,13 @@ public class OriginManagerTest extends BaseTest {
 	@Test
 	public void testGetPatientOrigin() {
 		
-		PatientOrigin patientOrigin = om.getPatientOrigin( om.createPatientOrigin(tester, "name", "lid", folder) );
+		PatientOrigin patientOrigin = om.getPatientOrigin( 
+				om.createPatientOrigin(tester, "name", "lid", folder) );
 		
 		session.flush();
 		session.clear();
 		
-		CellOrigin fetched = om.getCellOrigin( patientOrigin.getId() );
+		PatientOrigin fetched = om.getPatientOrigin( patientOrigin.getId() );
 		
 		assertEquals(  patientOrigin, fetched );
 	}
@@ -409,10 +410,10 @@ public class OriginManagerTest extends BaseTest {
 	@Test
 	public void testCreateCellOriginUserStringFolder() {
 		
-		CellOrigin cellOrigin = om.getCellOrigin( om.createCellOrigin( tester, 
-                                                                       "cellOrigin",
-                                                                       folder ) 
-                                                );
+		CellOrigin cellOrigin = om.getCellOrigin( 
+				om.createCellOrigin( tester, 
+                                     "cellOrigin",
+                                     folder ) );
 
 		assertTrue( cellOrigin.getAuditLogs().size() == 1 );
 
