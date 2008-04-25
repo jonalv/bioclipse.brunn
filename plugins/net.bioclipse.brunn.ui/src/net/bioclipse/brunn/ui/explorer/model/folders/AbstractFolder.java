@@ -82,7 +82,6 @@ public abstract class AbstractFolder extends Model
 			}
 			
 			public void visit(PatientOrigin patientOrigin) {
-				System.out.println("in AbstractFolder visit(PatientOrigin patientOrigin)");
 				finalChildren.add(
 						new PatientSample(abstractFolder, patientOrigin) );
 			}
