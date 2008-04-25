@@ -31,6 +31,7 @@ import net.bioclipse.brunn.ui.dialogs.CreateCellType;
 import net.bioclipse.brunn.ui.dialogs.CreateCompound;
 import net.bioclipse.brunn.ui.dialogs.CreateFolder;
 import net.bioclipse.brunn.ui.dialogs.CreateMasterPlate;
+import net.bioclipse.brunn.ui.dialogs.CreatePatientCell;
 import net.bioclipse.brunn.ui.dialogs.CreatePlate;
 import net.bioclipse.brunn.ui.dialogs.CreatePlateLayout;
 import net.bioclipse.brunn.ui.dialogs.CreatePlateType;
@@ -54,6 +55,7 @@ import net.bioclipse.brunn.ui.explorer.model.folders.Compounds;
 import net.bioclipse.brunn.ui.explorer.model.folders.DataSets;
 import net.bioclipse.brunn.ui.explorer.model.folders.Folder;
 import net.bioclipse.brunn.ui.explorer.model.folders.MasterPlates;
+import net.bioclipse.brunn.ui.explorer.model.folders.PatientCells;
 import net.bioclipse.brunn.ui.explorer.model.folders.PlateLayouts;
 import net.bioclipse.brunn.ui.explorer.model.folders.PlateTypes;
 import net.bioclipse.brunn.ui.explorer.model.folders.Resources;
@@ -122,6 +124,7 @@ public class View extends ViewPart implements IKeyringListener {
 	private Action createPlate;
 	private Action login;
 	private Action refresh;
+	private Action createPatientCell;
 	
 	private Action markPlateTypeDeleted;
 	private Action markPlateLayoutDeleted;
@@ -130,6 +133,7 @@ public class View extends ViewPart implements IKeyringListener {
 	private Action markCompoundDeleted;
 	private Action markCellDeleted;
 	private Action markFolderDeleted;
+	private Action markPatientCellDeleted;
 	
 	private Action unmarkPlateTypeDeleted;
 	private Action unmarkPlateLayoutDeleted;
@@ -138,7 +142,8 @@ public class View extends ViewPart implements IKeyringListener {
 	private Action unmarkCompoundDeleted;
 	private Action unmarkCellDeleted;
 	private Action unmarkFolderDeleted;
-
+	private Action unmarkPatientCellDeleted;
+	
 	private Action importOrcaResultsAction;
 	private Action toggleShowDeletedAction;
 	
@@ -506,6 +511,41 @@ public class View extends ViewPart implements IKeyringListener {
 						}
 					}.start();
 
+				}
+			}
+		};
+		
+		createPatientCell = new Action("Create Patient Cell") {
+			public void run() {
+				final CreatePatientCell dialog 
+					= new CreatePatientCell( PlatformUI
+					                         .getWorkbench()
+					                         .getActiveWorkbenchWindow()
+						                     .getShell() );
+				dialog.open();
+				if(dialog.getReturnCode() == CreatePatientCell.OK) {
+
+					if ( treeViewer.getSelection().isEmpty() ) {
+						throw new IllegalStateException( "No folder was selected in the treeviewer");
+					}
+
+					final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+
+					new Thread () {
+						public void run() {
+							ITreeObject selectedDomainObject = (ITreeObject) selection.getFirstElement();
+							AbstractFolder recievingFolder = (AbstractFolder) selectedDomainObject.getFolder();
+							IOriginManager orm = (IOriginManager) Springcontact.getBean("originManager");
+
+							orm.createPatientOrigin( Activator.getDefault().getCurrentUser(), 
+									                 dialog.getName(),
+									                 dialog.getLid(),
+									                 (net.bioclipse.brunn.pojos.Folder)
+									                 	recievingFolder.getPOJO() );
+
+							recievingFolder.fireUpdate();					
+						}
+					}.start();
 				}
 			}
 		};
@@ -978,7 +1018,29 @@ public class View extends ViewPart implements IKeyringListener {
 				}.start();
 			}
 		};
-	
+		
+		markPatientCellDeleted = new Action("Mark as Deleted") {
+			public void run() {
+				if ( treeViewer.getSelection().isEmpty() ) {
+					throw new IllegalStateException( "No folder was selected in the treeviewer");
+				}
+
+				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+
+				new Thread () {	
+					public void run() {
+						for (Iterator iter = selection.iterator(); iter.hasNext();) {
+							ITreeObject element = (ITreeObject) iter.next();
+							net.bioclipse.brunn.pojos.PatientOrigin pojo = (net.bioclipse.brunn.pojos.PatientOrigin) element.getPOJO();
+							IOriginManager m = (IOriginManager) Springcontact.getBean("originManager");
+							pojo.delete();
+							m.edit(Activator.getDefault().getCurrentUser(), pojo);
+							element.fireUpdate();
+						}
+					}
+				}.start();
+			}
+		};
 	
 		unmarkPlateTypeDeleted = new Action("Mark as Not Deleted") {
 			public void run() {
@@ -1140,6 +1202,29 @@ public class View extends ViewPart implements IKeyringListener {
 				}.start();
 			}
 		};
+		
+		unmarkPatientCellDeleted = new Action("Mark as Not Deleted") {
+			public void run() {
+				if ( treeViewer.getSelection().isEmpty() ) {
+					throw new IllegalStateException( "No folder was selected in the treeviewer");
+				}
+	
+				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+	
+				new Thread () {	
+					public void run() {
+						for (Iterator iter = selection.iterator(); iter.hasNext();) {
+							ITreeObject element = (ITreeObject) iter.next();
+							net.bioclipse.brunn.pojos.PatientOrigin pojo = (net.bioclipse.brunn.pojos.PatientOrigin) element.getPOJO();
+							IOriginManager m = (IOriginManager) Springcontact.getBean("originManager");
+							pojo.unDelete();
+							m.edit(Activator.getDefault().getCurrentUser(), pojo);
+							element.fireUpdate();
+						}
+					}
+				}.start();
+			}
+		};
 	}
 
 	/**
@@ -1180,6 +1265,7 @@ public class View extends ViewPart implements IKeyringListener {
              rename,
              createMasterPlateFromSDF,
              createPlate,
+             createPatientCell,
              markPlateTypeDeleted,
              markPlateLayoutDeleted,
              markPlateDeleted,
@@ -1187,6 +1273,7 @@ public class View extends ViewPart implements IKeyringListener {
              markCompoundDeleted,
              markCellDeleted,            
              markFolderDeleted,
+             markPatientCellDeleted,
              unmarkPlateTypeDeleted,
              unmarkPlateLayoutDeleted,
              unmarkPlateDeleted,
@@ -1194,6 +1281,7 @@ public class View extends ViewPart implements IKeyringListener {
              unmarkCompoundDeleted,
              unmarkCellDeleted,
              unmarkFolderDeleted,
+             unmarkPatientCellDeleted,
         };
 
         List<Action> possibleActions = new ArrayList<Action>();
@@ -1245,6 +1333,9 @@ public class View extends ViewPart implements IKeyringListener {
                     if( !(treeObject.getUniqueFolder() instanceof CellTypes) ) {
                         possibleActions.remove( createCellType );
                     }
+                    if( !(treeObject.getUniqueFolder() instanceof PatientCells) ) {
+                    	possibleActions.remove( createPatientCell );
+                    }
                     
                     // Special actions for special types of element
                     if( element instanceof Resources) {
@@ -1288,23 +1379,29 @@ public class View extends ViewPart implements IKeyringListener {
                         possibleActions.remove( markFolderDeleted);
                         possibleActions.remove( unmarkFolderDeleted);
                     }
+                    if( !(element instanceof PatientCells) ) {
+                    	possibleActions.remove( markPatientCellDeleted );
+                    	possibleActions.remove( unmarkPatientCellDeleted );
+                    }
                     
                     User currentUser = Activator.getDefault().getCurrentUser();
                     
                     // Only one set -- markDeleted or unmarkDeleted -- is kept
                     Action[] markActions = new Action[] { markPlateTypeDeleted,
-                                                            markPlateLayoutDeleted,
-                                                            markPlateDeleted,
-                                                            markMasterPlateDeleted,	
-                                                            markCompoundDeleted,
-                                                            markFolderDeleted, };
+                                                          markPlateLayoutDeleted,
+                                                          markPlateDeleted,
+                                                          markMasterPlateDeleted,	
+                                                          markCompoundDeleted,
+                                                          markFolderDeleted,
+                                                          markPatientCellDeleted, };
                     
                     Action[] unmarkActions = new Action[] { unmarkPlateTypeDeleted,
                                                             unmarkPlateLayoutDeleted,
                                                             unmarkPlateDeleted,
                                                             unmarkMasterPlateDeleted,
                                                             unmarkCompoundDeleted,
-                                                            unmarkFolderDeleted, };
+                                                            unmarkFolderDeleted,
+                                                            unmarkPatientCellDeleted, };
                     
                     if( treeObject.getPOJO() != null ) {
                     	if ( !currentUser.isAdmin() ) {
@@ -1372,4 +1469,3 @@ public class View extends ViewPart implements IKeyringListener {
 		return (ITreeModelListener) this.treeViewer.getContentProvider();
 	}
 }
-

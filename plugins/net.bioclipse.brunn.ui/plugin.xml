@@ -64,6 +64,11 @@
             icon="icons/sample.gif"
             name="Cell Type Editor"
             class="net.bioclipse.brunn.ui.editors.cellTypeEditor.CellTypeEditor" />
+        <editor
+            id="net.bioclipse.brunn.ui.editors.patientSampleEditor.PatientCellEditor"
+            icon="icons/sample.gif"
+            name="Patient Cell Editor"
+            class="net.bioclipse.brunn.ui.editors.patientSampleEditor.PatientCellEditor" />
    </extension>
   <extension
 	point="net.bioclipse.keyring.accountType">

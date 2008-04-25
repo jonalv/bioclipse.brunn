@@ -1,8 +1,10 @@
 package net.bioclipse.brunn.ui.explorer.model.nonFolders;
 
 import net.bioclipse.brunn.Springcontact;
+import net.bioclipse.brunn.business.origin.IOriginManager;
 import net.bioclipse.brunn.business.plateLayout.IPlateLayoutManager;
 import net.bioclipse.brunn.business.sample.ISampleManager;
+import net.bioclipse.brunn.pojos.PatientOrigin;
 import net.bioclipse.brunn.ui.Activator;
 import net.bioclipse.brunn.ui.explorer.model.ITreeObject;
 import net.bioclipse.brunn.ui.images.IconFactory;
@@ -16,9 +18,9 @@ public class PatientSample extends AbstractNonFolder implements IEditorInput {
 
 	public PatientSample( 
 			ITreeObject parent, 
-			net.bioclipse.brunn.pojos.PatientSample patientSample) {
+			PatientOrigin patientOrigin) {
 		
-		super(parent, patientSample);
+		super(parent, patientOrigin);
 	}
 
 	public net.bioclipse.brunn.pojos.PlateType getPlateType() {
@@ -54,7 +56,7 @@ public class PatientSample extends AbstractNonFolder implements IEditorInput {
 	public void changeName(String name) {
 		
 		object.setName(name);
-		( (ISampleManager) Springcontact.getBean("sampleManager") ).edit( 
+		( (IOriginManager) Springcontact.getBean("originManager") ).edit( 
 				Activator.getDefault().getCurrentUser(), 
 				(net.bioclipse.brunn.pojos.PatientOrigin)object );
 	}

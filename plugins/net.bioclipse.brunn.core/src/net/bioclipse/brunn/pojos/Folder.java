@@ -88,6 +88,11 @@ public class Folder extends AbstractAuditableObject {
 			public void visit(UniqueFolder folder) {
 				visitedObjects.add(folder);
             }
+
+			@Override
+            public void visit(PatientOrigin patientOrigin) {
+				visitedObjects.add(patientOrigin);
+            }
 	    };
 	    for( ILISObject o : other.getObjects() ) {
 	    	o.accept(proxyVisitor);

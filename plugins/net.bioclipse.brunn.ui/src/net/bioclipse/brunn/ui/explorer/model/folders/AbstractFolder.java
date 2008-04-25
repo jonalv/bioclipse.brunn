@@ -13,6 +13,7 @@ import net.bioclipse.brunn.pojos.DrugOrigin;
 import net.bioclipse.brunn.pojos.ILISObject;
 import net.bioclipse.brunn.pojos.LisObjectVisitor;
 import net.bioclipse.brunn.pojos.MasterPlate;
+import net.bioclipse.brunn.pojos.PatientOrigin;
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.pojos.PlateLayout;
 import net.bioclipse.brunn.pojos.PlateType;
@@ -20,6 +21,7 @@ import net.bioclipse.brunn.pojos.UniqueFolder;
 import net.bioclipse.brunn.ui.explorer.View;
 import net.bioclipse.brunn.ui.explorer.model.ITreeObject;
 import net.bioclipse.brunn.ui.explorer.model.Model;
+import net.bioclipse.brunn.ui.explorer.model.nonFolders.PatientSample;
 
 import org.eclipse.swt.graphics.Image;
 
@@ -77,6 +79,11 @@ public abstract class AbstractFolder extends Model
 			public void visit(net.bioclipse.brunn.pojos.Folder folder) {
 				finalChildren.add( 
 					new net.bioclipse.brunn.ui.explorer.model.folders.Folder(abstractFolder, folder, finalExplorer) );
+			}
+			
+			public void visit(PatientOrigin patientOrigin) {
+				finalChildren.add(
+						new PatientSample(abstractFolder, patientOrigin) );
 			}
 
 			public void visit(UniqueFolder folder) {

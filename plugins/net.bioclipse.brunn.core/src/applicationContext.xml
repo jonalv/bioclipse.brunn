@@ -13,7 +13,6 @@
 	   		<value>com.mysql.jdbc.Driver</value>
 	   	</property>
 
-
 	   	<property name="url">
 	   		<value>jdbc:mysql://localhost:3306/lis</value>
 	   	</property>

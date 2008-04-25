@@ -10,4 +10,5 @@ public interface LisObjectVisitor {
 	public void visit(Plate plate);
 	public void visit(Folder folder);
 	public void visit(UniqueFolder folder);
+	public void visit(PatientOrigin patientOrigin);
 }
