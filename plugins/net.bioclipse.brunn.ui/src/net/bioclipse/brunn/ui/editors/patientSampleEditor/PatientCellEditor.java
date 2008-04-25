@@ -5,6 +5,7 @@ import net.bioclipse.brunn.business.origin.IOriginManager;
 import net.bioclipse.brunn.pojos.PatientOrigin;
 import net.bioclipse.brunn.ui.Activator;
 import net.bioclipse.brunn.ui.dialogs.ConsistencyFailure;
+import net.bioclipse.brunn.ui.explorer.model.nonFolders.PatientSample;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
@@ -33,7 +34,7 @@ public class PatientCellEditor extends EditorPart {
 	           .ui.explorer.model.nonFolders.PatientSample patientsample;
 	
 	public final static String ID 
-		= "net.bioclipse.brunn.ui.editors.plateTypeEditor.PlateTypeEditor"; 
+		= "net.bioclipse.brunn.ui.editors.patientSampleEditor.PatientCellEditor"; 
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
@@ -71,7 +72,7 @@ public class PatientCellEditor extends EditorPart {
 	private void performEdit(PatientOrigin currentPatientOrigin) {
 		
 		currentPatientOrigin.setName( name.getText() );
-		currentPatientOrigin.setName( lid.getText()  );
+		currentPatientOrigin.setLid(  lid.getText()  );
 		
 		om.edit( Activator.getDefault().getCurrentUser(), 
 				 currentPatientOrigin );
@@ -92,10 +93,8 @@ public class PatientCellEditor extends EditorPart {
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
-		patientOrigin = (PatientOrigin) 
-		                ( (net.bioclipse.brunn
-		                      .ui.explorer.model.nonFolders.PlateType) input )
-		                .getPOJO();
+		patientOrigin = ( (PatientOrigin) 
+		                ( (PatientSample) input ).getPOJO() ).deepCopy();
 		setPartName( patientOrigin.getName() );
 		patientsample = (net.bioclipse.brunn
 				            .ui.explorer.model.nonFolders.PatientSample) input;
@@ -107,7 +106,7 @@ public class PatientCellEditor extends EditorPart {
 	public boolean isDirty() {
 		if( !lid.getText().equals( patientOrigin.getLid() ) )
 			return true;
-		if( !name.getText().equals(patientOrigin.getName() ) )
+		if( !name.getText().equals( patientOrigin.getName() ) )
 			return true;
 		return false;
 	}
@@ -158,7 +157,14 @@ public class PatientCellEditor extends EditorPart {
 		fd_name.top = new FormAttachment(0, 75);
 		fd_name.left = new FormAttachment(0, 135);
 		name.setLayoutData(fd_name);
-
+		name.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				firePropertyChange(PROP_DIRTY);
+			}
+		});
+		
+		lid.setText(  patientOrigin.getLid()  );
+		name.setText( patientOrigin.getName() );
 	}
 
 	@Override

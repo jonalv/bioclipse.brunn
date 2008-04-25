@@ -43,6 +43,7 @@ import net.bioclipse.brunn.ui.dialogs.importOrcaResults.ImportOrcaResults;
 import net.bioclipse.brunn.ui.editors.cellTypeEditor.CellTypeEditor;
 import net.bioclipse.brunn.ui.editors.compoundEditor.CompoundEditor;
 import net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateEditor;
+import net.bioclipse.brunn.ui.editors.patientSampleEditor.PatientCellEditor;
 import net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor;
 import net.bioclipse.brunn.ui.editors.plateLayoutEditor.PlateLayoutEditor;
 import net.bioclipse.brunn.ui.editors.plateTypeEditor.PlateTypeEditor;
@@ -343,9 +344,20 @@ public class View extends ViewPart implements IKeyringListener {
 						e.printStackTrace();
 					}
 				}
+				if(element instanceof PatientSample) {
+					try {
+						PlatformUI.getWorkbench().
+						getActiveWorkbenchWindow().
+						getActivePage().
+						openEditor( (PatientSample)element, PatientCellEditor.ID, true );
+					}
+					catch (PartInitException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				if(element instanceof net.bioclipse.brunn.ui.explorer.model.folders.AbstractFolder) {
 					treeViewer.expandToLevel(element, 1);
-					System.out.println("View.addDoubleClickListeners()");
 				}
 	            if( !KeyRing.getInstance().isLoggedIn() ) {
 	                login.run();

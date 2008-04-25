@@ -189,7 +189,7 @@
 	 		<ref local="auditService" />
 		</property>
 		<property name="patientOriginDAO">
-		  <ref local="patientOriginDAO"/>
+   		    <ref local="patientOriginDAO"/>
 		</property>
   	</bean>
 
