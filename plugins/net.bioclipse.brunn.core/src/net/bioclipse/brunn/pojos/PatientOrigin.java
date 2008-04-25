@@ -85,4 +85,10 @@ public class PatientOrigin extends AbstractAuditableObject {
 		}
 	    super.delete();
 	} 
+	
+	@Override
+	public void accept(LisObjectVisitor extractFolderObjects) {
+	    super.accept(extractFolderObjects);
+	    extractFolderObjects.visit(this);
+	}
 }

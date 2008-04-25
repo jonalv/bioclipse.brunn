@@ -32,7 +32,8 @@ public class PatientSample extends AbstractNonFolder implements IEditorInput {
 		
 	}
 	public Image getIconImage() {
-		return IconFactory.getImage("patientSample.gif");
+		return null;
+//		return IconFactory.getImage("patientSample.gif");
 	}
 
 	public boolean exists() {
@@ -41,7 +42,8 @@ public class PatientSample extends AbstractNonFolder implements IEditorInput {
 	}
 
 	public ImageDescriptor getImageDescriptor() {
-		return IconFactory.getImageDescriptor("patientSample.gif");
+		return null;
+//		return IconFactory.getImageDescriptor("patientSample.gif");
 	}
 
 	public IPersistableElement getPersistable() {

@@ -21,6 +21,7 @@ import net.bioclipse.brunn.pojos.DrugSample;
 import net.bioclipse.brunn.pojos.Folder;
 import net.bioclipse.brunn.pojos.ILISObject;
 import net.bioclipse.brunn.pojos.MasterPlate;
+import net.bioclipse.brunn.pojos.PatientOrigin;
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.pojos.PlateLayout;
 import net.bioclipse.brunn.pojos.PlateType;
@@ -33,13 +34,14 @@ import org.eclipse.swt.dnd.TransferData;
  */
 public class BrunnTransfer extends ByteArrayTransfer {
 
-	private static final int DRUGORIGIN  = 0;
-	private static final int FOLDER      = 1;
-	private static final int PLATETYPE   = 2;
-	private static final int PLATELAYOUT = 3;
-	private static final int MASTERPLATE = 4;
-	private static final int PLATE       = 5;
-	private static final int CELLORIGIN  = 6;
+	private static final int DRUGORIGIN    = 0;
+	private static final int FOLDER        = 1;
+	private static final int PLATETYPE     = 2;
+	private static final int PLATELAYOUT   = 3;
+	private static final int MASTERPLATE   = 4;
+	private static final int PLATE         = 5;
+	private static final int CELLORIGIN    = 6;
+	private static final int PATIENTORIGIN = 7;
 	
 	private static final String[] TYPENAMES = { "DrugOrigin", 
 		                                        "Folder",
@@ -47,7 +49,8 @@ public class BrunnTransfer extends ByteArrayTransfer {
 		                                        "PlateLayout", 
 		                                        "MasterPlate", 
 		                                        "Plate", 
-		                                        "CellOrigin" };
+		                                        "CellOrigin", 
+		                                        "PatientOrigin", };
 	private static final int[] TYPEIDS;
 
 	private static BrunnTransfer _instance = new BrunnTransfer();
@@ -116,6 +119,9 @@ public class BrunnTransfer extends ByteArrayTransfer {
 		}
 		if ( object instanceof CellOrigin ) {
 			return CELLORIGIN;
+		}
+		if ( object instanceof PatientOrigin ) {
+			return PATIENTORIGIN;
 		}
 		throw new IllegalArgumentException(
 				"BrunnTransfer can't handle " 
@@ -195,6 +201,15 @@ public class BrunnTransfer extends ByteArrayTransfer {
 						                        .getCellOrigin( 
 						                        		readIn.readLong() );
 						lisObjects.add(cellOrigin);
+						break;
+					case PATIENTORIGIN:
+						IOriginManager originManager3
+							= (IOriginManager) Springcontact
+			                                   .getBean("originManager");
+						PatientOrigin patientOrigin = originManager3
+						                              .getPatientOrigin(
+						                                   readIn.readLong() );
+						lisObjects.add(patientOrigin);
 						break;
 					default:
 						break;

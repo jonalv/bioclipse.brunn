@@ -63,6 +63,7 @@ import net.bioclipse.brunn.ui.explorer.model.nonFolders.CellType;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.Compound;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.MasterPlate;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.NotLoggedIn;
+import net.bioclipse.brunn.ui.explorer.model.nonFolders.PatientSample;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.PlateLayout;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.PlateType;
@@ -1379,7 +1380,7 @@ public class View extends ViewPart implements IKeyringListener {
                         possibleActions.remove( markFolderDeleted);
                         possibleActions.remove( unmarkFolderDeleted);
                     }
-                    if( !(element instanceof PatientCells) ) {
+                    if( !(element instanceof PatientSample) ) {
                     	possibleActions.remove( markPatientCellDeleted );
                     	possibleActions.remove( unmarkPatientCellDeleted );
                     }
@@ -1393,7 +1394,8 @@ public class View extends ViewPart implements IKeyringListener {
                                                           markMasterPlateDeleted,	
                                                           markCompoundDeleted,
                                                           markFolderDeleted,
-                                                          markPatientCellDeleted, };
+                                                          markPatientCellDeleted,
+                                                          markCellDeleted, };
                     
                     Action[] unmarkActions = new Action[] { unmarkPlateTypeDeleted,
                                                             unmarkPlateLayoutDeleted,
@@ -1401,7 +1403,8 @@ public class View extends ViewPart implements IKeyringListener {
                                                             unmarkMasterPlateDeleted,
                                                             unmarkCompoundDeleted,
                                                             unmarkFolderDeleted,
-                                                            unmarkPatientCellDeleted, };
+                                                            unmarkPatientCellDeleted,
+                                                            unmarkCellDeleted, };
                     
                     if( treeObject.getPOJO() != null ) {
                     	if ( !currentUser.isAdmin() ) {
