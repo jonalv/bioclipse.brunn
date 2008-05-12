@@ -37,6 +37,8 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -368,6 +370,15 @@ public class PlateEditor extends EditorPart {
 		
 		wellFunctionCombo.setItems( wellFunctionNames.toArray(new String[0]) );
 		wellFunctionCombo.select( wellFunctionNames.indexOf("raw") );
+		
+		final PlateEditor editor = this;
+		wellFunctionCombo.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				plateTable.setModel(new PlateTableModel(toBeSaved, plateTable, editor, wellFunctionCombo.getText(), plateResults));
+			}
+		});
 		
 		Button markAsOutlierButton;
 		markAsOutlierButton = new Button(bottom, SWT.NONE);
