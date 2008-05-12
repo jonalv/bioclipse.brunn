@@ -28,9 +28,9 @@ public class MarkersModel extends KTableDefaultModel {
     private KTableCellRenderer fixedRenderer = new FixedCellRenderer( FixedCellRenderer.STYLE_PUSH       |
                                                                       FixedCellRenderer.INDICATION_FOCUS );
     private net.bioclipse.brunn.pojos.MasterPlate masterPlate; 
-    private KTable                              markerstable;
-    private MasterPlateEditor                   masterPlateEditor;
-    
+    private KTable                                markerstable;
+    private MasterPlateEditor                     masterPlateEditor;
+     
 	public MarkersModel(MasterPlate masterPlate, KTable markersTable, MasterPlateEditor masterPlateEditor) {
 		
 		this.masterPlate       = masterPlate;
@@ -43,7 +43,7 @@ public class MarkersModel extends KTableDefaultModel {
 	public void refresh() {
 		
 		/*
-		 * set up the matrix from the platelayout 
+		 * set up the matrix from the masterplate 
 		 */
 		rows = masterPlate.getRows();
 		cols = masterPlate.getCols();

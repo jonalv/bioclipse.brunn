@@ -29,6 +29,10 @@ import net.bioclipse.brunn.ui.editors.masterPlateEditor.model.MarkersModel;
 import net.bioclipse.brunn.ui.editors.plateEditor.model.MarkersTableRow;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -54,8 +58,10 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
@@ -78,6 +84,10 @@ public class MasterPlateEditor extends EditorPart {
 	private volatile MasterPlate referenceMasterPlate;
 	private volatile MasterPlate toBeSaved;
 	private net.bioclipse.brunn.ui.explorer.model.nonFolders.MasterPlate masterPlate;
+
+	private Table compoundsTable;
+
+	private TableViewer tableViewer;
 	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
@@ -142,16 +152,12 @@ public class MasterPlateEditor extends EditorPart {
                                             SWTX.FILL_WITH_LASTCOL );
 		markersTable.setModel(new MarkersModel(toBeSaved, markersTable, this));
 		
-		/*
-		 * Create compoundstable
-		 */
-		Table compoundsTable = new Table(sashForm, SWT.SINGLE         | 
-                                                   SWT.BORDER         | 
-                                                   SWT.H_SCROLL       | 
-                                                   SWT.V_SCROLL       | 
-			                                       SWT.FULL_SELECTION | 
-			                                       SWT.HIDE_SELECTION );
-		
+		compoundsTable = new Table(sashForm, SWT.MULTI         | 
+                                             SWT.BORDER         | 
+                                             SWT.H_SCROLL       | 
+                                             SWT.V_SCROLL       | 
+			                                 SWT.FULL_SELECTION | 
+			                                 SWT.HIDE_SELECTION );
 		TableColumn column1 = new TableColumn(compoundsTable, SWT.CENTER, 0);
 		column1.setText(COLUMN_NAMES[0]);
 		column1.setWidth(100);
@@ -162,7 +168,7 @@ public class MasterPlateEditor extends EditorPart {
 		compoundsTable.setLinesVisible(true);
 		compoundsTable.setHeaderVisible(true);
 		
-		final TableViewer tableViewer = new TableViewer(compoundsTable);
+		tableViewer = new TableViewer(compoundsTable);
 		tableViewer.setUseHashlookup(true);
 		tableViewer.setColumnProperties(COLUMN_NAMES);
 		
@@ -177,9 +183,45 @@ public class MasterPlateEditor extends EditorPart {
 		Transfer[] transfers = new Transfer[] { BrunnTransfer.getInstance() };
 		tableViewer.addDropSupport(DND.DROP_COPY | DND.DROP_MOVE, transfers, new CompoundDropAdapter(tableViewer));
 		
-		/*
-		 * end table
-		 */
+		createCompoundsTableMenu();
+	}
+
+	private void createCompoundsTableMenu() {
+		MenuManager menuMgr = new MenuManager();
+		menuMgr.setRemoveAllWhenShown(true);
+		menuMgr.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager mgr) {
+				TableItem[] items = compoundsTable.getSelection();
+				final List<String> markerNamesToClear = new ArrayList<String>();
+				for( TableItem item : items) {
+					markerNamesToClear.add( ((SampleMarker) item.getData()).getName() );
+				}
+				mgr.add(new Action("Clear Marker" + (items.length == 1 ? "" : "s")) {
+					public void run() {
+						for( String name : markerNamesToClear ) {
+							for( Well well : toBeSaved.getWells() ) {
+								for( SampleMarker sampleMarker : well.getSampleMarkers() ) {
+									if( sampleMarker.getName().equals(name) ) {
+										AbstractSample sample = sampleMarker.getSample();
+										if( sample == null ) {
+											continue;
+										}
+										sampleMarker.setSample(null);
+										sampleMarker.getWell().getSampleContainer().getSamples().remove(sample);
+										sample.setSampleMarker(null);
+										sample.setSampleContainer(null);										
+									}
+								}
+							}
+						}
+						tableViewer.refresh();
+						refresh();
+					}
+				});
+			}
+		});
+		Menu menu = menuMgr.createContextMenu(compoundsTable);
+		compoundsTable.setMenu(menu);
 	}
 
 	@Override
