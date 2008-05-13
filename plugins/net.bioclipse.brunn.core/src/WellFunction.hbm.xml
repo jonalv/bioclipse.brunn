@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping auto-import="true" package="net.bioclipse.brunn.pojos">
+
+	<class
+	 name="WellFunction"
+	 table="WELLFUNCTION">
+		
+		<id 
+		 name="id"
+		 column="id"
+		 type="long">
+			<generator class="native" />
+		</id>
+		
+		<many-to-one
+		 name="creator"
+		 column="creator"
+		 class="User"
+		 cascade="all"
+		 lazy="false"/>
+		
+		<property
+		 name="hashCode"
+		 column="hashCode"
+		 type="int" />
+		
+		<property 
+		 name="name"
+		 column="name"
+		 type="string" />
+		 
+		<property
+		 name="deleted"
+		 column="deleted"
+		 type="boolean" />
+		 
+		<property
+		 name="expression"
+		 column="expression"
+		 type="string"
+		 length="200" />
+		 
+		<many-to-one
+		 name="well"
+		 column="well"
+		 class="AbstractWell" />
+		 
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,617 @@
+<?xml version="1.0"?>  
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping auto-import="true" package="net.bioclipse.brunn.pojos">
+
+	<typedef name="AnnotationType" class="net.bioclipse.brunn.HibernateMapping.GenericEnumUserType">
+		<param name="enumClass">net.bioclipse.brunn.pojos.AnnotationType</param>
+	</typedef>
+	
+	<typedef name="ConcUnit" class="net.bioclipse.brunn.HibernateMapping.GenericEnumUserType">
+		<param name="enumClass">net.bioclipse.brunn.pojos.ConcUnit</param>
+	</typedef>
+
+<!-- AbstractBaseObject -->
+	<class
+	 name="AbstractBaseObject"
+	 table="ABSTRACTBASEOBJECT">
+		
+		<meta attribute="sync-DAO">true</meta>
+		
+		<id
+		 name="id"
+		 column="id">
+			<generator class="native"/>
+		</id>
+
+		<property
+		 name="name"
+		 column="name"
+		 type="string"
+		 length="100" />
+		
+		<property
+		 name="hashCode"
+		 column="hashCode"
+		 type="int" />
+		
+		<property
+		 name="deleted"
+		 column="deleted"
+		 type="boolean" />
+		
+		<many-to-one
+		 name="creator"
+		 column="creator"
+		 class="User"
+		 cascade="evict" />
+
+<!-- Picking -->
+		<joined-subclass 
+		 name="Picking"
+		 table="PICKING">
+			
+			<key column="id" />
+			
+			<property 
+			 name="wellA"
+			 column="wellA"
+			 type="string" />
+			 
+			<property 
+			 name="wellB"
+			 column="wellB"
+			 type="string" />
+			 
+		</joined-subclass>
+		
+<!-- AbstractAnnotatableObject -->
+		<joined-subclass 
+		 name="AbstractAnnotatableObject"
+		 table="ABSTRACTANNOTATABLEOBJECT">
+			
+			<key column="id" />
+			
+			
+			<set 
+			 name="abstractAnnotationInstances"
+			 table="ANNOTATIONANNOTATABLE"
+			 lazy="true">
+				<key column="abstractAnnotatableObject_id" />
+				<one-to-many class="AbstractAnnotationInstance" />
+			</set>		
+			
+<!-- AbstractAuditableObject -->
+			<joined-subclass 
+			 name="AbstractAuditableObject"
+			 table="ABSTRACTAUDITABLEOBJECT">
+				
+				<key column="id" />
+				
+				<set 
+		 		 lazy="true"
+				 name="auditLogs"
+				 cascade="none">
+					<key
+					 column="auditLogId" />
+					<one-to-many
+					 class="AuditLog" />
+				</set>
+				
+<!-- ExportScript -->				
+			<joined-subclass
+			 name="ExportScript"
+			 table="EXPORTSCRIPT">
+				
+				<key column="id" />
+				
+				<property
+				 name="description"
+		 		 column="description"
+				 type="string" />
+
+				<property
+				 name="type"
+		 		 column="type"
+				 type="string" />
+				 
+				<property
+				 name="body"
+		 		 column="body"
+				 type="text" />				 		
+
+			</joined-subclass>
+			
+<!-- CellOrigin -->				
+			<joined-subclass
+			 name="CellOrigin"
+			 table="CELLORIGIN">
+				
+				<key column="id" />
+				
+				<set 
+				 name="cellSamples" 
+				 cascade="none">
+					<key column="cellSampleId"/>
+					<one-to-many class="CellSample"/>
+				</set>				
+				 
+			</joined-subclass>
+			
+<!-- PickList -->				
+			<joined-subclass
+			 name="PickList"
+			 table="PICKLIST">
+				
+				<key column="id" />
+				
+				<set 
+		 		 lazy="false"
+				 name="pickings"
+				 cascade="all" >
+					<key column="pickingsId"/>
+					<one-to-many class="Picking"/>
+				</set>
+				 
+				<many-to-one 
+				 name="plateLayout"
+				 column="plateLayout"
+				 class="PlateLayout"	 
+		 		 lazy="false" />
+		 		 
+			</joined-subclass>	
+				
+<!-- DrugOrigin -->	
+			<joined-subclass
+				 name="DrugOrigin"
+				 table="DRUGORIGIN">
+					
+					<key column="id" />
+										 
+					<property 
+					 name="structure">
+						<column name="structure" sql-type="MEDIUMBLOB" />
+					</property>
+					
+					<property
+					 name="molecularWeight"
+					 column="molecularWeight"
+					 type="double" />
+			
+					<property
+					 name="uniqueName"
+					 column="uniqueName"
+					 type="string"
+					 length="100"
+					 unique="true" />	
+					 
+					<set 
+					 name="drugSamples"
+					 cascade="none" >
+						<key column="drugSampleId"/>
+						<one-to-many class="DrugSample"/>
+					</set>				 
+				</joined-subclass>
+				
+<!-- PatientOrigin -->	
+			<joined-subclass
+				 name="PatientOrigin"
+				 table="PATIENTORIGIN">
+					
+					<key column="id" />
+					
+					<property
+		 			 name="lid"
+		 			 column="lid"
+		 			 type="string"
+		    		 length="100" />
+					
+					<set 
+					 name="patientSamples"
+					 cascade="none" >
+						<key column="patientSampleId"/>
+						<one-to-many class="PatientSample"/>
+					</set>				 
+				</joined-subclass>				
+				
+<!-- PlateType -->
+				<joined-subclass
+				 name="PlateType"
+				 table="PLATETYPE">
+					
+					<key column="id" />
+					
+					<property 
+					 name="cols"
+					 column="cols"
+					 type="int" />
+			
+					<property 
+					 name="rows"
+					 column="rows"
+					 type="int" />
+							
+					<set 
+				 	 lazy="false"
+					 name="plateLayouts" >
+					 	<key column="plateLayoutid"/>
+					 	<one-to-many class="PlateLayout" />
+					</set>
+				</joined-subclass>
+				
+<!-- Folder -->
+				<joined-subclass
+				 name="Folder"
+				 table="FOLDER">
+					
+					<key column="id" />
+									
+					<set 		
+					 lazy="true"
+					 name="objects"
+					 cascade="all" >
+					 	<key column="objectid"/>
+					 	
+					 	<one-to-many class="AbstractAuditableObject" />
+					</set>
+				
+<!-- UniqueFolder -->
+					<joined-subclass
+					 name="UniqueFolder"
+					 table="UNIQUEFOLDER">
+						
+						<key column="id" />
+
+						<property
+						 name="uniqueName"
+						 column="uniqueName"
+						 type="string"
+						 length="100" />				
+						
+					</joined-subclass>
+					
+				</joined-subclass>
+				
+<!-- AbstractBasePlate -->
+				<joined-subclass
+				 name="AbstractBasePlate"
+				 table="ABSTRACTBASEPLATE">
+				 
+					<key column="id" />
+					
+					<property
+						 name="cols"
+						 column="cols"
+						 type="integer" />
+							
+					<property
+						 name="rows"
+						 column="rows"
+						 type="integer" />
+					
+					<set 
+					 lazy="false"
+					 name="plateFunctions" 
+					 cascade="all">
+						<key column="plateFunctionId"/>
+						<one-to-many class="PlateFunction" />
+					</set>
+					
+<!-- PlateLayout -->
+					<joined-subclass
+					 name="PlateLayout"
+					 table="PLATELAYOUT" >
+					 
+					 	<key column="id" />
+						
+						<many-to-one 
+						 name="plateType"
+						 column="plateType"
+						 class="PlateType" />
+						
+						<set 
+						 name="layoutWells" 
+						 cascade="all">
+							<key column="wellId"/>
+							<one-to-many class="LayoutWell"/>
+						</set>
+					</joined-subclass>					
+				
+<!-- AbstractPlate -->
+					<joined-subclass
+					 name="AbstractPlate"
+					 table="ABSTRACTPLATE" >
+					 	
+					 	<key column="id" />
+					 	
+						<set 
+						 name="wells" 
+						 cascade="all">
+							<key column="wellId"/>
+							<one-to-many class="Well"/>
+						</set>
+<!-- Plate -->
+						<joined-subclass
+						 name="Plate"
+						 table="PLATE">
+							
+							<key column="id" />
+							
+							<property
+							 name="barcode"
+							 column="barcode"
+							 type="string"
+							 length="100"
+							 unique="true" />
+							 
+							<property 
+							 name="curated"
+							 column="curated"
+							 type="boolean">
+							</property>
+							
+							 <many-to-one 
+						 	  name="masterPlate"
+						      column="masterPlate"
+						      class="MasterPlate"	 
+		 				      lazy="false" />
+							
+						</joined-subclass>
+<!-- MasterPlate -->						
+						<joined-subclass
+						 name="MasterPlate"
+						 table="MasterPlate">
+						 
+							<key column="id" />
+							
+							<property 
+							 name="locked">
+							</property>
+							
+							<property 
+							 name="platesLeft"
+						     column="platesLeft"
+						     type="integer" />
+							
+							<set 
+						     lazy="true"
+						 	 name="plates" >
+							<key column="plateId"/>
+							<one-to-many class="Plate"/>
+							</set>
+						
+						</joined-subclass>
+					</joined-subclass>
+				</joined-subclass>									
+
+<!-- Instrument -->
+				<joined-subclass
+				 name="Instrument"
+				 table="INSTRUMENT" >
+				 
+				 	<key column="id" />
+					 
+					<set 
+					 lazy="false"
+					 name="measurements" 
+					 cascade="all">
+						<key column="measurementId"/>
+						<one-to-many class="Measurement"/>
+					</set>	
+					
+				</joined-subclass>
+				
+<!-- AbstractSample -->				
+
+				<joined-subclass
+				 name="AbstractSample"
+				 table="ABSTRACTSAMPLE" >
+					 	
+					 	<key column="id" />
+					 	
+					 	<many-to-one 
+					 	 name="sampleContainer"
+					 	 column="sampleContainer"
+					 	 class="SampleContainer" />
+					 	 
+					 	<many-to-one 
+					 	 name="sampleMarker"
+					 	 column="sampleMarker"
+					 	 class="SampleMarker"
+					 	 cascade="all" />
+
+<!-- CellSample -->					 
+
+					<joined-subclass
+					 name="CellSample"
+					 table="cellSample" >
+					  
+					  	<key column="id" />
+
+						<property 
+						 name="defrostingDate"
+						 column="defrostingDate"
+						 type="java.sql.Timestamp">
+						</property>	
+						 
+						<many-to-one 
+						 name="cellOrigin"
+						 column="cellOrigin"
+						 class="CellOrigin"
+						 cascade="none"
+		 				 lazy="false" />
+						 
+					</joined-subclass>
+					
+<!-- PatientSample -->					 
+
+					<joined-subclass
+					 name="PatientSample"
+					 table="patientSample" >
+					  
+					  	<key column="id" />
+
+						<property 
+						 name="defrostingDate"
+						 column="defrostingDate"
+						 type="java.sql.Timestamp">
+						</property>	
+						 
+						<many-to-one 
+						 name="patientOrigin"
+						 column="patientOrigin"
+						 class="PatientOrigin"
+						 cascade="none"
+		 				 lazy="false" />
+						 
+					</joined-subclass>
+
+<!-- DrugSample -->		
+					<joined-subclass
+					 name="DrugSample"
+					 table="drugSample" >
+					  
+					  	<key column="id" />
+
+						<property 
+						 name="concentration"
+						 column="concentration"
+						 type="double">
+						</property>	
+						 
+						<property
+						 name="concUnit"
+						 column="concUnit"
+						 type="ConcUnit" />
+						 
+						<many-to-one 
+						 name="drugOrigin"
+						 column="drugOrigin"
+						 class="DrugOrigin"
+						 cascade="none"
+						 lazy="false" />
+						 
+					</joined-subclass>		 
+				</joined-subclass><!-- AbstractSample -->
+
+<!-- Annotation -->
+				<joined-subclass
+				 name="Annotation"
+				 table="ANNOTATION">
+					
+					<key column="id" />
+					
+					<property
+					 name="annotationType"
+					 column="annotationType"
+					 type="AnnotationType" />
+					
+					<set 
+					 lazy="false"
+					 name="possibleValues"
+					 table="POSSIBLEVALUES">  
+						<key column="MasterAnnotationType_id"/>  
+						<element column="value" type="string"/>  
+					</set>
+					
+					<set 		
+					 lazy="false"
+					 name="annotationInstances"
+					 cascade="all">
+							<key column="abstractAnnotationInstances_id" />
+							<one-to-many class="AbstractAnnotationInstance" />
+					</set>		
+				</joined-subclass>
+<!-- User -->				
+				<joined-subclass
+				 name="User"
+				 table="USER">
+	
+					<key column="id" />
+	
+					<set 
+					 lazy="false"
+					 cascade="none"
+					 name="doneAuditings">
+						<key
+					  	 column="auditingId" />
+					 	<one-to-many
+					  	 class="AuditLog" />
+					</set>
+					
+					<property 
+					 name="encryptedPassword"
+					 column="password"
+					 type="string" />
+					
+					<property 
+					 name="admin"
+					 column="admin"
+					 type="boolean" />
+					
+				</joined-subclass>
+<!-- ResultType -->
+				<joined-subclass
+				 name="ResultType"
+				 table="RESULTTYPE">
+						
+					<key column="id" />
+						 
+					<property 
+					 name="length"
+					 column="length"
+					 type="int" />
+						
+				</joined-subclass>
+<!-- AbstractOperation -->				
+				<joined-subclass
+				 name="AbstractOperation"
+				 table="abstractOperation" >
+				 
+				 	<key column="id" />
+				 	
+				 	<many-to-one 
+				 	 name="workList"
+				 	 column="workList"
+				 	 class="WorkList" 
+				 	 cascade="all" 
+					 lazy="false" />
+
+<!-- Measurement -->
+					<joined-subclass
+					 name="Measurement"
+					 table="measurement">
+					 
+					 	<key column="id" />
+						
+						<many-to-one 
+						 name="instrument"
+						 column="instrument"
+						 class="Instrument"
+						 lazy="false"
+						 cascade="all" />
+						 
+						<many-to-one 
+						 name="resultType"
+						 column="resultType"
+						 class="ResultType"
+						 lazy="false" /> 
+						
+						<set 
+						 lazy="false"
+					 	 name="results" 
+					 	 cascade="all">
+							<key column="resultId"/>
+							<one-to-many class="Result"/>
+						</set>	
+					
+					</joined-subclass>
+				 	
+				</joined-subclass>
+								
+			</joined-subclass>
+		</joined-subclass>
+	</class>
+</hibernate-mapping>

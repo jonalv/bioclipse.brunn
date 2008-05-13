@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="net.bioclipse.brunn.pojos">
+	<class
+	 name="SampleMarker"
+	 table="SAMPLEMARKER">
+		
+		<id 
+		 name="id"
+		 column="id"
+		 type="long">
+			<generator class="native" />
+		</id>
+		
+		<property
+		 name="hashCode"
+		 column="hashCode"
+		 type="int" />
+		
+		<many-to-one
+		 name="creator"
+		 column="creator"
+		 class="User"
+		 cascade="none"
+		 lazy="false"/>
+		 
+		<property 
+		 name="name"
+		 column="name"
+		 type="string" />
+		
+		<property
+		 name="deleted"
+		 column="deleted"
+		 type="boolean" />
+		
+		<many-to-one 
+		 name="well"
+		 column="well"
+		 class="net.bioclipse.brunn.pojos.Well"
+		 lazy="false"
+		 cascade="all, persist" />
+		 
+		<many-to-one 
+		 name="sample"
+		 column="sample"
+		 class="net.bioclipse.brunn.pojos.AbstractSample"
+		 lazy="false"
+		 cascade="all" />
+		 
+	</class>
+</hibernate-mapping>

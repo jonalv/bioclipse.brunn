@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.5.3 
+Created-By: Apache Jakarta Maven
+Built-By: Manuel
+Package: org.dbunit
+Build-Jdk: 1.4.2_03
+Extension-Name: dbunit
+Specification-Version: 
+Specification-Vendor: DbUnit.org
+Specification-Title: 
+    DbUnit is a JUnit extension targeted for dat
+ abase-driven projects
+  
+Implementation-Version: 2.1
+Implementation-Vendor: DbUnit.org
+Implementation-Vendor-Id: 
+
