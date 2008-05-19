@@ -26,6 +26,7 @@ public class CreateUser extends TitleAreaDialog {
 	private String passWord;
 	private String username;
 	private boolean admin;
+	private Button administratorRightsButton;
 	
 	public boolean isAdmin() {
 		return admin;
@@ -85,7 +86,7 @@ public class CreateUser extends TitleAreaDialog {
 		formData_3.bottom = new FormAttachment(passwordLabel, 0, SWT.BOTTOM);
 		passwordText.setLayoutData(formData_3);
 
-		final Button administratorRightsButton = new Button(container, SWT.CHECK);
+		administratorRightsButton = new Button(container, SWT.CHECK);
 		final FormData formData_4 = new FormData();
 		formData_4.top = new FormAttachment(0, 167);
 		formData_4.bottom = new FormAttachment(0, 189);
@@ -112,7 +113,7 @@ public class CreateUser extends TitleAreaDialog {
 		formData_6.bottom = new FormAttachment(repeatPasswordLabel, 0, SWT.BOTTOM);
 		formData_6.left = new FormAttachment(repeatPasswordLabel, 5, SWT.RIGHT);
 		repeatPasswordText.setLayoutData(formData_6);
-		setTitle("Create LIS User");
+		setTitle("Create Brunn User");
 		//
 		return area;
 	}
@@ -138,7 +139,7 @@ public class CreateUser extends TitleAreaDialog {
 	}
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Create LIS User");
+		newShell.setText("Create Brunn User");
 	}
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == IDialogConstants.OK_ID) {
@@ -148,6 +149,7 @@ public class CreateUser extends TitleAreaDialog {
 			}
 			passWord = passwordText.getText();
 			username = usernameText.getText();
+			admin = administratorRightsButton.getSelection();
 		}
 		super.buttonPressed(buttonId);
 	}
