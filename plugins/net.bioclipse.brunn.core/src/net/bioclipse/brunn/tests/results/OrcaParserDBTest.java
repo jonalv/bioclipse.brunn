@@ -27,7 +27,7 @@ import net.bioclipse.brunn.pojos.Result;
 import net.bioclipse.brunn.pojos.UniqueFolder;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser;
-import net.bioclipse.brunn.results.orcaParser.OrcaParser.PlateRead;
+import net.bioclipse.brunn.results.orcaParser.OrcaParser.OrcaPlateRead;
 import net.bioclipse.brunn.tests.BaseTest;
 
 import org.apache.tools.ant.Project;
@@ -90,7 +90,7 @@ public class OrcaParserDBTest extends BaseTest {
         catch (FileNotFoundException e) {
 	        fail( e.getMessage() );
         }
-        List<PlateRead> plateReads = parser.getPlatesInFile();
+        List<OrcaPlateRead> plateReads = parser.getPlatesInFile();
         System.out.println("ORCAPARSER SLURPED " + plateReads.size() + " PLATES IN FILE");
         /*
          * Check that we have one PlateRead with the correct barcode and the correct intensity

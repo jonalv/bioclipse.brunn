@@ -19,7 +19,7 @@ import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.pojos.Well;
 import net.bioclipse.brunn.pojos.WorkList;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser;
-import net.bioclipse.brunn.results.orcaParser.OrcaParser.PlateRead;
+import net.bioclipse.brunn.results.orcaParser.OrcaParser.OrcaPlateRead;
 
 public class OperationManager extends AbstractDAOBasedOperationManager
         implements IOperationManager {
@@ -155,12 +155,12 @@ public class OperationManager extends AbstractDAOBasedOperationManager
 	    return instrumentDAO.findByName(name);
     }
 
-	public void addResult(User activeUser, PlateRead pr, Plate plate) {
+	public void addResult(User activeUser, OrcaPlateRead pr, Plate plate) {
 		
 //		plate = plateDAO.merge(plate);
 		
 		System.out.println("OrcaParser.addResult() //adds the result from a plateread to a plate");
-		HashMap<String, Integer> values = new HashMap<String, Integer>();
+		HashMap<String, Double> values = new HashMap<String, Double>();
 		
 		for (int i = 0; i < pr.getValues().length; i++) {
 	        for (int j = 0; j < pr.getValues()[i].length; j++) {
@@ -207,7 +207,7 @@ public class OperationManager extends AbstractDAOBasedOperationManager
 		for( Well well : plate.getWells() ) {
 			
 			double[] resultValue = new double[1];
-			Integer i = values.get("" + well.getRow() + well.getCol());
+			Double i = values.get("" + well.getRow() + well.getCol());
 			resultValue[0] = (i == null) ? -1 : i;
 			Result result = new Result(activeUser, pr.getName(), resultValue, 1 );  //TODO: deal with version numbers
 

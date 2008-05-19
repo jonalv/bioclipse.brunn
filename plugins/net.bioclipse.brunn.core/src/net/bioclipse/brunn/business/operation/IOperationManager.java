@@ -14,7 +14,7 @@ import net.bioclipse.brunn.pojos.ResultType;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.pojos.WorkList;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser;
-import net.bioclipse.brunn.results.orcaParser.OrcaParser.PlateRead;
+import net.bioclipse.brunn.results.orcaParser.OrcaParser.OrcaPlateRead;
 
 /**
  * Definition of the methods in OperationManager. 
@@ -62,5 +62,5 @@ public interface IOperationManager {
 
 	public List<Instrument> getInstrumentByName(String name);
 	
-	public void addResult(User activeUser, PlateRead pr, Plate plate);
+	public void addResult(User activeUser, OrcaPlateRead pr, Plate plate);
 }

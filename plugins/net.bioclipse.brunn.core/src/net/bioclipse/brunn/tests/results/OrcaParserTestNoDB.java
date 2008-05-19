@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.Test;
 
 import net.bioclipse.brunn.results.orcaParser.OrcaParser;
-import net.bioclipse.brunn.results.orcaParser.OrcaParser.PlateRead;
+import net.bioclipse.brunn.results.orcaParser.OrcaParser.OrcaPlateRead;
 import junit.framework.TestCase;
 import static org.junit.Assert.*;
 
@@ -26,7 +26,7 @@ public class OrcaParserTestNoDB {
         catch (FileNotFoundException e) {
 	        fail( e.getMessage() );
         }
-        List<PlateRead> plateReads = parser.getPlatesInFile();
+        List<OrcaPlateRead> plateReads = parser.getPlatesInFile();
         assertEquals( "NOREAD", plateReads.get(0).getBarCode() );
         assertEquals( "OK",     plateReads.get(0).getError()   );
 	}
@@ -41,7 +41,7 @@ public class OrcaParserTestNoDB {
         catch (FileNotFoundException e) {
 	        fail( e.getMessage() );
         }
-        List<PlateRead> plateReads = parser.getPlatesInFile();
+        List<OrcaPlateRead> plateReads = parser.getPlatesInFile();
         assertEquals( "NOREAD", plateReads.get(0).getBarCode() );
         assertEquals( "OK",     plateReads.get(0).getError()   );
         assertEquals( "NOREAD", plateReads.get(1).getBarCode() );

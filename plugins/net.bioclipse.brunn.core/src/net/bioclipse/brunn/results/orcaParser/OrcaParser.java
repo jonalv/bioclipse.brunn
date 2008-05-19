@@ -21,36 +21,32 @@ import net.bioclipse.brunn.pojos.Result;
 import net.bioclipse.brunn.pojos.ResultType;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.pojos.Well;
+import net.bioclipse.brunn.results.PlateRead;
+import net.bioclipse.brunn.results.ResultParser;
 
-public class OrcaParser {
+public class OrcaParser implements ResultParser {
 
 	private Scanner scanner;
-	private ArrayList<PlateRead> plateReads;
+	private ArrayList<OrcaPlateRead> plateReads;
 	
 	public OrcaParser(File file) throws FileNotFoundException {
 		scanner    = new Scanner(file);
-		plateReads = new ArrayList<PlateRead>();
+		plateReads = new ArrayList<OrcaPlateRead>();
 	}
 
 	/**
-	 * Get a list of the barcodes of the plates in the file and a 
-	 * String representing the sucess of the parsing of those 
-	 * values (to be humanly read)
-	 * 
-	 * Example: [NOREAD, OK]
-	 * 
 	 * @return information about the plates in the file
 	 */
-	public List<PlateRead> getPlatesInFile() {
+	public List<OrcaPlateRead> getPlatesInFile() {
 
 		System.out.println("OrcaParser.getPlatesInFile()");
-		ArrayList<PlateRead> plateReads = new ArrayList<PlateRead>();
+		ArrayList<OrcaPlateRead> plateReads = new ArrayList<OrcaPlateRead>();
 		while( scanner.hasNextLine() ) {
 			try {
 				plateReads.add( parseAPlateRead() );
 			}
 			catch( Exception e ) {
-				plateReads.add( new PlateRead(e.getMessage()) );
+				plateReads.add( new OrcaPlateRead(e.getMessage()) );
 			}
 		}
 		this.plateReads = pickTheBestVersions(plateReads); 
@@ -58,35 +54,35 @@ public class OrcaParser {
 		return this.plateReads;
 	}
 
-	private ArrayList<PlateRead> pickTheBestVersions(ArrayList<PlateRead> input) {
+	private ArrayList<OrcaPlateRead> pickTheBestVersions(ArrayList<OrcaPlateRead> input) {
 	    
 		System.out.println("OrcaParser.pickTheBestVersions()");
-		HashMap<String, List<PlateRead>> map = new HashMap<String,List<PlateRead>>();
-		ArrayList<PlateRead> result = new ArrayList<PlateRead>();  
+		HashMap<String, List<OrcaPlateRead>> map = new HashMap<String,List<OrcaPlateRead>>();
+		ArrayList<OrcaPlateRead> result = new ArrayList<OrcaPlateRead>();  
 			
-		for(PlateRead pr : input) {
-			List<PlateRead> list = map.get(pr.name);
+		for(OrcaPlateRead pr : input) {
+			List<OrcaPlateRead> list = map.get(pr.name);
 			if(list == null) {
-				list = new LinkedList<PlateRead>();
+				list = new LinkedList<OrcaPlateRead>();
 			}
 			list.add(pr);
 			map.put(pr.name, list);
 		}
 		
-		Comparator c = new Comparator<PlateRead>() {
-			public int compare(PlateRead o1, PlateRead o2) {
+		Comparator c = new Comparator<OrcaPlateRead>() {
+			public int compare(OrcaPlateRead o1, OrcaPlateRead o2) {
 				return ( (Integer)o1.getNumbersOfMaxedWells() ).compareTo( o2.getNumbersOfMaxedWells() );
 			}
 		};
 		
-		for(List<PlateRead> l : map.values()) {
+		for(List<OrcaPlateRead> l : map.values()) {
 			Collections.sort(l, c);
 			result.add( l.get(0) );
 		}
 		
-		Comparator resultSorter = new Comparator<PlateRead>() {
+		Comparator resultSorter = new Comparator<OrcaPlateRead>() {
 
-			public int compare(PlateRead arg0, PlateRead arg1) {
+			public int compare(OrcaPlateRead arg0, OrcaPlateRead arg1) {
 				return arg0.name.compareTo(arg1.name);
             }
 			
@@ -108,13 +104,12 @@ public class OrcaParser {
 	public List<Plate> addResultsTo( User activeUser,  List<Plate> plates ) throws IllegalArgumentException {
 		
 		System.out.println("OrcaParser.addResultsTo()");
-		HashMap<String, PlateRead> plateReadMap = new HashMap<String, PlateRead>();
-		for(PlateRead p : plateReads) {
+		HashMap<String, OrcaPlateRead> plateReadMap = new HashMap<String, OrcaPlateRead>();
+		for(OrcaPlateRead p : plateReads) {
 			plateReadMap.put(p.getBarCode(), p);
 		}
 		
 		IOperationManager om = (IOperationManager) Springcontact.getBean("operationManager");
-		IPlateManager     pm = (IPlateManager) Springcontact.getBean("plateManager");
 		List<Plate> results = new ArrayList<Plate>();
 		for(Plate p : plates) {
 			om.addResult( activeUser, plateReadMap.get(p.getBarcode()), p );
@@ -123,8 +118,7 @@ public class OrcaParser {
 		return plates;
 	}
 
-
-	private PlateRead parseAPlateRead() {
+	private OrcaPlateRead parseAPlateRead() {
 		
 		String line = nextNonEmptyLine(); 		
 		/*
@@ -135,14 +129,14 @@ public class OrcaParser {
 		if( !readMethod[1].equals("384") ) {
 			throw new OrcaParseException("This doesn't seem to be a plate with 384 wells");
 		}
-		PlateRead p = new PlateRead( headLine[0], 
+		OrcaPlateRead p = new OrcaPlateRead( headLine[0], 
 				                     headLine[1],
 				                     Integer.parseInt( readMethod[2]) );
 		
 		/*
 		 * Parse the values
 		 */
-		ArrayList<int[]> data = new ArrayList<int[]>();
+		ArrayList<double[]> data = new ArrayList<double[]>();
 		while( scanner.hasNextLine() ) {
 			
 			line = scanner.nextLine();
@@ -151,9 +145,9 @@ public class OrcaParser {
 				break;
 			
 			String[] row = line.split(",");
-			int[] values = new int[row.length]; 
+			double[] values = new double[row.length]; 
 			for (int i = 0; i < row.length; i++) {
-				values[i] = Integer.parseInt( row[i] );
+				values[i] = Double.parseDouble( row[i] );
 			}
 			data.add(values);
 		}
@@ -169,29 +163,29 @@ public class OrcaParser {
 	    return line;
     }
 	
-	public static class PlateRead {
+	public static class OrcaPlateRead implements PlateRead {
 		
-		int[][] values;
+		double[][] values;
 		int intensity;
 		String name;
 		String barCode;
 		int numbersOfMaxedWells;
 		String error;
 		
-		public PlateRead( String error ) {
+		public OrcaPlateRead( String error ) {
 			
 			this.error   = error;
-			this.values  = new int[0][0];
+			this.values  = new double[0][0];
 			this.name    = "";
 			this.barCode = "";
 		}
 		
-		public PlateRead( String name, String barCode, int intensity ) {
+		public OrcaPlateRead( String name, String barCode, int intensity ) {
 			
 			this.name      = name;
 			this.barCode   = barCode;
 			this.intensity = intensity;
-			this.values    = new int[0][0];
+			this.values    = new double[0][0];
 			this.error     = "OK";
 		}
 
@@ -238,7 +232,7 @@ public class OrcaParser {
         	this.numbersOfMaxedWells = numbersOfMaxedWells;
         }
 
-		public int[][] getValues() {
+		public double[][] getValues() {
         	return values;
         }
 
@@ -246,7 +240,7 @@ public class OrcaParser {
 			return values.length * values[0].length;
 		}
 		
-		public void setValues(int[][] values) {
+		public void setValues(double[][] values) {
         	this.values = values;
         }
 	}

@@ -32,6 +32,7 @@ import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.pojos.Well;
 import net.bioclipse.brunn.pojos.WellFunction;
 import net.bioclipse.brunn.results.PlateResults;
+import net.bioclipse.brunn.results.ResultParser;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser;
 
 /**
@@ -257,7 +258,7 @@ public class PlateManager extends
 		return plateDAO.findByBarcode(barcode).get(0);
     }
 	
-	public void addResult(User user, OrcaParser parser, List<String> barcodesOfPlatesToGetResults, IProgressMonitor monitor ) {
+	public void addResult(User user, ResultParser parser, List<String> barcodesOfPlatesToGetResults, IProgressMonitor monitor ) {
 
 		try {
 			monitor.beginTask("Imports results from file", barcodesOfPlatesToGetResults.size()*2);

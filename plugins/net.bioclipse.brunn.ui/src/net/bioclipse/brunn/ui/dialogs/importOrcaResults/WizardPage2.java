@@ -13,7 +13,7 @@ import net.bioclipse.brunn.business.operation.IOperationManager;
 import net.bioclipse.brunn.business.plate.IPlateManager;
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser;
-import net.bioclipse.brunn.results.orcaParser.OrcaParser.PlateRead;
+import net.bioclipse.brunn.results.orcaParser.OrcaParser.OrcaPlateRead;
 import net.bioclipse.brunn.ui.Activator;
 import net.bioclipse.brunn.ui.dialogs.importOrcaResults.ImportOrcaResults;
 
@@ -48,7 +48,7 @@ public class WizardPage2 extends WizardPage {
 	private OrcaParser parser;
 	
 	private CheckboxTableViewer tableViewer;
-	private List<PlateRead> plateReads;
+	private List<OrcaPlateRead> plateReads;
 	private List<String> barcodesInDatabase;
 	
 	public static final String[] COLUMN_NAMES = {"import?", "Plate read", "Barcode", "Database status", "Parse status"} ;
@@ -114,12 +114,12 @@ public class WizardPage2 extends WizardPage {
 			public Object getValue(Object element, String property) {
 				
 				if( COLUMN_NAMES[2].equals(property) )
-					return ((PlateRead)element).getBarCode();
+					return ((OrcaPlateRead)element).getBarCode();
 				return null;
 			}
 			public void modify(Object element, String property, Object value) {
 				if( COLUMN_NAMES[2].equals(property) )
-					( (PlateRead)( (TableItem)element ).getData() )
+					( (OrcaPlateRead)( (TableItem)element ).getData() )
 						.setBarCode((String)value);
 				tableViewer.refresh();
 			}
@@ -172,7 +172,7 @@ public class WizardPage2 extends WizardPage {
 	class TableLabelProvider extends LabelProvider implements ITableLabelProvider {
 
 		public String getColumnText(Object element, int columnIndex) {
-			PlateRead plateRead = (PlateRead)element;
+			OrcaPlateRead plateRead = (OrcaPlateRead)element;
 			String result = "";
 			switch (columnIndex) {
 			case 0:  //import?
@@ -213,8 +213,8 @@ public class WizardPage2 extends WizardPage {
 	
 	static class Sorter extends ViewerSorter {
 		public int compare(Viewer viewer, Object e1, Object e2) {
-			PlateRead plateRead1 = (PlateRead)e1;
-			PlateRead plateRead2 = (PlateRead)e2;
+			OrcaPlateRead plateRead1 = (OrcaPlateRead)e1;
+			OrcaPlateRead plateRead2 = (OrcaPlateRead)e2;
 			
 			Pattern pattern = Pattern.compile("Cytomat384_(\\d+)");
 			Matcher matcher1 = pattern.matcher( plateRead1.getName() );
@@ -233,7 +233,7 @@ public class WizardPage2 extends WizardPage {
 		final IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
 		final List<String> platesToGetResults = new ArrayList<String>();
 		for( Object o : tableViewer.getCheckedElements() ) {
-			PlateRead plateRead = (PlateRead)o;
+			OrcaPlateRead plateRead = (OrcaPlateRead)o;
 			platesToGetResults.add( plateRead.getBarCode() );
 		}
 		try {

@@ -24,7 +24,7 @@ import net.bioclipse.brunn.pojos.Result;
 import net.bioclipse.brunn.pojos.ResultType;
 import net.bioclipse.brunn.pojos.Well;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser;
-import net.bioclipse.brunn.results.orcaParser.OrcaParser.PlateRead;
+import net.bioclipse.brunn.results.orcaParser.OrcaParser.OrcaPlateRead;
 import net.bioclipse.brunn.tests.BaseTest;
 
 import org.eclipse.swt.graphics.Point;
@@ -68,8 +68,8 @@ public class OperationManagerTest extends BaseTest {
 	@Test
 	public void testAddResultPlateRead() {
 		
-		PlateRead plateRead = new PlateRead("plateRead", "barcodde", 1200);
-		plateRead.setValues(new int[8][12]);
+		OrcaPlateRead plateRead = new OrcaPlateRead("plateRead", "barcodde", 1200);
+		plateRead.setValues(new double[8][12]);
 		om.addResult( tester, plateRead, plate );
 		
 		Measurement m = (Measurement)plate.getWells().toArray( 

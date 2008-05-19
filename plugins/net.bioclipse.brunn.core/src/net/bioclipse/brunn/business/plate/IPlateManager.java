@@ -18,6 +18,7 @@ import net.bioclipse.brunn.pojos.PlateLayout;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.pojos.Well;
 import net.bioclipse.brunn.results.PlateResults;
+import net.bioclipse.brunn.results.ResultParser;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser;
 
 /**
@@ -84,7 +85,7 @@ public interface IPlateManager {
 	public void edit(User editor, Plate p);
 	public List<String> getAllPlateBarcodes();
 	public Plate getPlate(String barCode);
-	public void addResult(User user, OrcaParser parser, List<String> barcodesOfPlatesToGetResults, IProgressMonitor monitor);
+	public void addResult(User user, ResultParser parser, List<String> barcodesOfPlatesToGetResults, IProgressMonitor monitor);
 	public Collection<Plate> getAllPlatesNotDeleted();
 	public Collection<MasterPlate> getAllMasterPlatesNotDeleted();
 	public void editMerging(User currentUser, Plate toBeSaved);
