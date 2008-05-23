@@ -35,19 +35,55 @@ public class Parser96 implements ResultParser {
 	
 	
 	private PlateRead parseAPlateRead() {
+		
 		PlateRead plateRead = new PlateRead96();
 		boolean plateReadParsed = false;
+		List< List<Double> > rows = new ArrayList< List<Double> >();
+		
 		while( !plateReadParsed ) {
 			String row = scanner.nextLine();
+			List<Double> rowValues = new ArrayList<Double>();
 			if( row.matches("^[A-H](\\s+\\S+)+$") ) {
-				
+				for ( String s : row.split("\\s+") ) {
+					try {
+						rowValues.add( Double.parseDouble( s.trim() ) );
+					}
+					catch (NumberFormatException e) {
+					}
+				}
 			}
 			else if ( row.matches("^(\\s+\\d+,)+.*") ) {
-				row.split(",\\s");
+				for ( String s : row.split(",\\s") ) {
+					try {
+						rowValues.add( Double.parseDouble( s.trim() ) );
+					}
+					catch (NumberFormatException e) {
+					}
+				}
 			}
+			else {
+				continue;
+			}
+			if( rowValues.size() != 12 ) {
+				plateRead.setError( "found " + rowValues.size() + "cols" );
+				return plateRead;
+			}
+			rows.add(rowValues);
 		}
-		
-	    return null;
+		if( rows.size() != 8 ) {
+			plateRead.setError( "found " + rows.size() + "rows" );
+			return plateRead;
+		}
+		double[][] values = new double[12][8];
+		for (int i = 0; i < rows.size(); i++) {
+			List<Double> row = rows.get(i);
+			for (int j = 0; j < row.size(); j++) {
+				values[i][j] = row.get(j);
+			}
+        }
+		plateRead.setValues(values);
+		plateRead.setError("OK");
+		return plateRead;
     }
 
 	@Override
@@ -59,19 +95,46 @@ public class Parser96 implements ResultParser {
 
 	static class PlateRead96 implements PlateRead {
 
+		private String error;
+		private double[][] values;
+		private String barcode;
+		
 		public PlateRead96(String message) {
-	        // TODO Auto-generated constructor stub
+			this.error = message;
         }
 
 		public PlateRead96() {
-	        // TODO Auto-generated constructor stub
+			this.error = "OK";
         }
 
 		@Override
         public double[][] getValues() {
-
-	        return null;
+			return values;
         }
-		
+
+		@Override
+        public String getBarCode() {
+			return barcode;
+		}
+
+		@Override
+        public void setBarCode(String barcode) {
+			this.barcode = barcode;
+        }
+
+		@Override
+        public String getError() {
+			return error;
+        }
+
+		@Override
+        public void setError(String error) {
+			this.error = error;
+        }
+
+		@Override
+        public void setValues(double[][] values) {
+			this.values = values;
+        }
 	}
 }
