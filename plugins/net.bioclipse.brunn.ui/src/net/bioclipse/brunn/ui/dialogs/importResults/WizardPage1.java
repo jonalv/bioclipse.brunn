@@ -1,4 +1,4 @@
-package net.bioclipse.brunn.ui.dialogs.importOrcaResults;
+package net.bioclipse.brunn.ui.dialogs.importResults;
 
 import java.io.FileNotFoundException;
 
@@ -24,7 +24,7 @@ public class WizardPage1 extends WizardPage {
 		super("wizardPage");
 		this.setPageComplete(false);
 		setTitle("Select a file");
-		setDescription("Select a FluoOptima_384.log file to import from");
+		setDescription("When doing Orca results choose the FluoOptima_384.log file");
 	}
 
 	/**

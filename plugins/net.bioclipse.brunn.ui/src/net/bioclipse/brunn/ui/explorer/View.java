@@ -39,7 +39,7 @@ import net.bioclipse.brunn.ui.dialogs.CreateProject;
 import net.bioclipse.brunn.ui.dialogs.CreateUser;
 import net.bioclipse.brunn.ui.dialogs.Rename;
 import net.bioclipse.brunn.ui.dialogs.createMasterPlateFromSDF.CreateMasterPlateFromSDF;
-import net.bioclipse.brunn.ui.dialogs.importOrcaResults.ImportOrcaResults;
+import net.bioclipse.brunn.ui.dialogs.importResults.ImportResults;
 import net.bioclipse.brunn.ui.editors.cellTypeEditor.CellTypeEditor;
 import net.bioclipse.brunn.ui.editors.compoundEditor.CompoundEditor;
 import net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateEditor;
@@ -146,7 +146,7 @@ public class View extends ViewPart implements IKeyringListener {
 	private Action unmarkFolderDeleted;
 	private Action unmarkPatientCellDeleted;
 	
-	private Action importOrcaResultsAction;
+	private Action importResultsAction;
 	private Action toggleShowDeletedAction;
 	
 	private TreeRoot treeRoot;
@@ -215,7 +215,7 @@ public class View extends ViewPart implements IKeyringListener {
 			mgr.add(login);
 			return;
 		}
-		mgr.add(importOrcaResultsAction);
+		mgr.add(importResultsAction);
         mgr.add(toggleShowDeletedAction);
         try {
         	if( Activator.getDefault().getCurrentUser().isAdmin() ) {
@@ -705,7 +705,7 @@ public class View extends ViewPart implements IKeyringListener {
 			}
 		};
 
-		importOrcaResultsAction = new Action("Import Orca Results from File") {
+		importResultsAction = new Action("Import Results from File") {
 			public void run() {
 				
 				ITreeObject dataSets = null;
@@ -715,7 +715,7 @@ public class View extends ViewPart implements IKeyringListener {
 					}
 				}
 				
-				final Wizard wizard = new ImportOrcaResults(dataSets);
+				final Wizard wizard = new ImportResults(dataSets);
 
 				WizardDialog dialog = new WizardDialog( PlatformUI
 						                                    .getWorkbench()

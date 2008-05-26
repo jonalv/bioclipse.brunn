@@ -113,7 +113,7 @@ public class Parser96 implements ResultParser {
 
 		private String error;
 		private double[][] values;
-		private String barcode;
+		private String barcode = "unknown";
 		
 		public PlateRead96(String message) {
 			this.error = message;
@@ -155,7 +155,7 @@ public class Parser96 implements ResultParser {
 
 		@Override
         public String getName() {
-	        return "";
+	        return "no name";
         }
 	}
 }

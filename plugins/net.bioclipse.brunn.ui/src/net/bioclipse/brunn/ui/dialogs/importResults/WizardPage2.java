@@ -1,10 +1,11 @@
-package net.bioclipse.brunn.ui.dialogs.importOrcaResults;
+package net.bioclipse.brunn.ui.dialogs.importResults;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,10 +13,13 @@ import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.operation.IOperationManager;
 import net.bioclipse.brunn.business.plate.IPlateManager;
 import net.bioclipse.brunn.pojos.Plate;
+import net.bioclipse.brunn.results.PlateRead;
+import net.bioclipse.brunn.results.ResultParser;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser.OrcaPlateRead;
+import net.bioclipse.brunn.results.parser96.Parser96;
 import net.bioclipse.brunn.ui.Activator;
-import net.bioclipse.brunn.ui.dialogs.importOrcaResults.ImportOrcaResults;
+import net.bioclipse.brunn.ui.dialogs.importResults.ImportResults;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -45,10 +49,10 @@ public class WizardPage2 extends WizardPage {
 
 	private Table table;
 	private String path = "";
-	private OrcaParser parser;
+	private ResultParser parser;
 	
 	private CheckboxTableViewer tableViewer;
-	private List<OrcaPlateRead> plateReads;
+	private List<PlateRead> plateReads;
 	private List<String> barcodesInDatabase;
 	
 	public static final String[] COLUMN_NAMES = {"import?", "Plate read", "Barcode", "Database status", "Parse status"} ;
@@ -114,12 +118,12 @@ public class WizardPage2 extends WizardPage {
 			public Object getValue(Object element, String property) {
 				
 				if( COLUMN_NAMES[2].equals(property) )
-					return ((OrcaPlateRead)element).getBarCode();
+					return ((PlateRead)element).getBarCode();
 				return null;
 			}
 			public void modify(Object element, String property, Object value) {
 				if( COLUMN_NAMES[2].equals(property) )
-					( (OrcaPlateRead)( (TableItem)element ).getData() )
+					( (PlateRead)( (TableItem)element ).getData() )
 						.setBarCode((String)value);
 				tableViewer.refresh();
 			}
@@ -130,16 +134,35 @@ public class WizardPage2 extends WizardPage {
 	public void setVisible(boolean visible) {
 		if( visible ) {
 			this.setPageComplete(true);
-			String newPath = ( (ImportOrcaResults)getWizard() ).getPath();
+			String newPath = ( (ImportResults)getWizard() ).getPath();
 			if( !path.equals(newPath) ) {
 				path = newPath;
+				Scanner s = null;
 				try {
-					parser = new OrcaParser(new File(path));
-				} catch (FileNotFoundException e) {
-					MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
-							                 "File not found",  
-							                 e.getMessage() ); 
+					s = new Scanner(new File(path));
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+				if( s.nextLine().contains("FluoOptima") ) {
+					try {
+						parser = new OrcaParser(new File(path));
+					} catch (FileNotFoundException e) {
+						MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+								                 "File not found",  
+								                 e.getMessage() ); 
+					}
+				}
+				else {
+					try {
+						parser = new Parser96(new File(path));
+					} catch (FileNotFoundException e) {
+						MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+								                 "File not found",  
+								                 e.getMessage() ); 
+					}
+				}
+				
 				
 				IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
 				barcodesInDatabase = pm.getAllPlateBarcodes();
@@ -172,7 +195,7 @@ public class WizardPage2 extends WizardPage {
 	class TableLabelProvider extends LabelProvider implements ITableLabelProvider {
 
 		public String getColumnText(Object element, int columnIndex) {
-			OrcaPlateRead plateRead = (OrcaPlateRead)element;
+			PlateRead plateRead = (PlateRead)element;
 			String result = "";
 			switch (columnIndex) {
 			case 0:  //import?
@@ -233,7 +256,7 @@ public class WizardPage2 extends WizardPage {
 		final IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
 		final List<String> platesToGetResults = new ArrayList<String>();
 		for( Object o : tableViewer.getCheckedElements() ) {
-			OrcaPlateRead plateRead = (OrcaPlateRead)o;
+			PlateRead plateRead = (PlateRead)o;
 			platesToGetResults.add( plateRead.getBarCode() );
 		}
 		try {

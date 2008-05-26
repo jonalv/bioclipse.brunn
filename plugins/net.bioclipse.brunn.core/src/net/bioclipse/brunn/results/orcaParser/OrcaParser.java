@@ -27,20 +27,20 @@ import net.bioclipse.brunn.results.ResultParser;
 public class OrcaParser implements ResultParser {
 
 	private Scanner scanner;
-	private ArrayList<OrcaPlateRead> plateReads;
+	private ArrayList<PlateRead> plateReads;
 	
 	public OrcaParser(File file) throws FileNotFoundException {
 		scanner    = new Scanner(file);
-		plateReads = new ArrayList<OrcaPlateRead>();
+		plateReads = new ArrayList<PlateRead>();
 	}
 
 	/**
 	 * @return information about the plates in the file
 	 */
-	public List<OrcaPlateRead> getPlatesInFile() {
+	public List<PlateRead> getPlatesInFile() {
 
 		System.out.println("OrcaParser.getPlatesInFile()");
-		ArrayList<OrcaPlateRead> plateReads = new ArrayList<OrcaPlateRead>();
+		ArrayList<PlateRead> plateReads = new ArrayList<PlateRead>();
 		while( scanner.hasNextLine() ) {
 			try {
 				plateReads.add( parseAPlateRead() );
@@ -54,19 +54,19 @@ public class OrcaParser implements ResultParser {
 		return this.plateReads;
 	}
 
-	private ArrayList<OrcaPlateRead> pickTheBestVersions(ArrayList<OrcaPlateRead> input) {
+	private ArrayList<PlateRead> pickTheBestVersions(ArrayList<PlateRead> input) {
 	    
 		System.out.println("OrcaParser.pickTheBestVersions()");
-		HashMap<String, List<OrcaPlateRead>> map = new HashMap<String,List<OrcaPlateRead>>();
-		ArrayList<OrcaPlateRead> result = new ArrayList<OrcaPlateRead>();  
+		HashMap<String, List<PlateRead>> map = new HashMap<String,List<PlateRead>>();
+		ArrayList<PlateRead> result = new ArrayList<PlateRead>();  
 			
-		for(OrcaPlateRead pr : input) {
-			List<OrcaPlateRead> list = map.get(pr.name);
+		for(PlateRead pr : input) {
+			List<PlateRead> list = map.get(pr.getName());
 			if(list == null) {
-				list = new LinkedList<OrcaPlateRead>();
+				list = new LinkedList<PlateRead>();
 			}
 			list.add(pr);
-			map.put(pr.name, list);
+			map.put(pr.getName(), list);
 		}
 		
 		Comparator c = new Comparator<OrcaPlateRead>() {
@@ -75,15 +75,15 @@ public class OrcaParser implements ResultParser {
 			}
 		};
 		
-		for(List<OrcaPlateRead> l : map.values()) {
+		for(List<PlateRead> l : map.values()) {
 			Collections.sort(l, c);
 			result.add( l.get(0) );
 		}
 		
-		Comparator resultSorter = new Comparator<OrcaPlateRead>() {
+		Comparator resultSorter = new Comparator<PlateRead>() {
 
-			public int compare(OrcaPlateRead arg0, OrcaPlateRead arg1) {
-				return arg0.name.compareTo(arg1.name);
+			public int compare(PlateRead arg0, PlateRead arg1) {
+				return arg0.getName().compareTo(arg1.getName());
             }
 			
 		};
@@ -104,8 +104,8 @@ public class OrcaParser implements ResultParser {
 	public List<Plate> addResultsTo( User activeUser,  List<Plate> plates ) throws IllegalArgumentException {
 		
 		System.out.println("OrcaParser.addResultsTo()");
-		HashMap<String, OrcaPlateRead> plateReadMap = new HashMap<String, OrcaPlateRead>();
-		for(OrcaPlateRead p : plateReads) {
+		HashMap<String, PlateRead> plateReadMap = new HashMap<String, PlateRead>();
+		for(PlateRead p : plateReads) {
 			plateReadMap.put(p.getBarCode(), p);
 		}
 		

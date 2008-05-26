@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.pojos.User;
+import net.bioclipse.brunn.results.orcaParser.OrcaParser.OrcaPlateRead;
 
 public interface ResultParser {
 
@@ -16,4 +17,6 @@ public interface ResultParser {
 	 * (identified by barcode)
 	 */
 	public List<Plate> addResultsTo( User activeUser,  List<Plate> plates ) throws IllegalArgumentException;
+
+	public List<PlateRead> getPlatesInFile();
 }
