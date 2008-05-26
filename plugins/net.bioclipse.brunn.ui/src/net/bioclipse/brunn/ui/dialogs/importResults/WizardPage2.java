@@ -19,9 +19,14 @@ import net.bioclipse.brunn.results.orcaParser.OrcaParser;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser.OrcaPlateRead;
 import net.bioclipse.brunn.results.parser96.Parser96;
 import net.bioclipse.brunn.ui.Activator;
+import net.bioclipse.brunn.ui.dialogs.GiveBarcode;
 import net.bioclipse.brunn.ui.dialogs.importResults.ImportResults;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CellEditor;
@@ -40,6 +45,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -129,6 +135,37 @@ public class WizardPage2 extends WizardPage {
 			}
 		});
 		this.setPageComplete(false);
+		
+		// Create menu manager.
+		MenuManager menuMgr = new MenuManager();
+		menuMgr.setRemoveAllWhenShown(true);
+		menuMgr.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager mgr) {
+				if(table.getSelectionCount() == 1) {
+					
+					mgr.add( new Action("Change barcode") {
+						@Override
+						public void run() {
+							
+							GiveBarcode d = new GiveBarcode( PlatformUI
+									                         .getWorkbench()
+									                         .getActiveWorkbenchWindow()
+									                         .getShell() );
+							if(d.open() == d.OK) {
+								plateReads.get( table.getSelectionIndex() )
+								          .setBarCode( d.getBarcode() );
+								tableViewer.refresh();
+							}
+						}
+					});
+					
+				}
+			}
+		});
+
+		// Create menu.
+		Menu menu = menuMgr.createContextMenu(table);
+		table.setMenu(menu);
 	}
 
 	public void setVisible(boolean visible) {
