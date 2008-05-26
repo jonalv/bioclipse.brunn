@@ -8,4 +8,5 @@ public interface PlateRead {
 	public String getError();
 	public void setError(String error);
 	public void setValues(double[][] values);
+	public String getName();
 }

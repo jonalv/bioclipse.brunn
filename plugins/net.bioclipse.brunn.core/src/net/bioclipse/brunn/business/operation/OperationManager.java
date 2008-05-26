@@ -18,6 +18,7 @@ import net.bioclipse.brunn.pojos.SampleContainer;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.pojos.Well;
 import net.bioclipse.brunn.pojos.WorkList;
+import net.bioclipse.brunn.results.PlateRead;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser.OrcaPlateRead;
 
@@ -155,7 +156,7 @@ public class OperationManager extends AbstractDAOBasedOperationManager
 	    return instrumentDAO.findByName(name);
     }
 
-	public void addResult(User activeUser, OrcaPlateRead pr, Plate plate) {
+	public void addResult(User activeUser, PlateRead pr, Plate plate) {
 		
 //		plate = plateDAO.merge(plate);
 		

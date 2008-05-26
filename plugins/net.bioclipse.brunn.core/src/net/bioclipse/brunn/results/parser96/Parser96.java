@@ -3,13 +3,18 @@ package net.bioclipse.brunn.results.parser96;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
+import net.bioclipse.brunn.Springcontact;
+import net.bioclipse.brunn.business.operation.IOperationManager;
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.results.PlateRead;
 import net.bioclipse.brunn.results.ResultParser;
+import net.bioclipse.brunn.results.orcaParser.OrcaParser.OrcaPlateRead;
 
 public class Parser96 implements ResultParser {
 
@@ -27,7 +32,7 @@ public class Parser96 implements ResultParser {
 				plateReads.add( parseAPlateRead() );
 			}
 			catch( Exception e ) {
-				plateReads.add( new PlateRead96(e.getMessage()) );
+				
 			}
 		}
 		return plateReads;
@@ -37,6 +42,7 @@ public class Parser96 implements ResultParser {
 	private PlateRead parseAPlateRead() {
 		
 		PlateRead plateRead = new PlateRead96();
+		plateRead.setError("Parsing returned early");
 		boolean plateReadParsed = false;
 		List< List<Double> > rows = new ArrayList< List<Double> >();
 		
@@ -69,12 +75,12 @@ public class Parser96 implements ResultParser {
 				return plateRead;
 			}
 			rows.add(rowValues);
+			if( rows.size() == 8 ) {
+				plateReadParsed = true;
+			}
 		}
-		if( rows.size() != 8 ) {
-			plateRead.setError( "found " + rows.size() + "rows" );
-			return plateRead;
-		}
-		double[][] values = new double[12][8];
+
+		double[][] values = new double[8][12];
 		for (int i = 0; i < rows.size(); i++) {
 			List<Double> row = rows.get(i);
 			for (int j = 0; j < row.size(); j++) {
@@ -88,9 +94,19 @@ public class Parser96 implements ResultParser {
 
 	@Override
     public List<Plate> addResultsTo(User activeUser, List<Plate> plates)
-            throws IllegalArgumentException {
-	    // TODO Auto-generated method stub
-	    return null;
+                       throws IllegalArgumentException {
+		HashMap<String, PlateRead> plateReadMap = new HashMap<String, PlateRead>();
+		for(PlateRead p : plateReads) {
+			plateReadMap.put(p.getBarCode(), p);
+		}
+		
+		IOperationManager om = (IOperationManager) Springcontact.getBean("operationManager");
+		List<Plate> results = new ArrayList<Plate>();
+		for(Plate p : plates) {
+			om.addResult( activeUser, plateReadMap.get(p.getBarcode()), p );
+			results.add(p);
+		}
+		return plates;
     }
 
 	static class PlateRead96 implements PlateRead {
@@ -135,6 +151,11 @@ public class Parser96 implements ResultParser {
 		@Override
         public void setValues(double[][] values) {
 			this.values = values;
+        }
+
+		@Override
+        public String getName() {
+	        return "";
         }
 	}
 }
