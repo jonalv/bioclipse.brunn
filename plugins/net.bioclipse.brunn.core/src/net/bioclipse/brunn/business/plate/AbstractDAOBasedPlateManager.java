@@ -6,6 +6,7 @@ import net.bioclipse.brunn.genericDAO.ICellSampleDAO;
 import net.bioclipse.brunn.genericDAO.IDrugSampleDAO;
 import net.bioclipse.brunn.genericDAO.IFolderDAO;
 import net.bioclipse.brunn.genericDAO.IMasterPlateDAO;
+import net.bioclipse.brunn.genericDAO.IPatientSampleDAO;
 import net.bioclipse.brunn.genericDAO.IPlateDAO;
 import net.bioclipse.brunn.genericDAO.ISampleContainerDAO;
 import net.bioclipse.brunn.genericDAO.IUserDAO;
@@ -30,6 +31,7 @@ public abstract class AbstractDAOBasedPlateManager implements
 	protected IDrugSampleDAO          drugSampleDAO;
 	protected ICellSampleDAO          cellSampleDAO;
 	protected IWellDAO                wellDAO;
+	protected IPatientSampleDAO       patientSampleDAO;
 
 	public void setCellSampleDAO(ICellSampleDAO cellSampleDAO) {
     	this.cellSampleDAO = cellSampleDAO;
@@ -88,6 +90,10 @@ public abstract class AbstractDAOBasedPlateManager implements
 
 	public void setWellDAO(IWellDAO wellDAO) {
     	this.wellDAO = wellDAO;
+    }
+
+	public void setPatientSampleDAO(IPatientSampleDAO patientSampleDAO) {
+    	this.patientSampleDAO = patientSampleDAO;
     }
 	
 }

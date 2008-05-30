@@ -13,6 +13,7 @@ import net.bioclipse.brunn.pojos.AbstractPlate;
 import net.bioclipse.brunn.pojos.CellOrigin;
 import net.bioclipse.brunn.pojos.Folder;
 import net.bioclipse.brunn.pojos.MasterPlate;
+import net.bioclipse.brunn.pojos.PatientOrigin;
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.pojos.PlateLayout;
 import net.bioclipse.brunn.pojos.User;
@@ -91,4 +92,7 @@ public interface IPlateManager {
 	public void editMerging(User currentUser, Plate toBeSaved);
 //	public void evictfromLazyLoading(Plate toBeSaved);
 	public void evictfromLazyLoading(AbstractBasePlate toBeSaved);
+	public long createPlate(User currentUser, String name, String barCode,
+                            Folder pojo, MasterPlate masterPlate,
+                            PatientOrigin patientOrigin, Timestamp timestamp);
 }

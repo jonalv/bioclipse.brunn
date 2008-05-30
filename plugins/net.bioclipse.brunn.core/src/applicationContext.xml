@@ -345,16 +345,19 @@
   	 		<ref local="userDAO" />
   	 	</property>
   	 	<property name="sampleContainerDAO">
-  	 		<ref local="sampleContainerDAO"/>
+  	 		<ref local="sampleContainerDAO" />
   	 	</property>
   	 	<property name="cellSampleDAO">
-  	 		<ref local="cellSampleDAO"/>
+  	 		<ref local="cellSampleDAO" />
   	 	</property>
   	 	<property name="drugSampleDAO">
-  	 		<ref local="drugSampleDAO"/>
+  	 		<ref local="drugSampleDAO" />
   	 	</property>
   	 	<property name="wellDAO">
   	 		<ref local="wellDAO" />
+  	 	</property>
+  	 	<property name="patientSampleDAO">
+  	 	   <ref local="patientSampleDAO" />
   	 	</property>
   	</bean>
   	

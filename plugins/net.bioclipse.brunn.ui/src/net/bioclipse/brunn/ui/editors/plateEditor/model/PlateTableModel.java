@@ -214,6 +214,7 @@ public class PlateTableModel extends KTableDefaultModel {
 		public String toString() {
 			
 			String s = "";
+			String valuePart = (value==-1) ? "" : Math.round(value) + "\n";
 			for (int i = 0; i < markers.size(); i++) {
 				s += markers.get(i);
 				if( markers.get(i).matches("M\\d+") && concentrations.get(i) != 0 ) {
@@ -221,8 +222,7 @@ public class PlateTableModel extends KTableDefaultModel {
 				}
 				s += "\n";
 			}
-			String valuePart = (value==-1) ? "" : Math.round(value) + "";
-			return  s + valuePart;
+			return valuePart + s;
 		}
 	}
 

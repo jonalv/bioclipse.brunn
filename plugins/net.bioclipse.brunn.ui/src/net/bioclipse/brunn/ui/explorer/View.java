@@ -470,13 +470,24 @@ public class View extends ViewPart implements IKeyringListener {
 							IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
 							
 							try {
-								pm.createPlate( Activator.getDefault().getCurrentUser(), 
-										        dialog.getName(),
-										        dialog.getBarCode(),
-										        (net.bioclipse.brunn.pojos.Folder)recievingFolder.getPOJO(),
-										        dialog.getMasterPlate(),
-										        dialog.getCellOrigin(),
-										        dialog.getTimestamp() );
+								if ( dialog.isDoingPatientCells() ) {
+									pm.createPlate( Activator.getDefault().getCurrentUser(), 
+									                dialog.getName(),
+									                dialog.getBarCode(),
+									                (net.bioclipse.brunn.pojos.Folder)recievingFolder.getPOJO(),
+									                dialog.getMasterPlate(),
+									                dialog.getPatientOrigin(),
+									                dialog.getTimestamp() );
+								}
+								else {
+									pm.createPlate( Activator.getDefault().getCurrentUser(), 
+											        dialog.getName(),
+											        dialog.getBarCode(),
+											        (net.bioclipse.brunn.pojos.Folder)recievingFolder.getPOJO(),
+											        dialog.getMasterPlate(),
+											        dialog.getCellOrigin(),
+											        dialog.getTimestamp() );
+								}
 							}
 							catch(IllegalStateException e) {
 								final Exception ex = e;

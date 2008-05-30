@@ -742,7 +742,7 @@ public class TransactionTest extends BaseTest {
 		pm.setAuditService(mockAuditService);
 		
 		try{
-			pm.createPlate(tester, "Testplate", "|34|) |>14T3", new Folder(), masterPlate, null, null);
+			pm.createPlate(tester, "Testplate", "|34|) |>14T3", new Folder(), masterPlate, cellOrigin, null);
 			fail("should have thrown RuntimeException");
 		}
 		catch (RuntimeException expected) {

@@ -23,6 +23,8 @@ import net.bioclipse.brunn.pojos.CellSample;
 import net.bioclipse.brunn.pojos.DrugSample;
 import net.bioclipse.brunn.pojos.Folder;
 import net.bioclipse.brunn.pojos.MasterPlate;
+import net.bioclipse.brunn.pojos.PatientOrigin;
+import net.bioclipse.brunn.pojos.PatientSample;
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.pojos.PlateFunction;
 import net.bioclipse.brunn.pojos.PlateLayout;
@@ -74,7 +76,6 @@ public class PlateManager extends
 	                         CellOrigin cellOrigin, 
 	                         Timestamp defrostingDate ) {
 	
-//		creator = userDAO.merge(creator);
 		masterPlate = masterPlateDAO.merge(masterPlate);
 		folder = folderDAO.merge(folder);
 		
@@ -313,5 +314,57 @@ public class PlateManager extends
 		for(PlateFunction pf : toBeSaved.getPlateFunctions()) {
 			LazyLoadingSessionHolder.getInstance().evict(pf.getCreator());
 		}
+    }
+
+	@Override
+    public long createPlate( User creator, 
+                             String name, 
+                             String barcode,
+                             Folder folder, 
+                             MasterPlate masterPlate,
+                             PatientOrigin patientOrigin, 
+                             Timestamp defrostingDate ) {
+		
+		masterPlate = masterPlateDAO.merge(masterPlate);
+		folder = folderDAO.merge(folder);
+		
+		Plate plate = AbstractPlate.createPlate( creator, 
+												 name, 
+												 masterPlate, 
+												 barcode,
+												 folder );
+		folder.getObjects().add(plate);
+
+		for( Well well : plate.getWells() ) {
+			
+			SampleContainer container = well.getSampleContainer();
+			for( AbstractSample as : container.getSamples() ) {
+				if(as instanceof DrugSample) {
+					drugSampleDAO.save( (DrugSample)as );
+				}
+				else {
+					throw new IllegalArgumentException("There is not supposed to be a " + as + " here");
+				}
+			}
+			
+			PatientSample patientSample = new PatientSample( creator, 
+					                                         patientOrigin.getName(), 
+					                                         container, 
+					                                         patientOrigin, 
+					                                         defrostingDate );
+			patientSampleDAO.save(patientSample);
+			container.getSamples().add(patientSample);
+			
+			sampleContainerDAO.save(container);
+			
+			getAuditService().audit(creator, AuditType.CREATE_EVENT, patientSample);
+		}
+		plateDAO.save(plate);
+//		folder = folderDAO.merge(folder);
+		folderDAO.save(folder);
+		
+		getAuditService().audit(creator, AuditType.CREATE_EVENT, plate);
+		
+	    return plate.getId();
     }
 }
