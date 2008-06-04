@@ -273,8 +273,8 @@ public class WizardPage2 extends WizardPage {
 	
 	static class Sorter extends ViewerSorter {
 		public int compare(Viewer viewer, Object e1, Object e2) {
-			OrcaPlateRead plateRead1 = (OrcaPlateRead)e1;
-			OrcaPlateRead plateRead2 = (OrcaPlateRead)e2;
+			PlateRead plateRead1 = (PlateRead)e1;
+			PlateRead plateRead2 = (PlateRead)e2;
 			
 			Pattern pattern = Pattern.compile("Cytomat384_(\\d+)");
 			Matcher matcher1 = pattern.matcher( plateRead1.getName() );

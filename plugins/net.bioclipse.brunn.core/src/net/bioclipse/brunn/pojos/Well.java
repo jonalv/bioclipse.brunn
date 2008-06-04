@@ -139,7 +139,8 @@ public class Well extends AbstractWell {
 			if(as instanceof DrugSample) {
 				as.setSampleContainer(null);
 			}
-			else if(as instanceof CellSample) {
+			else if ( as instanceof CellSample ||
+					  as instanceof PatientSample ) {
 				sampleContainer.getSamples().add(as);
 				as.setSampleContainer(sampleContainer);
 			}

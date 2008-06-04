@@ -28,6 +28,7 @@ public class ImportResults extends Wizard {
 	public boolean performFinish() {
 
 		page2.addResultsToCheckedPlates();
+		dataSets.refresh();
 		dataSets.fireUpdate();
 		return true;
 	}
