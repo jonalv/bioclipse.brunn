@@ -67,18 +67,9 @@
    </extension>
   <extension
 	point="net.bioclipse.keyring.accountType">
-		<AccountType
-			id="brunn.accounttype"
-			name="BrunnAccountType">
-		<property
-			name="URL"
-			required="true"/>
-  <property
-        name="Database password"
-        required="true"/>
-  <property
-        name="Database user"
-        required="true"/>
-	 </AccountType>
+        <AccountType
+        	id="brunn.accounttype"
+        	name="BrunnAccountType">
+        </AccountType>
   </extension>
 </plugin>

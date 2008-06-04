@@ -15,13 +15,13 @@
 
 
 	   	<property name="url">
-	   		<value>jdbc:mysql://localhost:3306/lis</value>
+	   		<value>jdbc:mysql://bob.cpi.medsci.uu.se/brunn</value>
 	   	</property>
 	   	<property name="username">
-	   		<value>lis</value>
+	   		<value>brunn</value>
 	   	</property>
 	   	<property name="password">
-	   		<value>lislis</value>
+	   		<value>pzv978r</value>
 	   	</property>
  
 <!-- 
