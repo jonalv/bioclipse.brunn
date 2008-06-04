@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+
+<!-- findAlls -->
+	<query name="Plate.findAll" read-only="true">
+    	<![CDATA[from Plate]]>
+   	</query>
+   	
+   	<query name="AbstractAnnotationInstance.findAll" read-only="true">
+   		<![CDATA[from AbstractAnnotationInstance]]>
+   	</query>
+   	
+   	<query name="AuditLog.findAll" read-only="true">
+   		<![CDATA[from AuditLog]]>
+   	</query>
+   	
+   	<query name="PlateLayout.findAll" read-only="true">
+   		<![CDATA[from PlateLayout]]>
+   	</query>
+   	
+   	<query name="PlateType.findAll" read-only="true">
+   		<![CDATA[from PlateType]]>
+   	</query>
+   	
+   	<query name="User.findAll" read-only="true">
+   		<![CDATA[from User]]>
+   	</query>
+   	
+	<query name="Annotation.findAll" read-only="true">
+		<![CDATA[from Annotation]]>
+	</query>
+	
+	<query name="LayoutWell.findAll" read-only="true">
+		<![CDATA[from LayoutWell]]>
+	</query>
+	
+	<query name="MasterPlate.findAll" read-only="true">
+		<![CDATA[from MasterPlate]]>
+	</query>
+	
+	<query name="DrugOrigin.findAll" read-only="true">
+		<![CDATA[from DrugOrigin]]>
+	</query>
+	
+	<query name="CellOrigin.findAll" read-only="true">
+		<![CDATA[from CellOrigin]]>
+	</query>
+	
+	<query name="ResultType.findAll" read-only="true">
+		<![CDATA[from ResultType]]>
+	</query>
+	
+	<query name="Instrument.findAll" read-only="true">
+		<![CDATA[from Instrument]]>
+	</query>	
+	
+	<query name="SampleContainer.findAll" read-only="true">
+		<![CDATA[from SampleContainer]]>
+	</query>
+	
+	<query name="Measurement.findAll" read-only="true">
+		<![CDATA[from Measurement]]>
+	</query>
+	
+	<query name="Folder.findAll" read-only="true">
+		<![CDATA[from Folder]]>
+	</query>
+	
+	<query name="UniqueFolder.findAll" read-only="true">
+		<![CDATA[from UniqueFolder]]>
+	</query>
+	
+	<query name="PickList.findAll" read-only="true">
+		<![CDATA[from PickList]]>
+	</query>
+	
+	<query name="CellSample.findAll" read-only="true">
+		<![CDATA[from CellSample]]>
+	</query>
+	
+	<query name="DrugSample.findAll" read-only="true">
+		<![CDATA[from DrugSample]]>
+	</query>
+	
+	<query name="ExportScript.findAll" read-only="true">
+		<![CDATA[from ExportScript]]>
+	</query>
+	
+	<query name="Well.findAll">
+		<![CDATA[from Well]]>
+	</query>
+	
+	<query name="PatientSample.findAll">
+		<![CDATA[from PatientSample]]>
+	</query>
+	
+	<query name="PatientOrigin.findAll">
+		<![CDATA[from PatientOrigin]]>
+	</query>
+
+<!-- findAllNotDeleted -->
+	<query name="PlateType.findAllNotDeleted">
+		<![CDATA[select p from PlateType p where p.deleted = false]]> 
+	</query>
+	
+	<query name="PlateLayout.findAllNotDeleted">
+		<![CDATA[select p from PlateLayout p where p.deleted = false]]> 
+	</query>
+	
+	<query name="MasterPlate.findAllNotDeleted">
+		<![CDATA[select mp from MasterPlate mp where mp.deleted = false]]>
+	</query>
+	
+	<query name="Plate.findAllNotDeleted">
+		<![CDATA[select p from Plate p where p.deleted = false]]>
+	</query>
+	
+	<query name="DrugOrigin.findAllNotDeleted">
+		<![CDATA[select d from DrugOrigin d where d.deleted = false]]>
+	</query>
+	
+	<query name="CellOrigin.findAllNotDeleted">
+		<![CDATA[select c from CellOrigin c where c.deleted = false]]>
+	</query>
+	
+	<query name="PatientOrigin.findAllNotDeleted">
+		<![CDATA[select p from PatientOrigin p where p.deleted = false]]>
+	</query>
+	
+<!-- Other -->   	
+	<query name="UniqueFolder.findByUniqueName" read-only="true">
+		<![CDATA[select f from UniqueFolder f where f.uniqueName = ? ]]>
+	</query>
+	
+   	<query name="User.findByName" read-only="true">
+   		<![CDATA[select u from User u where u.name = ? ]]>
+   	</query>
+   	
+   	<query name="ResultType.findByName" read-only="true">
+   		<![CDATA[select f from ResultType f where f.name = ? ]]>
+   	</query>
+   	
+   	<query name="Instrument.findByName" read-only="true">
+   		<![CDATA[select f from Instrument f where f.name = ? ]]>
+   	</query>
+   	
+   	<query name="Plate.findAllPlateBarcodes">
+   		<![CDATA[select barcode from Plate]]>
+   	</query>
+   	
+   	<query name="Plate.findByBarcode">
+   		<![CDATA[select p from Plate p where p.barcode = ? ]]>
+   	</query>
+   	
+</hibernate-mapping>
