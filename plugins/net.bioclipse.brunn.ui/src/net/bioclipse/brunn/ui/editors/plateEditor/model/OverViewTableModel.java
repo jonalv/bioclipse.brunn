@@ -1,7 +1,9 @@
 package net.bioclipse.brunn.ui.editors.plateEditor.model;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Formatter;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Point;
@@ -85,7 +87,10 @@ public class OverViewTableModel extends KTableDefaultModel {
 				//Wellfunctions
 				for( String wellFunction : columnNames.subList(3, columnNames.size()) ) {
 					try {
-						row[col] = plateResults.getValue( well.getCol(), well.getRow(), wellFunction) + "";
+						DecimalFormat df = new DecimalFormat("0");
+						row[col] = df.format( plateResults.getValue( well.getCol(), 
+								                                     well.getRow(), 
+								                                     wellFunction) );
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

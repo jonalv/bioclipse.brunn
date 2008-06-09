@@ -1,9 +1,11 @@
 package net.bioclipse.brunn.ui.editors.plateEditor.model;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,7 +119,8 @@ public class ReplicateTableModel extends KTableDefaultModel {
 			for( double d : list) {
 				sum += d;
 			}
-			row[i++] = (sum / list.size()) + "";
+			DecimalFormat df = new DecimalFormat("0");
+			row[i++] = df.format(sum / list.size());
 		}
 		return row;
 	}
@@ -168,6 +171,7 @@ public class ReplicateTableModel extends KTableDefaultModel {
 	private String getConcentrations(DrugSample[] drugSamples) {
 
 		String result = "";
+		
 		for( DrugSample drugSample : drugSamples ) {
 			result += drugSample.getConcentration() + " ";
 		}
