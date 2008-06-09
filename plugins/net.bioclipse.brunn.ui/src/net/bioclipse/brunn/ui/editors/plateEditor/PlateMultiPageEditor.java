@@ -14,6 +14,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 
 	private PlateEditor plateEditor;
 	private Summary summary;
+	private Replicates replicates;
 
 	public final static String ID = "net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor"; 
 	
@@ -38,6 +39,15 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 			summary = new Summary(plateResults);
 			int index = this.addPage((IEditorPart) summary, getEditorInput());
 			setPageText(index, "Summary");
+		} 
+		catch (PartInitException e) {
+			e.printStackTrace();			
+		}
+		
+		try {
+			replicates = new Replicates(plateResults);
+			int index = this.addPage((IEditorPart) replicates, getEditorInput());
+			setPageText(index, "Replicates");
 		} 
 		catch (PartInitException e) {
 			e.printStackTrace();			
