@@ -78,7 +78,7 @@ public class ReplicateTableModel extends KTableDefaultModel {
 		matrix = rows.toArray(new String[0][0]);
 
 		this.rows = matrix.length;
-		this.cols = matrix[0].length;
+		this.cols = columnNames.size();
 		
 		this.plate  = plate;
 		this.table  = table;

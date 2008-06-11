@@ -107,13 +107,16 @@ public class PlateResults implements IEditorInput {
 							                                      well.getName() );
 					calculator.addFunction( well.getName() + "_" + function.getName(), wfb );
 				}
-				
+
+				String variable = "" + well.getRow() + well.getCol(); 
 				//place the raw Value in the hashmap
-				rawValues.put("" + well.getRow() + well.getCol(), rawValue);
+				rawValues.put(variable, rawValue);
 				
 				//place the raw Value in the parser
-				calculator.addVariable("" + well.getRow() + well.getCol(), rawValue );
-				
+				calculator.addVariable(variable, rawValue );
+				if( well.isOutlier() ) {
+					calculator.addSuppressedVariable(variable);
+				}
 				if(monitor != null) {
 					monitor.worked(1);
 				}

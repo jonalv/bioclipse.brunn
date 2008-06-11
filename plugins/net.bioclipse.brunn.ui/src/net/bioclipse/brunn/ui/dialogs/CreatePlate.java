@@ -257,10 +257,14 @@ public class CreatePlate extends TitleAreaDialog {
 		if (buttonId == IDialogConstants.OK_ID) {
 			this.barCode           = barcodeText.getText();
 			this.name              = nameText.getText();
-			this.masterPlate       = masterPlates[ masterPlateCombo.getSelectionIndex() ]; 
-			this.cellOrigin        = cellOrigins[     cellTypeCombo.getSelectionIndex() ];
-			this.patientOrigin     = patientCells[ patientCellCombo.getSelectionIndex() ];
-			this.doingPatientCells = cellLineButton.getSelection();
+			this.masterPlate       = masterPlates[ masterPlateCombo.getSelectionIndex() ];
+			this.doingPatientCells = !cellLineButton.getSelection();
+			if( doingPatientCells ) {
+				this.patientOrigin = patientCells[ patientCellCombo.getSelectionIndex() ];
+			}
+			else {
+				this.cellOrigin = cellOrigins[ cellTypeCombo.getSelectionIndex() ];
+			}
 		}
 		super.buttonPressed(buttonId);
 	}

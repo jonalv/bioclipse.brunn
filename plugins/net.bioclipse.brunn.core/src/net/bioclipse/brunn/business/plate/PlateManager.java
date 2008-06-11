@@ -245,9 +245,9 @@ public class PlateManager extends
 		plate = plateDAO.merge(plate);
 		getAuditService().audit(editor, AuditType.UPDATE_EVENT, plate);
 		plateDAO.save(plate);
-		LazyLoadingSessionHolder.getInstance().evict(
-			LazyLoadingSessionHolder.getInstance().load( Plate.class, 
-					                                     plate.getId() ) );
+//		LazyLoadingSessionHolder.getInstance().evict(
+//			LazyLoadingSessionHolder.getInstance().load( Plate.class, 
+//					                                     plate.getId() ) );
 
     }
 

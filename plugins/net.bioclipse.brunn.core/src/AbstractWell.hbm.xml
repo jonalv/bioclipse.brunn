@@ -76,6 +76,11 @@
 			 cascade="all"
 		 	 lazy="false" />
 			 
+			<property
+              name="outlier"
+              column="outlier"
+              type="boolean"/>
+			 
 			<set 
 			 name="sampleMarkers" 
 		 	 cascade="all"

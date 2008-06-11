@@ -108,7 +108,7 @@ public class OverViewTableModel extends KTableDefaultModel {
 			matrix[rowNumber++] = row;
 		}
 		rows = matrix.length;
-		cols = matrix[0].length;
+		cols = columnNames.size();
 		this.plate  = plate;
 		this.table  = table;
 		this.editor = editor;

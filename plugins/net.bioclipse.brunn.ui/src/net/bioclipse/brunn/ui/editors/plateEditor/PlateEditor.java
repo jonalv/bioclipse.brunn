@@ -106,7 +106,7 @@ public class PlateEditor extends EditorPart {
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		
-		pm.editMerging( Activator.getDefault().getCurrentUser(), toBeSaved);
+		pm.edit( Activator.getDefault().getCurrentUser(), toBeSaved);
 		referencePlate = toBeSaved.deepCopy();
 		firePropertyChange(PROP_DIRTY);
 		plate.getParent().fireUpdate();
@@ -382,7 +382,26 @@ public class PlateEditor extends EditorPart {
 		
 		Button markAsOutlierButton;
 		markAsOutlierButton = new Button(bottom, SWT.NONE);
-		markAsOutlierButton.setEnabled(false);
+		markAsOutlierButton.addSelectionListener(new SelectionAdapter() {
+			/*
+			 * MARK AS OUTLIER
+			 */
+			public void widgetSelected(final SelectionEvent e) {
+				for( Point p : plateTable.getCellSelection() ) {
+//					Object o = plateTable.getModel().getContentAt(p.x, p.y);
+//					if( o instanceof PlateTableModel.Well ) {
+//						( (PlateTableModel.Well)o ).setOutlier(true);
+//					}
+					toBeSaved.getWell(p).setOutlier(true);
+				}
+				plateTable.setModel(new PlateTableModel( toBeSaved, 
+						                                 plateTable, 
+						                                 editor, 
+						                                 wellFunctionCombo.getText(), 
+						                                 plateResults ));
+				firePropertyChange(PROP_DIRTY);
+			}
+		});
 		final FormData formData_5 = new FormData();
 		formData_5.bottom = new FormAttachment(100, -5);
 		formData_5.right = new FormAttachment(wellFunctionCombo, 115, SWT.RIGHT);

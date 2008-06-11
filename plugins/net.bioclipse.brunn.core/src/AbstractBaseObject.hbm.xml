@@ -355,8 +355,7 @@
 							 <many-to-one 
 						 	  name="masterPlate"
 						      column="masterPlate"
-						      class="MasterPlate"	 
-		 				      lazy="false" />
+						      class="MasterPlate" />
 							
 						</joined-subclass>
 <!-- MasterPlate -->						

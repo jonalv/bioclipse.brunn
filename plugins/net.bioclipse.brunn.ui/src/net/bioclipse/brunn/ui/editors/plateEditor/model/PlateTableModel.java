@@ -48,24 +48,26 @@ public class PlateTableModel extends KTableDefaultModel {
 		rows = plate.getRows();
 		cols = plate.getCols();
 		matrix = new Well [ cols ] [ rows ];
-		for (int i = 0; i < cols; i++) {
-			for (int j = 0; j < rows; j++) {
-				matrix[i][j] = new Well();
-			}
-		}
 		
-		for(net.bioclipse.brunn.pojos.Well well : plate.getWells() ) {
-			for(SampleMarker m : well.getSampleMarkers()) {
-				Well localWell = 
-					matrix[ well.getCol()-1 ][ well.getRow()-'a' ];
+		for ( net.bioclipse.brunn.pojos.Well well : plate.getWells() ) {
+			
+			Well localWell = new Well(well);
+			matrix[ well.getCol()-1 ][ well.getRow()-'a' ] = localWell;
+			
+			for ( SampleMarker m : well.getSampleMarkers() ) {
 				localWell.markers.add( m.getName() );
-				localWell.concentrations.add( m.getSample() == null ? 0 
-                                                                    : ( (DrugSample)m.getSample() ).getConcentration() );
-				try {
-					localWell.value = plateResults.getValue(well.getCol(), well.getRow(), wellFunctionToBeShown);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				localWell.concentrations.add( 
+						m.getSample() == null ? 0 
+                                              : ( (DrugSample)m.getSample() )
+                                                .getConcentration() );
+			}
+
+			try {
+				localWell.value = plateResults.getValue(well.getCol(), 
+						                                well.getRow(), 
+						                                wellFunctionToBeShown);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		this.plate       = plate;
@@ -205,8 +207,18 @@ public class PlateTableModel extends KTableDefaultModel {
 		return matrix;
 	}
 	
-	static class Well {
+	public static class Well {
 
+		private net.bioclipse.brunn.pojos.Well domainWell;
+		
+		public Well( net.bioclipse.brunn.pojos.Well domainWell ) {
+			this.domainWell = domainWell;
+		}
+		
+		public void setOutlier(boolean outlier) {
+			domainWell.setOutlier(outlier);
+		}
+		
 		List<String> markers = new ArrayList<String>();
 		List<Double> concentrations = new ArrayList<Double>();
 		double value = -1;
@@ -214,7 +226,12 @@ public class PlateTableModel extends KTableDefaultModel {
 		public String toString() {
 			
 			String s = "";
-			String valuePart = (value==-1) ? "" : Math.round(value) + "\n";
+			
+			String valuePart = ( (value==-1) ? "" : Math.round(value) + "" );
+			if( domainWell.isOutlier() ) {
+				valuePart = "{" + valuePart + "}";
+			}
+			valuePart = valuePart + "\n";
 			for (int i = 0; i < markers.size(); i++) {
 				s += markers.get(i);
 				if( markers.get(i).matches("M\\d+") && concentrations.get(i) != 0 ) {

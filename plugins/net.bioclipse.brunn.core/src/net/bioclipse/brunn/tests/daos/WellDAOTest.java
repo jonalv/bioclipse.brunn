@@ -84,4 +84,25 @@ public class WellDAOTest extends AbstractGenericDAOTest {
 		assertEquals(well, savedWell);
 		assertNotSame(well, savedWell);		
 	}
+	
+	@Test
+	public void testPersistingOutlierFlag() {
+		Well well = new Well();
+		boolean before = well.isOutlier();
+		getDAO().save(well);
+		
+		session.flush();
+		session.clear();
+		
+		Well savedWell = getDAO().getById(well.getId());
+		savedWell.setOutlier(!before);
+		savedWell = getDAO().merge(savedWell);
+		getDAO().save(savedWell);
+		
+		session.flush();
+		session.clear();
+		
+		savedWell = getDAO().getById( well.getId() );
+		assertTrue( before != savedWell.isOutlier() );
+	}
 }

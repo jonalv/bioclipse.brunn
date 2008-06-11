@@ -212,4 +212,21 @@ public class PlateDAOTest extends AbstractGenericDAOTest {
 		
 		assertEquals( masterPlate, plate.getMasterPlate() );
 	}
+	
+	@Test
+	public void testEditingOutlier() {
+		
+		IPlateManager pm = (IPlateManager)context.getBean("plateManager");
+		
+		boolean before = plate.getWell(1, 'a').getOutlier();
+		plate.getWell(1, 'a').setOutlier(!before);
+		
+		pm.edit(tester, plate);
+		
+		session.flush();
+		session.clear();
+		
+		Plate loadedPlate = pm.getPlate( plate.getId() );
+		assertTrue( loadedPlate.getWell(1, 'a').isOutlier() != before );
+	}
 }
