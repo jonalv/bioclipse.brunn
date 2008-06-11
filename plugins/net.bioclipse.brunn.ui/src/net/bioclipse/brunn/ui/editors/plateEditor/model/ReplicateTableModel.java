@@ -50,7 +50,8 @@ public class ReplicateTableModel extends KTableDefaultModel {
 		
 		columnNames = new ArrayList<String>();
 		Collections.addAll( columnNames, new String[] {"Cell Type", "Compound Names", "Concentration"} );
-		columnNames.addAll( plate.getWellFunctionNames() ); 
+		columnNames.addAll( plate.getWellFunctionNames() );
+		columnNames.add( "CV%" );
 		
 		/*
 		 * set up the matrix from the plate 
@@ -122,6 +123,27 @@ public class ReplicateTableModel extends KTableDefaultModel {
 			DecimalFormat df = new DecimalFormat("0");
 			row[i++] = df.format(sum / list.size());
 		}
+		
+		double sum = 0;
+		int numberOfNan = 0;
+		for( Double rawValue : wellFunctions.get("raw") ) {
+			if(rawValue != Double.NaN) {
+				sum += rawValue;
+			}
+			else {
+				numberOfNan++;
+			}
+		}
+        double avg =  sum/ (wellFunctions.get("raw").size() - numberOfNan);
+            
+        double sumOfDiffs = 0;
+        for( Double rawValue : wellFunctions.get("raw") ) {
+          	sumOfDiffs += (rawValue-avg)*(rawValue-avg);
+        }
+        
+        double stddev = Math.sqrt( (1.0/(wellFunctions.get("raw").size()-1 - numberOfNan)) * sumOfDiffs );
+        DecimalFormat df = new DecimalFormat("0");
+		row[i-1] = df.format( (stddev/avg) * 100 );
 		return row;
 	}
 
