@@ -165,7 +165,7 @@ public class CreatePlateFunction extends TitleAreaDialog {
 		if (buttonId == IDialogConstants.OK_ID) {
 			
 			try {
-				calculator.valueOf(textExpression.getText());
+				calculator.safeValueOf(textExpression.getText());
 			}
 			catch (CalculatorException e) {
 				MessageDialog.openInformation( 

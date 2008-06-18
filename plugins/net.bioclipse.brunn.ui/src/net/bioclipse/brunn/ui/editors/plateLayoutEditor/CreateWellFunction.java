@@ -127,7 +127,7 @@ public class CreateWellFunction extends TitleAreaDialog {
 			expression = textExpression.getText();
 			try {
 				calculator.addVariable("well", Double.NaN);
-				calculator.valueOf(textExpression.getText());
+				calculator.safeValueOf(textExpression.getText());
 				calculator.removeVariable("well");
 			}
 			catch (CalculatorException e) {

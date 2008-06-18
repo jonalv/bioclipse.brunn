@@ -99,7 +99,7 @@ public class PlateFunctionsModel extends KTableDefaultModel {
 
         		if(save) {
         			try {
-        				calculator.valueOf( m_Text.getText() );
+        				calculator.safeValueOf( m_Text.getText() );
         				super.close(true);
         			}
         			catch(CalculatorException e) {

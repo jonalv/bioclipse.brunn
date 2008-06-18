@@ -16,7 +16,7 @@ public class PlateFunctionBody extends FunctionBodyAdaptor {
 	@Override
 	public double eval(Calculator calc, Double[] args) {
 		assert args.length == 0;
-		return calc.valueOf(expression);
+		return calc.safeValueOf(expression);
 	}
 
 }

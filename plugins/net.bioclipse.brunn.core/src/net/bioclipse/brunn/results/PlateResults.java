@@ -189,7 +189,7 @@ public class PlateResults implements IEditorInput {
 		if( wellFunctionEvaluators.get(wellFunctionName + row + col) == null ) {
 			return Double.NaN;
 		}
-		return calculator.valueOf( (row + "") + col + "_" + wellFunctionName + "()" );
+		return calculator.safeValueOf( (row + "") + col + "_" + wellFunctionName + "()" );
 	}
 	
 	public double getValue(int col, int row, String wellFunctionName) {
@@ -208,7 +208,7 @@ public class PlateResults implements IEditorInput {
 	 */
 	public double getValue(String plateFunctionName) {
 		
-		return calculator.valueOf( plateFunctionEvaluators.get(plateFunctionName).expression );
+		return calculator.safeValueOf( plateFunctionEvaluators.get(plateFunctionName).expression );
 	}
 
 	public boolean exists() {
