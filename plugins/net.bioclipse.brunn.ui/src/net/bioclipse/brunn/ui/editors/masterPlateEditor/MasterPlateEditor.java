@@ -379,7 +379,8 @@ public class MasterPlateEditor extends EditorPart {
 						      toDrop, 
 						      dialog.getConcentration(), 
 						      dialog.getDilutionFactor(),
-						      dialog.getConcUnit() );
+						      dialog.getConcUnit(),
+						      dialog.isDoingHorizontalDilutionSeries() );
 				
 				getViewer().refresh();
 				refresh();
@@ -393,31 +394,33 @@ public class MasterPlateEditor extends EditorPart {
 				                   ILISObject[] toDrop, 
 				                   double startConcentration, 
 				                   double dilutionfactor,
-				                   ConcUnit concUnit ) {
+				                   ConcUnit concUnit, 
+				                   boolean doingHorizonalDilution ) {
 			
-			Map< Integer, List<Well> > wellsByColumn = new HashMap< Integer, List<Well> >();  
+			Map< Integer, List<Well> > wellsByDilutionSerie = new HashMap< Integer, List<Well> >();  
 			
 			for(Well well : toBeSaved.getWells() ) {
+				int identifier = doingHorizonalDilution ? well.getCol() : well.getRow();
 				for(SampleMarker marker : well.getSampleMarkers()) {
 					if(marker.getName().equals(sampleMarker.getName())) {
 						
-						List<Well> wellsInColumn = wellsByColumn.get(well.getCol());
+						List<Well> wellsInDilutionSerie = wellsByDilutionSerie.get(identifier);
 						
-						if( wellsInColumn == null ) {
-							wellsInColumn = new ArrayList<Well>();
-							wellsByColumn.put(well.getCol(), wellsInColumn);
+						if( wellsInDilutionSerie == null ) {
+							wellsInDilutionSerie = new ArrayList<Well>();
+							wellsByDilutionSerie.put(identifier, wellsInDilutionSerie);
 						}
 						
-						wellsInColumn.add(well);
+						wellsInDilutionSerie.add(well);
 					}
 				}
 			}
-			List<Integer> columns = new ArrayList<Integer>(wellsByColumn.keySet());
-			Collections.sort(columns);
+			List<Integer> dilutionSerie = new ArrayList<Integer>(wellsByDilutionSerie.keySet());
+			Collections.sort(dilutionSerie);
 			int i = 0;
-			for( Integer column : columns ) {
+			for( Integer identifier : dilutionSerie ) {
 				double concentration = startConcentration * Math.pow(dilutionfactor, -i++);
-				for( Well well : wellsByColumn.get(column) ) {
+				for( Well well : wellsByDilutionSerie.get(identifier) ) {
 					for(SampleMarker marker : well.getSampleMarkers()) {
 						if(marker.getName().equals(sampleMarker.getName())) {
 							DrugSample drugSample = new DrugSample( Activator.getDefault().getCurrentUser(),

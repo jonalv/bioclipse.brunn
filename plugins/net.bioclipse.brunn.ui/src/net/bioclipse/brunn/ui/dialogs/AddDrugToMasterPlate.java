@@ -9,7 +9,11 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -28,6 +32,8 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 	private Text concentrationText;
 	private String[] markers;
 	private ConcUnit concUnit;
+	private boolean doingHorizontalDilutionSeries;
+
 	
 	private double dilutionFactor = lastDilutionFactor;
 	private double concentration = lastConcentration;
@@ -38,6 +44,9 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 	private static double lastDilutionFactor = 1;
 	private static double lastConcentration = 100;
 	private static int lastConcentrationIndex = 1;
+	private static boolean lastDoingHorizontalDilutionSeries = true;
+	private Button verticalDilutionSeriesButton;
+	private Button horizontalDilutionSeriesButton;
 	
 	public double getConcentration() {
 		return concentration;
@@ -64,26 +73,45 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
 		Composite container = new Composite(area, SWT.NONE);
+		container.setLayout(new FormLayout());
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		final Label startingConcentrationLabel = new Label(container, SWT.NONE);
-		startingConcentrationLabel.setBounds(46, 15,145, 20);
+		final FormData fd_startingConcentrationLabel = new FormData();
+		startingConcentrationLabel.setLayoutData(fd_startingConcentrationLabel);
 		startingConcentrationLabel.setText("Starting concentration:");
 
 		concentrationText = new Text(container, SWT.BORDER);
-		concentrationText.setBounds(197, 10,80, 25);
+		fd_startingConcentrationLabel.bottom = new FormAttachment(concentrationText, 0, SWT.BOTTOM);
+		fd_startingConcentrationLabel.right = new FormAttachment(concentrationText, -5, SWT.LEFT);
+		final FormData fd_concentrationText = new FormData();
+		fd_concentrationText.bottom = new FormAttachment(0, 39);
+		fd_concentrationText.top = new FormAttachment(0, 20);
+		fd_concentrationText.left = new FormAttachment(0, 197);
+		concentrationText.setLayoutData(fd_concentrationText);
 		concentrationText.setText(concentration + "");
 
 		final Label dilutionFactorLabel = new Label(container, SWT.NONE);
-		dilutionFactorLabel.setBounds(101, 73,90, 20);
+		final FormData fd_dilutionFactorLabel = new FormData();
+		dilutionFactorLabel.setLayoutData(fd_dilutionFactorLabel);
 		dilutionFactorLabel.setText("Dilution factor:");
 
 		dilutionFactorText = new Text(container, SWT.BORDER);
+		fd_dilutionFactorLabel.top = new FormAttachment(dilutionFactorText, -13, SWT.BOTTOM);
+		fd_dilutionFactorLabel.bottom = new FormAttachment(dilutionFactorText, 0, SWT.BOTTOM);
+		fd_dilutionFactorLabel.left = new FormAttachment(dilutionFactorText, -76, SWT.LEFT);
+		fd_dilutionFactorLabel.right = new FormAttachment(dilutionFactorText, -5, SWT.LEFT);
+		final FormData fd_dilutionFactorText = new FormData();
+		fd_dilutionFactorText.bottom = new FormAttachment(0, 150);
+		fd_dilutionFactorText.top = new FormAttachment(0, 131);
+		dilutionFactorText.setLayoutData(fd_dilutionFactorText);
 		dilutionFactorText.setText(dilutionFactor + "");
-		dilutionFactorText.setBounds(197, 68,80, 25);
 
 		concUnitCombo = new Combo(container, SWT.NONE|SWT.READ_ONLY);
-		concUnitCombo.setBounds(195, 110, 100, 27);
+		final FormData fd_concUnitCombo = new FormData();
+		fd_concUnitCombo.top = new FormAttachment(0, 170);
+		fd_concUnitCombo.bottom = new FormAttachment(0, 191);
+		concUnitCombo.setLayoutData(fd_concUnitCombo);
 		
 		String[] items = new String[concUnits.length];
 		for (int i = 0; i < items.length; i++) {
@@ -92,11 +120,42 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 		concUnitCombo.setItems(items);
 		concUnitCombo.select(lastConcentrationIndex);
 
-		final Label concentrationUnitLabel = new Label(container, SWT.NONE);
+		Label concentrationUnitLabel;
+		concentrationUnitLabel = new Label(container, SWT.NONE);
+		final FormData fd_concentrationUnitLabel = new FormData();
+		fd_concentrationUnitLabel.bottom = new FormAttachment(concUnitCombo, 0, SWT.BOTTOM);
+		fd_concentrationUnitLabel.left = new FormAttachment(concUnitCombo, -98, SWT.LEFT);
+		fd_concentrationUnitLabel.right = new FormAttachment(concUnitCombo, -5, SWT.LEFT);
+		concentrationUnitLabel.setLayoutData(fd_concentrationUnitLabel);
 		concentrationUnitLabel.setText("Concentration unit:");
-		concentrationUnitLabel.setBounds(66, 117, 125, 20);
+
+		horizontalDilutionSeriesButton = new Button(container, SWT.RADIO);
+		final FormData fd_dilutionSeriesButton = new FormData();
+		fd_dilutionSeriesButton.bottom = new FormAttachment(0, 75);
+		fd_dilutionSeriesButton.top = new FormAttachment(0, 59);
+		fd_dilutionSeriesButton.left = new FormAttachment(startingConcentrationLabel, 5, SWT.RIGHT);
+		horizontalDilutionSeriesButton.setLayoutData(fd_dilutionSeriesButton);
+		horizontalDilutionSeriesButton.setText("Horizontal dilution series");
+
+		verticalDilutionSeriesButton = new Button(container, SWT.RADIO);
+		fd_concUnitCombo.left = new FormAttachment(verticalDilutionSeriesButton, 0, SWT.LEFT);
+		fd_dilutionFactorText.right = new FormAttachment(verticalDilutionSeriesButton, 76, SWT.LEFT);
+		fd_dilutionFactorText.left = new FormAttachment(verticalDilutionSeriesButton, 0, SWT.LEFT);
+		final FormData fd_verticalDilutionSeriesButton = new FormData();
+		fd_verticalDilutionSeriesButton.bottom = new FormAttachment(0, 111);
+		fd_verticalDilutionSeriesButton.top = new FormAttachment(0, 95);
+		fd_verticalDilutionSeriesButton.left = new FormAttachment(0, 196);
+		fd_verticalDilutionSeriesButton.right = new FormAttachment(0, 320);
+		verticalDilutionSeriesButton.setLayoutData(fd_verticalDilutionSeriesButton);
+		verticalDilutionSeriesButton.setText("Vertical dilution series");
 		setTitle("Add dilution series to masterPlate");
 		//
+		if ( lastDoingHorizontalDilutionSeries ) {
+			horizontalDilutionSeriesButton.setSelection(true);
+		}
+		else {
+			verticalDilutionSeriesButton.setSelection(true);
+		}
 		return area;
 	}
 
@@ -117,7 +176,7 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(359, 305);
+		return new Point(415, 355);
 	}
 
 	protected void buttonPressed(int buttonId) {
@@ -128,6 +187,8 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 				lastConcentration = concentration;
 				lastDilutionFactor = dilutionFactor;
 				lastConcentrationIndex = concUnitCombo.getSelectionIndex();
+				doingHorizontalDilutionSeries = !verticalDilutionSeriesButton.getSelection();
+				lastDoingHorizontalDilutionSeries = doingHorizontalDilutionSeries;
 			}
 			catch(NumberFormatException e) {
 				MessageDialog.openInformation( PlatformUI
@@ -145,5 +206,9 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 
 	public ConcUnit getConcUnit() {
 		return concUnit;
+	}
+
+	public boolean isDoingHorizontalDilutionSeries() {
+		return doingHorizontalDilutionSeries;
 	}
 }
