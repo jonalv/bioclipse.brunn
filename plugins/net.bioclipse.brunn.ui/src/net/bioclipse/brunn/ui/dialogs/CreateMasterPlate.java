@@ -11,6 +11,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FormAttachment;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -51,14 +54,25 @@ public class CreateMasterPlate extends TitleAreaDialog {
 	protected Control createDialogArea(Composite parent) {
 		Composite area = (Composite) super.createDialogArea(parent);
 		Composite container = new Composite(area, SWT.NONE);
+		container.setLayout(new FormLayout());
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		final Group basedUponGroup = new Group(container, SWT.NONE);
+		basedUponGroup.setLayout(new FormLayout());
+		final FormData fd_basedUponGroup = new FormData();
+		fd_basedUponGroup.bottom = new FormAttachment(0, 149);
+		fd_basedUponGroup.top = new FormAttachment(0, 22);
+		fd_basedUponGroup.right = new FormAttachment(0, 364);
+		fd_basedUponGroup.left = new FormAttachment(0, 50);
+		basedUponGroup.setLayoutData(fd_basedUponGroup);
 		basedUponGroup.setText("Based upon");
-		basedUponGroup.setBounds(50, 22, 314, 127);
 
 		comboPlateLayout = new Combo(basedUponGroup, SWT.NONE|SWT.READ_ONLY);
-		comboPlateLayout.setBounds(147, 32, 124, 25);
+		final FormData fd_comboPlateLayout = new FormData();
+		fd_comboPlateLayout.bottom = new FormAttachment(0, 40);
+		fd_comboPlateLayout.right = new FormAttachment(0, 268);
+		fd_comboPlateLayout.left = new FormAttachment(0, 144);
+		comboPlateLayout.setLayoutData(fd_comboPlateLayout);
 		
 		//populate the comboMasterPlate
 		IPlateLayoutManager plm  = (IPlateLayoutManager) Springcontact.getBean("plateLayoutManager");
@@ -70,32 +84,57 @@ public class CreateMasterPlate extends TitleAreaDialog {
 		comboPlateLayout.setItems(items);
 
 		comboMasterPlate = new Combo(basedUponGroup, SWT.NONE|SWT.READ_ONLY);
+		final FormData fd_comboMasterPlate = new FormData();
+		fd_comboMasterPlate.bottom = new FormAttachment(0, 86);
+		fd_comboMasterPlate.right = new FormAttachment(0, 268);
+		fd_comboMasterPlate.left = new FormAttachment(0, 144);
+		comboMasterPlate.setLayoutData(fd_comboMasterPlate);
 		comboMasterPlate.setEnabled(false);
-		comboMasterPlate.setBounds(147, 78, 124, 25);
 
 		final Button plateLayoutButton = new Button(basedUponGroup, SWT.RADIO);
+		final FormData fd_plateLayoutButton = new FormData();
+		fd_plateLayoutButton.bottom = new FormAttachment(comboPlateLayout, 0, SWT.BOTTOM);
+		fd_plateLayoutButton.left = new FormAttachment(0, 25);
+		plateLayoutButton.setLayoutData(fd_plateLayoutButton);
 		plateLayoutButton.setText("Plate Layout:");
-		plateLayoutButton.setBounds(31, 32, 110, 25);
 
-		final Button masterPlateButton = new Button(basedUponGroup, SWT.RADIO);
+		Button masterPlateButton;
+		masterPlateButton = new Button(basedUponGroup, SWT.RADIO);
+		final FormData fd_masterPlateButton = new FormData();
+		fd_masterPlateButton.right = new FormAttachment(plateLayoutButton, 0, SWT.RIGHT);
+		fd_masterPlateButton.bottom = new FormAttachment(comboMasterPlate, 0, SWT.BOTTOM);
+		masterPlateButton.setLayoutData(fd_masterPlateButton);
 		masterPlateButton.setEnabled(false);
 		masterPlateButton.setText("Master Plate:");
-		masterPlateButton.setBounds(31, 78, 110, 25);
 		
 		plateLayoutButton.setSelection(true);
 
 		final Label nameLabel = new Label(container, SWT.NONE);
+		final FormData fd_nameLabel = new FormData();
+		nameLabel.setLayoutData(fd_nameLabel);
 		nameLabel.setText("Name:");
-		nameLabel.setBounds(151, 233, 45, 20);
 
 		text = new Text(container, SWT.BORDER);
-		text.setBounds(202, 228, 124, 30);
+		fd_nameLabel.bottom = new FormAttachment(text, 0, SWT.BOTTOM);
+		fd_nameLabel.right = new FormAttachment(text, -5, SWT.LEFT);
+		final FormData fd_text = new FormData();
+		fd_text.top = new FormAttachment(0, 228);
+		fd_text.right = new FormAttachment(0, 326);
+		fd_text.left = new FormAttachment(0, 202);
+		text.setLayoutData(fd_text);
 
 		numOfPlatesText = new Text(container, SWT.BORDER);
-		numOfPlatesText.setBounds(202, 185, 124, 30);
+		final FormData fd_numOfPlatesText = new FormData();
+		fd_numOfPlatesText.top = new FormAttachment(0, 185);
+		fd_numOfPlatesText.right = new FormAttachment(0, 326);
+		fd_numOfPlatesText.left = new FormAttachment(0, 202);
+		numOfPlatesText.setLayoutData(fd_numOfPlatesText);
 
 		final Label nameLabel_1 = new Label(container, SWT.NONE);
-		nameLabel_1.setBounds(26, 190, 170, 20);
+		final FormData fd_nameLabel_1 = new FormData();
+		fd_nameLabel_1.bottom = new FormAttachment(numOfPlatesText, 0, SWT.BOTTOM);
+		fd_nameLabel_1.right = new FormAttachment(numOfPlatesText, -5, SWT.LEFT);
+		nameLabel_1.setLayoutData(fd_nameLabel_1);
 		nameLabel_1.setText("Number of plates in batch:");
 		setTitle("Create Master Plate");
 		//
