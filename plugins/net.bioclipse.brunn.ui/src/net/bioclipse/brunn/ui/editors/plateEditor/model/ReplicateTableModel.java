@@ -69,7 +69,8 @@ public class ReplicateTableModel extends KTableDefaultModel {
 				int c = o1[1].compareTo( o2[1] );
 				if ( c != 0 ) 
 					return c;
-				c = o1[2].compareTo( o2[2] );
+				c = Double.compare( Double.parseDouble( o1[2] ), 
+			                        Double.parseDouble( o2[2] ) );
 				if ( c != 0 )
 					return c;
 				return o1[3].compareTo( o2[3] );

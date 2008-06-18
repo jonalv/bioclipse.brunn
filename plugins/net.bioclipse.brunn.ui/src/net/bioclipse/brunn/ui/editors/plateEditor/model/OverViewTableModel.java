@@ -3,6 +3,7 @@ package net.bioclipse.brunn.ui.editors.plateEditor.model;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Formatter;
 import java.util.List;
 
@@ -101,7 +102,19 @@ public class OverViewTableModel extends KTableDefaultModel {
 			}
 			values.add(row);
 		}
-		
+		Collections.sort(values, new Comparator<String[]>() {
+			@Override
+			public int compare(String[] o1, String[] o2) {
+				int c = o1[1].compareTo( o2[1] );
+				if ( c != 0 ) 
+					return c;
+				c = Double.compare( Double.parseDouble( o1[2] ), 
+						            Double.parseDouble( o2[2] ) );
+				if ( c != 0 )
+					return c;
+				return o1[3].compareTo( o2[3] );
+			}
+		});
 		matrix = new String[values.size()][columnNames.size()];
 		int rowNumber = 0;
 		for(String[] row : values) {
