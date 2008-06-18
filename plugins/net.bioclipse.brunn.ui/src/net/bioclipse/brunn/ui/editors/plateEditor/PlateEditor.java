@@ -336,11 +336,13 @@ public class PlateEditor extends EditorPart {
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
 			
-				if( e1 instanceof ILISObject && 
-					e2 instanceof ILISObject ) {
+				if( e1 instanceof String[]      && 
+					e2 instanceof String[]      &&
+					( (String[])e1 ).length > 0 &&
+					( (String[])e2 ).length > 0 ) {
 					
-					return ( (ILISObject)e1 ).toString().compareTo(
-							 ( (ILISObject)e2 ).toString() );
+					return ( (String[])e1 )[0].compareTo(
+						   ( (String[])e2 )[0] );
 				}
 				
 				return super.compare(viewer, e1, e2);

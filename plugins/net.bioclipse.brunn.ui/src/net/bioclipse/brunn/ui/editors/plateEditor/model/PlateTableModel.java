@@ -225,21 +225,30 @@ public class PlateTableModel extends KTableDefaultModel {
 		
 		public String toString() {
 			
-			String s = "";
+			if( markers.size() == 0 ) {
+				return "";
+			}
 			
-			String valuePart = ( (value==-1) ? "" : Math.round(value) + "" );
+			StringBuilder s = new StringBuilder();
+			
+			String valuePart 
+				= ( (value==-1) 
+			      || (Double.compare( Double.NaN, value) == 0 ) ? "" 
+				                                                : Math.round(value) + "" );
 			if( domainWell.isOutlier() ) {
-				valuePart = "{" + valuePart + "}";
+				valuePart = "outlier";
 			}
 			valuePart = valuePart + "\n";
 			for (int i = 0; i < markers.size(); i++) {
-				s += markers.get(i);
+				s.append( markers.get(i) );
 				if( markers.get(i).matches("M\\d+") && concentrations.get(i) != 0 ) {
-					s += " [" + String.format( "%.2f", concentrations.get(i) ) + "]";
+					s.append( "[" );
+					s.append( String.format( "%.2f", concentrations.get(i) ) ); 
+					s.append( "]" );
 				}
-				s += "\n";
+				s.append("\n");
 			}
-			return valuePart + s;
+			return valuePart + s.toString();
 		}
 	}
 
