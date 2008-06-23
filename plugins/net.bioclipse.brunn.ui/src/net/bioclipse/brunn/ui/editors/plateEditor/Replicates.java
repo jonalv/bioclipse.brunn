@@ -27,7 +27,7 @@ import org.eclipse.ui.part.EditorPart;
 import de.kupzog.ktable.KTable;
 import de.kupzog.ktable.SWTX;
 
-public class Replicates extends EditorPart {
+public class Replicates extends EditorPart implements OutlierChangedListener {
 
 	private KTable table;
 	private Plate plate;
@@ -37,9 +37,10 @@ public class Replicates extends EditorPart {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay() );
 	
 		
-	public Replicates(PlateResults plateResults) {
+	public Replicates(PlateResults plateResults, PlateMultiPageEditor plateMultiPageEditor) {
 		super();
 		this.plateResults = plateResults;
+		plateMultiPageEditor.addListener(this);
 	}
 
 	@Override
@@ -133,5 +134,10 @@ public class Replicates extends EditorPart {
 	public void dispose() {
 		super.dispose();
 		cb.dispose();
+	}
+
+	@Override
+	public void onOutLierChange() {
+		table.setModel( new ReplicateTableModel(plate, table, this, plateResults) );
 	}
 }

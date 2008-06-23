@@ -27,7 +27,7 @@ import org.eclipse.ui.part.EditorPart;
 import de.kupzog.ktable.KTable;
 import de.kupzog.ktable.SWTX;
 
-public class Summary extends EditorPart {
+public class Summary extends EditorPart implements OutlierChangedListener {
 
 	private KTable table;
 	private Plate plate;
@@ -37,9 +37,10 @@ public class Summary extends EditorPart {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay() );
 	
 		
-	public Summary(PlateResults plateResults) {
+	public Summary(PlateResults plateResults, PlateMultiPageEditor plateMultiPageEditor) {
 		super();
 		this.plateResults = plateResults;
+		plateMultiPageEditor.addListener(this);
 	}
 
 	@Override
@@ -136,5 +137,10 @@ public class Summary extends EditorPart {
 	public void dispose() {
 		super.dispose();
 		cb.dispose();
+	}
+
+	@Override
+	public void onOutLierChange() {
+		table.setModel( new OverViewTableModel(plate, table, this, plateResults) );
 	}
 }

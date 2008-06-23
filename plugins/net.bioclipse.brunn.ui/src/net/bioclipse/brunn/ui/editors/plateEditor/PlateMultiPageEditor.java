@@ -1,5 +1,8 @@
 package net.bioclipse.brunn.ui.editors.plateEditor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.plate.IPlateManager;
 import net.bioclipse.brunn.pojos.Plate;
@@ -15,8 +18,23 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	private PlateEditor plateEditor;
 	private Summary summary;
 	private Replicates replicates;
+	private Set<OutlierChangedListener> outLierListeners = new HashSet<OutlierChangedListener>();
 
 	public final static String ID = "net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor"; 
+	
+	public void fireOutliersChanged() {
+		for( OutlierChangedListener l : outLierListeners ) {
+			l.onOutLierChange();
+		}
+	}
+	
+	public void addListener(OutlierChangedListener listener) {
+		outLierListeners.add(listener);
+	}
+	
+	public void removeListener( OutlierChangedListener listener ) {
+		outLierListeners.remove(listener);
+	}
 	
 	@Override
 	protected void createPages() {
@@ -26,7 +44,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		PlateResults plateResults = plate.getPlateResults();
 		this.setPartName(plate.getName()); 
 		try {
-			plateEditor = new PlateEditor(plateResults);
+			plateEditor = new PlateEditor(plateResults, this);
 			int index = this.addPage((IEditorPart) plateEditor, getEditorInput());
 			setPageText(index, "Overview");
 			this.setActivePage(index);
@@ -36,7 +54,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		}
 
 		try {
-			summary = new Summary(plateResults);
+			summary = new Summary(plateResults, this);
 			int index = this.addPage((IEditorPart) summary, getEditorInput());
 			setPageText(index, "Summary");
 		} 
@@ -45,7 +63,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		}
 		
 		try {
-			replicates = new Replicates(plateResults);
+			replicates = new Replicates(plateResults, this);
 			int index = this.addPage((IEditorPart) replicates, getEditorInput());
 			setPageText(index, "Replicates");
 		} 

@@ -65,7 +65,7 @@ import de.kupzog.ktable.KTable;
 import de.kupzog.ktable.KTableCellSelectionListener;
 import de.kupzog.ktable.SWTX;
 
-public class PlateEditor extends EditorPart {
+public class PlateEditor extends EditorPart implements OutlierChangedListener {
 
 	private Text barcodeText;
 	static class Sorter extends ViewerSorter {
@@ -92,15 +92,20 @@ public class PlateEditor extends EditorPart {
 	private TableViewer plateFunctionsTableViewer;
 	private PlateResults plateResults;
 	private IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
+	private boolean outlierSelected;
 	
 	private final Clipboard cb = new Clipboard(
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay() );
 	
-	public final static String ID = "net.bioclipse.brunn.ui.editors.plateEditor.PlateEditor"; 
+	public final static String ID = "net.bioclipse.brunn.ui.editors.plateEditor.PlateEditor";
+	private Button markAsOutlierButton;
+	private PlateMultiPageEditor plateMultiPageEditor; 
 	
-	public PlateEditor(PlateResults plateResults) {
+	public PlateEditor(PlateResults plateResults, PlateMultiPageEditor plateMultiPageEditor) {
 		super();
 		this.plateResults = plateResults;
+		this.plateMultiPageEditor = plateMultiPageEditor;
+		plateMultiPageEditor.addListener(this);
 	}
 
 	@Override
@@ -245,6 +250,15 @@ public class PlateEditor extends EditorPart {
 
 			public void cellSelected(int col, int row, int statemask) {
 				refreshMarkerTableSelection();
+				outlierSelected = true;
+				markAsOutlierButton.setText("Unmark as outlier");
+				for( Point p : plateTable.getCellSelection() ) {
+					if ( !toBeSaved.getWell(p).isOutlier() ) {
+						markAsOutlierButton.setText("Mark as outlier");
+						outlierSelected = false;
+					}
+					
+				}
 				
 			}
 
@@ -382,7 +396,6 @@ public class PlateEditor extends EditorPart {
 			}
 		});
 		
-		Button markAsOutlierButton;
 		markAsOutlierButton = new Button(bottom, SWT.NONE);
 		markAsOutlierButton.addSelectionListener(new SelectionAdapter() {
 			/*
@@ -390,17 +403,11 @@ public class PlateEditor extends EditorPart {
 			 */
 			public void widgetSelected(final SelectionEvent e) {
 				for( Point p : plateTable.getCellSelection() ) {
-//					Object o = plateTable.getModel().getContentAt(p.x, p.y);
-//					if( o instanceof PlateTableModel.Well ) {
-//						( (PlateTableModel.Well)o ).setOutlier(true);
-//					}
-					toBeSaved.getWell(p).setOutlier(true);
+					toBeSaved.getWell(p).setOutlier(!outlierSelected);
+					plateResults.setOutlier( toBeSaved.getWell(p).getName(), 
+							                 !outlierSelected );
 				}
-				plateTable.setModel(new PlateTableModel( toBeSaved, 
-						                                 plateTable, 
-						                                 editor, 
-						                                 wellFunctionCombo.getText(), 
-						                                 plateResults ));
+				plateMultiPageEditor.fireOutliersChanged();
 				firePropertyChange(PROP_DIRTY);
 			}
 		});
@@ -533,5 +540,14 @@ public class PlateEditor extends EditorPart {
 		}
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		}
+	}
+
+	@Override
+	public void onOutLierChange() {
+		plateTable.setModel( new PlateTableModel( toBeSaved, 
+                                                  plateTable, 
+                                                  this, 
+                                                  wellFunctionCombo.getText(), 
+                                                  plateResults ) );
 	}
 }
