@@ -71,73 +71,65 @@ public class CreatePlate extends TitleAreaDialog {
 
 		final Label nameLabel = new Label(container, SWT.NONE);
 		final FormData formData = new FormData();
-		formData.left = new FormAttachment(0, 76);
-		formData.bottom = new FormAttachment(0, 47);
-		formData.top = new FormAttachment(0, 30);
 		nameLabel.setLayoutData(formData);
 		nameLabel.setText("Name:");
 
 		Label masterPlateLabel;
 		masterPlateLabel = new Label(container, SWT.NONE);
 		final FormData formData_1 = new FormData();
-		formData_1.right = new FormAttachment(nameLabel, 0, SWT.RIGHT);
-		formData_1.top = new FormAttachment(0, 83);
-		formData_1.bottom = new FormAttachment(0, 100);
 		masterPlateLabel.setLayoutData(formData_1);
 		masterPlateLabel.setText("Master Plate:");
 
 		final Label nameLabel_1 = new Label(container, SWT.NONE);
 		final FormData formData_3 = new FormData();
-		formData_3.bottom = new FormAttachment(0, 242);
-		formData_3.top = new FormAttachment(0, 225);
-		formData_3.right = new FormAttachment(0, 114);
-		formData_3.left = new FormAttachment(0, 15);
 		nameLabel_1.setLayoutData(formData_3);
-		nameLabel_1.setText("Defrosting date");
+		nameLabel_1.setText("Defrosting date:");
 
 		final Label barcodeLabel = new Label(container, SWT.NONE);
 		final FormData formData_4 = new FormData();
-		formData_4.right = new FormAttachment(0, 113);
-		formData_4.left = new FormAttachment(0, 60);
-		formData_4.bottom = new FormAttachment(0, 292);
-		formData_4.top = new FormAttachment(0, 275);
+		formData_4.right = new FormAttachment(nameLabel_1, 0, SWT.RIGHT);
 		barcodeLabel.setLayoutData(formData_4);
-		barcodeLabel.setText("Barcode");
+		barcodeLabel.setText("Barcode:");
 
 		nameText = new Text(container, SWT.BORDER);
+		formData.bottom = new FormAttachment(nameText, 0, SWT.BOTTOM);
+		formData.left = new FormAttachment(nameText, -36, SWT.LEFT);
+		formData.right = new FormAttachment(nameText, -5, SWT.LEFT);
 		final FormData formData_5 = new FormData();
-		formData_5.right = new FormAttachment(100, -23);
-		formData_5.top = new FormAttachment(nameLabel, -27, SWT.BOTTOM);
-		formData_5.bottom = new FormAttachment(nameLabel, 0, SWT.BOTTOM);
-		formData_5.left = new FormAttachment(nameLabel, 5, SWT.RIGHT);
+		formData_5.right = new FormAttachment(100, -125);
+		formData_5.left = new FormAttachment(0, 160);
+		formData_5.bottom = new FormAttachment(0, 55);
 		nameText.setLayoutData(formData_5);
 
 		masterPlateCombo = new Combo(container, SWT.READ_ONLY);
+		formData_1.top = new FormAttachment(masterPlateCombo, -17, SWT.BOTTOM);
+		formData_1.bottom = new FormAttachment(masterPlateCombo, 0, SWT.BOTTOM);
+		formData_1.right = new FormAttachment(masterPlateCombo, -5, SWT.LEFT);
 		final FormData formData_6 = new FormData();
-		formData_6.left = new FormAttachment(nameText, 1, SWT.LEFT);
-		formData_6.right = new FormAttachment(nameText, 0, SWT.RIGHT);
-		formData_6.top = new FormAttachment(masterPlateLabel, -25, SWT.BOTTOM);
-		formData_6.bottom = new FormAttachment(masterPlateLabel, 0, SWT.BOTTOM);
+		formData_6.right = new FormAttachment(nameText, -3, SWT.RIGHT);
+		formData_6.bottom = new FormAttachment(0, 100);
+		formData_6.left = new FormAttachment(nameLabel, 5, SWT.RIGHT);
 		masterPlateCombo.setLayoutData(formData_6);
 	
 		cellTypeCombo = new Combo(container, SWT.READ_ONLY);
 		final FormData formData_7 = new FormData();
+		formData_7.right = new FormAttachment(nameText, -3, SWT.RIGHT);
 		formData_7.bottom = new FormAttachment(0, 152);
-		formData_7.top = new FormAttachment(0, 125);
 		formData_7.left = new FormAttachment(nameText, 1, SWT.LEFT);
-		formData_7.right = new FormAttachment(masterPlateCombo, 0, SWT.RIGHT);
 		cellTypeCombo.setLayoutData(formData_7);
 		
 		barcodeText = new Text(container, SWT.BORDER);
+		formData_4.bottom = new FormAttachment(barcodeText, 0, SWT.BOTTOM);
 		final FormData formData_8 = new FormData();
-		formData_8.right = new FormAttachment(cellTypeCombo, 4, SWT.RIGHT);
+		formData_8.right = new FormAttachment(100, -370);
 		formData_8.bottom = new FormAttachment(0, 292);
-		formData_8.top = new FormAttachment(0, 265);
 		formData_8.left = new FormAttachment(cellTypeCombo, 0, SWT.LEFT);
 		barcodeText.setLayoutData(formData_8);
 		setTitle("Create Plate");
 		
-		final Button patientCellButton = new Button(container, SWT.RADIO);
+		Button patientCellButton;
+		patientCellButton = new Button(container, SWT.RADIO);
+		formData_3.right = new FormAttachment(patientCellButton, 0, SWT.RIGHT);
 		patientCellButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				cellTypeCombo.setEnabled(false);
@@ -145,19 +137,16 @@ public class CreatePlate extends TitleAreaDialog {
 			}
 		});
 		final FormData fd_patientCellButton = new FormData();
-		fd_patientCellButton.right = new FormAttachment(nameLabel, -5, SWT.RIGHT);
-		fd_patientCellButton.top = new FormAttachment(0, 178);
-		fd_patientCellButton.bottom = new FormAttachment(0, 200);
-		fd_patientCellButton.left = new FormAttachment(nameLabel_1, -93, SWT.RIGHT);
+		fd_patientCellButton.right = new FormAttachment(masterPlateLabel, 0, SWT.RIGHT);
 		patientCellButton.setLayoutData(fd_patientCellButton);
-		patientCellButton.setText("Patient cell");
+		patientCellButton.setText("Patient cell:");
 		
 		patientCellCombo = new Combo(container, SWT.READ_ONLY);
+		fd_patientCellButton.bottom = new FormAttachment(patientCellCombo, 0, SWT.BOTTOM);
 		patientCellCombo.setEnabled(false);
 		final FormData fd_patientCellCombo = new FormData();
-		fd_patientCellCombo.right = new FormAttachment(cellTypeCombo, 0, SWT.RIGHT);
-		fd_patientCellCombo.top = new FormAttachment(patientCellButton, -27, SWT.BOTTOM);
-		fd_patientCellCombo.bottom = new FormAttachment(patientCellButton, 0, SWT.BOTTOM);
+		fd_patientCellCombo.right = new FormAttachment(nameText, -3, SWT.RIGHT);
+		fd_patientCellCombo.bottom = new FormAttachment(0, 195);
 		fd_patientCellCombo.left = new FormAttachment(cellTypeCombo, 0, SWT.LEFT);
 		patientCellCombo.setLayoutData(fd_patientCellCombo);
 		
@@ -191,11 +180,12 @@ public class CreatePlate extends TitleAreaDialog {
 		patientCellCombo.select(0);
 
 		text = new Text(container, SWT.BORDER);
+		formData_3.bottom = new FormAttachment(text, 0, SWT.BOTTOM);
 		text.setEnabled(false);
 		text.setText("For now, set to current time, later here will be "
                    + "some sort of datetime picker.");
 		final FormData formData_9 = new FormData();
-		formData_9.right = new FormAttachment(cellTypeCombo, 4, SWT.RIGHT);
+		formData_9.right = new FormAttachment(nameText, 1, SWT.RIGHT);
 		formData_9.top = new FormAttachment(0, 220);
 		formData_9.left = new FormAttachment(cellTypeCombo, 0, SWT.LEFT);
 		text.setLayoutData(formData_9);
@@ -209,8 +199,8 @@ public class CreatePlate extends TitleAreaDialog {
 		});
 		cellLineButton.setSelection(true);
 		final FormData fd_cellLineButton = new FormData();
-		fd_cellLineButton.right = new FormAttachment(nameLabel, 0, SWT.RIGHT);
 		fd_cellLineButton.bottom = new FormAttachment(cellTypeCombo, 0, SWT.BOTTOM);
+		fd_cellLineButton.right = new FormAttachment(cellTypeCombo, -5, SWT.LEFT);
 		cellLineButton.setLayoutData(fd_cellLineButton);
 		cellLineButton.setText("Cell line:");
 
