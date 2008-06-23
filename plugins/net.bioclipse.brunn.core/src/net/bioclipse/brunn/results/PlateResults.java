@@ -241,4 +241,13 @@ public class PlateResults implements IEditorInput {
 	public Plate getPlate() {
     	return plate;
     }
+
+	public void setOutlier(String name, boolean outlier) {
+		if(outlier) {
+			calculator.addSuppressedVariable(name);
+		}
+		else {
+			calculator.removeSuppressedVariable(name);
+		}
+    }
 }
