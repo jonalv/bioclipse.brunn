@@ -417,6 +417,10 @@ public class MasterPlateEditor extends EditorPart {
 			}
 			List<Integer> dilutionSerie = new ArrayList<Integer>(wellsByDilutionSerie.keySet());
 			Collections.sort(dilutionSerie);
+			//To get the vertical series going in the right direction.
+			if (!doingHorizonalDilution) {
+				Collections.reverse(dilutionSerie);
+			}
 			int i = 0;
 			for( Integer identifier : dilutionSerie ) {
 				double concentration = startConcentration * Math.pow(dilutionfactor, -i++);
