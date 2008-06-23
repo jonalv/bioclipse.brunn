@@ -65,7 +65,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		try {
 			replicates = new Replicates(plateResults, this);
 			int index = this.addPage((IEditorPart) replicates, getEditorInput());
-			setPageText(index, "Replicates");
+			setPageText(index, "Average");
 		} 
 		catch (PartInitException e) {
 			e.printStackTrace();			

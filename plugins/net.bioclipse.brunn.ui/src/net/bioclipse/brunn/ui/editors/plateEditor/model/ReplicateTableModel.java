@@ -52,6 +52,7 @@ public class ReplicateTableModel extends KTableDefaultModel {
 		Collections.addAll( columnNames, new String[] {"Cell Type", "Compound Names", "Concentration"} );
 		columnNames.addAll( plate.getWellFunctionNames() );
 		columnNames.add( "CV%" );
+		columnNames.add( "no. replicates" );
 		
 		/*
 		 * set up the matrix from the plate 
@@ -103,7 +104,7 @@ public class ReplicateTableModel extends KTableDefaultModel {
 		
 		Map<String, List<Double>> wellFunctions = new HashMap<String, List<Double>>();
 		for ( Well well : wells ) {
-			for( String wellFunctionName : columnNames.subList(3, columnNames.size()) ) {
+			for( String wellFunctionName : columnNames.subList(3, columnNames.size()-2) ) {
 				if( wellFunctions.get(wellFunctionName) == null ) {
 					wellFunctions.put(wellFunctionName, new ArrayList<Double>());
 				}
@@ -128,14 +129,15 @@ public class ReplicateTableModel extends KTableDefaultModel {
 		double sum = 0;
 		int numberOfNan = 0;
 		for( Double rawValue : wellFunctions.get("raw") ) {
-			if(rawValue != Double.NaN) {
+			if( !Double.isNaN( rawValue ) ) {
 				sum += rawValue;
 			}
 			else {
 				numberOfNan++;
 			}
 		}
-        double avg =  sum/ (wellFunctions.get("raw").size() - numberOfNan);
+		int numberOfReplicates = (wellFunctions.get("raw").size() - numberOfNan); 
+        double avg =  sum / numberOfReplicates;
             
         double sumOfDiffs = 0;
         for( Double rawValue : wellFunctions.get("raw") ) {
@@ -144,7 +146,8 @@ public class ReplicateTableModel extends KTableDefaultModel {
         
         double stddev = Math.sqrt( (1.0/(wellFunctions.get("raw").size()-1 - numberOfNan)) * sumOfDiffs );
         DecimalFormat df = new DecimalFormat("0");
-		row[i-1] = df.format( (stddev/avg) * 100 );
+		row[columnNames.size()-2] = df.format( (stddev/avg) * 100 );
+		row[columnNames.size()-1] = numberOfReplicates + "";
 		return row;
 	}
 
