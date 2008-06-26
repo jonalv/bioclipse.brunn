@@ -32,15 +32,19 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 	private KTable table;
 	private Plate plate;
 	private PlateResults plateResults;
+	private Replicates replicates; 
 	
 	private final Clipboard cb = new Clipboard(
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay() );
 	
 		
-	public Summary(PlateResults plateResults, PlateMultiPageEditor plateMultiPageEditor) {
+	public Summary( PlateResults plateResults, 
+			        PlateMultiPageEditor plateMultiPageEditor, 
+			        Replicates replicates) {
 		super();
 		this.plateResults = plateResults;
 		plateMultiPageEditor.addListener(this);
+		this.replicates = replicates;
 	}
 
 	@Override
@@ -95,7 +99,7 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 		formData.top = new FormAttachment(0, 0);
 		table.setLayoutData(formData);
 		
-		table.setModel(new OverViewTableModel(plate, table, this, plateResults));
+		onOutLierChange();
 
 		Button copyTableToButton;
 		copyTableToButton = new Button(composite, SWT.NONE);
@@ -141,6 +145,10 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 
 	@Override
 	public void onOutLierChange() {
-		table.setModel( new OverViewTableModel(plate, table, this, plateResults) );
+		table.setModel( new OverViewTableModel( plate, 
+				                                table, 
+				                                this, 
+				                                plateResults, 
+				                                replicates.getCVMap() ) );
 	}
 }

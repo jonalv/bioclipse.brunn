@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Formatter;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.graphics.Point;
 
@@ -43,11 +44,13 @@ public class OverViewTableModel extends KTableDefaultModel {
 	public OverViewTableModel( net.bioclipse.brunn.pojos.Plate plate,
 			                   KTable table,
 			                   Summary editor,
-			                   PlateResults plateResults ) {
+			                   PlateResults plateResults, 
+			                   Map<String, String> cvMap ) {
 		
 		columnNames = new ArrayList<String>();
 		Collections.addAll( columnNames, new String[] {"Cell Type", "Compound Names", "Concentration"} );
-		columnNames.addAll( plate.getWellFunctionNames() ); 
+		columnNames.addAll( plate.getWellFunctionNames() );
+		columnNames.add( "CV%" );
 		
 		/*
 		 * set up the matrix from the plate 
@@ -98,6 +101,11 @@ public class OverViewTableModel extends KTableDefaultModel {
 					}
 					col++;
 				}
+				
+				row[col-1] = cvMap.get(row[1]+row[2]);
+				if( row[col-1] == null ) {
+					row[col-1] = "?";
+				}
 				break;
 			}
 			values.add(row);
@@ -108,8 +116,14 @@ public class OverViewTableModel extends KTableDefaultModel {
 				int c = o1[1].compareTo( o2[1] );
 				if ( c != 0 ) 
 					return c;
-				c = Double.compare( Double.parseDouble( o1[2] ), 
-						            Double.parseDouble( o2[2] ) );
+				c = Double.compare( Double.parseDouble( 
+		                o1[2].contains(" ") ? o1[2].substring( 0, 
+		                		                               o1[2].indexOf(' '))
+		                		            : o1[2]), 
+		            Double.parseDouble(
+		                o1[2].contains(" ") ? o1[2].substring( 0, 
+		                									   o1[2].indexOf(' '))
+		                				    : o1[2]) );
 				if ( c != 0 )
 					return c;
 				return o1[3].compareTo( o2[3] );
@@ -144,6 +158,11 @@ public class OverViewTableModel extends KTableDefaultModel {
 				result.add(( (DrugSample)s ));
 			}
 		}
+		Collections.sort(result, new Comparator<DrugSample>() {
+			public int compare(DrugSample o1, DrugSample o2) {
+				return o1.getName().compareTo( o2.getName() );
+			}
+		});
 		return result.toArray( new DrugSample[0] );
 	}
 

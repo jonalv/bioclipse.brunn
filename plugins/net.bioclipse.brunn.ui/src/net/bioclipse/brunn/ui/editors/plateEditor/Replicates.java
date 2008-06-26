@@ -1,5 +1,7 @@
 package net.bioclipse.brunn.ui.editors.plateEditor;
 
+import java.util.Map;
+
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.results.PlateResults;
 import net.bioclipse.brunn.ui.editors.plateEditor.model.OverViewTableModel;
@@ -30,6 +32,7 @@ import de.kupzog.ktable.SWTX;
 public class Replicates extends EditorPart implements OutlierChangedListener {
 
 	private KTable table;
+	private ReplicateTableModel tableModel; 
 	private Plate plate;
 	private PlateResults plateResults;
 	
@@ -37,10 +40,12 @@ public class Replicates extends EditorPart implements OutlierChangedListener {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay() );
 	
 		
-	public Replicates(PlateResults plateResults, PlateMultiPageEditor plateMultiPageEditor) {
+	public Replicates(PlateResults plateResults, PlateMultiPageEditor plateMultiPageEditor, Plate plate) {
 		super();
 		this.plateResults = plateResults;
 		plateMultiPageEditor.addListener(this);
+		this.plate = plate;
+		tableModel = new ReplicateTableModel(plate, table, this, plateResults);
 	}
 
 	@Override
@@ -57,10 +62,6 @@ public class Replicates extends EditorPart implements OutlierChangedListener {
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
-		net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate guiPlate =
-			(net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate)input;
-		PlateResults plateResults = guiPlate.getPlateResults();
-		plate = plateResults.getPlate();
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class Replicates extends EditorPart implements OutlierChangedListener {
 		formData.top = new FormAttachment(0, 0);
 		table.setLayoutData(formData);
 		
-		table.setModel(new ReplicateTableModel(plate, table, this, plateResults));
+		table.setModel(tableModel);
 
 		Button copyTableToButton;
 		copyTableToButton = new Button(composite, SWT.NONE);
@@ -138,6 +139,11 @@ public class Replicates extends EditorPart implements OutlierChangedListener {
 
 	@Override
 	public void onOutLierChange() {
-		table.setModel( new ReplicateTableModel(plate, table, this, plateResults) );
+		tableModel = new ReplicateTableModel(plate, table, this, plateResults);
+		table.setModel( tableModel );
+	}
+	
+	public Map<String, String> getCVMap() {
+		return tableModel.getCVMap();
 	}
 }

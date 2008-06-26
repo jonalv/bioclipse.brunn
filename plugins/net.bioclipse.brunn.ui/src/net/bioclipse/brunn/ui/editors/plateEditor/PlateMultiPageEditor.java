@@ -1,6 +1,8 @@
 package net.bioclipse.brunn.ui.editors.plateEditor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.bioclipse.brunn.Springcontact;
@@ -18,7 +20,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	private PlateEditor plateEditor;
 	private Summary summary;
 	private Replicates replicates;
-	private Set<OutlierChangedListener> outLierListeners = new HashSet<OutlierChangedListener>();
+	private List<OutlierChangedListener> outLierListeners = new ArrayList<OutlierChangedListener>();
 
 	public final static String ID = "net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor"; 
 	
@@ -43,8 +45,14 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 			(net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate)getEditorInput();
 		PlateResults plateResults = plate.getPlateResults();
 		this.setPartName(plate.getName()); 
+		
+		plateEditor = new PlateEditor(plateResults, this);
+		
+			
+		replicates = new Replicates(plateResults, this, (Plate)plate.getPOJO());
+		summary = new Summary(plateResults, this, replicates);
+		
 		try {
-			plateEditor = new PlateEditor(plateResults, this);
 			int index = this.addPage((IEditorPart) plateEditor, getEditorInput());
 			setPageText(index, "Overview");
 			this.setActivePage(index);
@@ -54,7 +62,6 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		}
 
 		try {
-			summary = new Summary(plateResults, this);
 			int index = this.addPage((IEditorPart) summary, getEditorInput());
 			setPageText(index, "Summary");
 		} 
@@ -63,7 +70,6 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		}
 		
 		try {
-			replicates = new Replicates(plateResults, this);
 			int index = this.addPage((IEditorPart) replicates, getEditorInput());
 			setPageText(index, "Average");
 		} 

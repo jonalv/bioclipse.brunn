@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jgroups.util.GetNetworkInterfaces1_4;
+
 import net.bioclipse.brunn.pojos.AbstractSample;
 import net.bioclipse.brunn.pojos.CellSample;
 import net.bioclipse.brunn.pojos.DrugSample;
@@ -38,10 +40,8 @@ public class ReplicateTableModel extends KTableDefaultModel {
     private TextCellRenderer   renderer      = new TextCellRenderer(  TextCellRenderer.INDICATION_FOCUS_ROW );
     private KTableCellRenderer fixedRenderer = new FixedCellRenderer( FixedCellRenderer.STYLE_PUSH       |
                                                                       FixedCellRenderer.INDICATION_FOCUS );
-    private net.bioclipse.brunn.pojos.Plate plate; 
-    private KTable table;
-    private Replicates editor;
     private ArrayList<String> columnNames;
+    private Map<String, String> cvmap = new HashMap<String, String>();
     
 	public ReplicateTableModel( net.bioclipse.brunn.pojos.Plate plate,
 			                    KTable table,
@@ -70,8 +70,14 @@ public class ReplicateTableModel extends KTableDefaultModel {
 				int c = o1[1].compareTo( o2[1] );
 				if ( c != 0 ) 
 					return c;
-				c = Double.compare( Double.parseDouble( o1[2] ), 
-			                        Double.parseDouble( o2[2] ) );
+				c = Double.compare( Double.parseDouble( 
+						                o1[2].contains(" ") ? o1[2].substring( 0, 
+						                		                               o1[2].indexOf(' '))
+						                		            : o1[2]), 
+						            Double.parseDouble(
+						                o1[2].contains(" ") ? o1[2].substring( 0, 
+						                									   o1[2].indexOf(' '))
+						                				    : o1[2]) );
 				if ( c != 0 )
 					return c;
 				return o1[3].compareTo( o2[3] );
@@ -83,9 +89,6 @@ public class ReplicateTableModel extends KTableDefaultModel {
 		this.rows = matrix.length;
 		this.cols = columnNames.size();
 		
-		this.plate  = plate;
-		this.table  = table;
-		this.editor = editor;
 		initialize();
 	}
 
@@ -125,7 +128,8 @@ public class ReplicateTableModel extends KTableDefaultModel {
 			DecimalFormat df = new DecimalFormat("0");
 			row[i++] = df.format(sum / list.size());
 		}
-		
+
+        //CV%
 		double sum = 0;
 		int numberOfNan = 0;
 		for( Double rawValue : wellFunctions.get("raw") ) {
@@ -143,10 +147,11 @@ public class ReplicateTableModel extends KTableDefaultModel {
         for( Double rawValue : wellFunctions.get("raw") ) {
           	sumOfDiffs += (rawValue-avg)*(rawValue-avg);
         }
-        
+
         double stddev = Math.sqrt( (1.0/(wellFunctions.get("raw").size()-1 - numberOfNan)) * sumOfDiffs );
         DecimalFormat df = new DecimalFormat("0");
 		row[columnNames.size()-2] = df.format( (stddev/avg) * 100 );
+		cvmap.put( row[1]+row[2], row[columnNames.size()-2] );
 		row[columnNames.size()-1] = numberOfReplicates + "";
 		return row;
 	}
@@ -211,6 +216,11 @@ public class ReplicateTableModel extends KTableDefaultModel {
 				result.add(( (DrugSample)s ));
 			}
 		}
+		Collections.sort(result, new Comparator<DrugSample>() {
+			public int compare(DrugSample o1, DrugSample o2) {
+				return o1.getName().compareTo( o2.getName() );
+			}
+		});
 		return result.toArray( new DrugSample[0] );
 	}
 
@@ -316,4 +326,8 @@ public class ReplicateTableModel extends KTableDefaultModel {
 	public String doGetTooltipAt(int col, int row) {
         return null;
     }
+
+	public Map<String, String> getCVMap() {
+		return cvmap;
+	}
 }
