@@ -4,7 +4,7 @@ import java.util.Map;
 
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.results.PlateResults;
-import net.bioclipse.brunn.ui.editors.plateEditor.model.OverViewTableModel;
+import net.bioclipse.brunn.ui.editors.plateEditor.model.SummaryTableModel;
 import net.bioclipse.brunn.ui.editors.plateEditor.model.ReplicateTableModel;
 
 import org.eclipse.core.runtime.IProgressMonitor;

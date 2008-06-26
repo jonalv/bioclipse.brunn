@@ -2,8 +2,9 @@ package net.bioclipse.brunn.ui.editors.plateEditor;
 
 
 import net.bioclipse.brunn.pojos.Plate;
+import net.bioclipse.brunn.pojos.Well;
 import net.bioclipse.brunn.results.PlateResults;
-import net.bioclipse.brunn.ui.editors.plateEditor.model.OverViewTableModel;
+import net.bioclipse.brunn.ui.editors.plateEditor.model.SummaryTableModel;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
@@ -12,6 +13,7 @@ import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -25,26 +27,31 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
 import de.kupzog.ktable.KTable;
+import de.kupzog.ktable.KTableCellSelectionListener;
 import de.kupzog.ktable.SWTX;
 
 public class Summary extends EditorPart implements OutlierChangedListener {
 
 	private KTable table;
-	private Plate plate;
 	private PlateResults plateResults;
 	private Replicates replicates; 
+	private boolean outlierSelected;
+	private PlateMultiPageEditor plateMultiPageEditor;
 	
 	private final Clipboard cb = new Clipboard(
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay() );
+	private Plate toBeSaved;
 	
 		
 	public Summary( PlateResults plateResults, 
 			        PlateMultiPageEditor plateMultiPageEditor, 
-			        Replicates replicates) {
+			        Plate toBeSaved, Replicates replicates) {
 		super();
 		this.plateResults = plateResults;
 		plateMultiPageEditor.addListener(this);
+		this.plateMultiPageEditor = plateMultiPageEditor;
 		this.replicates = replicates;
+		this.toBeSaved = toBeSaved;
 	}
 
 	@Override
@@ -63,11 +70,6 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
-		net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate guiPlate =
-			(net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate)input;
-		PlateResults plateResults = guiPlate.getPlateResults();
-		plate = plateResults.getPlate();
-		
 	}
 
 	@Override
@@ -109,7 +111,7 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 			 */
 			public void widgetSelected(SelectionEvent e) {
 				
-				OverViewTableModel model = (OverViewTableModel)table.getModel();
+				SummaryTableModel model = (SummaryTableModel)table.getModel();
 				StringBuilder stringBuilder = new StringBuilder();
 				for( int row = 0 ; row < model.getRowCount() ; row++) {
 					for( int col = 0 ; col < model.getColumnCount() ; col++) {
@@ -130,6 +132,54 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 		formData_1.left = new FormAttachment(0, 5);
 		copyTableToButton.setLayoutData(formData_1);
 		copyTableToButton.setText("Copy Table to Clipboard");
+
+		final Button markAsOutlierButton = new Button(composite, SWT.NONE);
+		markAsOutlierButton.addSelectionListener(new SelectionAdapter() {
+
+			/*
+             * TOGGLE CELL MARKED AS OUTLIER
+			 */
+			public void widgetSelected(final SelectionEvent e) {
+				for( Point p : table.getCellSelection() ) {
+					int selectedRow = p.y;
+					Well well = ( (SummaryTableModel)table.getModel() )
+                                .getWellFromSelectedRowNumber(selectedRow);
+
+					well.setOutlier(!outlierSelected);
+					plateResults.setOutlier( well.getName(), 
+							                 !outlierSelected );
+				}
+				plateMultiPageEditor.fireOutliersChanged();
+				firePropertyChange(PROP_DIRTY);
+			}
+		});
+		final FormData fd_markAsOutlierButton = new FormData();
+		fd_markAsOutlierButton.right = new FormAttachment(0, 235);
+		fd_markAsOutlierButton.top = new FormAttachment(copyTableToButton, 0, SWT.TOP);
+		fd_markAsOutlierButton.left = new FormAttachment(copyTableToButton, 5, SWT.RIGHT);
+		markAsOutlierButton.setLayoutData(fd_markAsOutlierButton);
+		markAsOutlierButton.setText("Mark as outlier");
+		
+		table.addCellSelectionListener( new KTableCellSelectionListener() {
+
+			public void cellSelected(int col, int row, int statemask) {
+				outlierSelected = true;
+				markAsOutlierButton.setText("Unmark as outlier");
+				for( Point p : table.getCellSelection() ) {
+					int selectedRow = p.y;
+					if ( ! ( (SummaryTableModel)table.getModel() )
+							.getWellFromSelectedRowNumber(selectedRow).isOutlier() ) {
+						markAsOutlierButton.setText("Mark as outlier");
+						outlierSelected = false;
+					}
+				}
+			}
+
+			public void fixedCellSelected(int col, int row, int statemask) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 
 	@Override
@@ -145,10 +195,10 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 
 	@Override
 	public void onOutLierChange() {
-		table.setModel( new OverViewTableModel( plate, 
-				                                table, 
-				                                this, 
-				                                plateResults, 
-				                                replicates.getCVMap() ) );
+		table.setModel( new SummaryTableModel( toBeSaved, 
+				                               table, 
+				                               this, 
+				                               plateResults, 
+				                               replicates.getCVMap() ) );
 	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Formatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +26,7 @@ import de.kupzog.ktable.KTableDefaultModel;
 import de.kupzog.ktable.renderers.FixedCellRenderer;
 import de.kupzog.ktable.renderers.TextCellRenderer;
 
-public class OverViewTableModel extends KTableDefaultModel {
+public class SummaryTableModel extends KTableDefaultModel {
 
 	/*
      * a representation of the matrix
@@ -41,7 +42,7 @@ public class OverViewTableModel extends KTableDefaultModel {
 	private int cols;
 	private int rows;
     
-	public OverViewTableModel( net.bioclipse.brunn.pojos.Plate plate,
+	public SummaryTableModel( net.bioclipse.brunn.pojos.Plate plate,
 			                   KTable table,
 			                   Summary editor,
 			                   PlateResults plateResults, 
@@ -64,7 +65,7 @@ public class OverViewTableModel extends KTableDefaultModel {
 				continue;
 			}
 			
-			String[] row = new String[columnNames.size()];
+			String[] row = new String[columnNames.size()+1];
 
 			for (int col = 0; col < columnNames.size(); col++) {
 				
@@ -90,14 +91,20 @@ public class OverViewTableModel extends KTableDefaultModel {
 				
 				//Wellfunctions
 				for( String wellFunction : columnNames.subList(3, columnNames.size()) ) {
-					try {
-						DecimalFormat df = new DecimalFormat("0");
-						row[col] = df.format( plateResults.getValue( well.getCol(), 
-								                                     well.getRow(), 
-								                                     wellFunction) );
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					if ( "raw".equals(wellFunction) && 
+						 well.isOutlier() ) {
+						row[col] = "outlier";
+					}
+					else {
+						try {
+							DecimalFormat df = new DecimalFormat("0");
+							row[col] = df.format( plateResults.getValue( well.getCol(), 
+									                                     well.getRow(), 
+									                                     wellFunction) );
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 					col++;
 				}
@@ -106,6 +113,7 @@ public class OverViewTableModel extends KTableDefaultModel {
 				if( row[col-1] == null ) {
 					row[col-1] = "?";
 				}
+				row[row.length-1] = well.getName();
 				break;
 			}
 			values.add(row);
@@ -117,16 +125,14 @@ public class OverViewTableModel extends KTableDefaultModel {
 				if ( c != 0 ) 
 					return c;
 				c = Double.compare( Double.parseDouble( 
-		                o1[2].contains(" ") ? o1[2].substring( 0, 
-		                		                               o1[2].indexOf(' '))
-		                		            : o1[2]), 
-		            Double.parseDouble(
-		                o1[2].contains(" ") ? o1[2].substring( 0, 
-		                									   o1[2].indexOf(' '))
-		                				    : o1[2]) );
-				if ( c != 0 )
+		                                o1[2].contains(" ") ? o1[2].substring( 0, 
+		                		                                               o1[2].indexOf(' '))
+		                		                            : o1[2]), 
+		                            Double.parseDouble(
+		                                o2[2].contains(" ") ? o2[2].substring( 0, 
+		                				                  					   o2[2].indexOf(' '))
+		                				                    : o2[2]) );
 					return c;
-				return o1[3].compareTo( o2[3] );
 			}
 		});
 		matrix = new String[values.size()][columnNames.size()];
@@ -267,5 +273,14 @@ public class OverViewTableModel extends KTableDefaultModel {
 	
 	public String doGetTooltipAt(int col, int row) {
         return null;
-    }	
+    }
+	
+	public Well getWellFromSelectedRowNumber(int rowNumber) {
+		for ( Well well : plate.getWells() ) {
+			if( matrix[rowNumber-1][matrix[rowNumber-1].length-1].equals(well.getName()) ) {
+				return well;
+			}
+		}
+		throw new IllegalStateException( " could not find well corresponding to row: "+rowNumber);
+	}
 }

@@ -11,7 +11,9 @@ import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.results.PlateResults;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.MultiPageEditorPart;
 
@@ -21,7 +23,8 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	private Summary summary;
 	private Replicates replicates;
 	private List<OutlierChangedListener> outLierListeners = new ArrayList<OutlierChangedListener>();
-
+	private Plate toBeSaved;
+	
 	public final static String ID = "net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor"; 
 	
 	public void fireOutliersChanged() {
@@ -46,11 +49,11 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		PlateResults plateResults = plate.getPlateResults();
 		this.setPartName(plate.getName()); 
 		
-		plateEditor = new PlateEditor(plateResults, this);
+		toBeSaved = ( (Plate)plate.getPOJO() ).deepCopy(); 
 		
-			
-		replicates = new Replicates(plateResults, this, (Plate)plate.getPOJO());
-		summary = new Summary(plateResults, this, replicates);
+		plateEditor = new PlateEditor( plateResults, this, toBeSaved             );
+		replicates  = new Replicates(  plateResults, this, toBeSaved             );
+		summary     = new Summary(     plateResults, this, toBeSaved, replicates );
 		
 		try {
 			int index = this.addPage((IEditorPart) plateEditor, getEditorInput());

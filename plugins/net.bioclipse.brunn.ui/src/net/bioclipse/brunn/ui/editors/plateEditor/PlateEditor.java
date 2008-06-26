@@ -101,11 +101,12 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 	private Button markAsOutlierButton;
 	private PlateMultiPageEditor plateMultiPageEditor; 
 	
-	public PlateEditor(PlateResults plateResults, PlateMultiPageEditor plateMultiPageEditor) {
+	public PlateEditor(PlateResults plateResults, PlateMultiPageEditor plateMultiPageEditor, Plate toBeSaved) {
 		super();
 		this.plateResults = plateResults;
 		this.plateMultiPageEditor = plateMultiPageEditor;
 		plateMultiPageEditor.addListener(this);
+		this.toBeSaved = toBeSaved;
 	}
 
 	@Override
@@ -130,10 +131,8 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		setInput(input);
 		
 		plate = (net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate)input;
-		PlateResults plateResults = plate.getPlateResults();
-		toBeSaved = plateResults.getPlate().deepCopy();
 		referencePlate = toBeSaved.deepCopy();
-		pm.evictfromLazyLoading(toBeSaved);
+//		pm.evictfromLazyLoading(toBeSaved);
 		ITreeObject parent = plate.getParent();
 		parent.fireUpdate();
 	}
