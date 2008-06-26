@@ -94,7 +94,8 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 
 		table = new KTable( composite, SWTX.MARK_FOCUS_HEADERS |
                                        SWTX.AUTO_SCROLL        |
-                                       SWT.MULTI );
+                                       SWT.MULTI               |
+                                       SWT.FULL_SELECTION );
 		final FormData formData = new FormData();
 		formData.left = new FormAttachment(0, 0);
 		formData.right = new FormAttachment(100, -5);
@@ -140,8 +141,8 @@ public class Summary extends EditorPart implements OutlierChangedListener {
              * TOGGLE CELL MARKED AS OUTLIER
 			 */
 			public void widgetSelected(final SelectionEvent e) {
-				for( Point p : table.getCellSelection() ) {
-					int selectedRow = p.y;
+				for( int selectedRow : table.getRowSelection() ) {
+					
 					Well well = ( (SummaryTableModel)table.getModel() )
                                 .getWellFromSelectedRowNumber(selectedRow);
 
@@ -165,8 +166,7 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 			public void cellSelected(int col, int row, int statemask) {
 				outlierSelected = true;
 				markAsOutlierButton.setText("Unmark as outlier");
-				for( Point p : table.getCellSelection() ) {
-					int selectedRow = p.y;
+				for( int selectedRow : table.getRowSelection() ) {
 					if ( ! ( (SummaryTableModel)table.getModel() )
 							.getWellFromSelectedRowNumber(selectedRow).isOutlier() ) {
 						markAsOutlierButton.setText("Mark as outlier");
