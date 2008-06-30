@@ -67,6 +67,19 @@ public class Parser96 implements ResultParser {
 					}
 				}
 			}
+			else if ( row.contains(";") ) {
+				for ( String s : row.split(";") ) {
+					try {
+						if(s.contains(",")) {
+							s = s.replace(",", ".");
+						}
+						rowValues.add( Double.parseDouble( s.trim() ) );
+					}
+					catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+				}
+			}
 			else {
 				continue;
 			}

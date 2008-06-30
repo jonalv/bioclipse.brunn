@@ -96,6 +96,6 @@ public class Parsing96WellsTest extends BaseTest {
         for( AbstractOperation op : plates.get(0).getWell(2, 'b').getSampleContainer().getWorkList().getAbstractOperations() ) {
         	resultValue = ((Measurement)op).getResults().toArray(new Result[0])[0].getResultValue()[0];
         }
-        assertEquals( 8491, resultValue);
+        assertEquals( 1124, resultValue);
 	}
 }
