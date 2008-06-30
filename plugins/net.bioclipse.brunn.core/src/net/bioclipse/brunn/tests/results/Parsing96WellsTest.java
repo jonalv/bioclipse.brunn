@@ -78,4 +78,24 @@ public class Parsing96WellsTest extends BaseTest {
         }
         assertEquals( 8491, resultValue);
 	}
+	
+	@Test
+	public void test97Well3() throws FileNotFoundException {
+		String dataFilePath = ClassLoader
+                              .getSystemResource( "TestFiles" + File.separator + 
+                                                  "96Well3.txt").getPath();
+        assertNotNull("Could not find datafile", dataFilePath);
+        Parser96 parser = new Parser96(new File(dataFilePath));
+        List<PlateRead> plateReads = parser.getPlatesInFile();
+        assertNotNull(plateReads);
+        assertEquals( 1, plateReads.size() );
+        assertEquals( "OK", plateReads.get(0).getError() );
+        plateReads.get(0).setBarCode(BARCODE);
+        parser.addResultsTo(tester, plates);
+        double resultValue = 0;
+        for( AbstractOperation op : plates.get(0).getWell(2, 'b').getSampleContainer().getWorkList().getAbstractOperations() ) {
+        	resultValue = ((Measurement)op).getResults().toArray(new Result[0])[0].getResultValue()[0];
+        }
+        assertEquals( 8491, resultValue);
+	}
 }
