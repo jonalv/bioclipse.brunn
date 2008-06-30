@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="net.bioclipse.brunn.pojos">
+	<class
+	 name="LayoutMarker"
+	 table="LAYOUTMARKER">
+		<id 
+		 name="id"
+		 column="id"
+		 type="long">
+			<generator class="native" />
+		</id>
+		
+		<property 
+		 name="name"
+		 column="name"
+		 type="string" />
+		
+		<property
+		 name="deleted"
+		 column="deleted"
+		 type="boolean" />
+		
+		<many-to-one
+		 name="creator"
+		 column="creator"
+		 class="User"
+		 cascade="all"
+		 lazy="false" />
+		
+		<many-to-one 
+		 name="layoutWell"
+		 column="layoutWell"
+		 class="net.bioclipse.brunn.pojos.LayoutWell"
+		 lazy="false" />
+			
+	</class>
+</hibernate-mapping>

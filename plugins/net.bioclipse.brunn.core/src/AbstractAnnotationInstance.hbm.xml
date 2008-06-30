@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	  "-//Hibernate/Hibernate Mapping DTD//EN"
+	  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping package="net.bioclipse.brunn.pojos" auto-import="true">
+	<class
+	      name="AbstractAnnotationInstance"
+	      table="ABSTRACTANNOTATIONINSTANCE">
+		
+		<meta attribute="sync-DAO">true</meta>
+		<id 
+		 name="id"
+		 column="id"
+		 type="long">
+			<generator class="native"/>
+		</id>
+		
+		<many-to-one
+		 name="creator"
+		 column="creator"
+		 class="User"
+		 lazy="false"
+		 cascade="none"/>
+		 
+		<property
+		 name="hashCode"
+		 column="hashCode"
+		 type="int" />
+		
+		<property
+		 name="name"
+		 type="string"
+		 length="100" />
+		
+		<property 
+		 name="deleted"
+		 type="boolean" />
+		
+		<many-to-one 
+		 name="abstractAnnotatableObject"
+		 column="abstractAnnotaableObject"
+		 class="AbstractAnnotatableObject"
+		 cascade="all" />
+		
+<!-- EnumAnnotation -->
+		<joined-subclass name="EnumAnnotation"
+		 table="ENUMANNOTATION">
+			
+			<key column="id" />
+			
+			<property
+		 	 name="value"
+		 	 type="string"
+		 	 length="100" />
+			
+		</joined-subclass>
+		
+<!-- TextAnnotation	-->
+		<joined-subclass name="TextAnnotation"
+		 table="TEXTANNOTATION">
+		 
+		 	<key 
+		 	 column="id" />
+		 	
+		 	<property
+		 	 name="value"
+		 	 type="string"
+		 	 length="100" />
+		 	 	
+		</joined-subclass>
+
+<!-- FloatAnnotation -->
+		<joined-subclass name="FloatAnnotation"
+		 table="FLOATANNOTATION" >
+		 
+		 	<key 
+		 	 column="id" />
+		 	
+		 	<property
+		 	 name="value"
+		 	 type="double" />
+		 	 	
+		</joined-subclass>
+	</class>
+</hibernate-mapping>
