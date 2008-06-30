@@ -29,7 +29,7 @@ public class Compound extends AbstractNonFolder implements IEditorInput {
 	}
 	
 	public Image getIconImage() {
-		return IconFactory.getImage("molecule16.gif");
+		return IconFactory.getImage("compound.gif");
 	}
 
 	public void changeName(String name) {

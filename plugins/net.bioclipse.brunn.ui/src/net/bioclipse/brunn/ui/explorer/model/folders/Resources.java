@@ -16,6 +16,7 @@ import net.bioclipse.brunn.ui.explorer.model.Model;
 import net.bioclipse.brunn.ui.explorer.model.folders.PatientCells;
 import net.bioclipse.brunn.ui.explorer.model.folders.PlateLayouts;
 import net.bioclipse.brunn.ui.explorer.model.folders.PlateTypes;
+import net.bioclipse.brunn.ui.images.IconFactory;
 
 
 public class Resources extends Model 
@@ -78,8 +79,7 @@ public class Resources extends Model
 	}
 
 	public Image getIconImage() {
-		// TODO Auto-generated method stub
-		return null;
+		return IconFactory.getImage("folder.gif");
 	}
 
 	public void changeName(String name) {

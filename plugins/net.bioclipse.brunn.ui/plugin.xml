@@ -29,44 +29,45 @@
             name="Brunn explorer"
             class="net.bioclipse.brunn.ui.explorer.View"
             id="brunn.setup.explorer.View"
-            category="net.bioclipse.brunn.category">
+            category="net.bioclipse.brunn.category" 
+            icon="icons/brunn.gif" >
       </view>
    </extension>
   <extension
          point="org.eclipse.ui.editors">
       	<editor
             id="net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor"
-            icon="icons/sample.gif"
+            icon="icons/plate.gif"
             name="Plate Editor"
             class="net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor" />
      	<editor
             id="net.bioclipse.brunn.ui.editors.plateLayoutEditor.PlateLayoutEditor"
-            icon="icons/sample.gif"
+            icon="icons/plateLayout.gif"
             name="Plate Layout Editor"
             class="net.bioclipse.brunn.ui.editors.plateLayoutEditor.PlateLayoutEditor" />
      	<editor
             id="net.bioclipse.brunn.ui.editors.plateTypeEditor.PlateTypeEditor"
-            icon="icons/sample.gif"
+            icon="icons/plateType.gif"
             name="Plate Type Editor"
             class="net.bioclipse.brunn.ui.editors.plateTypeEditor.PlateTypeEditor" />
         <editor
             id="net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateEditor"
-            icon="icons/sample.gif"
+            icon="icons/masterPlate.gif"
             name="Master Plate Editor"
             class="net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateEditor" />
         <editor
             id="net.bioclipse.brunn.ui.editors.compoundEditor.CompoundEditor"
-            icon="icons/sample.gif"
+            icon="icons/compound.gif"
             name="Compound Editor"
             class="net.bioclipse.brunn.ui.editors.compoundEditor.CompoundEditor" />
         <editor
             id="net.bioclipse.brunn.ui.editors.cellTypeEditor.CellTypeEditor"
-            icon="icons/sample.gif"
+            icon="icons/cellType.gif"
             name="Cell Type Editor"
             class="net.bioclipse.brunn.ui.editors.cellTypeEditor.CellTypeEditor" />
         <editor
             id="net.bioclipse.brunn.ui.editors.patientSampleEditor.PatientCellEditor"
-            icon="icons/sample.gif"
+            icon="icons/patientcell.gif"
             name="Patient Cell Editor"
             class="net.bioclipse.brunn.ui.editors.patientSampleEditor.PatientCellEditor" />
    </extension>

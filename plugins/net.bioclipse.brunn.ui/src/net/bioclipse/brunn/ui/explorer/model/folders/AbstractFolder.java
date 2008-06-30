@@ -22,6 +22,7 @@ import net.bioclipse.brunn.ui.explorer.View;
 import net.bioclipse.brunn.ui.explorer.model.ITreeObject;
 import net.bioclipse.brunn.ui.explorer.model.Model;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.PatientSample;
+import net.bioclipse.brunn.ui.images.IconFactory;
 
 import org.eclipse.swt.graphics.Image;
 
@@ -125,6 +126,6 @@ public abstract class AbstractFolder extends Model
 	}
 	
 	public Image getIconImage() {
-		return null;
+		return IconFactory.getImage("folder.gif");
 	}
 }
