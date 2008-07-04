@@ -1,0 +1,4 @@
+latex technicalSpec.tex && latex technicalSpec.tex
+dvipdf technicalSpec.dvi
+pdflatex userDoc.tex && pdflatex userDoc.tex
+
