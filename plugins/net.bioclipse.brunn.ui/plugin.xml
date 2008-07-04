@@ -62,7 +62,7 @@
             class="net.bioclipse.brunn.ui.editors.compoundEditor.CompoundEditor" />
         <editor
             id="net.bioclipse.brunn.ui.editors.cellTypeEditor.CellTypeEditor"
-            icon="icons/cellType.gif"
+            icon="icons/cellLine.gif"
             name="Cell Type Editor"
             class="net.bioclipse.brunn.ui.editors.cellTypeEditor.CellTypeEditor" />
         <editor

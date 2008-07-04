@@ -1,6 +1,7 @@
 package net.bioclipse.brunn.ui.explorer.model.nonFolders;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPersistableElement;
 
@@ -11,6 +12,7 @@ import net.bioclipse.brunn.pojos.CellOrigin;
 import net.bioclipse.brunn.ui.Activator;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.AbstractNonFolder;
 import net.bioclipse.brunn.ui.explorer.model.ITreeObject;
+import net.bioclipse.brunn.ui.images.IconFactory;
 
 public class CellType extends AbstractNonFolder implements IEditorInput {
 	
@@ -42,8 +44,11 @@ public class CellType extends AbstractNonFolder implements IEditorInput {
 	}
 
 	public ImageDescriptor getImageDescriptor() {
-		// TODO Auto-generated method stub
-		return null;
+		return IconFactory.getImageDescriptor("cellLine.gif");
+	}
+	
+	public Image getIconImage() {
+		return IconFactory.getImage("cellLine.gif");
 	}
 
 	public IPersistableElement getPersistable() {
