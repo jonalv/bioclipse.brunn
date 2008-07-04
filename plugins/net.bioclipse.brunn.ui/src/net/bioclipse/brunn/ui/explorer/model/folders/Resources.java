@@ -78,15 +78,15 @@ public class Resources extends Model
 		throw new UnsupportedOperationException("There is no <code>AbstractFolder</code> above the Resources Folder");
 	}
 
-	public Image getIconImage() {
-		return IconFactory.getImage("folder.gif");
-	}
-
 	public void changeName(String name) {
 		throw new UnsupportedOperationException("Can not change name of resources folder");
 	}
 
 	public ITreeObject getUniqueFolder() {
 		return this;
+	}
+	
+	public Image getIconImage() {
+		return IconFactory.getImage("resources.gif");
 	}
 }
