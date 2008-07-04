@@ -150,11 +150,19 @@ public class SummaryTableModel extends KTableDefaultModel {
 
 	private String getConcentrations(DrugSample[] drugSamples) {
 
-		String result = "";
+		StringBuffer result = new StringBuffer();
+		
 		for( DrugSample drugSample : drugSamples ) {
-			result += drugSample.getConcentration() + " ";
+			result.append( drugSample.getConcentration() );
+			result.append(" ");
+			result.append( drugSample.getConcUnit() == null ? "?"
+			    		                                    : drugSample
+			    		                                      .getConcUnit()
+			    		                                      .toString() );
+			result.append(" | ");
 		}
-		return result;
+		//remove the last " | " and return
+		return result.substring(0, result.length() - 3);
 	}
 
 	private DrugSample[] getDrugSamples(Well well) {
@@ -189,8 +197,9 @@ public class SummaryTableModel extends KTableDefaultModel {
 		
 		String result = "";
 		for( DrugSample drugSample : drugSamples ) {
-			result += drugSample.getName() + " ";
+			result += drugSample.getName() + " | ";
 		}
+		result = result.substring(0, result.length()-3);
 		return result;
 	}
 

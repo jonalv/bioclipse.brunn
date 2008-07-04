@@ -155,7 +155,6 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 			}
 		});
 		final FormData fd_markAsOutlierButton = new FormData();
-		fd_markAsOutlierButton.right = new FormAttachment(0, 235);
 		fd_markAsOutlierButton.top = new FormAttachment(copyTableToButton, 0, SWT.TOP);
 		fd_markAsOutlierButton.left = new FormAttachment(copyTableToButton, 5, SWT.RIGHT);
 		markAsOutlierButton.setLayoutData(fd_markAsOutlierButton);
