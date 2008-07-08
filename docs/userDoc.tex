@@ -13,12 +13,12 @@
 
     \normalsize
 
-    \section{General Bioclipse Sructure}
+    \section{General Bioclipse Structure}
 
         \subsection{Editors and Views}
             Bioclipse is made up of editors and views. Editors are for editing
             things. Things can be opened in an editor, edited and then saved
-            and he editor closed. A view listens to what is selected. For
+            and the editor closed. A view can listen to what is selected. For
             example the properties view show the properties of the item
             currently selected. Figure \ref{editorsAndViews} shows what are
             views and what are editors in a standard Brunn window.
@@ -96,46 +96,45 @@
 
             \noindent
             The first time Brunn is started the Brunn Explorer View might not
-            be shown. It can be made visible from:
+            be shown. It can be made visible by clicking:
             \texttt{Window$\rightarrow$Show View$\rightarrow$Other\ldots} and
             under Brunn choose Brunn Explorer. 
 
             Double clicking something in the explorer view opens that thing in
-            an editor. This view is where new things are created. The various
-            items of the tree have context menus that appear when right
-            clicked. For example, folders can be created and sometime in the
-            future it should be possible to drag and drop items into the
-            folders, but as of today things end up in the folder they are
-            created in and stay put. Figure \ref{labWork} explains how the
+            an editor. The explorer view is where new things are created. The
+            various items of the tree have context menus that appear when right
+            clicked. For example, folders can be created and dragged and
+            dropped into anod out of. Figure \ref{labWork} explains how the
             different items in the tree fits in to what is done in the lab.
             
             In Brunn almost nothing can be deleted. However, things can be
             marked as deleted, meaning that they won't show up unless the menu
             alternative \texttt{show objects marked as deleted} is choosen in
             the views menu. In this menu there also is a wizard for importing
-            Orca results and a way to create a new user account The
+            result data and a way to create a new user account. The
             alternatives to show objects marked as deleted and create users are
             only there if the loggged in user has administrator access.
         
         \subsection{Creating items}
             New items are created by right-clicking a folder that is either the
-            the top folder of the sort of item to be created or a subfolder,
-            and then choosing a create operation. This opens some dialog where
-            things special for that sort of item can be entered. 
+            the top folder for the sort of item to be created or a subfolder of
+            it, and then choosing a create operation. This opens some dialog
+            where things special for that sort of item can be entered. 
 
             So for example to create a plate layout start by right clicking the
             folder \texttt{Plate Layouts} and choose \texttt{Create Plate
             Layout}. In the dialog that shows up, choose one plate type to base
             the platelayout on, and enter a name for your new plate layout.
+            Then click Ok to create the plate layout.
 
         \subsection{Plate Type} A plate type defines the size of a plate. It
             simply holds number of rows and number of columns of a plate. 
 
         \subsection{Plate Layout}
             A plate layout defines which wells on a plate should be used for
-            compounds, controls or just empty. The plate layout is also where
-            calculation functions are defined. For example, survival index and
-            variation over the wells marked as positive control. 
+            compounds, controls or just be left empty. The plate layout is also
+            where calculation functions are defined. For example, survival
+            index and variation over the wells marked as positive control. 
 
             \subsubsection{Adding markers to a plate layout}
                 \begin{figure}[htbp]
