@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Expression Plug-in
+Bundle-SymbolicName: net.bioclipse.expression
+Bundle-Version: 0.1.1
+Bundle-Activator: net.bioclipse.expression.Activator
+Require-Bundle: org.eclipse.core.runtime
+Eclipse-LazyStart: true
+Export-Package: net.bioclipse.expression
