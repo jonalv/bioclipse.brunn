@@ -9,13 +9,13 @@
 		<!-- local connection properties -->
  
 		<property name="hibernate.connection.url">
-			jdbc:mysql://localhost/lis
+			jdbc:mysql://localhost/brunn
 		</property>
 		<property name="hibernate.connection.driver_class">
 			com.mysql.jdbc.Driver
 		</property>
-		<property name="hibernate.connection.username">lis</property>
-		<property name="hibernate.connection.password">lislis</property>
+		<property name="hibernate.connection.username">brunn</property>
+		<property name="hibernate.connection.password">brunnbrunn</property>
  
  
 		<!-- property name="hibernate.connection.pool_size"></property -->
