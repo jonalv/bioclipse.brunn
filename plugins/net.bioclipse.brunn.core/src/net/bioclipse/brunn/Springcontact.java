@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import net.bioclipse.keyring.AccountType;
-import net.bioclipse.keyring.KeyRing;
+import net.bioclipse.usermanager.AccountType;
+import net.bioclipse.usermanager.Activator;
+import net.bioclipse.usermanager.business.IUserManager;
+import net.bioclipse.usermanager.business.UserManager;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.tools.ant.taskdefs.BUnzip2;
@@ -52,10 +54,11 @@ public class Springcontact {
 			                                               "applicationContext.xml" );
 			
 			BasicDataSource dataSource = (BasicDataSource) CONTEXT.getBean("dataSource");
-			dataSource.setUrl( KeyRing.getInstance().getPropertyByAccountType("LisAccountType", "URL") );
-			dataSource.setUsername( KeyRing.getInstance().getPropertyByAccountType("LisAccountType", "Database user") );
-			dataSource.setPassword( KeyRing.getInstance().getPropertyByAccountType("LisAccountType", "Database password") );
-			if( !KeyRing.getInstance().isLoggedInWithAccountType("LisAccountType") ) {
+			IUserManager userManager = Activator.getDefault().getUserManager();
+			dataSource.setUrl(      userManager.getProperty("LisAccountType", "URL") );
+			dataSource.setUsername( userManager.getProperty("LisAccountType", "Database user") );
+			dataSource.setPassword( userManager.getProperty("LisAccountType", "Database password") );
+			if ( !userManager.isLoggedInWithAccountType("LisAccountType") ) {
 				throw new IllegalStateException("not logged in or the logged in user lacks LisAccount");
 			}
 		}

@@ -192,7 +192,6 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 		cb.dispose();
 	}
 
-	@Override
 	public void onOutLierChange() {
 		table.setModel( new SummaryTableModel( toBeSaved, 
 				                               table, 

@@ -135,7 +135,6 @@ public class PlateResults implements IEditorInput {
 		 * SUM FUNCTION
 		 */
 	    FunctionBody sum = new FunctionBodyAdaptor( ParamType.WHATEVER ) {
-			@Override
             public double eval(Calculator calc, Double[] args) {
 				double result = 0;
 				for(double d : args) {
@@ -150,7 +149,6 @@ public class PlateResults implements IEditorInput {
 	     * AVG FUNCTION
 	     */
 	    FunctionBody avg = new FunctionBodyAdaptor( ParamType.WHATEVER ) {
-			@Override
             public double eval(Calculator calc, Double[] args) {
 				double sum = 0;
 				for(double d : args) {
@@ -166,7 +164,6 @@ public class PlateResults implements IEditorInput {
 	     * STDDEV FUNCTION
 	     */
 	    FunctionBody stddev = new FunctionBodyAdaptor( ParamType.WHATEVER ) {
-			@Override
             public double eval(Calculator calc, Double[] args) {
 				double sum = 0;
 				for(double d : args) {

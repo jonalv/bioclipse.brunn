@@ -13,10 +13,8 @@ public class PlateFunctionBody extends FunctionBodyAdaptor {
 	    this.expression = expression; 
     }
 
-	@Override
 	public double eval(Calculator calc, Double[] args) {
 		assert args.length == 0;
 		return calc.safeValueOf(expression);
 	}
-
 }

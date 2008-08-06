@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Expressions Tests Plug-in
-Bundle-SymbolicName: net.bioclipse.expression.tests
+Bundle-SymbolicName: net.bioclipse.brunn.expression.tests;singleton:=true
 Bundle-Version: 0.1.0
-Require-Bundle: net.bioclipse.expression,
+Require-Bundle: net.bioclipse.brunn.expression,
  org.junit4
 Bundle-ClassPath: junit.jar,
  .

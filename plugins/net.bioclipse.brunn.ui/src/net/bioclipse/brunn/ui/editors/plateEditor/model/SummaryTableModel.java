@@ -119,7 +119,6 @@ public class SummaryTableModel extends KTableDefaultModel {
 			values.add(row);
 		}
 		Collections.sort(values, new Comparator<String[]>() {
-			@Override
 			public int compare(String[] o1, String[] o2) {
 				int c = o1[1].compareTo( o2[1] );
 				if ( c != 0 ) 

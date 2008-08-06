@@ -52,7 +52,8 @@ public class GenericDAO<T> extends HibernateDaoSupport
 		LazyLoadingSessionHolder.getInstance().evict(instance);
 	}
 
-	public List<T> executeFinder(Method method, final Object[] queryArgs) {
+	@SuppressWarnings("unchecked")
+    public List<T> executeFinder(Method method, final Object[] queryArgs) {
 
 		String queryName = queryNameFromMethod(method);
 		Query namedQuery = LazyLoadingSessionHolder.getInstance().getNamedQuery(queryName);
@@ -77,17 +78,17 @@ public class GenericDAO<T> extends HibernateDaoSupport
 	    getSession().update(instance);
     }
 	
-	public T merge(T instance) {
+	@SuppressWarnings("unchecked")
+    public T merge(T instance) {
 		return (T) getSession().merge(instance);
 	}
 
-	@Override
+	@SuppressWarnings("unchecked")
     public <T2> T2 mergeObject(T2 o) {
 	    return (T2) getSession().merge(o);
     }
 
-	@Override
-    public void evict(T o) {
+	public void evict(T o) {
 		getSession().evict(o);
     }
 }

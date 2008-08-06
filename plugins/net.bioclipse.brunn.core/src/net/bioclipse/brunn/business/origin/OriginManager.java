@@ -127,7 +127,6 @@ public class OriginManager extends AbstractDAOBasedOriginManager
 	    return drugOriginDAO.findAllNotDeleted();
     }
 
-	@Override
     public long createPatientOrigin( User creator, 
                                      String name, 
                                      String lid, 
@@ -148,13 +147,11 @@ public class OriginManager extends AbstractDAOBasedOriginManager
 		return patientOrigin.getId();
     }
 
-	@Override
     public void delete(User user, PatientOrigin patientOrigin) {
 		getAuditService().audit(user, AuditType.DELETE_EVENT, patientOrigin);
 		drugOriginDAO.delete(patientOrigin);
     }
 
-	@Override
     public void edit(User user, PatientOrigin patientOrigin) {
 		patientOrigin = patientOriginDAO.merge(patientOrigin);
 		patientOriginDAO.save(patientOrigin);
@@ -162,17 +159,14 @@ public class OriginManager extends AbstractDAOBasedOriginManager
 		getAuditService().audit(user, AuditType.UPDATE_EVENT, patientOrigin);
     }
 
-	@Override
     public Collection<PatientOrigin> getAllPatientOrigins() {
 	    return patientOriginDAO.findAll();
     }
 
-	@Override
     public Collection<PatientOrigin> getAllPatientOriginsNotDeleted() {
 		return patientOriginDAO.findAllNotDeleted();
 	}
 
-	@Override
     public PatientOrigin getPatientOrigin(long id) {
 		return patientOriginDAO.getById(id);
     }

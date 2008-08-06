@@ -105,7 +105,6 @@ public class Parser96 implements ResultParser {
 		return plateRead;
     }
 
-	@Override
     public List<Plate> addResultsTo(User activeUser, List<Plate> plates)
                        throws IllegalArgumentException {
 		HashMap<String, PlateRead> plateReadMap = new HashMap<String, PlateRead>();
@@ -136,37 +135,30 @@ public class Parser96 implements ResultParser {
 			this.error = "OK";
         }
 
-		@Override
         public double[][] getValues() {
 			return values;
         }
 
-		@Override
         public String getBarCode() {
 			return barcode;
 		}
 
-		@Override
         public void setBarCode(String barcode) {
 			this.barcode = barcode;
         }
 
-		@Override
         public String getError() {
 			return error;
         }
 
-		@Override
         public void setError(String error) {
 			this.error = error;
         }
 
-		@Override
         public void setValues(double[][] values) {
 			this.values = values;
         }
 
-		@Override
         public String getName() {
 	        return "no name";
         }

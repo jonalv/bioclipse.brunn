@@ -6,20 +6,20 @@ import java.net.URL;
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.audit.IAuditManager;
 import net.bioclipse.brunn.pojos.User;
-import net.bioclipse.keyring.IKeyringListener;
-import net.bioclipse.keyring.KeyRing;
-import net.bioclipse.keyring.KeyringEvent;
+import net.bioclipse.usermanager.IUserManagerListener;
+import net.bioclipse.usermanager.UserManagerEvent;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.jboss.util.NotImplementedException;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin implements IKeyringListener {
+public class Activator extends AbstractUIPlugin implements IUserManagerListener {
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "net.bioclipse.brunn.ui";
@@ -35,25 +35,21 @@ public class Activator extends AbstractUIPlugin implements IKeyringListener {
 	 */
 	public Activator() {
 		plugin = this;
-//		if( KeyRing.getInstance().isLoggedInWithAccountType("BrunnAccountType") ) {
-//			setLoggedInUser();
-//		}
-//		else {
-//			System.out.println("could not log in correctly");
-//		}
-		KeyRing.getInstance().addListener(this);
+		net.bioclipse.usermanager.Activator
+		   .getDefault().getUserManager().addListener(this);
 	}
 
 	private void setLoggedInUser() {
 		System.out.println("Activator.setLoggedInUser()");
 		for ( User user : ( (IAuditManager)Springcontact.getBean("auditManager") ).getAllUsers() ) {
-			if( user.getName().equals( KeyRing.getInstance().getUserNameByAccountType("BrunnAccountType") ) ) {
-				if( user.passwordMatch( KeyRing.getInstance().getKeyByAccountType("BrunnAccountType") ) ) {
-					currentUser = user;
-					System.out.println(currentUser.getName() + " has logged in");
-					return;
-				}
+			if( user.getName().equals( net.bioclipse.usermanager.Activator.getDefault().getUserManager().getLoggedInUserName() ) ) {
+//				if( user.passwordMatch( net.bioclipse.usermanager.Activator.getDefault().getUserManager().getKeyByAccountType("BrunnAccountType") ) ) {
+//					currentUser = user;
+//					System.out.println(currentUser.getName() + " has logged in");
+//					return;
+//				}
 			}
+			throw new NotImplementedException();
 		}
 		throw new IllegalStateException("Did not find user in database or password did not match");
 	}
@@ -114,20 +110,21 @@ public class Activator extends AbstractUIPlugin implements IKeyringListener {
 		this.currentUser = currentUser;
 	}
 
-	public void keyringEventOccur(KeyringEvent event) {
-		switch (event) {
-		case LOGIN:
-			if( KeyRing.getInstance().isLoggedInWithAccountType("BrunnAccountType") ) {
-				setLoggedInUser();
-			}
-			break;
-		case LOGOUT:
-			currentUser = null;
-			break;
-		case UPDATE:
-			Springcontact.CONTEXT = null;
-		default:
-			break;
-		}
-	}
+    public void receiveUserManagerEvent( UserManagerEvent event ) {
+        switch (event) {
+            case LOGIN:
+              if( net.bioclipse.usermanager.Activator.getDefault()
+                     .getUserManager()
+                     .isLoggedInWithAccountType("BrunnAccountType") ) {
+                setLoggedInUser();
+              }
+              break;
+            case LOGOUT:
+              currentUser = null;
+              break;
+            case UPDATE:
+              Springcontact.CONTEXT = null;
+            default:
+              break;
+            }    }
 }

@@ -137,7 +137,6 @@ public class Replicates extends EditorPart implements OutlierChangedListener {
 		cb.dispose();
 	}
 
-	@Override
 	public void onOutLierChange() {
 		tableModel = new ReplicateTableModel(plate, table, this, plateResults);
 		table.setModel( tableModel );

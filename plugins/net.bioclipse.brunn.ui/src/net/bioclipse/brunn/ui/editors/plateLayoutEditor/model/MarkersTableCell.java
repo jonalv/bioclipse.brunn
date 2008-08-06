@@ -35,7 +35,6 @@ public class MarkersTableCell {
 	public void addMarker(String name) {
 		markers.add(name);
 		Collections.sort(markers, new Comparator<String>() {
-			@Override
 			public int compare(String arg0, String arg1) {
 				if ( arg0.charAt(0) == 'M' &&
 					 arg0.charAt(0) == 'M'	) {

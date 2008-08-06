@@ -389,7 +389,6 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		final PlateEditor editor = this;
 		wellFunctionCombo.addModifyListener(new ModifyListener() {
 
-			@Override
 			public void modifyText(ModifyEvent e) {
 				plateTable.setModel(new PlateTableModel(toBeSaved, plateTable, editor, wellFunctionCombo.getText(), plateResults));
 			}
@@ -541,7 +540,6 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		}
 	}
 
-	@Override
 	public void onOutLierChange() {
 		plateTable.setModel( new PlateTableModel( toBeSaved, 
                                                   plateTable, 

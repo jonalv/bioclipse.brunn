@@ -119,8 +119,7 @@ public class FolderManager extends AbstractDAOBasedFolderManager implements IFol
 		return folder;
     }
 
-	@Override
-    public void evict(UniqueFolder folder) {
+	public void evict(UniqueFolder folder) {
 	    LazyLoadingSessionHolder.getInstance().evict(folder);
     }
 }

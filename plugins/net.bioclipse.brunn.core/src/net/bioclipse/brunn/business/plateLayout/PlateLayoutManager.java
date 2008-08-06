@@ -6,17 +6,13 @@ package net.bioclipse.brunn.business.plateLayout;
 import java.util.Collection;
 
 import net.bioclipse.brunn.business.LazyLoadingSessionHolder;
-import net.bioclipse.brunn.pojos.AbstractAnnotationInstance;
 import net.bioclipse.brunn.pojos.AbstractBasePlate;
-import net.bioclipse.brunn.pojos.AbstractPlate;
-import net.bioclipse.brunn.pojos.AbstractWell;
 import net.bioclipse.brunn.pojos.AuditType;
 import net.bioclipse.brunn.pojos.Folder;
 import net.bioclipse.brunn.pojos.LayoutWell;
 import net.bioclipse.brunn.pojos.PlateFunction;
 import net.bioclipse.brunn.pojos.PlateLayout;
 import net.bioclipse.brunn.pojos.PlateType;
-import net.bioclipse.brunn.pojos.UniqueFolder;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.pojos.WellFunction;
 
@@ -144,8 +140,7 @@ public class PlateLayoutManager extends AbstractDAOBasedPlateLayoutManager imple
 	    return plateLayoutDAO.findAllNotDeleted();
     }
 
-	@Override
-    public void evictFromLazyLoading(PlateLayout toBeSaved) {
+	public void evictFromLazyLoading(PlateLayout toBeSaved) {
 	    LazyLoadingSessionHolder.getInstance().evict( toBeSaved );
 	    LazyLoadingSessionHolder.getInstance().evict( toBeSaved.getCreator() );
 	    for ( PlateFunction pf : toBeSaved.getPlateFunctions() ) {

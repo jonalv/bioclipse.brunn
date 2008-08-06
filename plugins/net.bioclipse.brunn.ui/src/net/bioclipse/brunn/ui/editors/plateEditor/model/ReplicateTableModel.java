@@ -65,7 +65,6 @@ public class ReplicateTableModel extends KTableDefaultModel {
 		}
 		
 		Collections.sort(rows, new Comparator<String[]>() {
-			@Override
 			public int compare(String[] o1, String[] o2) {
 				int c = o1[1].compareTo( o2[1] );
 				if ( c != 0 ) 
@@ -172,7 +171,6 @@ public class ReplicateTableModel extends KTableDefaultModel {
                                                  .toArray( new AbstractSample[0] );
 			
 			Arrays.sort(keyComponents, new Comparator<AbstractSample>() {
-				@Override
 				public int compare(AbstractSample o1, AbstractSample o2) {
 					return o1.getName().compareTo( o2.getName() );
 				}

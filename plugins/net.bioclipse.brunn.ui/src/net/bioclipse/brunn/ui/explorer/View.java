@@ -5,25 +5,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import javax.swing.event.TreeModelListener;
-
+import net.bioclipse.actions.LoginAction;
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.audit.IAuditManager;
 import net.bioclipse.brunn.business.folder.IFolderManager;
 import net.bioclipse.brunn.business.origin.IOriginManager;
 import net.bioclipse.brunn.business.plate.IPlateManager;
 import net.bioclipse.brunn.business.plateLayout.IPlateLayoutManager;
-import net.bioclipse.brunn.genericDAO.ICellOriginDAO;
-import net.bioclipse.brunn.genericDAO.IUserDAO;
-import net.bioclipse.brunn.pojos.DrugOrigin;
-import net.bioclipse.brunn.pojos.ILISObject;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.results.PlateResults;
 import net.bioclipse.brunn.ui.Activator;
@@ -35,7 +26,6 @@ import net.bioclipse.brunn.ui.dialogs.CreatePatientCell;
 import net.bioclipse.brunn.ui.dialogs.CreatePlate;
 import net.bioclipse.brunn.ui.dialogs.CreatePlateLayout;
 import net.bioclipse.brunn.ui.dialogs.CreatePlateType;
-import net.bioclipse.brunn.ui.dialogs.CreateProject;
 import net.bioclipse.brunn.ui.dialogs.CreateUser;
 import net.bioclipse.brunn.ui.dialogs.Rename;
 import net.bioclipse.brunn.ui.dialogs.createMasterPlateFromSDF.CreateMasterPlateFromSDF;
@@ -54,7 +44,6 @@ import net.bioclipse.brunn.ui.explorer.model.folders.AbstractUniqueFolder;
 import net.bioclipse.brunn.ui.explorer.model.folders.CellTypes;
 import net.bioclipse.brunn.ui.explorer.model.folders.Compounds;
 import net.bioclipse.brunn.ui.explorer.model.folders.DataSets;
-import net.bioclipse.brunn.ui.explorer.model.folders.Folder;
 import net.bioclipse.brunn.ui.explorer.model.folders.MasterPlates;
 import net.bioclipse.brunn.ui.explorer.model.folders.PatientCells;
 import net.bioclipse.brunn.ui.explorer.model.folders.PlateLayouts;
@@ -69,38 +58,29 @@ import net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.PlateLayout;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.PlateType;
 import net.bioclipse.brunn.ui.transferTypes.BrunnTransfer;
-import net.bioclipse.dialogs.KeyRingLoginDialog;
-import net.bioclipse.keyring.IKeyringListener;
-import net.bioclipse.keyring.KeyRing;
-import net.bioclipse.keyring.KeyringEvent;
+import net.bioclipse.usermanager.IUserManagerListener;
+import net.bioclipse.usermanager.UserManagerEvent;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
-import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.jface.util.LocalSelectionTransfer;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.LabelDecorator;
-import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DragSourceAdapter;
-import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -109,7 +89,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PluginTransfer;
 import org.eclipse.ui.part.ViewPart;
 
-public class View extends ViewPart implements IKeyringListener {
+public class View extends ViewPart implements IUserManagerListener {
 
 	public static final String ID = "net.bioclipse.brunn.ui.explorer.View";
 
@@ -163,7 +143,10 @@ public class View extends ViewPart implements IKeyringListener {
 
 	public View(){
 		super();
-		KeyRing.getInstance().addListener(this);
+		net.bioclipse.usermanager.Activator
+		                         .getDefault()
+		                         .getUserManager()
+		                         .addListener(this);
 		showPojosMarkedAsDeleted = false;
 	}
 
@@ -211,7 +194,8 @@ public class View extends ViewPart implements IKeyringListener {
 
 	private void fillMenu(IMenuManager mgr) {
 		
-		if( !KeyRing.getInstance().isLoggedIn() ) {
+		if( !net.bioclipse.usermanager.Activator
+		        .getDefault().getUserManager().isLoggedIn() ) {
 			mgr.add(login);
 			return;
 		}
@@ -359,7 +343,8 @@ public class View extends ViewPart implements IKeyringListener {
 				if(element instanceof net.bioclipse.brunn.ui.explorer.model.folders.AbstractFolder) {
 					treeViewer.expandToLevel(element, 1);
 				}
-	            if( !KeyRing.getInstance().isLoggedIn() ) {
+	            if( !net.bioclipse.usermanager.Activator
+	                    .getDefault().getUserManager().isLoggedIn() ) {
 	                login.run();
 	            }
 			}
@@ -492,7 +477,6 @@ public class View extends ViewPart implements IKeyringListener {
 							catch(IllegalStateException e) {
 								final Exception ex = e;
 								Display.getDefault().asyncExec( new Runnable() {
-									@Override
 									public void run() {
 										MessageDialog.openInformation( shell, "Could not create Plate", ex.getMessage() );
 									}
@@ -622,7 +606,6 @@ public class View extends ViewPart implements IKeyringListener {
 									
 									Display.getDefault().asyncExec( new Runnable() {
 	
-										@Override
 										public void run() {
 											MessageDialog.openInformation(
 													finalShell, 
@@ -872,15 +855,14 @@ public class View extends ViewPart implements IKeyringListener {
 			}
 		};
 		
-		login = new Action("Log In") {
-			public void run() {
-				KeyRingLoginDialog loginDialog = 
-					new KeyRingLoginDialog( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
-							                KeyRing.getInstance() );
-				
-				loginDialog.open();
-			}
-		};
+		login = new Action("Login") {
+		    
+		    @Override
+		    public void run() {
+		        new LoginAction().run( null );
+		    }
+		    
+        };
 		
 		markPlateTypeDeleted = new Action("Mark as Deleted") {
 			public void run() {
@@ -1314,7 +1296,8 @@ public class View extends ViewPart implements IKeyringListener {
         }
 		if ( treeViewer.getSelection().isEmpty() ) {
             possibleActions.clear();
-            if( !KeyRing.getInstance().isLoggedIn() ) {
+            if( !net.bioclipse.usermanager.Activator.getDefault()
+                    .getUserManager().isLoggedIn() ) {
                 possibleActions.add( login );
             }
 		}
@@ -1464,7 +1447,7 @@ public class View extends ViewPart implements IKeyringListener {
         mgr.add( new Separator(IWorkbenchActionConstants.MB_ADDITIONS) );
 	}
 
-	public void keyringEventOccur(KeyringEvent event) {
+    public void receiveUserManagerEvent( UserManagerEvent event ) {
 		
 		switch (event) {
 		case LOGIN:
@@ -1494,4 +1477,6 @@ public class View extends ViewPart implements IKeyringListener {
 	public ITreeModelListener getTreeModelListener() {
 		return (ITreeModelListener) this.treeViewer.getContentProvider();
 	}
+
+
 }

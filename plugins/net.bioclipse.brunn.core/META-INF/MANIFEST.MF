@@ -666,7 +666,7 @@ Export-Package: .,
  versioncheck
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
- net.bioclipse.keyring,
  org.junit4,
- net.bioclipse.expression
+ net.bioclipse.brunn.expression,
+ net.bioclipse.usermanager;bundle-version="0.1.1"
 Bundle-Activator: net.bioclipse.brunn.Activator

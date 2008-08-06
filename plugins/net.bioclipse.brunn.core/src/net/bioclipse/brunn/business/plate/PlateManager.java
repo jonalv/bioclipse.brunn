@@ -292,8 +292,7 @@ public class PlateManager extends
 	    return masterPlateDAO.findAllNotDeleted();
     }
 
-	@Override
-    public void editMerging(User editor, Plate plate) {
+	public void editMerging(User editor, Plate plate) {
 		userDAO.update(editor);
 		plate = plateDAO.merge(plate);
 		plateDAO.save(plate);
@@ -307,8 +306,7 @@ public class PlateManager extends
 //		LazyLoadingSessionHolder.getInstance().evict( toBeSaved.getCreator() );
 //    }
 
-	@Override
-    public void evictfromLazyLoading(AbstractBasePlate toBeSaved) {
+	public void evictfromLazyLoading(AbstractBasePlate toBeSaved) {
 		LazyLoadingSessionHolder.getInstance().evict( toBeSaved );
 		LazyLoadingSessionHolder.getInstance().evict( toBeSaved.getCreator() );
 		for(PlateFunction pf : toBeSaved.getPlateFunctions()) {
@@ -316,7 +314,6 @@ public class PlateManager extends
 		}
     }
 
-	@Override
     public long createPlate( User creator, 
                              String name, 
                              String barcode,

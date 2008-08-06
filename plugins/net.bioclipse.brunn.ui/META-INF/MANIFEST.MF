@@ -9,10 +9,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.views.properties.tabbed,
  org.eclipse.ui.workbench.texteditor,
- net.bioclipse.keyring,
+ net.bioclipse.usermanager,
  org.junit4,
- net.bioclipse.expression,
- net.bioclipse.brunn.core
+ net.bioclipse.brunn.expression,
+ net.bioclipse.brunn.core,
+ net.bioclipse.core;bundle-version="2.0.0"
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  jars/KTable.jar

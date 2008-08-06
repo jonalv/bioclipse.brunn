@@ -89,7 +89,6 @@ public class Folder extends AbstractAuditableObject {
 				visitedObjects.add(folder);
             }
 
-			@Override
             public void visit(PatientOrigin patientOrigin) {
 				visitedObjects.add(patientOrigin);
             }
