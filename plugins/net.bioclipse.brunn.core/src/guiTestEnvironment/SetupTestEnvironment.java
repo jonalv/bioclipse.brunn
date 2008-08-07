@@ -99,6 +99,7 @@ public abstract class SetupTestEnvironment {
 		fm  = (IFolderManager)context.getBean("folderManager"); 
 		
 		user = new User("Administrator");
+		user.setPassword("masterkey");
 		IUserDAO userDAO = (IUserDAO)context.getBean("userDAO");
 		user.setAdmin(true);
 		userDAO.save(user);

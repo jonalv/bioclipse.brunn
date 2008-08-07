@@ -8,6 +8,8 @@ import net.bioclipse.brunn.business.audit.IAuditManager;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.usermanager.IUserManagerListener;
 import net.bioclipse.usermanager.UserManagerEvent;
+import net.bioclipse.usermanager.business.IUserManager;
+import net.bioclipse.usermanager.business.UserManager;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
@@ -41,15 +43,22 @@ public class Activator extends AbstractUIPlugin implements IUserManagerListener 
 
 	private void setLoggedInUser() {
 		System.out.println("Activator.setLoggedInUser()");
+		IUserManager userManager = net.bioclipse.usermanager.Activator.getDefault().getUserManager();
+        if ( userManager.getAccountIdsByAccountTypeName( "BrunnAccountType" )
+                        .size() > 1 ) {
+            throw new IllegalStateException("Found multiple brunn accounts for user. This version of Brunn doesn't support that");
+        }
+        String accountId = userManager.getAccountIdsByAccountTypeName( "BrunnAccountType" ).get( 0 );
+        
 		for ( User user : ( (IAuditManager)Springcontact.getBean("auditManager") ).getAllUsers() ) {
-			if( user.getName().equals( net.bioclipse.usermanager.Activator.getDefault().getUserManager().getLoggedInUserName() ) ) {
-//				if( user.passwordMatch( net.bioclipse.usermanager.Activator.getDefault().getUserManager().getKeyByAccountType("BrunnAccountType") ) ) {
-//					currentUser = user;
-//					System.out.println(currentUser.getName() + " has logged in");
-//					return;
-//				}
+		    
+			if( user.getName().equals( userManager.getProperty( accountId, "Brunn user" )  ) ) {
+				if( user.passwordMatch( userManager.getProperty( accountId, "Brunn password" ) ) ) {
+					currentUser = user;
+					System.out.println(currentUser.getName() + " has logged in");
+					return;
+				}
 			}
-			throw new NotImplementedException();
 		}
 		throw new IllegalStateException("Did not find user in database or password did not match");
 	}

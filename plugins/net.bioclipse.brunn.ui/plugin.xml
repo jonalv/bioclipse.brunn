@@ -77,14 +77,20 @@
 			id="brunn.accounttype"
 			name="BrunnAccountType">
 		<property
+		    name="Brunn user"
+		    required="true" />
+		<property
+			name="Brunn password" 
+			required="true" />
+		<property
 			name="URL"
-			required="true"/>
-  <property
-        name="Database password"
-        required="true"/>
-  <property
-        name="Database user"
-        required="true"/>
-	 </AccountType>
+			required="true" />
+        <property
+        	name="Database password"
+        	required="true" />
+        <property
+            name="Database user"
+            required="true" />
+	    </AccountType>
   </extension>
 </plugin>
