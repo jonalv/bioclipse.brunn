@@ -15,7 +15,7 @@ public class WellFunctionBody extends FunctionBodyAdaptor {
     }
 
 	public double eval(Calculator calc, Double[] args) {
-		assert args.length == 1;
+		assert args.length == 0;
 		calc.addVariable( "cell", calc.safeValueOf(wellName) );
 		double result = calc.safeValueOf(expression);
 		calc.removeVariable( "cell" );
