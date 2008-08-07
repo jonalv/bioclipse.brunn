@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.LazyLoadingSessionHolder;
 import net.bioclipse.brunn.business.plate.IPlateManager;
 import net.bioclipse.brunn.genericDAO.IAnnotationDAO;
@@ -35,6 +36,7 @@ import net.bioclipse.brunn.pojos.SampleContainer;
 import net.bioclipse.brunn.pojos.UniqueFolder;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.pojos.Well;
+import net.bioclipse.brunn.tests.TestConstants;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.tools.ant.Project;
@@ -61,6 +63,21 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 public abstract class AbstractGenericDAOTest {
 
+	static {
+		System.setProperty(
+            "javax.xml.parsers.SAXParserFactory", 
+            "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"
+        );
+        System.setProperty(
+            "javax.xml.parsers.DocumentBuilderFactory", 
+            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
+        );
+        System.setProperty(
+        	"org.apache.xerces.jaxp.DocumentBuilderFactoryImpl",
+        	"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
+        );
+	}
+	
 	protected IGenericDAO dao;
 	protected Session     session;
 
@@ -103,7 +120,7 @@ public abstract class AbstractGenericDAOTest {
 	@BeforeClass
 	public static void setBeanStuff() {
 		BasicDataSource dataSource = (BasicDataSource) context.getBean("dataSource");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/lis");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/brunn");
 	}
 	
 	/* 
@@ -161,7 +178,9 @@ public abstract class AbstractGenericDAOTest {
 		IInstrumentDAO instrumentDAO = (IInstrumentDAO)context.getBean("instrumentDAO");
 		instrumentDAO.save(instrument);
 		
-		drugOrigin = new DrugOrigin(tester, "drugOrigin", new FileInputStream("/home/jonathan/Eclipse_Workspace_LIS/lis/src/TestFiles/polycarpol.mol"), 567.67);
+		drugOrigin = new DrugOrigin( tester, 
+				                     "drugOrigin", 
+				                     new FileInputStream( TestConstants.getTestMolFile() ), 567.67);
 		IDrugOriginDAO drugOriginDAO = (IDrugOriginDAO)context.getBean("drugOriginDAO");
 		drugOriginDAO.save(drugOrigin);
 		

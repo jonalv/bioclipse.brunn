@@ -78,13 +78,13 @@ public abstract class SetupTestEnvironment {
 	public static void setupTestEnvironment() {
 	
 		System.setProperty(
-	            "javax.xml.parsers.SAXParserFactory", 
-	            "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"
-	        );
-	        System.setProperty(
-	            "javax.xml.parsers.DocumentBuilderFactory", 
-	            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
-	        );
+            "javax.xml.parsers.SAXParserFactory", 
+            "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"
+        );
+        System.setProperty(
+            "javax.xml.parsers.DocumentBuilderFactory", 
+            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
+        );
 		
 		sessionFactory = (SessionFactory)context.getBean("sessionFactory");
 		session = SessionFactoryUtils.getSession(sessionFactory,true);

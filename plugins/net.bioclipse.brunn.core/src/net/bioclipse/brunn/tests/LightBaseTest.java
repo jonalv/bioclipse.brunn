@@ -29,6 +29,21 @@ public abstract class LightBaseTest {
 	protected UniqueFolder masterPlates;
 	protected Folder       folder;
 	
+	static {
+		System.setProperty(
+            "javax.xml.parsers.SAXParserFactory", 
+            "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"
+        );
+        System.setProperty(
+            "javax.xml.parsers.DocumentBuilderFactory", 
+            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
+        );
+        System.setProperty(
+        	"org.apache.xerces.jaxp.DocumentBuilderFactoryImpl",
+        	"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
+        );
+	}
+	
 	public LightBaseTest() {
 		super();
 		sessionFactory = (SessionFactory)context.getBean("sessionFactory");

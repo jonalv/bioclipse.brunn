@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 
 import net.bioclipse.brunn.genericDAO.IDrugOriginDAO;
 import net.bioclipse.brunn.pojos.DrugOrigin;
+import net.bioclipse.brunn.tests.TestConstants;
 
 import org.junit.Test;
 
@@ -78,7 +79,7 @@ public class DrugOriginDAOTest extends AbstractGenericDAOTest {
 		
 		DrugOrigin drugOrigin = new DrugOrigin( tester, 
 				                                "drugOrigin1", 
-				                                new FileInputStream("/home/jonathan/Eclipse_Workspace_LIS/lis/src/TestFiles/polycarpol.mol"), 
+				                                new FileInputStream( TestConstants.getTestMolFile() ), 
 				                                24.0);
 		getDAO().save(drugOrigin);
 		
@@ -91,7 +92,7 @@ public class DrugOriginDAOTest extends AbstractGenericDAOTest {
 		
 		drugOrigin = new DrugOrigin( tester, 
                 "drugOrigin1", 
-                new FileInputStream("/home/jonathan/Eclipse_Workspace_LIS/lis/src/TestFiles/polycarpol.mol"), 
+                new FileInputStream( TestConstants.getTestMolFile() ), 
                 24.0);
 		try {
 			getDAO().save(drugOrigin);

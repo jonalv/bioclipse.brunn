@@ -135,5 +135,6 @@ public class Activator extends AbstractUIPlugin implements IUserManagerListener 
               Springcontact.CONTEXT = null;
             default:
               break;
-            }    }
+        }    
+    }
 }

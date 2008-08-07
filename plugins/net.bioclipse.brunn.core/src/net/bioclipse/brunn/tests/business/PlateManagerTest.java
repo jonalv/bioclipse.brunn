@@ -312,20 +312,13 @@ public class PlateManagerTest extends BaseTest {
 	@Test
 	public void testEditPlate() {
 		
-		int rows = plate.getRows();
-		int cols = plate.getCols();
-		
-		plate.setRows(rows+5);
-		plate.setCols(cols+5);
 		plate.setName("edited");
 		
 		pm.edit(tester, plate);
 		
 		Plate loadedPlate = pm.getPlate(plate.getId());
 		
-		assertEquals(loadedPlate.getRows(), rows+5);
-		assertEquals(loadedPlate.getCols(), cols+5);
-		assertEquals(loadedPlate.getName(), "edited");
+		assertEquals( "edited", loadedPlate.getName() );
 		
 	}
 	

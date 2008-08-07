@@ -66,6 +66,20 @@ public abstract class BaseTest {
 	protected static ApplicationContext context;
 	
 	static {
+		
+		System.setProperty(
+            "javax.xml.parsers.SAXParserFactory", 
+            "com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl"
+        );
+        System.setProperty(
+            "javax.xml.parsers.DocumentBuilderFactory", 
+            "com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
+        );
+        System.setProperty(
+        	"org.apache.xerces.jaxp.DocumentBuilderFactoryImpl",
+        	"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl"
+        );
+		
 		Springcontact.getBean("userDAO");
 		context = Springcontact.CONTEXT;
 	}
@@ -115,7 +129,7 @@ public abstract class BaseTest {
 	@BeforeClass
 	public static void setBeanStuff() {
 		BasicDataSource dataSource = (BasicDataSource) context.getBean("dataSource");
-		dataSource.setUrl("jdbc:mysql://localhost:3306/lis");
+		dataSource.setUrl("jdbc:mysql://localhost:3306/brunn");
 	}
 	
 	protected void setUp() throws Exception {
