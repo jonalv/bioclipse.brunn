@@ -9,13 +9,11 @@ import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.usermanager.IUserManagerListener;
 import net.bioclipse.usermanager.UserManagerEvent;
 import net.bioclipse.usermanager.business.IUserManager;
-import net.bioclipse.usermanager.business.UserManager;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.jboss.util.NotImplementedException;
 import org.osgi.framework.BundleContext;
 
 /**
