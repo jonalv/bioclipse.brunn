@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage[sf, bf]{caption}
+\usepackage{subfigure}
 
 \setlength{\parindent}{1em}
 
@@ -70,17 +71,34 @@
          \end{minipage}
 
          \subsection{Installation and Set-Up}
+
+         \begin{figure}
+            \subfigure[\textit{Adding Brunn Updaite site to Bioclipse 2}] {
+                \includegraphics[width=.5\textwidth] 
+                                {images/addingUpdatesite.png}
+                \label{addingUpdateSite}
+            }
+            \subfigure[\textit{Selecting features to install Brunn}] {
+                \includegraphics[width=.5\textwidth]
+                                {images/updatesite.png}
+                \label{selectingFeatures}
+            }
+           \caption{\textit{Installation process in Windows}} 
+         \end{figure}
+
             Bioclipse 2 can be found at:
             \texttt{https://sourceforge.net/projects/bioclipse/}. In Bioclipse
             2 the Brunn update site can added by clicking (in Windows)
             \texttt{Window$\rightarrow$Preferences} and then under
             \texttt{Update Sites} add the Brunn update site at:
-            \texttt{http://pele.farmbio.uu.se/brunn}. Once the update site has
-            been added the installation of the brunn feature can be done from
+            \texttt{http://pele.farmbio.uu.se/brunn} (figure
+            \ref{addingUpdateSite}). Once the update site has been added the
+            installation of the brunn feature can be done from
             \texttt{Help$\rightarrow$Search for new features...} and under
             \texttt{Brunn Update Site} select \texttt{Brunn Feature} and
-            \texttt{Usermanager Feature} hit \texttt{Next} and accept the
-            license agreements and then \texttt{Finish} to start installation. 
+            \texttt{Usermanager Feature} (figure \ref{selectingFeatures}) hit
+            \texttt{Next} and accept the license agreements and then
+            \texttt{Finish} to start installation. 
 
          \subsection{The Brunn Explorer View} 
             \begin{figure}
