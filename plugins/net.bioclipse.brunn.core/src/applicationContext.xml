@@ -906,7 +906,7 @@
     	</property>
 	</bean>
 
-<!-- PatientOriginDAO -->
+<!-- PatientSampleDAO -->
 	<bean id="patientSampleDAO" parent="abstractDAO">
 		<property name="proxyInterfaces">
 			<value>net.bioclipse.brunn.genericDAO.IPatientSampleDAO</value>
@@ -919,6 +919,20 @@
         	</bean>
     	</property>
 	</bean>
+	
+<!-- DiagnosisDAO -->	
+   <bean id="diagnosisDAO" parent="abstractDAO">
+        <property name="proxyInterfaces">
+            <value>net.bioclipse.brunn.genericDAO.IDiagnosisDAO</value>
+        </property>
+        <property name="target">
+            <bean parent="abstractDAOTarget">
+                <constructor-arg>
+                    <value>net.bioclipse.brunn.pojos.Diagnosis</value>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
 	
 <!-- FinderIntroductionAdvisor -->
 	<bean id="finderIntroductionAdvisor" 
