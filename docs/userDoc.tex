@@ -10,7 +10,8 @@
     \huge 
     \noindent
     \begin{center}
-        \textbf{Brunn User Documentation}
+        \textbf{Brunn User Documentation \newline
+                \Large\today}
     \end{center}
 
     \vskip 5 ex
@@ -54,11 +55,11 @@
                     \includegraphics[width=1\textwidth]{images/twoMenues.png}
                 \end{center}
                 \caption{\textit{A view can have a menu. They are very
-                    convenient but can be hard to spot the first time. They are
-                    just little triangles in the corner of the view. Editors
-                    can have multiple pages but this feature can also be hard
-                    to spot. The tabs at the bottom of the editor switch
-                    between pages.}}
+                    convenient but can be hard to spot the first time. They can
+                    be be shown by clicking the small triangle in the corner of
+                    the view. Editors can have multiple pages but this feature
+                    can also be hard to spot. The tabs at the bottom of the
+                    editor switch between pages.}}
                 \label{viewMenu}
             \end{figure}
 
@@ -100,21 +101,21 @@
             installation of the brunn feature can be done from
             \texttt{Help$\rightarrow$Search for new features...} and under
             \texttt{Brunn Update Site} select \texttt{Brunn Feature} and
-            \texttt{Usermanager Feature} (figure \ref{selectingFeatures}). Hitting
-            \texttt{Next} and accepting the license agreements are needed
-            before \texttt{Finish} can be clicked to start the installation. 
+            \texttt{Usermanager Feature} (figure \ref{selectingFeatures}).
+            Clicking \texttt{Next} and accepting the license agreements are
+            needed before \texttt{Finish} can be clicked to start the
+            installation. 
 
          \subsection{The Brunn Explorer View} 
             \begin{figure}
                 \begin{center}
-                    \includegraphics[width=.2\textwidth]
+                    \includegraphics[width=.5\textwidth]
                                     {images/explorerView.png}
                 \end{center}
                 \caption{\textit{The Brunn Explorer view is used to browse the
                     system. The contents are sorted in fixed super folders for
                     each type and can be further sorted into moveable sub
-                    folders } \texttt{TODO: Switch to new image with new icons
-                    and with the context menu showing}}
+                    folders}}
                 \label{explorerView}
             \end{figure}
 
@@ -274,9 +275,21 @@
                 series. Conecting a substance to a marker is done by dragging
                 the substance from the Brunn Explorer and into the list of
                 markers at the bottom part of the editor. A dialog will 
-                ask for information of how to perform dilution.
+                ask for information on how to perform dilution over wells with
+                that marker (figure: \ref{dilutionSeries}).
 
-                \texttt{TODO: add illustration of dialog}
+                \begin{figure}[htbp]
+                    \begin{center}
+                        \includegraphics[width=0.4\textwidth]
+                                        {images/dilutionSeries.png}
+                    \end{center}
+                    \caption{\textit{When dropping a substance at a marker in
+                    the master plate editor a dialog pop ups and asks for
+                    information on how to perform dilution over the wells with
+                    the same marker.}}
+                    \label{dilutionsSeries}
+                \end{figure}
+
         \subsection{Plate}
             A plate corresponds to a real world plate. This connection is made
             by a barcode. So when creating a plate an unique barcode for the new
@@ -292,14 +305,14 @@
                 \paragraph{The overview tab}
                     The overview tab shows the result values for the plate in
                     the same order as the actual plate. Each well has a few
-                    rows. The first row is the data value. After that come
+                    rows. The first row is the data value. After that comes
                     substance markers and concentrations. At the bottom of the
                     editor is a row of buttons. The first is a combo box where
                     the well function being shown for the wells can be
                     changed. Then there is a button for marking a well as
-                    outlier. When a well is marked as outlier it will not be
-                    used in any calculations. In the right part of the editor
-                    is a list of substance markers and which compound it
+                    outlier. When a well is marked as outlier, it's values will
+                    not be used in any calculations. In the right part of the
+                    editor is a list of substance markers and which compound it
                     corresponds to, and below are all the plate functions
                     listed.
 
@@ -311,18 +324,33 @@
 
                 \paragraph{The average tab}
                     The average tab looks very much like the summary tab but
-                    instead of showing values for each well, it shows the average
-                    for each group of replicates. Since each row in this table
-                    corresponds to an average for many wells, there is no button
-                    for marking a well as outlier here.
+                    instead of showing values for each well, it shows the
+                    average for each group of replicates. Since each row in
+                    this table corresponds to an average for many wells, there
+                    is no button for marking a well as outlier here.
 
         \subsection{Importing result data}
         \label{importingResult}
             Importing results is done in a dialog which can be found in the
             Brunn Explorer view's menu. Recall that figure \ref{viewMenu} at
             page \pageref{viewMenu} shows where this menu can be found. The
-            dialog is designed to accept files of three different formats.  
-            
-            \texttt{TODO: Describe or add examples of the three file formats}
+            dialog is designed to accept files of three different formats. The
+            first two are produced by robots but the third format is meant to
+            be easy to create by hand from for example Excel. A file of the
+            third would look like this:
+\tiny
+\begin{center}\begin{minipage}{0.88\textwidth}
+\begin{verbatim}
+21970,    24630,    56941,    53779,    51170,    50865,    50820,    56371,    52692,    49787,    51145,    44330
+4646,     8491,    16705,    16952,    53851,    15399,    11967,    13402,     3408,     4749,     3462,    42035
+13221,    16944,    21734,    28110,    46218,     9261,     9744,     7285,    10688,     9737,     9649,    50195
+17797,    12895,    13409,    15122,    35654,    11123,     8575,    13742,    15078,    14533,    14610,    44302
+11392,    18011,    23946,    31256,    36233,    16118,    15156,    13835,    33123,    32752,    29326,     6288
+23228,     6198,     6208,    10019,    32529,     9177,     6559,     8328,     7560,     6472,     6178,     5777
+26619,    27411,    10912,    15144,    37586,     5407,     5336,     5848,     7488,     8065,     7693,     6794
+32459,    35284,    38669,    45207,    43840,    36291,    31956,    45095,    52780,    39633,    49570,    35163
+\end{verbatim}            
+\end{minipage}\end{center}
+\normalsize
 \end{document}
 
