@@ -3,14 +3,14 @@
 <repository name='file:/Users/jonathan/Work/BrunnRepo/trunk/updateSite/ - artifacts' type='org.eclipse.equinox.p2.artifact.repository.simpleRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.compressed' value='false'/>
-    <property name='p2.timestamp' value='1218195887242'/>
+    <property name='p2.timestamp' value='1219221085210'/>
   </properties>
   <mappings size='3'>
     <rule filter='(&amp; (classifier=osgi.bundle))' output='${repoUrl}/plugins/${id}_${version}.jar'/>
     <rule filter='(&amp; (classifier=binary))' output='${repoUrl}/binary/${id}_${version}'/>
     <rule filter='(&amp; (classifier=org.eclipse.update.feature))' output='${repoUrl}/features/${id}_${version}.jar'/>
   </mappings>
-  <artifacts size='8'>
+  <artifacts size='14'>
     <artifact classifier='org.eclipse.update.feature' id='net.bioclipse.usermanager_feature' version='1.0.0'>
       <properties size='2'>
         <property name='artifact.size' value='4549'/>
@@ -24,11 +24,58 @@
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
+    <artifact classifier='osgi.bundle' id='net.bioclipse.brunn.core' version='0.1.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='13736004'/>
+        <property name='download.size' value='13736004'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
     <artifact classifier='osgi.bundle' id='org.junit4' version='4.3.1'>
       <properties size='3'>
         <property name='artifact.size' value='107604'/>
         <property name='download.size' value='107604'/>
         <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='de.kupzog.ktable' version='2.1.3'>
+      <properties size='3'>
+        <property name='artifact.size' value='104746'/>
+        <property name='download.size' value='104746'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='net.bioclipse.brunn.core' version='20080820.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='13736203'/>
+        <property name='download.size' value='13736203'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='net.bioclipse.brunn.expression' version='20080820.0.0'>
+      <properties size='3'>
+        <property name='artifact.size' value='10990'/>
+        <property name='download.size' value='10990'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='osgi.bundle' id='net.bioclipse.usermanager' version='0.1.1'>
+      <properties size='3'>
+        <property name='artifact.size' value='4769118'/>
+        <property name='download.size' value='4769118'/>
+        <property name='download.contentType' value='application/zip'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='net.bioclipse.brunn' version='20080820.0.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='787'/>
+        <property name='download.size' value='787'/>
+      </properties>
+    </artifact>
+    <artifact classifier='org.eclipse.update.feature' id='net.bioclipse.brunn' version='0.1.0'>
+      <properties size='2'>
+        <property name='artifact.size' value='785'/>
+        <property name='download.size' value='785'/>
       </properties>
     </artifact>
     <artifact classifier='osgi.bundle' id='net.bioclipse.brunn.expression' version='0.1.1'>
@@ -45,10 +92,10 @@
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
-    <artifact classifier='osgi.bundle' id='net.bioclipse.usermanager' version='0.1.1'>
+    <artifact classifier='osgi.bundle' id='net.bioclipse.brunn.ui' version='20080820.0.0'>
       <properties size='3'>
-        <property name='artifact.size' value='4769118'/>
-        <property name='download.size' value='4769118'/>
+        <property name='artifact.size' value='684452'/>
+        <property name='download.size' value='684452'/>
         <property name='download.contentType' value='application/zip'/>
       </properties>
     </artifact>
@@ -57,12 +104,6 @@
         <property name='artifact.size' value='684447'/>
         <property name='download.size' value='684447'/>
         <property name='download.contentType' value='application/zip'/>
-      </properties>
-    </artifact>
-    <artifact classifier='org.eclipse.update.feature' id='net.bioclipse.brunn' version='0.1.0'>
-      <properties size='2'>
-        <property name='artifact.size' value='785'/>
-        <property name='download.size' value='785'/>
       </properties>
     </artifact>
   </artifacts>
