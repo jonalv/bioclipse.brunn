@@ -3,7 +3,7 @@
    <feature url="features/net.bioclipse.usermanager_feature_1.0.0.jar" id="net.bioclipse.usermanager_feature" version="1.0.0">
       <category name="Other"/>
    </feature>
-   <feature url="features/net.bioclipse.brunn_20080820.0.0.jar" id="net.bioclipse.brunn" version="20080820">
+   <feature url="features/net.bioclipse.brunn_20080820.0.0.jar" id="net.bioclipse.brunn" version="20080820.0.0">
       <category name="Brunn"/>
    </feature>
    <category-def name="Brunn" label="Brunn"/>

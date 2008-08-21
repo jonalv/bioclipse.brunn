@@ -3,7 +3,7 @@
 <repository name='file:/Users/jonathan/Work/BrunnRepo/trunk/updateSite/ - metadata' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.compressed' value='false'/>
-    <property name='p2.timestamp' value='1219221085212'/>
+    <property name='p2.timestamp' value='1219230571075'/>
   </properties>
   <units size='20'>
     <unit id='net.bioclipse.usermanager_feature.feature.jar' version='1.0.0'>
