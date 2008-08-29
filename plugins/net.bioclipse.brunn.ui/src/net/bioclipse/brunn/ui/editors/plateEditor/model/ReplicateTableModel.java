@@ -69,9 +69,9 @@ public class ReplicateTableModel extends KTableDefaultModel {
 						                		                               o1[2].indexOf(' '))
 						                		            : o1[2]), 
 						            Double.parseDouble(
-						                o1[2].contains(" ") ? o1[2].substring( 0, 
-						                									   o1[2].indexOf(' '))
-						                				    : o1[2]) );
+						                o2[2].contains(" ") ? o2[2].substring( 0, 
+						                									   o2[2].indexOf(' '))
+						                				    : o2[2]) );
 				if ( c != 0 )
 					return c;
 				return o1[3].compareTo( o2[3] );
