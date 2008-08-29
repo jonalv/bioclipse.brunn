@@ -59,6 +59,9 @@ public class PlateLayoutManager extends AbstractDAOBasedPlateLayoutManager imple
 		plateLayoutDAO.save(plateLayout);
 		
 		auditService.audit(creator, AuditType.CREATE_EVENT, plateLayout);
+		
+		plateLayoutDAO.save(plateLayout);
+		
 		evictFromLazyLoading(plateLayout);
 		return plateLayout.getId();
     }
