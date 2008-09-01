@@ -129,140 +129,140 @@ public abstract class SetupTestEnvironment {
 		masterPlates = new UniqueFolder( user, "Master Plates", "masterPlates");
 		uniqueFolderDAO.save(masterPlates);
 		
-		IDrugSampleDAO  drugSampleDAO = (IDrugSampleDAO) Springcontact.getBean("drugSampleDAO");
-		
-		PlateType plateType = plm.getPlateType(plm.createPlateType(user, 24, 16, "384 wells", plateTypes));		
-		PlateLayout plateLayout = plm.getPlateLayout(plm.createPlateLayout(user, "example plateLayout", plateType, plateLayouts));
-		
-		for( LayoutWell well : plateLayout.getLayoutWells() ) {
-			if( well.getCol() != 1 && well.getRow() != 'a') {
-				if(well.getCol() == 2) {
-					well.getLayoutMarkers().add( new LayoutMarker(user, "p", well) );
-				}
-				if(well.getCol() < 7 && well.getCol() > 2) {
-					well.getLayoutMarkers().add( new LayoutMarker(user, "M"+(well.getRow()-'a'), well) );
-					if(well.getRow() == 'c') {
-						well.getLayoutMarkers().add( new LayoutMarker(user, "M"+(well.getRow()-'a'-1), well) );
-					}
-				}
-			}
-		}
-		
-		long cellOriginId = orm.createCellOrigin(user, "example cell line", cellTypes);
-		CellOrigin cellOrigin = orm.getCellOrigin(cellOriginId);
-		DrugOrigin drugOrigin = null;
-		try {
-	        long id = orm.createDrugOrigin(user, "compound", new FileInputStream(TestConstants.getTestMolFile()), 23.4, compounds);
-	        drugOrigin = orm.getDrugOrigin(id);
-        }
-        catch (FileNotFoundException e) {
-	        e.printStackTrace();
-        }
-        catch (IOException e) {
-	        e.printStackTrace();
-        }
-        
-        Folder exampleFolder = fm.getFolder(fm.createFolder(user, "example data", dataSets));
-        
-        /*
-         * CREATE WELL AND PLATE FUNCTIONS
-         */
-        for( LayoutWell well : plateLayout.getLayoutWells() ) {
-			plm.createWellFunction(user, "square", well, well.getName()+"*"+well.getName());
-		}
-		
-		plateLayout = plm.getPlateLayout(plateLayout.getId());
-//		plm.createPlateFunction(user, "testFunction", plateLayout, "(a1+a2)/2");
-//		plm.createPlateFunction(user, "testFunction2", plateLayout, "(a1+a2)/2", 0.2, 12);
-        
-        /*
-         * CREATE MASTERPLATE
-         */
-        MasterPlate masterPlate = pm.getMasterPlate(pm.createMasterPlate(user, "a masterPlate", plateLayout, masterPlates, 5));
-
-        /*
-         * ADD DRUGSAMPLES TO MASTERPLATE
-         */
-		LinkedList<SampleMarker> sampleMarkersM1 = new LinkedList<SampleMarker>();
-		for(Well well : masterPlate.getWells()) {
-			for(SampleMarker sm : well.getSampleMarkers()) {
-				if( "M1".equals(sm.getName()) ){
-					sampleMarkersM1.add(sm);
-				}
-			}
-		}
-		int value = 1;
-		for(SampleMarker sm : sampleMarkersM1) {
-//			DrugSample ds = new DrugSample( user, 
-//					                        "compound 1", 
-//					                        23.0*value++, 
-//					                        drugOrigin, 
-//					                        sm.getWell().getSampleContainer(), 
-//					                        ConcUnit.UNIT );
-//			ds.setSampleMarker(sm);
-//			sm.setSample(ds);
-		}
-
-		pm.edit(user, masterPlate);
-        
-		/*
-		 * CREATE PLATES
-		 */
-		pm.createPlate(user,"example plate", "2708", exampleFolder, masterPlate, cellOrigin, null);
-		
-		long plateId = pm.createPlate(user,"another plate", "T0001", exampleFolder, masterPlate, cellOrigin, null);
-		Plate plate = pm.getPlate(plateId);
-
-		/*
-		 * CREATE PLATE RESULTS 
-		 */
-		/*
-		 * get orcaResultType and if it doesn't exist create it
-		 */
-		IOperationManager om = (IOperationManager) Springcontact.getBean("operationManager");
-		String orcaResultTypeName = "orcaResultType";
-		List<ResultType> resultTypes = om.getResultTypeByName(orcaResultTypeName);
-		ResultType orcaResultType;
-		if(resultTypes.size() == 0) {
-			orcaResultType = new ResultType(user, orcaResultTypeName, 1 );
-			IResultTypeDAO resultDAO = (IResultTypeDAO) context.getBean("resultTypeDAO");
-			resultDAO.save(orcaResultType);
-		}
-		else {
-			orcaResultType = resultTypes.get(0);
-		}
-		
-		/*
-		 * get orcaInstrument and if it doesn't exist create it
-		 */
-		String orcaInstruementName = "ORCA";
-		List<Instrument> instruments = om.getInstrumentByName(orcaInstruementName);
-		Instrument orca;
-		if(instruments.size() == 0) {
-			orca = new Instrument(user, orcaInstruementName);
-		}
-		else {
-			orca = instruments.get(0);
-		}
-		
-		for( Well well : plate.getWells() ) {
-			
-			Measurement measurement = new Measurement( user,
-					                                   "exampleMeasurement", 
-					                                   well.getSampleContainer().getWorkList(), 
-					                                   orca, 
-					                                   orcaResultType );
-			double[] resultValue = new double[1];
-			resultValue[0] = Math.random()*65000;
-			Result result = new Result(user, "exampleResult", resultValue, 1 );  //TODO: deal with version numbers
-			measurement.addResult(result);
-		}
-		
-		pm.edit(user, plate);
-
-		plm.edit(user, plateLayout);
-		plateLayout = plm.getPlateLayout(plateLayout.getId());
-
-		
+//		IDrugSampleDAO  drugSampleDAO = (IDrugSampleDAO) Springcontact.getBean("drugSampleDAO");
+//		
+//		PlateType plateType = plm.getPlateType(plm.createPlateType(user, 24, 16, "384 wells", plateTypes));		
+//		PlateLayout plateLayout = plm.getPlateLayout(plm.createPlateLayout(user, "example plateLayout", plateType, plateLayouts));
+//		
+//		for( LayoutWell well : plateLayout.getLayoutWells() ) {
+//			if( well.getCol() != 1 && well.getRow() != 'a') {
+//				if(well.getCol() == 2) {
+//					well.getLayoutMarkers().add( new LayoutMarker(user, "p", well) );
+//				}
+//				if(well.getCol() < 7 && well.getCol() > 2) {
+//					well.getLayoutMarkers().add( new LayoutMarker(user, "M"+(well.getRow()-'a'), well) );
+//					if(well.getRow() == 'c') {
+//						well.getLayoutMarkers().add( new LayoutMarker(user, "M"+(well.getRow()-'a'-1), well) );
+//					}
+//				}
+//			}
+//		}
+//		
+//		long cellOriginId = orm.createCellOrigin(user, "example cell line", cellTypes);
+//		CellOrigin cellOrigin = orm.getCellOrigin(cellOriginId);
+//		DrugOrigin drugOrigin = null;
+//		try {
+//	        long id = orm.createDrugOrigin(user, "compound", new FileInputStream(TestConstants.getTestMolFile()), 23.4, compounds);
+//	        drugOrigin = orm.getDrugOrigin(id);
+//        }
+//        catch (FileNotFoundException e) {
+//	        e.printStackTrace();
+//        }
+//        catch (IOException e) {
+//	        e.printStackTrace();
+//        }
+//        
+//        Folder exampleFolder = fm.getFolder(fm.createFolder(user, "example data", dataSets));
+//        
+//        /*
+//         * CREATE WELL AND PLATE FUNCTIONS
+//         */
+//        for( LayoutWell well : plateLayout.getLayoutWells() ) {
+//			plm.createWellFunction(user, "square", well, well.getName()+"*"+well.getName());
+//		}
+//		
+//		plateLayout = plm.getPlateLayout(plateLayout.getId());
+////		plm.createPlateFunction(user, "testFunction", plateLayout, "(a1+a2)/2");
+////		plm.createPlateFunction(user, "testFunction2", plateLayout, "(a1+a2)/2", 0.2, 12);
+//        
+//        /*
+//         * CREATE MASTERPLATE
+//         */
+//        MasterPlate masterPlate = pm.getMasterPlate(pm.createMasterPlate(user, "a masterPlate", plateLayout, masterPlates, 5));
+//
+//        /*
+//         * ADD DRUGSAMPLES TO MASTERPLATE
+//         */
+//		LinkedList<SampleMarker> sampleMarkersM1 = new LinkedList<SampleMarker>();
+//		for(Well well : masterPlate.getWells()) {
+//			for(SampleMarker sm : well.getSampleMarkers()) {
+//				if( "M1".equals(sm.getName()) ){
+//					sampleMarkersM1.add(sm);
+//				}
+//			}
+//		}
+//		int value = 1;
+//		for(SampleMarker sm : sampleMarkersM1) {
+////			DrugSample ds = new DrugSample( user, 
+////					                        "compound 1", 
+////					                        23.0*value++, 
+////					                        drugOrigin, 
+////					                        sm.getWell().getSampleContainer(), 
+////					                        ConcUnit.UNIT );
+////			ds.setSampleMarker(sm);
+////			sm.setSample(ds);
+//		}
+//
+//		pm.edit(user, masterPlate);
+//        
+//		/*
+//		 * CREATE PLATES
+//		 */
+//		pm.createPlate(user,"example plate", "2708", exampleFolder, masterPlate, cellOrigin, null);
+//		
+//		long plateId = pm.createPlate(user,"another plate", "T0001", exampleFolder, masterPlate, cellOrigin, null);
+//		Plate plate = pm.getPlate(plateId);
+//
+//		/*
+//		 * CREATE PLATE RESULTS 
+//		 */
+//		/*
+//		 * get orcaResultType and if it doesn't exist create it
+//		 */
+//		IOperationManager om = (IOperationManager) Springcontact.getBean("operationManager");
+//		String orcaResultTypeName = "orcaResultType";
+//		List<ResultType> resultTypes = om.getResultTypeByName(orcaResultTypeName);
+//		ResultType orcaResultType;
+//		if(resultTypes.size() == 0) {
+//			orcaResultType = new ResultType(user, orcaResultTypeName, 1 );
+//			IResultTypeDAO resultDAO = (IResultTypeDAO) context.getBean("resultTypeDAO");
+//			resultDAO.save(orcaResultType);
+//		}
+//		else {
+//			orcaResultType = resultTypes.get(0);
+//		}
+//		
+//		/*
+//		 * get orcaInstrument and if it doesn't exist create it
+//		 */
+//		String orcaInstruementName = "ORCA";
+//		List<Instrument> instruments = om.getInstrumentByName(orcaInstruementName);
+//		Instrument orca;
+//		if(instruments.size() == 0) {
+//			orca = new Instrument(user, orcaInstruementName);
+//		}
+//		else {
+//			orca = instruments.get(0);
+//		}
+//		
+//		for( Well well : plate.getWells() ) {
+//			
+//			Measurement measurement = new Measurement( user,
+//					                                   "exampleMeasurement", 
+//					                                   well.getSampleContainer().getWorkList(), 
+//					                                   orca, 
+//					                                   orcaResultType );
+//			double[] resultValue = new double[1];
+//			resultValue[0] = Math.random()*65000;
+//			Result result = new Result(user, "exampleResult", resultValue, 1 );  //TODO: deal with version numbers
+//			measurement.addResult(result);
+//		}
+//		
+//		pm.edit(user, plate);
+//
+//		plm.edit(user, plateLayout);
+//		plateLayout = plm.getPlateLayout(plateLayout.getId());
+//
+//
 	}
 }
