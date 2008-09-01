@@ -15,6 +15,7 @@ import net.bioclipse.brunn.business.folder.IFolderManager;
 import net.bioclipse.brunn.business.origin.IOriginManager;
 import net.bioclipse.brunn.business.plate.IPlateManager;
 import net.bioclipse.brunn.business.plateLayout.IPlateLayoutManager;
+import net.bioclipse.brunn.pojos.LayoutWell;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.results.PlateResults;
 import net.bioclipse.brunn.ui.Activator;
@@ -637,6 +638,28 @@ public class View extends ViewPart implements IUserManagerListener {
 				dialog.open();
 				if(dialog.getReturnCode() == CreateMasterPlate.OK) {
 
+					// Check for well functions
+					boolean foundWellFunction = false;
+					
+					for ( LayoutWell lw : dialog.getSelectedPlateLayout().getLayoutWells() ) {
+						if ( lw.getWellFunctions().size() > 1) {
+							foundWellFunction = true;
+							break;
+						}
+					}
+					
+					if ( !foundWellFunction ) {
+						if ( !MessageDialog.openConfirm( PlatformUI
+                                                   .getWorkbench()
+                                                   .getActiveWorkbenchWindow()
+                                                   .getShell(), 
+                                                   "No well functions", 
+												   "Selected plate layout has no well functions. " +
+												   "Are you sure you want to continue?") ) {
+							return;
+						}
+					}
+					
 					if ( treeViewer.getSelection().isEmpty() ) {
 						throw new IllegalStateException( "No folder was selected in the treeviewer");
 					}

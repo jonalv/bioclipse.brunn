@@ -116,11 +116,15 @@ public class ReplicateTableModel extends KTableDefaultModel {
 		int i = 3;
 		for ( List<Double> list : wellFunctions.values() ) {
 			double sum = 0;
-			for( double d : list) {
-				sum += d;
+			int numberOfValues = 0;
+			for ( double d : list) {
+				if ( !Double.isNaN(d) ) {
+					sum += d;
+					numberOfValues++;
+				}
 			}
 			DecimalFormat df = new DecimalFormat("0");
-			row[i++] = df.format(sum / list.size());
+			row[i++] = df.format( sum / numberOfValues );
 		}
 
         //CV%
@@ -138,8 +142,10 @@ public class ReplicateTableModel extends KTableDefaultModel {
         double avg =  sum / numberOfReplicates;
             
         double sumOfDiffs = 0;
-        for( Double rawValue : wellFunctions.get("raw") ) {
-          	sumOfDiffs += (rawValue-avg)*(rawValue-avg);
+        for ( Double rawValue : wellFunctions.get("raw") ) {
+        	if ( !rawValue.isNaN() ) {
+        		sumOfDiffs += (rawValue-avg)*(rawValue-avg);
+        	}
         }
 
         double stddev = Math.sqrt( (1.0/(wellFunctions.get("raw").size()-1 - numberOfNan)) * sumOfDiffs );

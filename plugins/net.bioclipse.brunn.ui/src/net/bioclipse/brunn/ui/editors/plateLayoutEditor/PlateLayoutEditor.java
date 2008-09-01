@@ -367,8 +367,22 @@ public class PlateLayoutEditor extends EditorPart {
 				WellFunction toBeRemoved =
 					( (WellFunctionsModel)wellFunctionsTable.getModel() )
 						.getWellFunctions().get( selectedRow -1 + "" );
-				toBeRemoved.delete();
-				toBeRemoved.getWell().getWellFunctions().remove(toBeRemoved);
+				
+				List<WellFunction> listOfToBeRemoved = new ArrayList<WellFunction>();
+				
+				for ( Point p : markersTable.getCellSelection() ) {
+					for ( WellFunction wf : toBeSaved.getLayoutWell(p)
+							                         .getWellFunctions() ) {
+						if ( wf.getName().equals( toBeRemoved.getName() ) ) {
+							listOfToBeRemoved.add(wf);
+						}
+					}
+				}
+				
+				for ( WellFunction wf : listOfToBeRemoved ) {
+					wf.delete();
+					wf.getWell().getWellFunctions().remove(wf);					
+				}
 				
 				List<LayoutWell> lws = new ArrayList<LayoutWell>();
 				for( Point p : markersTable.getCellSelection() ) {
