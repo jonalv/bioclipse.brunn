@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Expression Plug-in
 Bundle-SymbolicName: net.bioclipse.brunn.expression;singleton:=true
-Bundle-Version: 20080820
+Bundle-Version: 20080901
 Bundle-Activator: net.bioclipse.expression.Activator
 Require-Bundle: org.eclipse.core.runtime
 Eclipse-LazyStart: true
