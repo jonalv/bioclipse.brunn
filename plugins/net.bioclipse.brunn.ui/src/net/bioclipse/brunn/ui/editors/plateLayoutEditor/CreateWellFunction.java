@@ -137,6 +137,16 @@ public class CreateWellFunction extends TitleAreaDialog {
 						e.getMessage() );
 				return;
 			}
+	        try {
+	            calculator.checkIdentifierName( name );
+            }
+            catch (Exception e) {
+                MessageDialog.openInformation( 
+                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+                        "Can not use that well function name", 
+                        e.getMessage() );
+                return;
+            }
 		}
 		super.buttonPressed(buttonId);
 	}

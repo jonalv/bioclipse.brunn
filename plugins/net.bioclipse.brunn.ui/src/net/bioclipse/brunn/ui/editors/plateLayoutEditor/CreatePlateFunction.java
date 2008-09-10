@@ -165,7 +165,7 @@ public class CreatePlateFunction extends TitleAreaDialog {
 		if (buttonId == IDialogConstants.OK_ID) {
 			
 			try {
-				calculator.safeValueOf(textExpression.getText());
+				calculator.safeValueOf( textExpression.getText() );
 			}
 			catch (CalculatorException e) {
 				MessageDialog.openInformation( 
@@ -174,6 +174,16 @@ public class CreatePlateFunction extends TitleAreaDialog {
 						e.getMessage() );
 				return;
 			}
+			try {
+                calculator.checkIdentifierName( textName.getText() );
+            }
+            catch (Exception e) {
+                MessageDialog.openInformation( 
+                        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+                        "Can not use that plate function name", 
+                        e.getMessage() );
+                return;
+            }
 			
 			this.expression = textExpression.getText();
 			this.name       = textName.getText();

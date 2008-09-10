@@ -91,10 +91,10 @@ public class Calculator implements Cloneable {
         this.functions.put( name.toLowerCase(), body );
     }
 
-    private void checkIdentifierName(String name) {
+    public void checkIdentifierName(String name) {
         if ( !name.matches( "^[\\w%]*$" ) )
-            throw new IllegalArgumentException( "Identifier " + name
-                    + " contains non-alphanumeric characters" );
+            throw new IllegalArgumentException( "Identifier \"" + name
+                    + "\" contains non-alphanumeric characters" );
     }
     
     private static String quote( int c ) {
