@@ -63,12 +63,16 @@ import net.bioclipse.usermanager.IUserManagerListener;
 import net.bioclipse.usermanager.UserManagerEvent;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -92,7 +96,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class View extends ViewPart implements IUserManagerListener {
 
-	public static final String ID = "net.bioclipse.brunn.ui.explorer.View";
+    public static final String ID = "net.bioclipse.brunn.ui.explorer.View";
 
 	private TreeViewer treeViewer;
 
@@ -369,321 +373,255 @@ public class View extends ViewPart implements IUserManagerListener {
 
 	protected void createActions(){
 
-		rename = new Action("Rename") {
-			public void run() {
+		rename = new BrunnAction("Rename", treeViewer) {
+		    
+		    private Rename dialog;
+		    
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                monitor.beginTask( "Renaming", IProgressMonitor.UNKNOWN );
+                try {
+                    if (dialog.getReturnCode() == CreateFolder.OK) {
+                        AbstractFolder recievingFolder 
+                            = (AbstractFolder) selectedDomainObject
+                                               .getFolder();
+                        selectedDomainObject.changeName(dialog.getName());
+                        recievingFolder.fireUpdate();                   
+                    }
+                }
+                finally {
+                    monitor.done();
+                }
+            }
 
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
 
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-				ITreeObject selectedDomainObject = (ITreeObject) selection.getFirstElement();
-
-				final Rename dialog = new Rename( PlatformUI.
-						getWorkbench().
-						getActiveWorkbenchWindow().
-						getShell(), 
-						selectedDomainObject.getName() );
-				dialog.open();
-				if(dialog.getReturnCode() == CreateFolder.OK) {
-
-					new Thread () {
-						public void run() {
-							ITreeObject selectedDomainObject = (ITreeObject) selection.getFirstElement();
-							AbstractFolder recievingFolder = (AbstractFolder) selectedDomainObject.getFolder();
-
-							selectedDomainObject.changeName(dialog.getName());
-
-							recievingFolder.fireUpdate();					
-						}
-					}.start();
-				}
-			}
+                dialog = new Rename( PlatformUI.getWorkbench()
+                                               .getActiveWorkbenchWindow()
+                                               .getShell(), 
+                                     selectedDomainObject.getName() );
+                return dialog.open();
+            }
 		};
 
-		createFolder = new Action("Create Folder") {
-			public void run() {
-				final CreateFolder dialog = new CreateFolder( PlatformUI.
-						getWorkbench().
-						getActiveWorkbenchWindow().
-						getShell() );
-				dialog.open();
-				if(dialog.getReturnCode() == CreateFolder.OK) {
+		createFolder = new BrunnAction("Create Folder", treeViewer) {
+		    
+		    private CreateFolder dialog;
 
-					if ( treeViewer.getSelection().isEmpty() ) {
-						throw new IllegalStateException( "No folder was selected in the treeviewer");
-					}
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
 
-					final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+                dialog 
+                    = new CreateFolder( PlatformUI.getWorkbench()
+                                                  .getActiveWorkbenchWindow()
+                                                  .getShell() );
+                return dialog.open();
+            }
+            
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
 
-					new Thread () {
-						public void run() {
-							ITreeObject selectedDomainObject = (ITreeObject) selection.getFirstElement();
-							AbstractFolder recievingFolder = (AbstractFolder) selectedDomainObject.getFolder();
-							IFolderManager fom = (IFolderManager) Springcontact.getBean("folderManager");
+                AbstractFolder recievingFolder 
+                    = (AbstractFolder) selectedDomainObject.getFolder();
+                IFolderManager fom 
+                    = (IFolderManager) Springcontact.getBean("folderManager");
 
-							fom.createFolder( Activator.getDefault().getCurrentUser(), 
-									dialog.getName(),
-									(net.bioclipse.brunn.pojos.Folder)recievingFolder.getPOJO() );
+                fom.createFolder( Activator.getDefault().getCurrentUser(), 
+                                  dialog.getName(),
+                                  (net.bioclipse.brunn.pojos.Folder)
+                                      recievingFolder.getPOJO() );
 
-							recievingFolder.fireUpdate();					
-						}
-					}.start();
-				}
-			}
+                recievingFolder.fireUpdate();                   
+            }
 		};
 
-		createPlate = new Action("Create Plate") {
-			public void run() {
-				final CreatePlate dialog = new CreatePlate( PlatformUI.
-						                                    getWorkbench().
-						                                    getActiveWorkbenchWindow().
-						                                    getShell() );
-				dialog.open();
-				if(dialog.getReturnCode() == CreatePlate.OK) {
+		createPlate = new BrunnAction("Create Plate", treeViewer) {
+		    
+	        private CreatePlate dialog;
+		    
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
 
-					if ( treeViewer.getSelection().isEmpty() ) {
-						throw new IllegalStateException( "No folder was selected in the treeviewer");
-					}
+                AbstractFolder recievingFolder 
+                    = (AbstractFolder) selectedDomainObject.getFolder();
+                IPlateManager pm 
+                    = (IPlateManager) Springcontact.getBean("plateManager");
+                
+                try {
+                    if ( dialog.isDoingPatientCells() ) {
+                        pm.createPlate( Activator.getDefault()
+                                                 .getCurrentUser(), 
+                                        dialog.getName(),
+                                        dialog.getBarCode(),
+                                        (net.bioclipse.brunn.pojos.Folder)
+                                            recievingFolder.getPOJO(),
+                                        dialog.getMasterPlate(),
+                                        dialog.getPatientOrigin(),
+                                        dialog.getTimestamp() );
+                    }
+                    else {
+                        pm.createPlate( Activator.getDefault()
+                                                 .getCurrentUser(), 
+                                        dialog.getName(),
+                                        dialog.getBarCode(),
+                                        (net.bioclipse.brunn.pojos.Folder)
+                                            recievingFolder.getPOJO(),
+                                        dialog.getMasterPlate(),
+                                        dialog.getCellOrigin(),
+                                        dialog.getTimestamp() );
+                    }
+                }
+                catch(IllegalStateException e) {
+                    final Exception ex = e;
+                    Display.getDefault().asyncExec( new Runnable() {
+                        public void run() {
+                            MessageDialog
+                                .openInformation( shell, 
+                                                  "Could not create Plate", 
+                                                  ex.getMessage() );
+                        }
+                    });
+                }
+                recievingFolder.fireUpdate();
+            }
 
-					final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-					final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-					
-					new Thread () {
-						public void run() {
-							ITreeObject selectedDomainObject = (ITreeObject) selection.getFirstElement();
-							AbstractFolder recievingFolder = (AbstractFolder) selectedDomainObject.getFolder();
-							IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
-							
-							try {
-								if ( dialog.isDoingPatientCells() ) {
-									pm.createPlate( Activator.getDefault().getCurrentUser(), 
-									                dialog.getName(),
-									                dialog.getBarCode(),
-									                (net.bioclipse.brunn.pojos.Folder)recievingFolder.getPOJO(),
-									                dialog.getMasterPlate(),
-									                dialog.getPatientOrigin(),
-									                dialog.getTimestamp() );
-								}
-								else {
-									pm.createPlate( Activator.getDefault().getCurrentUser(), 
-											        dialog.getName(),
-											        dialog.getBarCode(),
-											        (net.bioclipse.brunn.pojos.Folder)recievingFolder.getPOJO(),
-											        dialog.getMasterPlate(),
-											        dialog.getCellOrigin(),
-											        dialog.getTimestamp() );
-								}
-							}
-							catch(IllegalStateException e) {
-								final Exception ex = e;
-								Display.getDefault().asyncExec( new Runnable() {
-									public void run() {
-										MessageDialog.openInformation( shell, "Could not create Plate", ex.getMessage() );
-									}
-								});
-							}
-							recievingFolder.fireUpdate();					
-						}
-					}.start();
-				}
-			}
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+
+                dialog = new CreatePlate( PlatformUI.
+                                          getWorkbench().
+                                          getActiveWorkbenchWindow().
+                                          getShell() );
+                return dialog.open();
+            }
 		};
 
 		
-		createCellType = new Action("Create Cell Type") {
-			public void run() {
-				final CreateCellType dialog = new CreateCellType( PlatformUI.
-						getWorkbench().
-						getActiveWorkbenchWindow().
-						getShell() );
-				dialog.open();
-				if(dialog.getReturnCode() == CreateCellType.OK) {
+		createCellType = new BrunnAction("Create Cell Line", treeViewer) {
+		    
+		    private CreateCellType dialog;
+		    
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
 
-					if ( treeViewer.getSelection().isEmpty() ) {
-						throw new IllegalStateException( "No folder was selected in the treeviewer");
-					}
+                AbstractFolder recievingFolder 
+                    = (AbstractFolder) selectedDomainObject.getFolder();
+                IOriginManager orm 
+                    = (IOriginManager) Springcontact.getBean("originManager");
 
-					final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+                orm.createCellOrigin( Activator.getDefault()
+                                               .getCurrentUser(), 
+                                      dialog.getName(),
+                                      (net.bioclipse.brunn.pojos.Folder)
+                                          recievingFolder.getPOJO() );
 
-					new Thread () {
-						public void run() {
-							ITreeObject selectedDomainObject = (ITreeObject) selection.getFirstElement();
-							AbstractFolder recievingFolder = (AbstractFolder) selectedDomainObject.getFolder();
-							IOriginManager orm = (IOriginManager) Springcontact.getBean("originManager");
+                recievingFolder.fireUpdate();                
+            }
 
-							orm.createCellOrigin( Activator.getDefault().getCurrentUser(), 
-									dialog.getName(),
-									(net.bioclipse.brunn.pojos.Folder)recievingFolder.getPOJO() );
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
 
-							recievingFolder.fireUpdate();					
-						}
-					}.start();
-
-				}
-			}
+                dialog 
+                    = new CreateCellType( PlatformUI.getWorkbench()
+                                                    .getActiveWorkbenchWindow()
+                                                    .getShell() );
+                return dialog.open();
+            }
 		};
 		
-		createPatientCell = new Action("Create Patient Cell") {
-			public void run() {
-				final CreatePatientCell dialog 
-					= new CreatePatientCell( PlatformUI
-					                         .getWorkbench()
-					                         .getActiveWorkbenchWindow()
-						                     .getShell() );
-				dialog.open();
-				if(dialog.getReturnCode() == CreatePatientCell.OK) {
+		createPatientCell = new BrunnAction( "Create Patient Cell", 
+		                                     treeViewer ) {
+		    
+		    private CreatePatientCell dialog;
 
-					if ( treeViewer.getSelection().isEmpty() ) {
-						throw new IllegalStateException( "No folder was selected in the treeviewer");
-					}
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                AbstractFolder recievingFolder 
+                    = (AbstractFolder) selectedDomainObject.getFolder();
+                IOriginManager orm 
+                    = (IOriginManager) Springcontact.getBean("originManager");
 
-					final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+                orm.createPatientOrigin( Activator.getDefault()
+                                                  .getCurrentUser(), 
+                                         dialog.getName(),
+                                         dialog.getLid(),
+                                         (net.bioclipse.brunn.pojos.Folder)
+                                            recievingFolder.getPOJO() );
+                recievingFolder.fireUpdate();
+            }
 
-					new Thread () {
-						public void run() {
-							ITreeObject selectedDomainObject = (ITreeObject) selection.getFirstElement();
-							AbstractFolder recievingFolder = (AbstractFolder) selectedDomainObject.getFolder();
-							IOriginManager orm = (IOriginManager) Springcontact.getBean("originManager");
-
-							orm.createPatientOrigin( Activator.getDefault().getCurrentUser(), 
-									                 dialog.getName(),
-									                 dialog.getLid(),
-									                 (net.bioclipse.brunn.pojos.Folder)
-									                 	recievingFolder.getPOJO() );
-
-							recievingFolder.fireUpdate();					
-						}
-					}.start();
-				}
-			}
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                dialog 
+                    = new CreatePatientCell( PlatformUI
+                                             .getWorkbench()
+                                             .getActiveWorkbenchWindow()
+                                             .getShell() );
+                return dialog.open();
+            }
 		};
 
-		createCompound = new Action("Create Compound") {
-			public void run() {
-				boolean keepCreatingStructure = true;
-				while(keepCreatingStructure) {
-					final CreateCompound dialog = new CreateCompound( PlatformUI.
-							getWorkbench().
-							getActiveWorkbenchWindow().
-							getShell() );
-					dialog.open();
-					if(dialog.getReturnCode() == CreateCompound.OK) {
-	
-						if ( treeViewer.getSelection().isEmpty() ) {
-							if(treeSelection == null) {
-								throw new IllegalStateException( "No folder" +
-										" was selected in the treeviewer");
-							}
-						}
-						else {
-							treeSelection = (IStructuredSelection) treeViewer.getSelection();
-						}
-	
-						new Thread () {
-							public void run() {
-								ITreeObject selectedDomainObject = (ITreeObject) treeSelection.getFirstElement();
-								AbstractFolder recievingFolder = (AbstractFolder) selectedDomainObject.getFolder();
-								IOriginManager orm = (IOriginManager) Springcontact.getBean("originManager");
-	
-								try {
-									orm.createDrugOrigin( Activator.getDefault().getCurrentUser(), 
-											dialog.getName(),
-											dialog.getStructureURL().equals("") ? null
-													: new FileInputStream(dialog.getStructureURL()),
-													dialog.getMolecularWeight(),
-													(net.bioclipse.brunn.pojos.Folder)recievingFolder.getPOJO() );
-								} catch (FileNotFoundException e) {
-									//FIXME handle Exception
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} catch (IOException e) {
-									//FIXME handle Exception
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} catch (Exception e) {
-									final Shell finalShell = shell;
-									final String eMessage = e.toString();
-									
-									Display.getDefault().asyncExec( new Runnable() {
-	
-										public void run() {
-											MessageDialog.openInformation(
-													finalShell, 
-													"Could not create compound", 
-													"The compound cold not be created. It might be that " +
-													"there already exists a compound with that name." +
-													"\n\n" + eMessage );
-										}
-									});
-									
-								}
-	
-								recievingFolder.fireUpdate();					
-							}
-						}.start();
-					}
-					keepCreatingStructure = dialog.isKeepAddingCompounds();
-				} //while(keepCreatingStructure)
-				
-			}
-		};
+		createCompound = new CreateCompoundAction(treeViewer); 
 
-		createMasterPlate = new Action("Create Master Plate") {
-			public void run() {
-				final CreateMasterPlate dialog = new CreateMasterPlate( PlatformUI
-						                                                 .getWorkbench()
-						                                                 .getActiveWorkbenchWindow()
-						                                                 .getShell() );
-				dialog.open();
-				if(dialog.getReturnCode() == CreateMasterPlate.OK) {
+		createMasterPlate = new BrunnAction( "Create Master Plate", 
+		                                     treeViewer ) {
+		    private CreateMasterPlate dialog;
 
-					// Check for well functions
-					boolean foundWellFunction = false;
-					
-					for ( LayoutWell lw : dialog.getSelectedPlateLayout().getLayoutWells() ) {
-						if ( lw.getWellFunctions().size() > 1) {
-							foundWellFunction = true;
-							break;
-						}
-					}
-					
-					if ( !foundWellFunction ) {
-						if ( !MessageDialog.openConfirm( PlatformUI
-                                                   .getWorkbench()
-                                                   .getActiveWorkbenchWindow()
-                                                   .getShell(), 
-                                                   "No well functions", 
-												   "Selected plate layout has no well functions. " +
-												   "Are you sure you want to continue?") ) {
-							return;
-						}
-					}
-					
-					if ( treeViewer.getSelection().isEmpty() ) {
-						throw new IllegalStateException( "No folder was selected in the treeviewer");
-					}
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                AbstractFolder recievingFolder 
+                    = (AbstractFolder) selectedDomainObject.getFolder();
+                IPlateManager pm 
+                    = (IPlateManager) Springcontact.getBean("plateManager");
 
-					final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+                pm.createMasterPlate( Activator.getDefault().getCurrentUser(), 
+                                      dialog.getName(),
+                                      dialog.getSelectedPlateLayout(),
+                                      (net.bioclipse.brunn.pojos.Folder)
+                                          recievingFolder.getPOJO(), 
+                                      dialog.getNumOfPlates() );
+                
+                recievingFolder.fireUpdate();
+            }
 
-					new Thread () {
-						public void run() {
-							ITreeObject selectedDomainObject = (ITreeObject) selection.getFirstElement();
-							AbstractFolder recievingFolder = (AbstractFolder) selectedDomainObject.getFolder();
-							IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
 
-							pm.createMasterPlate( Activator.getDefault().getCurrentUser(), 
-									              dialog.getName(),
-									              dialog.getSelectedPlateLayout(),
-									              (net.bioclipse.brunn.pojos.Folder)recievingFolder.getPOJO(), 
-									              dialog.getNumOfPlates() );
-							
-							recievingFolder.fireUpdate();
-						}
-					}.start();
-
-				}
-			}
+                dialog = new CreateMasterPlate( PlatformUI
+                                                .getWorkbench()
+                                                .getActiveWorkbenchWindow()
+                                                .getShell() );
+                
+                int status =  dialog.open();
+                if ( status == dialog.OK ) {
+                    // Check for well functions
+                    boolean foundWellFunction = false;
+                    
+                    for ( LayoutWell lw : dialog.getSelectedPlateLayout()
+                                                .getLayoutWells() ) {
+                        if ( lw.getWellFunctions().size() > 1) {
+                            foundWellFunction = true;
+                            break;
+                        }
+                    }
+                    
+                    if ( !foundWellFunction ) {
+                        if ( !MessageDialog
+                              .openConfirm( PlatformUI
+                                            .getWorkbench()
+                                            .getActiveWorkbenchWindow()
+                                            .getShell(), 
+                                            "No well functions", 
+                                            "Selected plate layout has no "
+                                            + "well functions. Are you sure "
+                                            + "you want to continue?") ) {
+                            return Dialog.CANCEL;
+                        }
+                    }
+                }
+                return Dialog.OK;
+            }
 		};
 		
 		createMasterPlateFromSDF = new Action("Create Master Plate from SD-file") {
@@ -695,30 +633,6 @@ public class View extends ViewPart implements IUserManagerListener {
 						                                	getShell(), 
 						                                wizard );
 				dialog.open();
-//				if(dialog.getReturnCode() == CreateMasterPlate.OK) {
-//
-//					if ( treeViewer.getSelection().isEmpty() ) {
-//						throw new IllegalStateException( "No folder was selected in the treeviewer");
-//					}
-//
-//					final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-//
-//					new Thread () {
-//						public void run() {
-//							ITreeObject selectedDomainObject = (ITreeObject) selection.getFirstElement();
-//							AbstractFolder recievingFolder = (AbstractFolder) selectedDomainObject.getFolder();
-//							IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
-//
-//							pm.createMasterPlate( Activator.getDefault().getCurrentUser(), 
-//									dialog.getName(),
-//									dialog.getSelectedPlateLayout(),
-//									(Folder)recievingFolder.getPOJO() );
-//
-//							recievingFolder.fireUpdate();
-//						}
-//					}.start();
-//
-//				}
 			}
 		};
 
@@ -734,27 +648,45 @@ public class View extends ViewPart implements IUserManagerListener {
 				
 				final Wizard wizard = new ImportResults(dataSets);
 
-				WizardDialog dialog = new WizardDialog( PlatformUI
-						                                    .getWorkbench()
-						                                    .getActiveWorkbenchWindow()
-						                                    .getShell(), 
-						                                wizard );
+				WizardDialog dialog 
+				    = new WizardDialog( PlatformUI.getWorkbench()
+						                          .getActiveWorkbenchWindow()
+						                          .getShell(), 
+						                wizard );
 				dialog.open();
 			}
 		};
 		
 		createUserAction = new Action("Create User") {
 			public void run() {
-				CreateUser dialog = new CreateUser( PlatformUI.
+				final CreateUser dialog = new CreateUser( PlatformUI.
                     	                            getWorkbench().
                     	                            getActiveWorkbenchWindow().
                     	                            getShell() );
-				if( dialog.open() == dialog.OK ) {
-					IAuditManager auditManager = (IAuditManager) Springcontact.getBean("auditManager");
-					auditManager.createUser( Activator.getDefault().getCurrentUser(), 
-							                 dialog.getUsername(), 
-							                 dialog.getPassWord(),
-							                 dialog.isAdmin() );
+				if ( dialog.open() == dialog.OK ) {
+				    Job job = new Job("Create User") {
+				        @Override
+				        protected IStatus run( IProgressMonitor monitor ) {
+				            monitor.beginTask( "Creating user", 
+				                               IProgressMonitor.UNKNOWN );
+				            try {
+    		                    IAuditManager auditManager 
+    		                        = (IAuditManager) 
+    		                            Springcontact.getBean("auditManager");
+    		                    auditManager
+        		                    .createUser( Activator.getDefault()
+        		                                          .getCurrentUser(), 
+                                                 dialog.getUsername(), 
+                                                 dialog.getPassWord(),
+                                                 dialog.isAdmin() );
+    		                    return Status.OK_STATUS;
+				            }
+				            finally { 
+				                monitor.done();
+				            }
+		                }
+				    };
+				    job.schedule();
 				}
 			}
 		};
@@ -768,8 +700,6 @@ public class View extends ViewPart implements IUserManagerListener {
 				else {
 					this.setText("show objects marked as deleted");
 				}
-//				Display.getDefault().asyncExec( new Runnable() {
-//					public void run() {
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().run(true, false, new IRunnableWithProgress() {
 						public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
@@ -788,94 +718,99 @@ public class View extends ViewPart implements IUserManagerListener {
 			}
 		};
 		
-		createPlateLayout = new Action("Create Plate Layout") {
-			public void run() {
-				final CreatePlateLayout dialog = new CreatePlateLayout( PlatformUI.
-						getWorkbench().
-						getActiveWorkbenchWindow().
-						getShell() );
-				dialog.open();
-				if(dialog.getReturnCode() == CreatePlateLayout.OK){
+		createPlateLayout = new BrunnAction( "Create Plate Layout", 
+		                                     treeViewer ) {
+		    
+		    private CreatePlateLayout dialog;
+		    
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
 
-					if ( treeViewer.getSelection().isEmpty() ) {
-						throw new IllegalStateException( "No folder was selected in the treeviewer");
-					}
+                AbstractFolder recievingFolder 
+                    = (AbstractFolder) selectedDomainObject.getFolder();
+                IPlateLayoutManager plm
+                    = (IPlateLayoutManager) 
+                          Springcontact.getBean("plateLayoutManager");
 
-					final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+                plm.createPlateLayout( Activator.getDefault()
+                                                .getCurrentUser(), 
+                                       dialog.getName(),
+                                       dialog.getPlateType(),
+                                       (net.bioclipse.brunn.pojos.Folder)
+                                           recievingFolder.getPOJO() );
 
-					new Thread () {
-						public void run() {
-							ITreeObject selectedDomainObject = (ITreeObject) selection.getFirstElement();
-							AbstractFolder recievingFolder = (AbstractFolder) selectedDomainObject.getFolder();
-							IPlateLayoutManager plm = (IPlateLayoutManager) Springcontact.getBean("plateLayoutManager");
+                recievingFolder.fireUpdate();
+            }
 
-							plm.createPlateLayout( Activator.getDefault().getCurrentUser(), 
-									dialog.getName(),
-									dialog.getPlateType(),
-									(net.bioclipse.brunn.pojos.Folder)recievingFolder.getPOJO() );
-
-							recievingFolder.fireUpdate();					
-						}
-					}.start();
-
-				}
-			}
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                dialog = new CreatePlateLayout( 
+                    PlatformUI.getWorkbench()
+                              .getActiveWorkbenchWindow()
+                              .getShell() );
+                return dialog.open();
+            }
 		};
 
-		createPlateType = new Action("Create Plate Type") {
-			public void run() {
-				final CreatePlateType dialog = new CreatePlateType( PlatformUI.
-						getWorkbench().
-						getActiveWorkbenchWindow().
-						getShell() );
-				dialog.open();
-				if(dialog.getReturnCode() == CreatePlateType.OK){
+		createPlateType = new BrunnAction("Create Plate Type", treeViewer) {
+		    
+		    private CreatePlateType dialog;
+			
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                AbstractFolder recievingFolder 
+                    = (AbstractFolder) selectedDomainObject.getFolder();
+                IPlateLayoutManager plm 
+                    = (IPlateLayoutManager) 
+                        Springcontact.getBean("plateLayoutManager");
 
-					if ( treeViewer.getSelection().isEmpty() ) {
-						throw new IllegalStateException( "No folder was selected in the treeviewer");
-					}
+                plm.createPlateType( Activator.getDefault().getCurrentUser(), 
+                        dialog.getNumberOfColumns(),
+                        dialog.getNumberOfRows(), 
+                        dialog.getName(), 
+                        (net.bioclipse.brunn.pojos.Folder)
+                            recievingFolder.getPOJO() );
 
-					final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+                recievingFolder.fireUpdate();                   
+            }
 
-					new Thread () {
-						public void run() {
-							ITreeObject selectedDomainObject = (ITreeObject) selection.getFirstElement();
-							AbstractFolder recievingFolder = (AbstractFolder) selectedDomainObject.getFolder();
-							IPlateLayoutManager plm = (IPlateLayoutManager) Springcontact.getBean("plateLayoutManager");
-
-							plm.createPlateType( Activator.getDefault().getCurrentUser(), 
-									dialog.getNumberOfColumns(),
-									dialog.getNumberOfRows(), 
-									dialog.getName(), 
-									(net.bioclipse.brunn.pojos.Folder)recievingFolder.getPOJO() );
-
-							recievingFolder.fireUpdate();					
-						}
-					}.start();
-
-				}
-			}
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                dialog = new CreatePlateType( 
+                    PlatformUI.getWorkbench()
+                              .getActiveWorkbenchWindow()
+                              .getShell() );
+                return dialog.open();
+            }
 		};
 
-		refresh = new Action("Refresh") {
+		refresh = new BrunnAction("Refresh", treeViewer) {
+		    
+		    private IStructuredSelection selection;
+            
+		    @Override
+            public void performWork( IProgressMonitor monitor ) {
 
-			public void run() {
+		        monitor.beginTask( "Refreshing", selection.size() ); 
+		        try {
+	                for ( Iterator iter = selection.iterator(); 
+	                      iter.hasNext() ; ) {
+	                    ITreeObject element = (ITreeObject) iter.next();
+	                    element.fireUpdate();
+	                    monitor.worked( 1 );
+	                }                
+		        }
+		        finally {
+		            monitor.done();
+		        }
+            }
 
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
 
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+                this.selection = selection;
+                return 0;
+            }
 		};
 		
 		login = new Action("Login") {
@@ -887,372 +822,446 @@ public class View extends ViewPart implements IUserManagerListener {
 		    
         };
 		
-		markPlateTypeDeleted = new Action("Mark as Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+		markPlateTypeDeleted = new BrunnAction("Mark as Deleted", treeViewer) {
+		    
+		    private IStructuredSelection selection;
+		    
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
 
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.PlateType plateType 
+                        = (net.bioclipse.brunn.pojos.PlateType) 
+                            element.getPOJO();
+                    IPlateLayoutManager pm 
+                        = (IPlateLayoutManager) 
+                            Springcontact.getBean("plateLayoutManager");
+                    plateType.delete();
+                    pm.edit( Activator.getDefault().getCurrentUser(), 
+                             plateType );
+                    element.fireUpdate();
+                }
+            }
 
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.PlateType plateType = (net.bioclipse.brunn.pojos.PlateType) element.getPOJO();
-							IPlateLayoutManager pm = (IPlateLayoutManager) Springcontact.getBean("plateLayoutManager");
-							plateType.delete();
-							pm.edit(Activator.getDefault().getCurrentUser(), plateType);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+
+                this.selection = selection; 
+                return Dialog.OK;
+            }
 		};
 		
-		markPlateLayoutDeleted = new Action("Mark as Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+		markPlateLayoutDeleted = new BrunnAction( "Mark as Deleted", 
+		                                          treeViewer ) {
+		    
+		    private IStructuredSelection selection;
+		    
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.PlateLayout pojo 
+                        = (net.bioclipse.brunn.pojos.PlateLayout) 
+                            element.getPOJO();
+                    IPlateLayoutManager pm 
+                        = (IPlateLayoutManager) 
+                            Springcontact.getBean("plateLayoutManager");
+                    pojo.delete();
+                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                    element.fireUpdate();
+                }
+            }
 
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.PlateLayout pojo = (net.bioclipse.brunn.pojos.PlateLayout) element.getPOJO();
-							IPlateLayoutManager pm = (IPlateLayoutManager) Springcontact.getBean("plateLayoutManager");
-							pojo.delete();
-							pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
 		};
 		
-		markPlateDeleted = new Action("Mark as Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+		markPlateDeleted = new BrunnAction("Mark as Deleted", treeViewer) {
+		    
+		    private IStructuredSelection selection;
+		    
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.Plate pojo 
+                        = (net.bioclipse.brunn.pojos.Plate) element.getPOJO();
+                    IPlateManager pm 
+                        = (IPlateManager) 
+                            Springcontact.getBean("plateManager");
+                    pojo.delete();
+                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                    element.fireUpdate();
+                }
+            }
 
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.Plate pojo = (net.bioclipse.brunn.pojos.Plate) element.getPOJO();
-							IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
-							pojo.delete();
-							pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
 		};
 		
-		markMasterPlateDeleted = new Action("Mark as Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+		markMasterPlateDeleted = new BrunnAction( "Mark as Deleted", 
+		                                          treeViewer ) {
+			private IStructuredSelection selection;
 
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.MasterPlate pojo 
+                        = (net.bioclipse.brunn.pojos.MasterPlate) 
+                            element.getPOJO();
+                    IPlateManager pm 
+                        = (IPlateManager) 
+                            Springcontact.getBean("plateManager");
+                    pojo.delete();
+                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                    element.fireUpdate();
+                }
+            }
 
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.MasterPlate pojo = (net.bioclipse.brunn.pojos.MasterPlate) element.getPOJO();
-							IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
-							pojo.delete();
-							pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
 		};
 		
-		markCompoundDeleted = new Action("Mark as Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+		markCompoundDeleted = new BrunnAction("Mark as Deleted", treeViewer) {
 
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+		    private IStructuredSelection selection;
 
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.DrugOrigin pojo = (net.bioclipse.brunn.pojos.DrugOrigin) element.getPOJO();
-							IOriginManager om = (IOriginManager) Springcontact.getBean("originManager");
-							pojo.delete();
-							om.edit(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
-		};
-		
-		markCellDeleted = new Action("Mark as Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.DrugOrigin pojo 
+                        = (net.bioclipse.brunn.pojos.DrugOrigin) 
+                            element.getPOJO();
+                    IOriginManager om 
+                        = (IOriginManager) 
+                            Springcontact.getBean("originManager");
+                    pojo.delete();
+                    om.edit(Activator.getDefault().getCurrentUser(), pojo);
+                    element.fireUpdate();
+                }
+            }
 
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
+		};
+		
+		markCellDeleted = new BrunnAction("Mark as Deleted", treeViewer) {
+				
+	        private IStructuredSelection selection;
 
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.CellOrigin pojo = (net.bioclipse.brunn.pojos.CellOrigin) element.getPOJO();
-							IOriginManager pm = (IOriginManager) Springcontact.getBean("originManager");
-							pojo.delete();
-							pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
-		};
-		
-		markFolderDeleted = new Action("Mark as Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.CellOrigin pojo 
+                        = (net.bioclipse.brunn.pojos.CellOrigin) 
+                            element.getPOJO();
+                    IOriginManager pm 
+                        = (IOriginManager) 
+                            Springcontact.getBean("originManager");
+                    pojo.delete();
+                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                    element.fireUpdate();
+                }
+            }
 
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
+		};
+		
+		markFolderDeleted = new BrunnAction("Mark as Deleted", treeViewer) {
 
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.Folder pojo = (net.bioclipse.brunn.pojos.Folder) element.getPOJO();
-							IFolderManager fm = (IFolderManager) Springcontact.getBean("folderManager");
-							pojo.delete();
-							fm.editMerging(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
-		};
-		
-		markPatientCellDeleted = new Action("Mark as Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+		    private IStructuredSelection selection; 
 
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.Folder pojo 
+                        = (net.bioclipse.brunn.pojos.Folder) 
+                            element.getPOJO();
+                    IFolderManager fm 
+                        = (IFolderManager) 
+                            Springcontact.getBean("folderManager");
+                    pojo.delete();
+                    fm.editMerging( Activator.getDefault().getCurrentUser(), 
+                                    pojo );
+                    element.fireUpdate();
+                }
+            }
 
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.PatientOrigin pojo = (net.bioclipse.brunn.pojos.PatientOrigin) element.getPOJO();
-							IOriginManager m = (IOriginManager) Springcontact.getBean("originManager");
-							pojo.delete();
-							m.edit(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
-		};
-	
-		unmarkPlateTypeDeleted = new Action("Mark as Not Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
-	
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-	
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.PlateType plateType = (net.bioclipse.brunn.pojos.PlateType) element.getPOJO();
-							IPlateLayoutManager pm = (IPlateLayoutManager) Springcontact.getBean("plateLayoutManager");
-							plateType.unDelete();
-							pm.edit(Activator.getDefault().getCurrentUser(), plateType);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
 		};
 		
-		unmarkPlateLayoutDeleted = new Action("Mark as Not Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+		markPatientCellDeleted = new BrunnAction( "Mark as Deleted", 
+		                                          treeViewer ) {
+			private IStructuredSelection selection;
+
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.PatientOrigin pojo 
+                        = (net.bioclipse.brunn.pojos.PatientOrigin) 
+                            element.getPOJO();
+                    IOriginManager m 
+                        = (IOriginManager) 
+                            Springcontact.getBean("originManager");
+                    pojo.delete();
+                    m.edit(Activator.getDefault().getCurrentUser(), pojo);
+                    element.fireUpdate();
+                }
+            }
+
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
+		};
 	
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+		unmarkPlateTypeDeleted = new BrunnAction( "Mark as Not Deleted", 
+		                                          treeViewer ) {
+				
+		    private IStructuredSelection selection;
 	
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.PlateLayout pojo = (net.bioclipse.brunn.pojos.PlateLayout) element.getPOJO();
-							IPlateLayoutManager pm = (IPlateLayoutManager) Springcontact.getBean("plateLayoutManager");
-							pojo.unDelete();
-							pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.PlateType plateType 
+                        = (net.bioclipse.brunn.pojos.PlateType) 
+                            element.getPOJO();
+                    IPlateLayoutManager pm 
+                        = (IPlateLayoutManager) 
+                            Springcontact.getBean("plateLayoutManager");
+                    plateType.unDelete();
+                    pm.edit( Activator.getDefault().getCurrentUser(), 
+                             plateType );
+                    element.fireUpdate();
+                }
+            }
+
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
 		};
 		
-		unmarkPlateDeleted = new Action("Mark as Not Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+		unmarkPlateLayoutDeleted = new BrunnAction( "Mark as Not Deleted", 
+		                                            treeViewer ) {
 	
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-	
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.Plate pojo = (net.bioclipse.brunn.pojos.Plate) element.getPOJO();
-							IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
-							pojo.unDelete();
-							pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+			private IStructuredSelection selection;
+
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.PlateLayout pojo 
+                        = (net.bioclipse.brunn.pojos.PlateLayout) 
+                            element.getPOJO();
+                    IPlateLayoutManager pm 
+                        = (IPlateLayoutManager) 
+                            Springcontact.getBean("plateLayoutManager");
+                    pojo.unDelete();
+                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                    element.fireUpdate();
+                }
+            }
+
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
 		};
 		
-		unmarkMasterPlateDeleted = new Action("Mark as Not Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
-	
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-	
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.MasterPlate pojo = (net.bioclipse.brunn.pojos.MasterPlate) element.getPOJO();
-							IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
-							pojo.unDelete();
-							pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+		unmarkPlateDeleted = new BrunnAction( "Mark as Not Deleted", 
+		                                      treeViewer ) {
+
+		    private IStructuredSelection selection;
+
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.Plate pojo 
+                        = (net.bioclipse.brunn.pojos.Plate) 
+                            element.getPOJO();
+                    IPlateManager pm 
+                        = (IPlateManager) 
+                            Springcontact.getBean("plateManager");
+                    pojo.unDelete();
+                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                    element.fireUpdate();
+                }
+            }
+
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
 		};
 		
-		unmarkCompoundDeleted = new Action("Mark as Not Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+		unmarkMasterPlateDeleted = new BrunnAction( "Mark as Not Deleted", 
+		                                            treeViewer ) {
 	
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-	
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.DrugOrigin pojo = (net.bioclipse.brunn.pojos.DrugOrigin) element.getPOJO();
-							IOriginManager om = (IOriginManager) Springcontact.getBean("originManager");
-							pojo.unDelete();
-							om.edit(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+		    private IStructuredSelection selection;
+		    
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.MasterPlate pojo = (net.bioclipse.brunn.pojos.MasterPlate) element.getPOJO();
+                    IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
+                    pojo.unDelete();
+                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                    element.fireUpdate();
+                }            }
+
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+
+                this.selection = selection;
+                return Dialog.OK;
+            }
 		};
 		
-		unmarkCellDeleted = new Action("Mark as Not Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
-	
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-	
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.CellOrigin pojo = (net.bioclipse.brunn.pojos.CellOrigin) element.getPOJO();
-							IOriginManager pm = (IOriginManager) Springcontact.getBean("originManager");
-							pojo.unDelete();
-							pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+		unmarkCompoundDeleted = new BrunnAction( "Mark as Not Deleted", 
+		                                         treeViewer ) {
+			private IStructuredSelection selection;
+
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.DrugOrigin pojo 
+                        = (net.bioclipse.brunn.pojos.DrugOrigin) 
+                            element.getPOJO();
+                    IOriginManager om 
+                        = (IOriginManager) 
+                            Springcontact.getBean("originManager");
+                    pojo.unDelete();
+                    om.edit(Activator.getDefault().getCurrentUser(), pojo);
+                    element.fireUpdate();
+                }
+            }
+
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+
+                this.selection = selection;
+                return Dialog.OK;
+            }
 		};
 		
-		unmarkFolderDeleted = new Action("Mark as Not Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+		unmarkCellDeleted = new BrunnAction( "Mark as Not Deleted", 
+		                                     treeViewer ) {
+			private IStructuredSelection selection;
 	
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
-	
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.Folder pojo = (net.bioclipse.brunn.pojos.Folder) element.getPOJO();
-							IFolderManager fm = (IFolderManager) Springcontact.getBean("folderManager");
-							pojo.unDelete();
-							fm.editMerging(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.CellOrigin pojo 
+                        = (net.bioclipse.brunn.pojos.CellOrigin) 
+                            element.getPOJO();
+                    IOriginManager pm 
+                        = (IOriginManager) 
+                            Springcontact.getBean("originManager");
+                    pojo.unDelete();
+                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                    element.fireUpdate();
+                }                
+            }
+
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
 		};
 		
-		unmarkPatientCellDeleted = new Action("Mark as Not Deleted") {
-			public void run() {
-				if ( treeViewer.getSelection().isEmpty() ) {
-					throw new IllegalStateException( "No folder was selected in the treeviewer");
-				}
+		unmarkFolderDeleted = new BrunnAction( "Mark as Not Deleted", 
+		                                       treeViewer ) {
 	
-				final IStructuredSelection selection = (IStructuredSelection) treeViewer.getSelection();
+			private IStructuredSelection selection;
+
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.Folder pojo 
+                        = (net.bioclipse.brunn.pojos.Folder) element.getPOJO();
+                    IFolderManager fm 
+                        = (IFolderManager) 
+                            Springcontact.getBean("folderManager");
+                    pojo.unDelete();
+                    fm.editMerging( Activator.getDefault().getCurrentUser(), 
+                                    pojo );
+                    element.fireUpdate();
+                }                
+            }
+
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
+		};
+		
+		unmarkPatientCellDeleted = new BrunnAction( "Mark as Not Deleted",
+		                                            treeViewer ) {
 	
-				new Thread () {	
-					public void run() {
-						for (Iterator iter = selection.iterator(); iter.hasNext();) {
-							ITreeObject element = (ITreeObject) iter.next();
-							net.bioclipse.brunn.pojos.PatientOrigin pojo = (net.bioclipse.brunn.pojos.PatientOrigin) element.getPOJO();
-							IOriginManager m = (IOriginManager) Springcontact.getBean("originManager");
-							pojo.unDelete();
-							m.edit(Activator.getDefault().getCurrentUser(), pojo);
-							element.fireUpdate();
-						}
-					}
-				}.start();
-			}
+		    private IStructuredSelection selection;
+
+            @Override
+            public void performWork( IProgressMonitor monitor ) {
+                for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                    ITreeObject element = (ITreeObject) iter.next();
+                    net.bioclipse.brunn.pojos.PatientOrigin pojo 
+                        = (net.bioclipse.brunn.pojos.PatientOrigin) 
+                            element.getPOJO();
+                    IOriginManager m 
+                        = (IOriginManager) 
+                            Springcontact.getBean("originManager");
+                    pojo.unDelete();
+                    m.edit(Activator.getDefault().getCurrentUser(), pojo);
+                    element.fireUpdate();
+                }
+            }
+
+            @Override
+            public int popUpDialog( IStructuredSelection selection ) {
+                this.selection = selection;
+                return Dialog.OK;
+            }
 		};
 	}
 
@@ -1501,5 +1510,60 @@ public class View extends ViewPart implements IUserManagerListener {
 		return (ITreeModelListener) this.treeViewer.getContentProvider();
 	}
 
+    public class CreateCompoundAction extends BrunnAction {
 
+        private CreateCompound dialog;
+        
+        public CreateCompoundAction(TreeViewer treeViewer) {
+            super("Create Compound", treeViewer);
+        }
+            
+        @Override
+        public void performWork( IProgressMonitor monitor ) {
+
+            AbstractFolder recievingFolder 
+                = (AbstractFolder) selectedDomainObject.getFolder();
+            IOriginManager orm 
+                = (IOriginManager) Springcontact.getBean("originManager");
+
+            try {
+                orm.createDrugOrigin( Activator.getDefault()
+                                               .getCurrentUser(), 
+                                      dialog.getName(),
+                                      dialog.getStructureURL()
+                                            .equals("") 
+                                            ? null
+                                            : new FileInputStream(
+                                                dialog.getStructureURL() ),
+                                      dialog.getMolecularWeight(),
+                                      (net.bioclipse.brunn.pojos.Folder)
+                                          recievingFolder.getPOJO() );
+            } 
+            catch (Exception e) {
+                throw new RuntimeException(
+                    "The compound cold not be created. It might be that "
+                    + "there already exists a compound with that name. " 
+                    + "Error message: \"" + e.getMessage() + "\"", e );
+            }
+            recievingFolder.fireUpdate();
+            if ( CreateCompound.isKeepAddingCompounds() ) {
+                final Action a = new CreateCompoundAction(treeViewer);
+                Display.getDefault().asyncExec( new Runnable() {
+                    public void run() {
+                        a.run();
+                    }
+                } );
+            }
+        }
+
+        @Override
+        public int popUpDialog( IStructuredSelection selection ) {
+            dialog 
+                = new CreateCompound( PlatformUI.getWorkbench()
+                                                .getActiveWorkbenchWindow()
+                                                .getShell() );
+            return dialog.open();
+        }
+    }
+	
 }
