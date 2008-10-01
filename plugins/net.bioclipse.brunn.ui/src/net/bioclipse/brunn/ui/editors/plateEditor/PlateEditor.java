@@ -524,7 +524,7 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 				String[] row = new String[3];
 				row[0] = pf.getName();
 				try {
-					row[1] = String.format( "%01.3f", plateResults.getValue( pf.getName() ) );
+					row[1] = Math.round( plateResults.getValue( pf.getName() ) ) + "";
 					
 				} catch (Exception e) {
 					e.printStackTrace();
