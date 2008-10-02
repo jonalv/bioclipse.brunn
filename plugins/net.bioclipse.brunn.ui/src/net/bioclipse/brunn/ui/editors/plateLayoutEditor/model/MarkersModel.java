@@ -3,6 +3,7 @@ package net.bioclipse.brunn.ui.editors.plateLayoutEditor.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -204,7 +205,6 @@ public class MarkersModel extends KTableDefaultModel {
 						
 						lm.getLayoutWell().getLayoutMarkers().remove(lm);
 						lm.delete();
-						
 								
 						markersTable.setModel(new MarkersModel(plateLayout, markersTable, plateLayoutEditor));
 						markersTable.redraw();
@@ -226,44 +226,61 @@ public class MarkersModel extends KTableDefaultModel {
 		}
 
 		/*
-		 * add next unused M-marker to the set
+		 * add next unused M-marker and next unused C-marker to the set
 		 */
-		ArrayList<String> names = new ArrayList<String>(toBeAdded);
-		Collections.sort(names, MarkerComparator.INSTANCE);
-		names.remove("p");
-		names.remove("c");
-		names.remove("b");
-		names.remove("s");
-				
-		if(names.size() > 0 && !"".equals(names.get(0))) {
-			String last = names.get(names.size()-1);
+		ArrayList<String> mNames = new ArrayList<String>(toBeAdded);
+		ArrayList<String> cNames = new ArrayList<String>(toBeAdded);
+		
+		for ( Iterator<String> i = mNames.iterator() ; i.hasNext() ; ) {
+		    if ( !i.next().contains( "M" ) ) {
+		        i.remove();
+		    }
+		}
+		for ( Iterator<String> i = cNames.iterator() ; i.hasNext() ; ) {
+            if ( !i.next().contains( "C" ) ) {
+                i.remove();
+            }
+        }
+		
+		Collections.sort(mNames, MarkerComparator.INSTANCE);
+		Collections.sort(cNames, MarkerComparator.INSTANCE);
+		
+		if (mNames.size() > 0 && !"".equals(mNames.get(0))) {
+			String last = mNames.get(mNames.size()-1);
 			toBeAdded.add("M" + (1 + Integer.parseInt(last.substring(1))));
 		}
+		if (cNames.size() > 0 && !"".equals(cNames.get(0))) {
+            String last = cNames.get(cNames.size()-1);
+            toBeAdded.add("C" + (1 + Integer.parseInt(last.substring(1))));
+        }
 		
 		/*
 		 * Make sure there is no missing marker in the serie
 		 */
-		int lastElement=0;
-		for(String s : toBeAdded) {
-			if(s.charAt(0) == 'M') {
-				if( lastElement < 
-					Integer.parseInt( s.substring(1)) ) {
-					lastElement = Integer.parseInt(s.substring(1) );
-				}
-			}
+		for ( char c : new char[] {'M', 'C'}) {
+		    int lastElement=0;
+		    for(String s : toBeAdded) {
+		        if(s.charAt(0) == c) {
+		            if( lastElement < 
+		                    Integer.parseInt( s.substring(1)) ) {
+		                lastElement = Integer.parseInt(s.substring(1) );
+		            }
+		        }
+		    }
+		    for( int i = 1 ; i <= lastElement ; i++) {
+		        toBeAdded.add( (c + "") + i);
+		    }
 		}
-		for( int i = 1 ; i <= lastElement ; i++) {
-			toBeAdded.add("M"+i);
-		}
+
 		
 		/*
-		 * make sure p, b, c and at least M1 is on the list
+		 * make sure P, B, S and at least M1 and C1 is on the list
 		 */
-		toBeAdded.add("p");
-		toBeAdded.add("b");
-		toBeAdded.add("c");
+		toBeAdded.add("P");
+		toBeAdded.add("B");
+		toBeAdded.add("C1");
 		toBeAdded.add("M1");
-		toBeAdded.add("s");
+		toBeAdded.add("S");
 		/*
 		 * remove markers already on the this well from the list of 
 		 * possible markers to add
