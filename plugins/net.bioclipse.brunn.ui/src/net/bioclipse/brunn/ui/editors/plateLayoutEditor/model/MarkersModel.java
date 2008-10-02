@@ -13,6 +13,8 @@ import org.eclipse.swt.graphics.Point;
 
 import net.bioclipse.brunn.pojos.LayoutMarker;
 import net.bioclipse.brunn.pojos.LayoutWell;
+import net.bioclipse.brunn.pojos.PlateFunction;
+import net.bioclipse.brunn.results.PlateFunctionBody;
 import net.bioclipse.brunn.ui.Activator;
 import net.bioclipse.brunn.ui.editors.plateLayoutEditor.PlateLayoutEditor.MarkerComparator;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.PlateLayout;
@@ -297,15 +299,17 @@ public class MarkersModel extends KTableDefaultModel {
 			actions.add(
 					new Action("Add " + name) {
 						public void run() {
-							plateLayout.getLayoutWell( 
-									point )
-									.getLayoutMarkers().add(
-									new LayoutMarker( Activator.getDefault().getCurrentUser(), 
-											          name,
-											          plateLayout.getLayoutWell(
-											        		  point)));
+							plateLayout.getLayoutWell( point )
+									   .getLayoutMarkers().add(
+									       new LayoutMarker( Activator.getDefault()
+									                                  .getCurrentUser(), 
+											                 name,
+											                 plateLayout.getLayoutWell(point) ));
 							markersTable.setModel(new MarkersModel(plateLayout, markersTable, plateLayoutEditor));
 							markersTable.redraw();
+							if ( name.contains( "C" ) ) {
+							    plateLayoutEditor.updatePlateControlFunctions( name );
+							}
 							if(editor != null)
 								editor.dirtyCheck();
 						}

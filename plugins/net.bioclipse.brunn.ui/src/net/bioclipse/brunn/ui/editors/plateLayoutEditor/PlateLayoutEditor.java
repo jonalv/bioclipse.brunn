@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,6 +12,7 @@ import java.util.regex.Pattern;
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.plateLayout.IPlateLayoutManager;
 import net.bioclipse.brunn.genericDAO.IPlateLayoutDAO;
+import net.bioclipse.brunn.pojos.LayoutMarker;
 import net.bioclipse.brunn.pojos.LayoutWell;
 import net.bioclipse.brunn.pojos.PlateFunction;
 import net.bioclipse.brunn.pojos.WellFunction;
@@ -481,4 +483,53 @@ public class PlateLayoutEditor extends EditorPart {
 	public void dirtyCheck() {
 		firePropertyChange(PROP_DIRTY);
 	}
+	
+    public void updatePlateControlFunctions( String controlName ) {
+
+        String plateFunctionName = "CV_" + controlName + "";
+        for ( Iterator<PlateFunction> i 
+                = toBeSaved.getPlateFunctions().iterator() ; 
+              i.hasNext() ; ) {
+            if ( plateFunctionName.equals( i.next().getName() ) ) {
+                i.remove();
+                break;
+            }
+        }
+        
+        StringBuilder wellNames = new StringBuilder();
+         
+        for ( LayoutWell w : toBeSaved.getLayoutWells() ) {
+            for ( LayoutMarker m : w.getLayoutMarkers() ) {
+                if ( m.getName().equals( controlName ) ) {
+                    wellNames.append( w.getName() );
+                    wellNames.append( "," );
+                    break;
+                }
+            }
+        }
+        //get rid of last ","
+        String names = wellNames.substring( 0, wellNames.length() - 1 );
+        
+        String expression 
+            = "100 * ( stddev(" + names + " ) / avg(" + names + ") )";
+        
+        toBeSaved.getPlateFunctions().add(
+            new PlateFunction( Activator.getDefault().getCurrentUser(), 
+                               plateFunctionName, 
+                               expression,
+                               0,
+                               0,
+                               false, 
+                               toBeSaved ) );
+
+        calculator.addFunction( plateFunctionName, 
+                                new PlateFunctionBody( expression ) );
+
+        plateFunctionsTable.setModel(
+                                     new PlateFunctionsModel( toBeSaved, 
+                                                              this, 
+                                                              calculator ) );
+        plateFunctionsTable.redraw();
+        firePropertyChange(PROP_DIRTY);
+    }
 }
