@@ -484,9 +484,148 @@ public class PlateLayoutEditor extends EditorPart {
 		firePropertyChange(PROP_DIRTY);
 	}
 	
-    public void updatePlateControlFunctions( String controlName ) {
+    public void updatePlateFunctions( String markerName ) {
 
-        String plateFunctionName = "CV_" + controlName + "";
+        assert ( markerName.contains( "C" ) || markerName.contains( "B" ) ); 
+        
+        /*
+         * Collect all platefunction names
+         */
+        List<String> plateFunctionNames = new ArrayList<String>();
+        plateFunctionNames.add( "ControlBlankRatio" );
+        if ( markerName.contains( "C" ) ) {
+            plateFunctionNames.add( "CV_"  + markerName );
+            plateFunctionNames.add( "AVG_AllControls" );
+            plateFunctionNames.add( "CV_AllControls"  );
+        }
+        else {
+            plateFunctionNames.add( "AVG_AllBlank" );
+        }
+        
+        /*
+         * remove any old versions of the plate functions before adding new 
+         */
+        for ( String s : plateFunctionNames ) {
+            removePlateFunction( s );
+        }
+        
+        /*
+         * Build the plateFunctions
+         */
+        String controlWellNames = buildWellNamesList( "C" );
+        String blankWellNames   = buildWellNamesList( "B" ); 
+        List<PlateFunction> plateFunctions = new ArrayList<PlateFunction>();
+        if ( markerName.contains( "C" ) ) {
+            String wellNames = buildWellNamesList(markerName);
+            plateFunctions.add( 
+                new PlateFunction( 
+                    Activator.getDefault().getCurrentUser(), 
+                    plateFunctionNames.get( 1 ), 
+                    "100 * ( stddev(" + wellNames + " ) / avg(" + wellNames + ") )",
+                    0,
+                    0,
+                    false, 
+                    toBeSaved ) );
+            plateFunctions.add( 
+                new PlateFunction( 
+                    Activator.getDefault().getCurrentUser(), 
+                    plateFunctionNames.get( 2 ), 
+                    "avg(" + controlWellNames + ")",
+                    0,
+                    0,
+                    false, 
+                    toBeSaved ) );
+            plateFunctions.add( 
+                new PlateFunction( 
+                    Activator.getDefault().getCurrentUser(), 
+                    plateFunctionNames.get( 3 ), 
+                    "100 * ( stddev(" + controlWellNames + ") / avg(" + controlWellNames + ") )",
+                    0,
+                    0,
+                    false, 
+                    toBeSaved ) );
+        }
+        else {
+            plateFunctions.add( 
+                new PlateFunction( 
+                    Activator.getDefault().getCurrentUser(), 
+                    plateFunctionNames.get( 1 ), 
+                    "avg(" + blankWellNames + ")",
+                    0,
+                    0,
+                    false, 
+                    toBeSaved ) );
+        }
+
+        /*
+         * Only build RatioControlBlank if both controls and blanks are on the 
+         * platelayout
+         */
+        if ( blankWellNames.length()   > 0 && 
+             controlWellNames.length() > 0 ) {
+            
+            plateFunctions.add( 
+                new PlateFunction( 
+                    Activator.getDefault().getCurrentUser(), 
+                                   plateFunctionNames.get( 0 ), 
+                                   "AVG_AllControls() / AVG_AllBlank()",
+                                   0,
+                                   0,
+                                   false, 
+                                   toBeSaved ) );
+        }
+
+        /*
+         * Add the platefunctions
+         */
+        Iterator<PlateFunction> pfi = plateFunctions.iterator();
+        Iterator<String>        pfni = plateFunctionNames.iterator();
+        while( pfi.hasNext() && pfni.hasNext() ) {
+            PlateFunction pf = pfi.next();
+            String pfn       = pfni.next();
+            
+            toBeSaved.getPlateFunctions().add( pf );
+            calculator.addFunction( pfn, 
+                                    new PlateFunctionBody( 
+                                            pf.getExpression() ) );
+        }
+
+        /*
+         * Update gui
+         */
+        plateFunctionsTable.setModel( new PlateFunctionsModel( toBeSaved, 
+                                                               this, 
+                                                               calculator ) );
+        plateFunctionsTable.redraw();
+        firePropertyChange(PROP_DIRTY);
+    }
+
+    
+    /**
+     * Builds string for platefunctions that contains all wells with a marker 
+     * with a name containing a part of the given string
+     * 
+     * @param markerNamePart
+     * @return
+     */
+    private String buildWellNamesList( String markerNamePart ) {
+        StringBuilder wellNames = new StringBuilder();
+        for ( LayoutWell w : toBeSaved.getLayoutWells() ) {
+            for ( LayoutMarker m : w.getLayoutMarkers() ) {
+                if ( m.getName().contains( markerNamePart ) ) {
+                    wellNames.append( w.getName() );
+                    wellNames.append( "," );
+                    break;
+                }
+            }
+        }
+        return wellNames
+               .substring( 0, wellNames.length() > 0 
+                              ? wellNames.length() - 1 //get rid of last "," 
+                              : 0);  
+    }
+
+    private void removePlateFunction( String plateFunctionName ) {
         for ( Iterator<PlateFunction> i 
                 = toBeSaved.getPlateFunctions().iterator() ; 
               i.hasNext() ; ) {
@@ -495,41 +634,5 @@ public class PlateLayoutEditor extends EditorPart {
                 break;
             }
         }
-        
-        StringBuilder wellNames = new StringBuilder();
-         
-        for ( LayoutWell w : toBeSaved.getLayoutWells() ) {
-            for ( LayoutMarker m : w.getLayoutMarkers() ) {
-                if ( m.getName().equals( controlName ) ) {
-                    wellNames.append( w.getName() );
-                    wellNames.append( "," );
-                    break;
-                }
-            }
-        }
-        //get rid of last ","
-        String names = wellNames.substring( 0, wellNames.length() - 1 );
-        
-        String expression 
-            = "100 * ( stddev(" + names + " ) / avg(" + names + ") )";
-        
-        toBeSaved.getPlateFunctions().add(
-            new PlateFunction( Activator.getDefault().getCurrentUser(), 
-                               plateFunctionName, 
-                               expression,
-                               0,
-                               0,
-                               false, 
-                               toBeSaved ) );
-
-        calculator.addFunction( plateFunctionName, 
-                                new PlateFunctionBody( expression ) );
-
-        plateFunctionsTable.setModel(
-                                     new PlateFunctionsModel( toBeSaved, 
-                                                              this, 
-                                                              calculator ) );
-        plateFunctionsTable.redraw();
-        firePropertyChange(PROP_DIRTY);
     }
 }

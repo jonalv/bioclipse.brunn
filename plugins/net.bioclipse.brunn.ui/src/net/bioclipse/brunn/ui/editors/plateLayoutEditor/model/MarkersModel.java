@@ -307,8 +307,9 @@ public class MarkersModel extends KTableDefaultModel {
 											                 plateLayout.getLayoutWell(point) ));
 							markersTable.setModel(new MarkersModel(plateLayout, markersTable, plateLayoutEditor));
 							markersTable.redraw();
-							if ( name.contains( "C" ) ) {
-							    plateLayoutEditor.updatePlateControlFunctions( name );
+							if ( name.contains( "C" ) ||
+							     name.contains( "B" ) ) {
+							    plateLayoutEditor.updatePlateFunctions( name );
 							}
 							if(editor != null)
 								editor.dirtyCheck();
