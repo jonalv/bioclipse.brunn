@@ -175,7 +175,7 @@ public class PlateResults implements IEditorInput {
 	            for(double d : args) {
 	            	sumOfDiffs += (d-avg)*(d-avg);
 	            }
-	            return Math.sqrt( 1/(args.length-1) * sumOfDiffs );
+	            return Math.sqrt( 1.0/(args.length-1) * sumOfDiffs );
             }
 	    };
 	    calculator.addFunction("stddev", stddev);
