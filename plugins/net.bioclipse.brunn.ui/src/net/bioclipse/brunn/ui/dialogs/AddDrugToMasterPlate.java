@@ -85,32 +85,32 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 		fd_startingConcentrationLabel.bottom = new FormAttachment(concentrationText, 0, SWT.BOTTOM);
 		fd_startingConcentrationLabel.right = new FormAttachment(concentrationText, -5, SWT.LEFT);
 		final FormData fd_concentrationText = new FormData();
+		fd_concentrationText.right = new FormAttachment(100, -54);
 		fd_concentrationText.bottom = new FormAttachment(0, 39);
-		fd_concentrationText.top = new FormAttachment(0, 20);
 		fd_concentrationText.left = new FormAttachment(0, 197);
 		concentrationText.setLayoutData(fd_concentrationText);
 		concentrationText.setText(concentration + "");
 
 		final Label dilutionFactorLabel = new Label(container, SWT.NONE);
 		final FormData fd_dilutionFactorLabel = new FormData();
+		fd_dilutionFactorLabel.bottom = new FormAttachment(0, 150);
 		dilutionFactorLabel.setLayoutData(fd_dilutionFactorLabel);
 		dilutionFactorLabel.setText("Dilution factor:");
 
 		dilutionFactorText = new Text(container, SWT.BORDER);
-		fd_dilutionFactorLabel.top = new FormAttachment(dilutionFactorText, -13, SWT.BOTTOM);
-		fd_dilutionFactorLabel.bottom = new FormAttachment(dilutionFactorText, 0, SWT.BOTTOM);
-		fd_dilutionFactorLabel.left = new FormAttachment(dilutionFactorText, -76, SWT.LEFT);
-		fd_dilutionFactorLabel.right = new FormAttachment(dilutionFactorText, -5, SWT.LEFT);
 		final FormData fd_dilutionFactorText = new FormData();
-		fd_dilutionFactorText.bottom = new FormAttachment(0, 150);
-		fd_dilutionFactorText.top = new FormAttachment(0, 131);
+		fd_dilutionFactorText.right = new FormAttachment(concentrationText, 0, SWT.RIGHT);
+		fd_dilutionFactorText.left = new FormAttachment(0, 197);
+		fd_dilutionFactorText.bottom = new FormAttachment(100, -64);
 		dilutionFactorText.setLayoutData(fd_dilutionFactorText);
 		dilutionFactorText.setText(dilutionFactor + "");
 
 		concUnitCombo = new Combo(container, SWT.NONE|SWT.READ_ONLY);
+		fd_dilutionFactorLabel.right = new FormAttachment(concUnitCombo, -5, SWT.LEFT);
 		final FormData fd_concUnitCombo = new FormData();
-		fd_concUnitCombo.top = new FormAttachment(0, 170);
-		fd_concUnitCombo.bottom = new FormAttachment(0, 191);
+		fd_concUnitCombo.right = new FormAttachment(dilutionFactorText, 0, SWT.RIGHT);
+		fd_concUnitCombo.bottom = new FormAttachment(100, -22);
+		fd_concUnitCombo.left = new FormAttachment(0, 197);
 		concUnitCombo.setLayoutData(fd_concUnitCombo);
 		
 		String[] items = new String[concUnits.length];
@@ -124,7 +124,6 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 		concentrationUnitLabel = new Label(container, SWT.NONE);
 		final FormData fd_concentrationUnitLabel = new FormData();
 		fd_concentrationUnitLabel.bottom = new FormAttachment(concUnitCombo, 0, SWT.BOTTOM);
-		fd_concentrationUnitLabel.left = new FormAttachment(concUnitCombo, -98, SWT.LEFT);
 		fd_concentrationUnitLabel.right = new FormAttachment(concUnitCombo, -5, SWT.LEFT);
 		concentrationUnitLabel.setLayoutData(fd_concentrationUnitLabel);
 		concentrationUnitLabel.setText("Concentration unit:");
@@ -132,20 +131,14 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 		horizontalDilutionSeriesButton = new Button(container, SWT.RADIO);
 		final FormData fd_dilutionSeriesButton = new FormData();
 		fd_dilutionSeriesButton.bottom = new FormAttachment(0, 75);
-		fd_dilutionSeriesButton.top = new FormAttachment(0, 59);
 		fd_dilutionSeriesButton.left = new FormAttachment(startingConcentrationLabel, 5, SWT.RIGHT);
 		horizontalDilutionSeriesButton.setLayoutData(fd_dilutionSeriesButton);
 		horizontalDilutionSeriesButton.setText("Horizontal dilution series");
 
 		verticalDilutionSeriesButton = new Button(container, SWT.RADIO);
-		fd_concUnitCombo.left = new FormAttachment(verticalDilutionSeriesButton, 0, SWT.LEFT);
-		fd_dilutionFactorText.right = new FormAttachment(verticalDilutionSeriesButton, 76, SWT.LEFT);
-		fd_dilutionFactorText.left = new FormAttachment(verticalDilutionSeriesButton, 0, SWT.LEFT);
 		final FormData fd_verticalDilutionSeriesButton = new FormData();
-		fd_verticalDilutionSeriesButton.bottom = new FormAttachment(0, 111);
-		fd_verticalDilutionSeriesButton.top = new FormAttachment(0, 95);
-		fd_verticalDilutionSeriesButton.left = new FormAttachment(0, 196);
-		fd_verticalDilutionSeriesButton.right = new FormAttachment(0, 320);
+		fd_verticalDilutionSeriesButton.bottom = new FormAttachment(0, 110);
+		fd_verticalDilutionSeriesButton.left = new FormAttachment(horizontalDilutionSeriesButton, 0, SWT.LEFT);
 		verticalDilutionSeriesButton.setLayoutData(fd_verticalDilutionSeriesButton);
 		verticalDilutionSeriesButton.setText("Vertical dilution series");
 		setTitle("Add dilution series to masterPlate");
@@ -176,7 +169,7 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(415, 355);
+		return new Point(447, 379);
 	}
 
 	protected void buttonPressed(int buttonId) {
