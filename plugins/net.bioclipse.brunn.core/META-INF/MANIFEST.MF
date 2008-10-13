@@ -70,3 +70,4 @@ Export-Package: net.bioclipse.brunn,
  net.bioclipse.brunn.results,
  net.bioclipse.brunn.results.orcaParser,
  net.bioclipse.brunn.results.parser96
+Import-Package: org.apache.log4j;version="1.2.15"
