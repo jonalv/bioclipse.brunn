@@ -161,4 +161,16 @@ public class Plate extends AbstractPlate {
     	this.masterPlate = masterPlate;
 //    	masterPlate.getPlates().add(this);
     }
+	
+	@Override
+	public void delete() {
+	    super.delete();
+	    this.barcode += "$$$" + hashCode(); 
+	}
+	
+	@Override
+	public void unDelete() {
+	    super.unDelete();
+	    this.barcode = this.barcode.substring(0, this.barcode.indexOf("$$$") );
+	}
 }
