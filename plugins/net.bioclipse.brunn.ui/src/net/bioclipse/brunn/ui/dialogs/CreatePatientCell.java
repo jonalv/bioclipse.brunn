@@ -42,23 +42,21 @@ public class CreatePatientCell extends TitleAreaDialog {
 
 		final Label label = new Label(container, SWT.NONE);
 		final FormData fd_label = new FormData();
-		fd_label.top = new FormAttachment(0, 41);
 		fd_label.right = new FormAttachment(0, 109);
-		fd_label.left = new FormAttachment(0, 64);
 		label.setLayoutData(fd_label);
 		label.setText("Name:");
 
 		nameText = new Text(container, SWT.BORDER);
 		fd_label.bottom = new FormAttachment(nameText, -2, SWT.BOTTOM);
 		final FormData fd_nameText = new FormData();
-		fd_nameText.right = new FormAttachment(100, -98);
+		fd_nameText.right = new FormAttachment(100, -119);
 		fd_nameText.top = new FormAttachment(0, 36);
 		fd_nameText.left = new FormAttachment(0, 115);
 		nameText.setLayoutData(fd_nameText);
 
 		lidText = new Text(container, SWT.BORDER);
 		final FormData fd_lid = new FormData();
-		fd_lid.right = new FormAttachment(100, -98);
+		fd_lid.right = new FormAttachment(nameText, 0, SWT.RIGHT);
 		fd_lid.top = new FormAttachment(0, 76);
 		fd_lid.left = new FormAttachment(0, 115);
 		lidText.setLayoutData(fd_lid);
@@ -66,12 +64,24 @@ public class CreatePatientCell extends TitleAreaDialog {
 		final Label lidLabel = new Label(container, SWT.NONE);
 		final FormData fd_lidLabel = new FormData();
 		fd_lidLabel.bottom = new FormAttachment(lidText, -2, SWT.BOTTOM);
-		fd_lidLabel.top = new FormAttachment(0, 84);
 		fd_lidLabel.right = new FormAttachment(0, 109);
-		fd_lidLabel.left = new FormAttachment(0, 91);
 		lidLabel.setLayoutData(fd_lidLabel);
 		lidLabel.setText("lid:");
-		setTitle("Create cell origin");
+
+		final Label eg08045Label = new Label(container, SWT.NONE);
+		final FormData fd_eg08045Label = new FormData();
+		fd_eg08045Label.bottom = new FormAttachment(nameText, 0, SWT.BOTTOM);
+		fd_eg08045Label.left = new FormAttachment(nameText, 5, SWT.RIGHT);
+		eg08045Label.setLayoutData(fd_eg08045Label);
+		eg08045Label.setText("(e.g. 08/045-A)");
+
+		final Label eg08045Label_1 = new Label(container, SWT.NONE);
+		final FormData fd_eg08045Label_1 = new FormData();
+		fd_eg08045Label_1.bottom = new FormAttachment(lidText, 0, SWT.BOTTOM);
+		fd_eg08045Label_1.left = new FormAttachment(lidText, 5, SWT.RIGHT);
+		eg08045Label_1.setLayoutData(fd_eg08045Label_1);
+		eg08045Label_1.setText("(e.g. 08/045)");
+		setTitle("Create Patient Cell");
 		//
 		return area;
 	}
@@ -93,7 +103,7 @@ public class CreatePatientCell extends TitleAreaDialog {
 	 */
 	@Override
 	protected Point getInitialSize() {
-		return new Point(343, 292);
+		return new Point(452, 349);
 	}
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == IDialogConstants.OK_ID) {
