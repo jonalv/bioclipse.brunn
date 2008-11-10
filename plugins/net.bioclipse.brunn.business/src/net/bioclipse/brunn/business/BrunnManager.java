@@ -32,10 +32,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.plate.IPlateManager;
 import net.bioclipse.brunn.business.plate.PlateManager;
+import net.bioclipse.brunn.domain.Creator;
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.core.ResourcePathTransformer;
 import net.bioclipse.core.business.BioclipseException;
@@ -59,26 +61,29 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 public class BrunnManager implements IBrunnManager {
 
 	private static final Logger logger = Logger.getLogger(BrunnManager.class);
+	Creator creator = new Creator();
 	
 	public String getNamespace() {
 		return "brunn";
 	}
 
 	public String run() {
+		creator.generalStyle();
 		return "weehow";
 	}
 	
 	public String getPlateByBarcode(String barcode) {
-		IPlateManager plateManager = (IPlateManager) Springcontact.getBean("plateManager");
-		return plateManager.getPlate(barcode).getName();
+		//IPlateManager plateManager = (IPlateManager) Springcontact.getBean("plateManager");
+		//return plateManager.getPlate(barcode).getName();
+		return creator.getPlateByBarcode(barcode);
 	}
 	
-	public List<String> getAllPlateBarcodes() {
-		IPlateManager plateManager = (IPlateManager) Springcontact.getBean("plateManager");
+	public Set<String> getAllPlateBarcodes() {
+		/*IPlateManager plateManager = (IPlateManager) Springcontact.getBean("plateManager");
 		List<String> barcodes = plateManager.getAllPlateBarcodes();
 		for(String s: barcodes) {
 			getPlateByBarcode(s);
-		}
-		return barcodes;
+		}*/
+		return creator.getAllPlateBarcodes();
 	}
 }

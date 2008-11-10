@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import net.bioclipse.brunn.business.plate.PlateManager;
 import net.bioclipse.core.PublishedClass;
@@ -43,5 +44,5 @@ public interface IBrunnManager extends IBioclipseManager {
 
     @Recorded
     @PublishedMethod( methodSummary = "Returns the plate with that barcode")
-    public List<String> getAllPlateBarcodes();
+    public Set<String> getAllPlateBarcodes();
 }
