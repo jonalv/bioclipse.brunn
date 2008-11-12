@@ -347,6 +347,7 @@ public class View extends ViewPart implements IUserManagerListener {
 				}
 				if(element instanceof net.bioclipse.brunn.ui.explorer.model.folders.AbstractFolder) {
 					treeViewer.expandToLevel(element, 1);
+					element.fireUpdate();
 				}
 	            if( !net.bioclipse.usermanager.Activator
 	                    .getDefault().getUserManager().isLoggedIn() ) {
