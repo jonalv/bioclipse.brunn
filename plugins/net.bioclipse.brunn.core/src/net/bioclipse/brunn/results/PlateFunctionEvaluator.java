@@ -1,18 +1,17 @@
 package net.bioclipse.brunn.results;
 
-public class PlateFunctionEvaluator {
-
-	String   expression;
+class PlateFunctionEvaluator {
+	String  expression;
 	double  goodFrom;
 	double  goodTo;
 	boolean hasSpecifiedValue;
-	String   name;
+	String  name;
 	
-	public PlateFunctionEvaluator( String expression, 
-	                                double goodFrom, 
-	                                double goodTo, 
-	                                boolean hasSpecifiedValue, 
-	                                String name ) {
+	PlateFunctionEvaluator( String expression, 
+                            double goodFrom, 
+                            double goodTo, 
+                            boolean hasSpecifiedValue, 
+                            String name ) {
 	    super();
 	    this.expression = expression;
 	    this.goodFrom = goodFrom;

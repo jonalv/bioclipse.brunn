@@ -1,6 +1,6 @@
 package net.bioclipse.brunn.results;
 
-public class WellFunctionEvaluator {
+class WellFunctionEvaluator {
 
 	boolean outlier;
 	String   expression;
@@ -8,11 +8,11 @@ public class WellFunctionEvaluator {
 	char     row;
 	String   name;
 	
-	public WellFunctionEvaluator( boolean outlier, 
-	                               String expression, 
-	                               int col, 
-	                               char row, 
-	                               String name ) {
+	WellFunctionEvaluator( boolean outlier, 
+	                       String expression, 
+                           int col, 
+                           char row, 
+                           String name ) {
 	    super();
 	    this.outlier = outlier;
 	    this.expression = expression;
