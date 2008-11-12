@@ -302,10 +302,12 @@ public class View extends ViewPart implements IUserManagerListener {
 				}
 				if(element instanceof MasterPlate) {
 					try {
-						PlatformUI.getWorkbench().
-						getActiveWorkbenchWindow().
-						getActivePage().
-						openEditor( (MasterPlate)element, MasterPlateEditor.ID, true );
+						PlatformUI.getWorkbench()
+						          .getActiveWorkbenchWindow()
+						          .getActivePage()
+						          .openEditor( (MasterPlate)element, 
+						                       MasterPlateEditor.ID, 
+						                       true );
 					} catch (PartInitException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -347,7 +349,6 @@ public class View extends ViewPart implements IUserManagerListener {
 				}
 				if(element instanceof net.bioclipse.brunn.ui.explorer.model.folders.AbstractFolder) {
 					treeViewer.expandToLevel(element, 1);
-					element.fireUpdate();
 				}
 	            if( !net.bioclipse.usermanager.Activator
 	                    .getDefault().getUserManager().isLoggedIn() ) {
