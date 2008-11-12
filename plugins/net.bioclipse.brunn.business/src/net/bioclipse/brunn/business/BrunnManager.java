@@ -73,7 +73,7 @@ public class BrunnManager implements IBrunnManager {
 	}
 	
 	public String getPlateByBarcode(String barcode) {
-		//IPlateManager plateManager = (IPlateManager) Springcontact.getBean("plateManager");
+		IPlateManager plateManager = (IPlateManager) Springcontact.getBean("plateManager");
 		//return plateManager.getPlate(barcode).getName();
 		return creator.getPlateByBarcode(barcode);
 	}
