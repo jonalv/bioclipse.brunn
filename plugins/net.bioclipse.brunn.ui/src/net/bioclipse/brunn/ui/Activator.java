@@ -125,6 +125,10 @@ public class Activator extends AbstractUIPlugin implements IUserManagerListener 
                      .isLoggedInWithAccountType("BrunnAccountType") ) {
                 setLoggedInUser();
               }
+              /*
+               * A bit of a hack to instantiate the platemanager at login
+               */
+              Springcontact.getBean( "plateManager" );
               break;
             case LOGOUT:
               currentUser = null;
