@@ -26,7 +26,7 @@
                 name="Brunn" />
       
       <view
-            name="Brunn explorer"
+            name="Brunn Explorer"
             class="net.bioclipse.brunn.ui.explorer.View"
             id="brunn.setup.explorer.View"
             category="net.bioclipse.brunn.category" 

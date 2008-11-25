@@ -43,7 +43,7 @@ public class NotLoggedIn implements ITreeObject, IAdaptable {
 	}
 
 	public String getName() {
-		return "not logged in";
+		return "Not Logged In";
 	}
 
 	public ILISObject getPOJO() {
