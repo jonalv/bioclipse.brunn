@@ -145,4 +145,18 @@ public class Replicates extends EditorPart implements OutlierChangedListener {
 	public Map<String, String> getCVMap() {
 		return tableModel.getCVMap();
 	}
+	
+	public String[][] getReplicatesContent() {
+		String[][] results = new String[tableModel.doGetRowCount()][tableModel.doGetColumnCount()];
+		for(int i=0; i<tableModel.doGetRowCount(); i++) {
+			for(int j=0; j<tableModel.doGetColumnCount(); j++) {
+				results[i][j] = tableModel.doGetContentAt(j,i).toString();
+			}
+		}
+		return results;
+	}
+	
+	public Plate getPlate() {
+		return plate;
+	}
 }
