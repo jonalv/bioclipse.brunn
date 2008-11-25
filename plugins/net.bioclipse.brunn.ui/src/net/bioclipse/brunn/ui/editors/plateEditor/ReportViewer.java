@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -84,14 +85,12 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		while(plateFunctionIterator.hasNext()) {
 			PlateFunction plateFunction = (PlateFunction) plateFunctionIterator.next();
 			functions.put("Function",addToStringArray(functions.get("Function"),plateFunction.getName()));
-			functions.put("Function Value",addToStringArray(functions.get("Function Value"),String.valueOf(plateResults.getValue(plateFunction.getName()))));
 		}
-		/*String[] funcs = new String[1];
-		funcs[0] = "avg";
-		functions.put("Function",funcs);
-		String[] functionValues = new String[1];
-		functionValues[0] = "12";
-		functions.put("Function Value",functionValues);*/
+		String[] plateFunctionNames = functions.get("Function");
+		Arrays.sort(plateFunctionNames);
+		for(String plateFunctionName : plateFunctionNames) {
+			functions.put("Function Value",addToStringArray(functions.get("Function Value"),String.valueOf(plateResults.getValue(plateFunctionName))));	
+		}
 	}
 	
 	private String[] addToStringArray(String[] array, String string) {
@@ -205,75 +204,23 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 	
 	private void addReportColumnIndex(Map<String,String[]> map, String groupOnHeader) {
 		String[] names = map.get(groupOnHeader);
-		String current = names[0];
+		Arrays.sort(names);
 		String index = "1";
 		String[] indexes = null;
-		for(String name : names) {
-			if(name.equals(current)) {
-				indexes = addToStringArray(indexes, index);
+		int columnLength = names.length/2;
+		for(int i=0; i<names.length; i++) {
+			if(i>=columnLength) {
+				index = "2";
 			}
-			else {
-				current = name;
-				index=index.equals("1")?"2":"1";
-				indexes = addToStringArray(indexes, index);
-			}
+			indexes = addToStringArray(indexes, index);
 		}
 		map.put("Column Index",indexes);
 	}
-	
-	private void printContentToFile() {
-		try {
-			File folder = BioclipseCache.getCacheDir();
-	        //File tempfile = File.createTempFile("values", ".csv", folder);
-	        //tempfile.deleteOnExit();
-	        //BufferedWriter printWriter = new BufferedWriter(new FileWriter(tempfile));
-			PrintWriter printWriter = new PrintWriter(new FileWriter(folder+"/values.csv"));
-			Object[] headers = content.keySet().toArray();
-			for(int i=0; i<headers.length; i++) {
-				printWriter.write(headers[i]+(i<headers.length-1?",":"\n"));
-			}
-			for(int i=0; i<content.get("Compound Names").length; i++) {
-				for(int j=0; j<headers.length; j++) {
-					printWriter.write(content.get(headers[j])[i]+(j<headers.length-1?",":"\n"));
-				}
-			}
-			printWriter.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	private void printFunctionsToFile() {
-		try {
-			File folder = BioclipseCache.getCacheDir();
-			PrintWriter printWriter = new PrintWriter(new FileWriter(folder+"/functions.csv"));
-			Object[] headers = functions.keySet().toArray();
-			for(int i=0; i<headers.length; i++) {
-				printWriter.write(headers[i]+(i<headers.length-1?",":"\n"));
-			}
-			for(int i=0; i<functions.get("Function").length; i++) {
-				for(int j=0; j<headers.length; j++) {
-					printWriter.write(functions.get(headers[j])[i]+(j<headers.length-1?",":"\n"));
-				}
-			}
-			printWriter.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+		
 	private void printMapToFile(Map<String,String[]> map, String filename, String headerInMap) {
 		try {
 			File folder = BioclipseCache.getCacheDir();
-			PrintWriter printWriter = new PrintWriter(new FileWriter(folder+filename));
+			PrintWriter printWriter = new PrintWriter(new FileWriter(folder+File.separator+filename));
 			Object[] headers = map.keySet().toArray();
 			for(int i=0; i<headers.length; i++) {
 				printWriter.write(headers[i]+(i<headers.length-1?",":"\n"));
@@ -337,47 +284,11 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		printMapToFile(content, "values.csv", "Compound Names");
 		printMapToFile(functions, "functions.csv", "Function");
 		printEC50();
-		setFileLocation();
-		Browser browser = new Browser(parent, SWT.NONE);
-		WebViewer.display("/home/jonas/brunntrunk/plugins/net.bioclipse.brunn.ui/src/net/bioclipse/brunn/ui/editors/plateEditor/plateReport.rptdesign", WebViewer.HTML, browser, "frameset");
+		//Browser browser = new Browser(parent, SWT.NONE);
+		//WebViewer.display("/home/jonas/brunntrunk/plugins/net.bioclipse.brunn.ui/src/net/bioclipse/brunn/ui/editors/plateEditor/plateReport.rptdesign", WebViewer.HTML, browser, "frameset");
 		//WebViewer.display("/home/jonas/brunnbranchesbirtExample/myJava/myReport.rptdesign", WebViewer.HTML, browser, "frameset");
 	}
 	
-	private void setFileLocation() {
-		try {
-			//Scanner scanner = new Scanner(new File("/home/jonas/brunnbranchesbirtExample/myJava/myReport.rptdesign"));
-			Scanner scanner = new Scanner(new File("/home/jonas/brunntrunk/plugins/net.bioclipse.brunn.ui/src/net/bioclipse/brunn/ui/editors/plateEditor/plateReport.rptdesign"));
-			scanner.findInLine("fuckingFolderToChange").replaceFirst("fuckingFolderToChange",BioclipseCache.getCacheDir().getAbsolutePath());
-			scanner.close();
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		/*
-		String file = "";
-		try {
-		    FileInputStream fin = new FileInputStream ("/home/jonas/brunntrunk/plugins/net.bioclipse.brunn.ui/src/net/bioclipse/brunn/ui/editors/plateEditor/myReport.rptdesign");
-		    file += new DataInputStream(fin).readLine();
-		    fin.close();
-		}
-		catch (IOException e) {
-			System.err.println ("Unable to read from file");
-			System.exit(-1);
-		}
-		try {
-		    FileOutputStream fout = new FileOutputStream ("/home/jonas/brunntrunk/plugins/net.bioclipse.brunn.ui/src/net/bioclipse/brunn/ui/editors/plateEditor/myReport.rptdesign");
-		    new PrintStream(fout).println (file);
-		    fout.close();		
-		}
-		catch (IOException e) {
-			System.err.println ("Unable to write to file");
-			System.exit(-1);
-		}*/
-	}
-
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub

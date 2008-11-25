@@ -2,20 +2,12 @@
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.17" id="1">
     <property name="createdBy">Eclipse BIRT Designer Version 2.3.1.v20080911 Build &lt;2.3.1.v20080917-1340></property>
     <property name="units">in</property>
-    <list-property name="propertyBindings">
-        <structure>
-            <property name="name">HOME</property>
-            <property name="id">107</property>
-            <expression name="value">HomeFolder = "fuckingFolderToChange";</expression>
-        </structure>
-    </list-property>
     <property name="iconFile">/templates/sidebyside_chart_listing.gif</property>
     <property name="cheatSheet">org.eclipse.birt.report.designer.ui.cheatsheet.sidebysidechartlisting</property>
     <property name="bidiLayoutOrientation">ltr</property>
     <data-sources>
-        <script-data-source name="myDataSource" id="69"/>
         <oda-data-source extensionID="org.eclipse.datatools.connectivity.oda.flatfile" name="Data Source" id="107">
-            <property name="HOME">fuckingFolderToChange</property>
+            <property name="HOME">runtime-bioclipse.product/tmp</property>
             <property name="DELIMTYPE">COMMA</property>
             <property name="CHARSET">UTF-8</property>
             <property name="INCLCOLUMNNAME">YES</property>
@@ -23,76 +15,6 @@
         </oda-data-source>
     </data-sources>
     <data-sets>
-        <script-data-set name="myDataSet" id="70">
-            <list-property name="resultSetHints">
-                <structure>
-                    <property name="position">1</property>
-                    <property name="name">columnSI</property>
-                    <property name="dataType">decimal</property>
-                </structure>
-                <structure>
-                    <property name="position">2</property>
-                    <property name="name">columnC</property>
-                    <property name="dataType">decimal</property>
-                </structure>
-                <structure>
-                    <property name="position">3</property>
-                    <property name="name">columnM</property>
-                    <property name="dataType">decimal</property>
-                </structure>
-            </list-property>
-            <list-property name="columnHints">
-                <structure>
-                    <property name="columnName">columnSI</property>
-                    <property name="displayName">SI%</property>
-                </structure>
-                <structure>
-                    <property name="columnName">columnC</property>
-                    <property name="displayName">C</property>
-                </structure>
-                <structure>
-                    <property name="columnName">columnM</property>
-                    <property name="displayName">M</property>
-                </structure>
-            </list-property>
-            <structure name="cachedMetaData">
-                <list-property name="resultSet">
-                    <structure>
-                        <property name="position">1</property>
-                        <property name="name">columnSI</property>
-                        <property name="dataType">decimal</property>
-                    </structure>
-                    <structure>
-                        <property name="position">2</property>
-                        <property name="name">columnC</property>
-                        <property name="dataType">decimal</property>
-                    </structure>
-                    <structure>
-                        <property name="position">3</property>
-                        <property name="name">columnM</property>
-                        <property name="dataType">decimal</property>
-                    </structure>
-                </list-property>
-            </structure>
-            <property name="dataSource">myDataSource</property>
-            <method name="open"><![CDATA[//importPackage(Packages.myPackage);
-
-//java.lang.System.out.println("testing");
-//testing = new Packages.myPackage.MyClass();
-
-//arr = testing.getValues();
-//iter = arr.iterator();
-]]></method>
-            <method name="fetch"><![CDATA[/*if(!iter.hasNext())
-{
-	return false;
-}
-values = iter.next();
-dataSetRow["columnC"] = values[0];
-dataSetRow["columnSI"] = values[1];
-dataSetRow["columnM"] = values[2];
-return true;*/]]></method>
-        </script-data-set>
         <oda-data-set extensionID="org.eclipse.datatools.connectivity.oda.flatfile.dataSet" name="Data Set" id="108">
             <structure name="cachedMetaData">
                 <list-property name="resultSet">
@@ -252,6 +174,11 @@ return true;*/]]></method>
                         <property name="name">Function Value</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">Column Index</property>
+                        <property name="dataType">string</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">Data Source</property>
@@ -270,8 +197,15 @@ return true;*/]]></method>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">Column Index</property>
+                    <property name="nativeName">Column Index</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
             </list-property>
-            <property name="queryText">select "Function", "Function Value" from functions.csv : {"Function","Function",STRING;"Function Value","Function Value",STRING}</property>
+            <property name="queryText">select "Function", "Function Value", "Column Index" from functions.csv : {"Function","Function",STRING;"Function Value","Function Value",STRING;"Column Index","Column Index",STRING}</property>
             <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
   <Version>1.0</Version>
@@ -348,6 +282,73 @@ return true;*/]]></method>
             <property name="leftMargin">0.5in</property>
             <property name="bottomMargin">0.5in</property>
             <property name="rightMargin">0.5in</property>
+            <page-header>
+                <grid id="4">
+                    <property name="masterPage">Simple MasterPage</property>
+                    <property name="height">1in</property>
+                    <property name="width">100%</property>
+                    <property name="dataSet">Data Set</property>
+                    <list-property name="boundDataColumns">
+                        <structure>
+                            <property name="name">Compound Names</property>
+                            <expression name="expression">dataSetRow["Compound Names"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                        <structure>
+                            <property name="name">Column Index</property>
+                            <expression name="expression">dataSetRow["Column Index"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                        <structure>
+                            <property name="name">SI%</property>
+                            <expression name="expression">dataSetRow["SI%"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                        <structure>
+                            <property name="name">Concentration</property>
+                            <expression name="expression">dataSetRow["Concentration"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                        <structure>
+                            <property name="name">EC50</property>
+                            <expression name="expression">dataSetRow["EC50"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                        <structure>
+                            <property name="name">Unit</property>
+                            <expression name="expression">dataSetRow["Unit"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                        <structure>
+                            <property name="name">Plate Name</property>
+                            <expression name="expression">dataSetRow["Plate Name"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                    </list-property>
+                    <column id="5">
+                        <property name="width">7.3125in</property>
+                    </column>
+                    <row id="6">
+                        <property name="height">1in</property>
+                        <cell id="7">
+                            <property name="textAlign">center</property>
+                            <label id="8">
+                                <property name="fontFamily">sans-serif</property>
+                                <property name="fontSize">medium</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="paddingBottom">10pt</property>
+                                <property name="textAlign">center</property>
+                                <text-property name="text">Dose-response report</text-property>
+                            </label>
+                            <text-data id="177">
+                                <property name="textAlign">center</property>
+                                <expression name="valueExpr">"for plate \""+row["Plate Name"]+"\""</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                    </row>
+                </grid>
+            </page-header>
             <page-footer>
                 <text id="3">
                     <property name="contentType">html</property>
@@ -357,72 +358,9 @@ return true;*/]]></method>
         </simple-master-page>
     </page-setup>
     <body>
-        <grid id="4">
-            <property name="height">1in</property>
-            <property name="width">100%</property>
-            <property name="dataSet">Data Set</property>
-            <list-property name="boundDataColumns">
-                <structure>
-                    <property name="name">Compound Names</property>
-                    <expression name="expression">dataSetRow["Compound Names"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">Column Index</property>
-                    <expression name="expression">dataSetRow["Column Index"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">SI%</property>
-                    <expression name="expression">dataSetRow["SI%"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">Concentration</property>
-                    <expression name="expression">dataSetRow["Concentration"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">EC50</property>
-                    <expression name="expression">dataSetRow["EC50"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">Unit</property>
-                    <expression name="expression">dataSetRow["Unit"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">Plate Name</property>
-                    <expression name="expression">dataSetRow["Plate Name"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-            </list-property>
-            <column id="5">
-                <property name="width">7.3125in</property>
-            </column>
-            <row id="6">
-                <property name="height">1in</property>
-                <cell id="7">
-                    <property name="textAlign">center</property>
-                    <label id="8">
-                        <property name="fontFamily">sans-serif</property>
-                        <property name="fontSize">medium</property>
-                        <property name="fontWeight">bold</property>
-                        <property name="paddingBottom">10pt</property>
-                        <property name="textAlign">center</property>
-                        <text-property name="text">Dose-response report</text-property>
-                    </label>
-                    <text-data id="177">
-                        <property name="textAlign">center</property>
-                        <expression name="valueExpr">"for plate \""+row["Plate Name"]+"\""</expression>
-                        <property name="contentType">html</property>
-                    </text-data>
-                </cell>
-            </row>
-        </grid>
         <grid id="115">
             <property name="textAlign">center</property>
+            <property name="masterPage">Simple MasterPage</property>
             <property name="canShrink">true</property>
             <property name="height">3.7291666666666665in</property>
             <property name="width">7.354166666666667in</property>
@@ -436,6 +374,7 @@ return true;*/]]></method>
                 <cell id="119">
                     <list name="list" id="9">
                         <property name="fontSize">small</property>
+                        <property name="masterPage">Simple MasterPage</property>
                         <property name="dataSet">Data Set</property>
                         <list-property name="boundDataColumns">
                             <structure>
@@ -516,8 +455,22 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                                     </structure>
                                     <structure>
                                         <property name="name">Function Value</property>
-                                        <expression name="expression">dataSetRow["Function Value"]</expression>
+                                        <expression name="expression">BirtMath.round(dataSetRow["Function Value"],2)</expression>
                                         <property name="dataType">string</property>
+                                    </structure>
+                                    <structure>
+                                        <property name="name">Column Index</property>
+                                        <expression name="expression">dataSetRow["Column Index"]</expression>
+                                        <property name="dataType">string</property>
+                                    </structure>
+                                </list-property>
+                                <list-property name="filter">
+                                    <structure>
+                                        <property name="operator">eq</property>
+                                        <expression name="expr">row["Column Index"]</expression>
+                                        <simple-property-list name="value1">
+                                            <value>"1"</value>
+                                        </simple-property-list>
                                     </structure>
                                 </list-property>
                                 <column id="194"/>
@@ -1845,6 +1798,7 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                 <cell id="120">
                     <list name="list1" id="121">
                         <property name="fontSize">small</property>
+                        <property name="masterPage">Simple MasterPage</property>
                         <property name="dataSet">Data Set</property>
                         <list-property name="boundDataColumns">
                             <structure>
@@ -1901,6 +1855,94 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                                 </simple-property-list>
                             </structure>
                         </list-property>
+                        <header>
+                            <table id="202">
+                                <property name="borderBottomColor">#000000</property>
+                                <property name="borderBottomStyle">solid</property>
+                                <property name="borderBottomWidth">thin</property>
+                                <property name="borderLeftColor">#000000</property>
+                                <property name="borderLeftStyle">solid</property>
+                                <property name="borderLeftWidth">thin</property>
+                                <property name="borderRightColor">#000000</property>
+                                <property name="borderRightStyle">solid</property>
+                                <property name="borderRightWidth">thin</property>
+                                <property name="borderTopColor">#000000</property>
+                                <property name="borderTopStyle">solid</property>
+                                <property name="borderTopWidth">thin</property>
+                                <property name="width">100%</property>
+                                <property name="dataSet">Data Set1</property>
+                                <list-property name="boundDataColumns">
+                                    <structure>
+                                        <property name="name">Function</property>
+                                        <expression name="expression">dataSetRow["Function"]</expression>
+                                        <property name="dataType">string</property>
+                                    </structure>
+                                    <structure>
+                                        <property name="name">Function Value</property>
+                                        <expression name="expression">BirtMath.round(dataSetRow["Function Value"],2)</expression>
+                                        <property name="dataType">string</property>
+                                    </structure>
+                                    <structure>
+                                        <property name="name">Column Index</property>
+                                        <expression name="expression">dataSetRow["Column Index"]</expression>
+                                        <property name="dataType">string</property>
+                                    </structure>
+                                </list-property>
+                                <list-property name="filter">
+                                    <structure>
+                                        <property name="operator">eq</property>
+                                        <expression name="expr">row["Column Index"]</expression>
+                                        <simple-property-list name="value1">
+                                            <value>"2"</value>
+                                        </simple-property-list>
+                                    </structure>
+                                </list-property>
+                                <column id="219"/>
+                                <column id="220">
+                                    <property name="textAlign">right</property>
+                                </column>
+                                <column id="221">
+                                    <property name="textAlign">center</property>
+                                </column>
+                                <header>
+                                    <row id="203">
+                                        <cell id="204"/>
+                                        <cell id="205">
+                                            <label id="206">
+                                                <text-property name="text">Function</text-property>
+                                            </label>
+                                        </cell>
+                                        <cell id="207">
+                                            <label id="208">
+                                                <text-property name="text">Value</text-property>
+                                            </label>
+                                        </cell>
+                                    </row>
+                                </header>
+                                <detail>
+                                    <row id="209">
+                                        <cell id="210"/>
+                                        <cell id="211">
+                                            <data id="212">
+                                                <property name="resultSetColumn">Function</property>
+                                            </data>
+                                        </cell>
+                                        <cell id="213">
+                                            <data id="214">
+                                                <property name="resultSetColumn">Function Value</property>
+                                            </data>
+                                        </cell>
+                                    </row>
+                                </detail>
+                                <footer>
+                                    <row id="215">
+                                        <cell id="216"/>
+                                        <cell id="217"/>
+                                        <cell id="218"/>
+                                    </row>
+                                </footer>
+                            </table>
+                        </header>
                         <group id="122">
                             <property name="groupName">NewListGroup1</property>
                             <property name="interval">none</property>
