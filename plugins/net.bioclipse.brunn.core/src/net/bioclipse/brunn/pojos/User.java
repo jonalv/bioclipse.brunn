@@ -5,7 +5,7 @@ import java.util.Set;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import org.jasypt.util.password.BasicPasswordEncryptor;
+import net.bioclipse.encryption.EncryptedPassword;
 
 /**
  * Persistent data storing class.
@@ -16,8 +16,7 @@ import org.jasypt.util.password.BasicPasswordEncryptor;
 public class User extends AbstractAuditableObject {
 
 	private Set<AuditLog> doneAuditings;
-	private String encryptedPassword;
-	private BasicPasswordEncryptor encryptor;
+	private EncryptedPassword encryptedPassword;
 	private boolean admin;
 	
 	public boolean isAdmin() {
@@ -29,15 +28,13 @@ public class User extends AbstractAuditableObject {
     }
 
 	public User() {
-		encryptor = new BasicPasswordEncryptor();
-		this.encryptedPassword = encryptor.encryptPassword("");
+		this.encryptedPassword = EncryptedPassword.fromPlaintextPassword("");
 	}
 	
 	public User( User creator, String name){
 		super(creator, name);
 		this.doneAuditings = new HashSet<AuditLog>();
-		encryptor = new BasicPasswordEncryptor();
-		this.encryptedPassword = encryptor.encryptPassword("");
+		this.encryptedPassword = EncryptedPassword.fromPlaintextPassword("");
 	}
 	
 	public User(String name) {
@@ -45,8 +42,7 @@ public class User extends AbstractAuditableObject {
 		this.setCreator(this);
 		this.setDeleted(false);
 		this.doneAuditings = new HashSet<AuditLog>();
-		encryptor = new BasicPasswordEncryptor();
-		this.encryptedPassword = encryptor.encryptPassword("");
+		this.encryptedPassword = EncryptedPassword.fromPlaintextPassword("");
 	}
 	
 	/**
@@ -85,18 +81,21 @@ public class User extends AbstractAuditableObject {
 	}
 
 	public boolean passwordMatch( String password ) {
-    	return encryptor.checkPassword( password, this.encryptedPassword );
+    	return encryptedPassword.matches(password);
     }
 
 	public void setPassword(String password) {
-		this.encryptedPassword = encryptor.encryptPassword(password);
+		this.encryptedPassword 
+			= EncryptedPassword.fromPlaintextPassword(password);
     }
 
 	public String getEncryptedPassword() {
-    	return encryptedPassword;
+    	return encryptedPassword.toString();
     }
 
 	public void setEncryptedPassword(String encryptedPassWord) {
-    	this.encryptedPassword = encryptedPassWord;
+    	this.encryptedPassword 
+    		= EncryptedPassword.fromAlreadyEncryptedPassword(
+    				encryptedPassWord );
     }
 }

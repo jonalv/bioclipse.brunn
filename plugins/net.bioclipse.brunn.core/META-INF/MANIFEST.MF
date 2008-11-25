@@ -51,7 +51,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
  org.junit4,
  net.bioclipse.brunn.expression,
- net.bioclipse.usermanager;bundle-version="0.1.1"
+ net.bioclipse.usermanager;bundle-version="0.1.1",
+ net.bioclipse.encryption;bundle-version="0.1.0"
 Bundle-Activator: net.bioclipse.brunn.Activator
 Export-Package: net.bioclipse.brunn,
  net.bioclipse.brunn.HibernateMapping,

@@ -14,7 +14,9 @@ Require-Bundle: org.eclipse.ui,
  net.bioclipse.brunn.expression,
  net.bioclipse.brunn.core,
  net.bioclipse.core;bundle-version="2.0.0",
- de.kupzog.ktable;bundle-version="2.1.3"
+ de.kupzog.ktable;bundle-version="2.1.3",
+ net.bioclipse.ui;bundle-version="2.0.0",
+ org.eclipse.birt.report.viewer;bundle-version="2.3.1"
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  jars/KTable.jar

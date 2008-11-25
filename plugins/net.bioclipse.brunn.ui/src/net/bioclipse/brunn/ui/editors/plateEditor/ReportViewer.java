@@ -384,7 +384,6 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		
 	}
 
-	@Override
 	public void onOutLierChange() {
 		// TODO Auto-generated method stub
 		fillContent();
