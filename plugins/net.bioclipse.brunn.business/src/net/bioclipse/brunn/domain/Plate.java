@@ -55,6 +55,22 @@ public class Plate {
 		return wells;
 	}
 	
+	public Set<WellFunction> getWellFunctions() {
+		Set<WellFunction> wellFunctions = new HashSet<WellFunction>();
+		for(Well well : wells) {
+			wellFunctions.addAll(well.getWellFunctions());
+		}
+		return wellFunctions;
+	}
+	
+	public Set<Substance> getSubstances() {
+		Set<Substance> substances = new HashSet<Substance>();
+		for(Well well : wells) {
+			substances.addAll(well.getSubstances());
+		}
+		return substances;
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -72,7 +88,7 @@ public class Plate {
 	}
 	
 	public void print() {
-		System.out.println("\nPlate: "+name+" barcode: "+barcode);
+		System.out.println("\nPlate: "+name+", barcode: "+barcode);
 		for(PlateFunction pf : plateFunctions) {
 			pf.print();
 		}
@@ -83,7 +99,7 @@ public class Plate {
 	
 	public String toString() {
 		String result = "";
-		result+="\nPlate: "+name+" barcode: "+barcode+"\n";
+		result+="\nPlate: "+name+", barcode: "+barcode+"\n";
 		for(PlateFunction pf : plateFunctions) {
 			result+=pf.toString()+"\n";
 		}

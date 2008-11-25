@@ -27,11 +27,11 @@ public class PlateFunction {
 	}
 
 	public void print() {
-		System.out.println("\tPlateFunction: "+name+" value: "+value);
+		System.out.println("\tPlateFunction: "+name+", value: "+value);
 	}
 	
 	public String toString() {
-		return "\tPlateFunction: "+name+" value: "+value;
+		return "\tPlateFunction: "+name+", value: "+value;
 	}
 
 }

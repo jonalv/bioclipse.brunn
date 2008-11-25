@@ -32,11 +32,11 @@ public class Substance {
 	}
 	
 	public void print() {
-		System.out.println("\t\tSubstance: "+name+" concentration "+concentration);
+		System.out.println("\t\tSubstance: "+name+", concentration "+concentration);
 	}
 	
 	public String toString() {
-		return "\t\tSubstance: "+name+" concentration "+concentration;
+		return "\t\tSubstance: "+name+", concentration "+concentration;
 	}
 
 }

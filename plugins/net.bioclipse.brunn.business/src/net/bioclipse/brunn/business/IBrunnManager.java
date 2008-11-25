@@ -43,6 +43,6 @@ public interface IBrunnManager extends IBioclipseManager {
 	public String getPlateByBarcode(String barcode);
 
     @Recorded
-    @PublishedMethod( methodSummary = "Returns the plate with that barcode")
-    public Set<String> getAllPlateBarcodes();
+    @PublishedMethod( methodSummary = "Returns all plate barcodes")
+    public List<String> getAllPlateBarcodes();
 }

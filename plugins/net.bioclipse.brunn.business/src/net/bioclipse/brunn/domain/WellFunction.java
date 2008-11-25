@@ -32,11 +32,11 @@ public class WellFunction {
 	}
 
 	public void print() {
-		System.out.println("\t\tWellFunvtion: "+name+" value: "+value);
+		System.out.println("\t\tWellFunction: "+name+", value: "+value);
 	}
 
 	public String toString() {
-		return "\t\tWellFunvtion: "+name+" value: "+value;
+		return "\t\tWellFunction: "+name+", value: "+value;
 	}
 
 }

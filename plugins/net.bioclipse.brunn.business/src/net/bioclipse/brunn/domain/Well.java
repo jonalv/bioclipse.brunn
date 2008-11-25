@@ -86,7 +86,7 @@ public class Well {
 	}
 
 	public void print() {
-		System.out.println("\tWell: "+name+" celltype: "+cellType+" cellname: "+cellName);
+		System.out.println("\tWell: "+name+", celltype: "+cellType+", cellname: "+cellName);
 		for(WellFunction wf : wellFunctions) {
 			wf.print();
 		}
@@ -97,7 +97,7 @@ public class Well {
 
 	public String toString() {
 		String result = "";
-		result+="\tWell: "+name+" celltype: "+cellType+" cellname: "+cellName+"\n";
+		result+="\tWell: "+name+", celltype: "+cellType+", cellname: "+cellName+"\n";
 		for(WellFunction wf : wellFunctions) {
 			result+=wf.toString()+"\n";
 		}
