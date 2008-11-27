@@ -1,6 +1,8 @@
 package net.bioclipse.brunn.ui.dialogs;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.origin.IOriginManager;
@@ -155,6 +157,12 @@ public class CreatePlate extends TitleAreaDialog {
 		 */
 		IPlateManager pm  = (IPlateManager) Springcontact.getBean("plateManager");
 		masterPlates = pm.getAllMasterPlatesNotDeleted().toArray(masterPlates);
+        Arrays.sort(masterPlates, new Comparator<MasterPlate>() {
+            public int compare(MasterPlate a, MasterPlate b)
+               {
+               return(a.getName()).compareToIgnoreCase(b.getName());
+               }
+            });
 		String[] items = new String[masterPlates.length];
 		for (int i = 0; i < items.length; i++) {
 			items[i] = masterPlates[i].getName();
