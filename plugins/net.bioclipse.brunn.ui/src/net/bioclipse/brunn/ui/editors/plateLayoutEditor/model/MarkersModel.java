@@ -210,6 +210,7 @@ public class MarkersModel extends KTableDefaultModel {
 								
 						markersTable.setModel(new MarkersModel(plateLayout, markersTable, plateLayoutEditor));
 						markersTable.redraw();
+						plateLayoutEditor.updatePlateFunctions( lm.getName() );
 						if(editor != null) 
 							editor.dirtyCheck();
 					}
