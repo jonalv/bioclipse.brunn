@@ -492,15 +492,17 @@ public class PlateLayoutEditor extends EditorPart {
          * Collect all platefunction names
          */
         List<String> plateFunctionNames = new ArrayList<String>();
-        plateFunctionNames.add( "ControlBlankRatio" );
+        
         if ( markerName.contains( "C" ) ) {
             plateFunctionNames.add( "CV_"  + markerName );
-            plateFunctionNames.add( "AVG_AllControls" );
-            plateFunctionNames.add( "CV_AllControls"  );
+            plateFunctionNames.add( "AVG_AllControls"   );
+            plateFunctionNames.add( "CV_AllControls"    );
+            plateFunctionNames.add( "AVG_" + markerName );
         }
         else {
-            plateFunctionNames.add( "AVG_AllBlank" );
+            plateFunctionNames.add( "AVG_AllBlanks" );
         }
+        plateFunctionNames.add( "ControlBlankRatio" );
         
         /*
          * remove any old versions of the plate functions before adding new 
@@ -520,7 +522,7 @@ public class PlateLayoutEditor extends EditorPart {
             plateFunctions.add( 
                 new PlateFunction( 
                     Activator.getDefault().getCurrentUser(), 
-                    plateFunctionNames.get( 1 ), 
+                    plateFunctionNames.get( 0 ), 
                     "100 * ( stddev(" + wellNames + " ) / avg(" + wellNames + ") )",
                     0,
                     0,
@@ -529,7 +531,7 @@ public class PlateLayoutEditor extends EditorPart {
             plateFunctions.add( 
                 new PlateFunction( 
                     Activator.getDefault().getCurrentUser(), 
-                    plateFunctionNames.get( 2 ), 
+                    plateFunctionNames.get( 1 ), 
                     "avg(" + controlWellNames + ")",
                     0,
                     0,
@@ -538,8 +540,17 @@ public class PlateLayoutEditor extends EditorPart {
             plateFunctions.add( 
                 new PlateFunction( 
                     Activator.getDefault().getCurrentUser(), 
-                    plateFunctionNames.get( 3 ), 
+                    plateFunctionNames.get( 2 ), 
                     "100 * ( stddev(" + controlWellNames + ") / avg(" + controlWellNames + ") )",
+                    0,
+                    0,
+                    false, 
+                    toBeSaved ) );
+            plateFunctions.add( 
+                new PlateFunction( 
+                    Activator.getDefault().getCurrentUser(), 
+                    plateFunctionNames.get( 3 ), 
+                    "avg(" + wellNames + ")",
                     0,
                     0,
                     false, 
@@ -549,7 +560,7 @@ public class PlateLayoutEditor extends EditorPart {
             plateFunctions.add( 
                 new PlateFunction( 
                     Activator.getDefault().getCurrentUser(), 
-                    plateFunctionNames.get( 1 ), 
+                    plateFunctionNames.get( 0 ), 
                     "avg(" + blankWellNames + ")",
                     0,
                     0,
@@ -567,8 +578,9 @@ public class PlateLayoutEditor extends EditorPart {
             plateFunctions.add( 
                 new PlateFunction( 
                     Activator.getDefault().getCurrentUser(), 
-                                   plateFunctionNames.get( 0 ), 
-                                   "AVG_AllControls() / AVG_AllBlank()",
+                                   plateFunctionNames.get( 
+                                       plateFunctionNames.size()-1 ), 
+                                   "AVG_AllControls() / AVG_AllBlanks()",
                                    0,
                                    0,
                                    false, 
