@@ -13,27 +13,9 @@
  ******************************************************************************/
 package net.bioclipse.brunn.business;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.RandomAccessFile;
-import java.io.StringBufferInputStream;
-import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
 
 import net.bioclipse.brunn.Springcontact;
@@ -48,18 +30,8 @@ import net.bioclipse.brunn.pojos.CellSample;
 import net.bioclipse.brunn.pojos.DrugSample;
 import net.bioclipse.brunn.pojos.PatientSample;
 import net.bioclipse.brunn.results.PlateResults;
-import net.bioclipse.core.ResourcePathTransformer;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.domain.BioList;
-import net.bioclipse.core.domain.IMolecule;
-import net.bioclipse.core.jobs.Job;
-import net.bioclipse.core.util.LogUtils;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.SubProgressMonitor;
 
 /**
  * The manager class for Brunn. Contains Brunn related methods.
