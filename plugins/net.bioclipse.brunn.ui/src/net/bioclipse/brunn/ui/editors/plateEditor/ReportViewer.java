@@ -1,5 +1,6 @@
 package net.bioclipse.brunn.ui.editors.plateEditor;
 
+import org.osgi.framework.Bundle;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,6 +28,7 @@ import java.util.Scanner;
 
 import org.eclipse.birt.report.viewer.utilities.WebViewer;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
@@ -284,8 +287,14 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		printMapToFile(content, "values.csv", "Compound Names");
 		printMapToFile(functions, "functions.csv", "Function");
 		printEC50();
-		//Browser browser = new Browser(parent, SWT.NONE);
-		//WebViewer.display("/home/jonas/brunntrunk/plugins/net.bioclipse.brunn.ui/src/net/bioclipse/brunn/ui/editors/plateEditor/plateReport.rptdesign", WebViewer.HTML, browser, "frameset");
+		Browser browser = new Browser(parent, SWT.NONE);
+		URL url = null;
+        try {
+            url = FileLocator.toFileURL( ReportViewer.class.getResource( "plateReport.rptdesign" ) );
+        } catch ( IOException e ) {
+            throw new RuntimeException(e);
+        }
+		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "frameset");
 		//WebViewer.display("/home/jonas/brunnbranchesbirtExample/myJava/myReport.rptdesign", WebViewer.HTML, browser, "frameset");
 	}
 	
