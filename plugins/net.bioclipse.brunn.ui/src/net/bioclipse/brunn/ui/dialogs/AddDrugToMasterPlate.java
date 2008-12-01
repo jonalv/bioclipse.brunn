@@ -37,9 +37,7 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 	
 	private double dilutionFactor = lastDilutionFactor;
 	private double concentration = lastConcentration;
-	private final ConcUnit[] concUnits = new ConcUnit[] {ConcUnit.UNIT, 
-			                                               ConcUnit.MICRO_MOLAR,
-			                                               ConcUnit.MICRO_GRAM_PER_MILLI_LITER};
+	private final ConcUnit[] concUnits = ConcUnit.all();
 	
 	private static double lastDilutionFactor = 1;
 	private static double lastConcentration = 100;
