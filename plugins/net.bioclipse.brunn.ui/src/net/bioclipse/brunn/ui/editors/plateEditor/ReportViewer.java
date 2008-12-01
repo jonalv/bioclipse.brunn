@@ -8,12 +8,14 @@ import net.bioclipse.brunn.pojos.PlateFunction;
 import net.bioclipse.brunn.results.PlateResults;
 import net.bioclipse.ui.BioclipseCache;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -284,7 +286,40 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public void changeFile(String fileName, String from, String to) {
+		URL url = null;
+        try {
+            url = FileLocator.toFileURL(ReportViewer.class.getResource(fileName));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+		File file = new File(url.getFile());
+		FileWriter out;
+		try {
+			String fileAsString = "";
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String fileLine;
+			while ((fileLine = reader.readLine()) != null){
+				fileAsString += fileLine+"\n";
+				}
+			reader.close();
+			
+			fileAsString = fileAsString.replaceFirst(from,to);
 
+			out = new FileWriter(file);
+			out.write(fileAsString);
+			out.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void createPartControl(Composite parent) {
 		// TODO Auto-generated method stub
@@ -297,13 +332,20 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		printMapToFile(content, "values.csv", "Compound Names");
 		printMapToFile(functions, "functions.csv", "Function");
 		printEC50();
-		Browser browser = new Browser(parent, SWT.NONE);
+		
 		URL url = null;
         try {
             url = FileLocator.toFileURL( ReportViewer.class.getResource( "plateReport.rptdesign" ) );
         } catch ( IOException e ) {
             throw new RuntimeException(e);
         }
+        try {
+			changeFile("plateReport.rptdesign","folderToChange",BioclipseCache.getCacheDir().getAbsolutePath());
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Browser browser = new Browser(parent, SWT.NONE);
 		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "frameset");
 		//WebViewer.display("/home/jonas/brunnbranchesbirtExample/myJava/myReport.rptdesign", WebViewer.HTML, browser, "frameset");
 	}

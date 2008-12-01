@@ -7,7 +7,7 @@
     <property name="bidiLayoutOrientation">ltr</property>
     <data-sources>
         <oda-data-source extensionID="org.eclipse.datatools.connectivity.oda.flatfile" name="Data Source" id="107">
-            <property name="HOME">/home/jonas/runtime-bioclipse.product/tmp</property>
+            <property name="HOME">folderToChange</property>
             <property name="DELIMTYPE">COMMA</property>
             <property name="CHARSET">UTF-8</property>
             <property name="INCLCOLUMNNAME">YES</property>
