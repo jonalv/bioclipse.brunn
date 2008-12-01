@@ -73,7 +73,7 @@ public class CreatePatientCell extends TitleAreaDialog {
 		fd_eg08045Label.bottom = new FormAttachment(nameText, 0, SWT.BOTTOM);
 		fd_eg08045Label.left = new FormAttachment(nameText, 5, SWT.RIGHT);
 		eg08045Label.setLayoutData(fd_eg08045Label);
-		eg08045Label.setText("(e.g. 08/045-A)");
+		eg08045Label.setText("(e.g. 08/045-B)");
 
 		final Label eg08045Label_1 = new Label(container, SWT.NONE);
 		final FormData fd_eg08045Label_1 = new FormData();
