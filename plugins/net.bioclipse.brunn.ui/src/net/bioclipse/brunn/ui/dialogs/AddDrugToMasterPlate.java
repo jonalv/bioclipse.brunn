@@ -187,7 +187,7 @@ public class AddDrugToMasterPlate extends TitleAreaDialog {
 						                       .getActiveWorkbenchWindow()
 						                       .getShell(), 
 						                       "Could not parse double", 
-						                       "Concentration and dilution factor should be doubles (e.g. 3.14)" );
+						                       "Concentration and dilution factor should be doubles (e.g. 3.14, 100)" );
 				return;
 			}
 			concUnit = concUnits[concUnitCombo.getSelectionIndex()];
