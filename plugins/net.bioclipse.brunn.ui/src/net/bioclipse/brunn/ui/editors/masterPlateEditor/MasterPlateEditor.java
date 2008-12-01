@@ -160,10 +160,10 @@ public class MasterPlateEditor extends EditorPart {
 			                                 SWT.HIDE_SELECTION );
 		TableColumn column1 = new TableColumn(compoundsTable, SWT.CENTER, 0);
 		column1.setText(COLUMN_NAMES[0]);
-		column1.setWidth(100);
+		column1.setWidth(139);
 		TableColumn column2 = new TableColumn(compoundsTable, SWT.LEFT, 1);
 		column2.setText(COLUMN_NAMES[1]);
-		column2.setWidth(50);
+		column2.setWidth(400);
 		
 		compoundsTable.setLinesVisible(true);
 		compoundsTable.setHeaderVisible(true);
