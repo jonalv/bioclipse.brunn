@@ -69,6 +69,9 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		contentLength = matrix.length-1;
 		String[] headers = matrix[0];
 		for(int i=0; i<headers.length; i++) {
+			if(headers[i].equals("si%")) {
+				headers[i] = "SI%";
+			}
 			content.put(headers[i], null);
 		}
 		for(int i=1; i<matrix.length; i++) {
@@ -208,12 +211,19 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 	private void addReportColumnIndex(Map<String,String[]> map, String groupOnHeader) {
 		String[] names = map.get(groupOnHeader);
 		Arrays.sort(names);
+		String currentName = names[0];
 		String index = "1";
 		String[] indexes = null;
 		int columnLength = names.length/2;
 		for(int i=0; i<names.length; i++) {
-			if(i>=columnLength) {
-				index = "2";
+			System.out.println(names[i]+" "+currentName);
+			if(!names[i].equals(currentName)) {
+				System.out.println("Break");
+				if(i>columnLength) {
+					System.out.println("Index change");
+					index = "2";
+				}
+				currentName = names[i];
 			}
 			indexes = addToStringArray(indexes, index);
 		}
