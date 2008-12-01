@@ -67,6 +67,7 @@ import de.kupzog.ktable.SWTX;
 
 public class PlateEditor extends EditorPart implements OutlierChangedListener {
 
+	private Text text;
 	private Text barcodeText;
 	static class Sorter extends ViewerSorter {
 		public int compare(Viewer viewer, Object e1, Object e2) {
@@ -77,7 +78,6 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 			return M1 - M2;
 		}
 	}
-	private Combo resultsVersionCombo;
 	private Combo markPlateCombo;
 	private Combo wellFunctionCombo;
 	
@@ -179,23 +179,12 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		colorsButton.setEnabled(false);
 		colorsButton.setText("Colors");
 
-		final Label resultsVersionLabel = new Label(top, SWT.NONE);
-		final FormData fd_resultsVersionLabel = new FormData();
-		fd_resultsVersionLabel.bottom = new FormAttachment(colorsButton, 17, SWT.TOP);
-		fd_resultsVersionLabel.top = new FormAttachment(colorsButton, 0, SWT.TOP);
-		fd_resultsVersionLabel.left = new FormAttachment(0, 210);
-		resultsVersionLabel.setLayoutData(fd_resultsVersionLabel);
-		resultsVersionLabel.setText("Results version:");
-
-		resultsVersionCombo = new Combo(top, SWT.NONE|SWT.READ_ONLY);
-		fd_resultsVersionLabel.right = new FormAttachment(resultsVersionCombo, 0, SWT.LEFT);
-		final FormData fd_resultsVersionCombo = new FormData();
-		fd_resultsVersionCombo.right = new FormAttachment(0, 425);
-		fd_resultsVersionCombo.bottom = new FormAttachment(colorsButton, 27, SWT.TOP);
-		fd_resultsVersionCombo.top = new FormAttachment(colorsButton, 0, SWT.TOP);
-		fd_resultsVersionCombo.left = new FormAttachment(0, 315);
-		resultsVersionCombo.setLayoutData(fd_resultsVersionCombo);
-		resultsVersionCombo.setEnabled(false);
+		final Label masterplateLabel = new Label(top, SWT.NONE);
+		final FormData fd_masterplateLabel = new FormData();
+		fd_masterplateLabel.top = new FormAttachment(colorsButton, 0, SWT.TOP);
+		fd_masterplateLabel.left = new FormAttachment(0, 210);
+		masterplateLabel.setLayoutData(fd_masterplateLabel);
+		masterplateLabel.setText("Based on masterplate:");
 
 		barcodeText = new Text(top, SWT.BORDER);
 		final FormData fd_barcodeText = new FormData();
@@ -466,6 +455,15 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		sashForm.setWeights(new int[] {4, 1});
 		
 		barcodeText.setText(toBeSaved.getBarcode());
+
+		text = new Text(top, SWT.BORDER);
+		text.setEditable(false);
+		text.setText(toBeSaved.getMasterPlate().getName());
+		final FormData fd_text = new FormData();
+		fd_text.right = new FormAttachment(0, 535);
+		fd_text.bottom = new FormAttachment(masterplateLabel, 0, SWT.BOTTOM);
+		fd_text.left = new FormAttachment(masterplateLabel, 5, SWT.RIGHT);
+		text.setLayoutData(fd_text);
 	}
 		
 	private void refreshPlateTableSelection() {
