@@ -61,7 +61,9 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 	private void autoCompleteContent() {
 		for(String header : neededData) {
 			if(content.get(header) == null) {
-				content.put(header, new String[contentLength]);
+				for(int i=0; i<contentLength; i++) {
+					content.put(header,addToStringArray(content.get(header),"-1.0"));
+				}
 			}
 		}
 	}
@@ -215,15 +217,17 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		Arrays.sort(names);
 		String currentName = names[0];
 		String index = "1";
+		boolean indexNotChanged = true;
 		String[] indexes = null;
 		int columnLength = names.length/2;
 		for(int i=0; i<names.length; i++) {
-			System.out.println(names[i]+" "+currentName);
-			if(!names[i].equals(currentName)) {
-				System.out.println("Break");
+			//System.out.println(names[i]+" "+currentName);
+			if(indexNotChanged && !names[i].equals(currentName)) {
+				//System.out.println("Break");
 				if(i>columnLength) {
-					System.out.println("Index change");
+					//System.out.println("Index change");
 					index = "2";
+					indexNotChanged = false;
 				}
 				currentName = names[i];
 			}
@@ -346,7 +350,7 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 			e.printStackTrace();
 		}
 		Browser browser = new Browser(parent, SWT.NONE);
-		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "frameset");
+		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "preview");
 		//WebViewer.display("/home/jonas/brunnbranchesbirtExample/myJava/myReport.rptdesign", WebViewer.HTML, browser, "frameset");
 	}
 	

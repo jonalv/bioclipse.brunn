@@ -21,7 +21,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.datatools.connectivity.oda.flatfile,
  org.eclipse.birt.core.script.function;bundle-version="2.3.1",
  org.eclipse.birt.report.designer.ui.editor.script;bundle-version="2.3.1",
- org.eclipse.birt.report.engine.emitter.html;bundle-version="2.3.1"
+ org.eclipse.birt.report.engine.emitter.html;bundle-version="2.3.1",
+ org.eclipse.birt.chart.engine.extension;bundle-version="2.3.1",
+ org.eclipse.birt.chart.device.extension;bundle-version="2.3.1",
+ org.eclipse.birt.chart.reportitem;bundle-version="2.3.1"
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  jars/KTable.jar
