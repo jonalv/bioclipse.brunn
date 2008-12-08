@@ -7,7 +7,7 @@
     <property name="bidiLayoutOrientation">ltr</property>
     <data-sources>
         <oda-data-source extensionID="org.eclipse.datatools.connectivity.oda.flatfile" name="Data Source" id="107">
-            <property name="HOME">folderToChange</property>
+            <property name="HOME">/home/jonas/runtime-bioclipse.product/tmp</property>
             <property name="DELIMTYPE">COMMA</property>
             <property name="CHARSET">UTF-8</property>
             <property name="INCLCOLUMNNAME">YES</property>
@@ -360,10 +360,8 @@
     <body>
         <grid id="115">
             <property name="textAlign">center</property>
-            <property name="masterPage">Simple MasterPage</property>
             <property name="canShrink">true</property>
-            <property name="height">3.7291666666666665in</property>
-            <property name="width">7.354166666666667in</property>
+            <property name="width">90%</property>
             <column id="116">
                 <property name="width">3.6770833333333335in</property>
             </column>
@@ -374,7 +372,6 @@
                 <cell id="119">
                     <list name="list" id="9">
                         <property name="fontSize">small</property>
-                        <property name="masterPage">Simple MasterPage</property>
                         <property name="dataSet">Data Set</property>
                         <list-property name="boundDataColumns">
                             <structure>
@@ -421,6 +418,7 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                                 <property name="dataType">string</property>
                             </structure>
                         </list-property>
+                        <property name="repeatHeader">false</property>
                         <property name="pageBreakInterval">50</property>
                         <list-property name="filter">
                             <structure>
@@ -445,6 +443,7 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                                 <property name="borderTopColor">#000000</property>
                                 <property name="borderTopStyle">solid</property>
                                 <property name="borderTopWidth">thin</property>
+                                <property name="verticalAlign">bottom</property>
                                 <property name="width">100%</property>
                                 <property name="dataSet">Data Set1</property>
                                 <list-property name="boundDataColumns">
@@ -547,7 +546,6 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                                     <property name="borderTopStyle">solid</property>
                                     <property name="borderTopWidth">thin</property>
                                     <property name="marginTop">0pt</property>
-                                    <property name="masterPage">Simple MasterPage</property>
                                     <property name="pageBreakBefore">auto</property>
                                     <property name="height">1.135in</property>
                                     <property name="width">100%</property>
@@ -1798,7 +1796,6 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                 <cell id="120">
                     <list name="list1" id="121">
                         <property name="fontSize">small</property>
-                        <property name="masterPage">Simple MasterPage</property>
                         <property name="dataSet">Data Set</property>
                         <list-property name="boundDataColumns">
                             <structure>
@@ -1845,6 +1842,7 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                                 <property name="dataType">string</property>
                             </structure>
                         </list-property>
+                        <property name="repeatHeader">false</property>
                         <property name="pageBreakInterval">50</property>
                         <list-property name="filter">
                             <structure>
@@ -1869,6 +1867,16 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                                 <property name="borderTopColor">#000000</property>
                                 <property name="borderTopStyle">solid</property>
                                 <property name="borderTopWidth">thin</property>
+                                <property name="verticalAlign">bottom</property>
+                                <list-property name="mapRules">
+                                    <structure>
+                                        <expression name="testExpr">row["Function Value"]</expression>
+                                        <property name="operator">eq</property>
+                                        <simple-property-list name="value1">
+                                            <value>"0"</value>
+                                        </simple-property-list>
+                                    </structure>
+                                </list-property>
                                 <property name="width">100%</property>
                                 <property name="dataSet">Data Set1</property>
                                 <list-property name="boundDataColumns">
@@ -1970,7 +1978,6 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                                     <property name="borderTopColor">#000000</property>
                                     <property name="borderTopStyle">solid</property>
                                     <property name="borderTopWidth">thin</property>
-                                    <property name="masterPage">Simple MasterPage</property>
                                     <property name="pageBreakBefore">auto</property>
                                     <property name="height">1.1354166666666667in</property>
                                     <property name="width">100%</property>

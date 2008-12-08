@@ -221,12 +221,13 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		String index = "1";
 		boolean indexNotChanged = true;
 		String[] indexes = null;
-		int columnLength = names.length/2;
+		int columnLength = (names.length+1)/2;
+		System.out.println(groupOnHeader+"\t"+names.length+"\t"+columnLength);
 		for(int i=0; i<names.length; i++) {
 			//System.out.println(names[i]+" "+currentName);
 			if(indexNotChanged && !names[i].equals(currentName)) {
 				//System.out.println("Break");
-				if(i>columnLength) {
+				if(i>=columnLength) {
 					//System.out.println("Index change");
 					index = "2";
 					indexNotChanged = false;
@@ -234,6 +235,11 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 				currentName = names[i];
 			}
 			indexes = addToStringArray(indexes, index);
+		}
+		if(names.length%2!=0 && map.containsKey("Function")) {
+			indexes = addToStringArray(indexes, index);
+			map.put("Function", addToStringArray(map.get("Function"),""));
+			map.put("Function Value", addToStringArray(map.get("Function Value"),""));
 		}
 		map.put("Column Index",indexes);
 	}
