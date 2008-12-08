@@ -97,8 +97,8 @@ public class ExplorerDropAdapter extends ViewerDropAdapter {
                                 instanceof AbstractFolder ) {
                             toBeRefreshed.add( (AbstractFolder) target );   
                         }
-                        if ( ((AbstractFolder) target).getParent() instanceof 
-                                Resources ) {
+                        if ( ((AbstractFolder) target).getParent() instanceof Resources ||
+                        	 ((AbstractFolder) target).getParent() instanceof TreeRoot	) {
                             final AbstractFolder folderToBeRefreshed 
                             = (AbstractFolder) target;
 
@@ -115,11 +115,6 @@ public class ExplorerDropAdapter extends ViewerDropAdapter {
                 }
 			};
 			job.schedule();
-			try {
-                job.join();
-            } catch ( InterruptedException e ) {
-                e.printStackTrace();
-            }
 		}
 		else {
 			System.out.println("Could not drop on target: " + target);
