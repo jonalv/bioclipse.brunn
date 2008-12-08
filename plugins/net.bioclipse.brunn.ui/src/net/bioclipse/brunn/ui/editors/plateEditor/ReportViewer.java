@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.birt.report.viewer.utilities.WebViewer;
 import org.eclipse.core.runtime.CoreException;
@@ -305,12 +307,13 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String fileLine;
 			while ((fileLine = reader.readLine()) != null){
+				if( fileLine.contains(from) ) {
+					fileLine = fileLine.substring(0, fileLine.indexOf(from) ) + to + "</property>";
+				}
 				fileAsString += fileLine+"\n";
 				}
 			reader.close();
 			
-			fileAsString = fileAsString.replaceFirst(from,to);
-
 			out = new FileWriter(file);
 			out.write(fileAsString);
 			out.close();
