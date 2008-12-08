@@ -350,7 +350,7 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 			e.printStackTrace();
 		}
 		Browser browser = new Browser(parent, SWT.NONE);
-		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "preview");
+		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "frameset");
 		//WebViewer.display("/home/jonas/brunnbranchesbirtExample/myJava/myReport.rptdesign", WebViewer.HTML, browser, "frameset");
 	}
 	
