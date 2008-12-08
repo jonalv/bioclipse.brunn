@@ -18,6 +18,10 @@ import net.bioclipse.brunn.ui.explorer.model.folders.AbstractUniqueFolder;
 import net.bioclipse.brunn.ui.explorer.model.folders.Resources;
 import net.bioclipse.brunn.ui.transferTypes.BrunnTransfer;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerDropAdapter;
@@ -39,12 +43,12 @@ public class ExplorerDropAdapter extends ViewerDropAdapter {
 	@Override
 	public boolean performDrop(Object data) {
 
-		Object target = getCurrentTarget();
+		final Object target = getCurrentTarget();
 		if( !(target instanceof AbstractFolder)) {
 			return false;
 		}
 		
-		List<ILISObject> drops = new ArrayList<ILISObject>();
+		final List<ILISObject> drops = new ArrayList<ILISObject>();
 
 		if (data instanceof IStructuredSelection) {
 			IStructuredSelection sel = (IStructuredSelection) data;
@@ -69,8 +73,8 @@ public class ExplorerDropAdapter extends ViewerDropAdapter {
 		
 		if (target instanceof AbstractFolder) {
 
-			Folder targetFolder = (Folder) ( (AbstractFolder)target )
-                                                             .getPOJO();
+			final Folder targetFolder = (Folder) ( (AbstractFolder)target )
+                                                                   .getPOJO();
 
 			//abort drop if dropping on self or subfolder of self
 			for( ILISObject domainObject : drops ) {
@@ -79,27 +83,43 @@ public class ExplorerDropAdapter extends ViewerDropAdapter {
 				}
 			}
 			
-			Set<AbstractFolder> toBeRefreshed 
-				= new HashSet<AbstractFolder>();
-			for( ILISObject domainObject : drops) {
-				targetFolder.getObjects().add(domainObject);
-				if ( ((AbstractFolder) target).getParent() 
-					 instanceof AbstractFolder ) {
-					toBeRefreshed.add( (AbstractFolder) target );	
-				}
-				if( ((AbstractFolder) target).getParent() instanceof 
-						                                  Resources ) {
-					final AbstractFolder folderToBeRefreshed 
-						= (AbstractFolder) target;
-				
-					refreshFolders( new HashSet<AbstractFolder>() {
-						{ add(folderToBeRefreshed); }
-					} );
-					
-					return true;
-				}
-			}
-			refreshFolders(toBeRefreshed);
+			Job job = new Job("Brunn-drop") {
+
+                @Override
+                protected IStatus run( IProgressMonitor monitor ) {
+
+                    Set<AbstractFolder> toBeRefreshed 
+                        = new HashSet<AbstractFolder>();
+                    monitor.beginTask( "dropping", drops.size()+1 );
+                    for ( ILISObject domainObject : drops) {
+                        targetFolder.getObjects().add(domainObject);
+                        if ( ((AbstractFolder) target).getParent() 
+                                instanceof AbstractFolder ) {
+                            toBeRefreshed.add( (AbstractFolder) target );   
+                        }
+                        if ( ((AbstractFolder) target).getParent() instanceof 
+                                Resources ) {
+                            final AbstractFolder folderToBeRefreshed 
+                            = (AbstractFolder) target;
+
+                            refreshFolders( new HashSet<AbstractFolder>() {
+                                { add(folderToBeRefreshed); }
+                            } );
+
+                        }
+                        monitor.worked( 1 );
+                    }
+                    refreshFolders(toBeRefreshed);
+                    monitor.done();
+                    return Status.OK_STATUS;
+                }
+			};
+			job.schedule();
+			try {
+                job.join();
+            } catch ( InterruptedException e ) {
+                e.printStackTrace();
+            }
 		}
 		else {
 			System.out.println("Could not drop on target: " + target);
