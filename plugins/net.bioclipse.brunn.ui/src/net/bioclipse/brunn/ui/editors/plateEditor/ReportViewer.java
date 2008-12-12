@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -75,7 +77,7 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		contentLength = matrix.length-1;
 		String[] headers = matrix[0];
 		for(int i=0; i<headers.length; i++) {
-			if(headers[i].equals("si%")) {
+			if(headers[i].equals("si%") || headers.equals("si") || headers.equals("SI") || headers.equals("Si")) {
 				headers[i] = "SI%";
 			}
 			content.put(headers[i], null);
@@ -100,8 +102,10 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		}
 		String[] plateFunctionNames = functions.get("Function");
 		Arrays.sort(plateFunctionNames);
+		MathContext mc = new MathContext(3);
 		for(String plateFunctionName : plateFunctionNames) {
-			functions.put("Function Value",addToStringArray(functions.get("Function Value"),String.valueOf(plateResults.getValue(plateFunctionName))));	
+			BigDecimal bd = new BigDecimal(plateResults.getValue(plateFunctionName));
+			functions.put("Function Value",addToStringArray(functions.get("Function Value"),String.valueOf(bd.round(mc))));	
 		}
 	}
 	
@@ -125,19 +129,22 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 			double[] conc = null;
 			double[] si = null;
 			String current = names[0];
+			MathContext mc = new MathContext(3);
 			for(int i=0;i<names.length; i++) {
 				if(names[i].equals(current)) {
 					conc = addToDoubleArray(conc, Double.parseDouble(content.get("Concentration")[i]));
 					si = addToDoubleArray(si, Double.parseDouble(content.get("SI%")[i]));
 				}
 				else {
-					EC50.put(current, calculateEC50(conc, si));
+					BigDecimal bd = new BigDecimal(calculateEC50(conc, si));
+					EC50.put(current, bd.round(mc).doubleValue());
 					current = names[i];
 					conc = addToDoubleArray(null, Double.parseDouble(content.get("Concentration")[i]));
 					si = addToDoubleArray(null, Double.parseDouble(content.get("SI%")[i]));
 				}
 			}
-			EC50.put(current, calculateEC50(conc, si));
+			BigDecimal bd = new BigDecimal(calculateEC50(conc, si));
+			EC50.put(current, bd.round(mc).doubleValue());
 			addEC50ToContent();
 		}
 	}
@@ -195,9 +202,11 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		String[] concAndUnit = content.get("Concentration");
 		String[] conc = null;
 		String[] unit = null;
+		MathContext mc = new MathContext(3);
 		for(int i=0; i<concAndUnit.length; i++) {
 			String[] splitted = concAndUnit[i].split(" ");
-			conc = addToStringArray(conc, splitted[0]);
+			BigDecimal bd = new BigDecimal(splitted[0]);
+			conc = addToStringArray(conc, bd.round(mc).toString());
 			unit = addToStringArray(unit, splitted[1]);
 		}
 		content.put("Concentration", conc);
@@ -222,13 +231,9 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		boolean indexNotChanged = true;
 		String[] indexes = null;
 		int columnLength = (names.length+1)/2;
-		System.out.println(groupOnHeader+"\t"+names.length+"\t"+columnLength);
 		for(int i=0; i<names.length; i++) {
-			//System.out.println(names[i]+" "+currentName);
 			if(indexNotChanged && !names[i].equals(currentName)) {
-				//System.out.println("Break");
 				if(i>=columnLength) {
-					//System.out.println("Index change");
 					index = "2";
 					indexNotChanged = false;
 				}
@@ -317,7 +322,7 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 					fileLine = fileLine.substring(0, fileLine.indexOf(from) ) + to + "</property>";
 				}
 				fileAsString += fileLine+"\n";
-				}
+			}
 			reader.close();
 			
 			out = new FileWriter(file);
