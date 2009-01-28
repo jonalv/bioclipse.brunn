@@ -319,7 +319,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 			String fileLine;
 			while ((fileLine = reader.readLine()) != null){
 				if( fileLine.contains(from) ) {
-					fileLine = fileLine.substring(0, fileLine.indexOf(from) ) + to + "</property>";
+					fileLine = fileLine.substring(0, fileLine.indexOf(from) ) + to + "</expression>";
 				}
 				fileAsString += fileLine+"\n";
 			}
