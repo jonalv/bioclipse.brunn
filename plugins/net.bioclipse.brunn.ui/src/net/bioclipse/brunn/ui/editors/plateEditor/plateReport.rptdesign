@@ -2,18 +2,12 @@
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.17" id="1">
     <property name="createdBy">Eclipse BIRT Designer Version 2.3.1.v20080911 Build &lt;2.3.1.v20080917-1340></property>
     <property name="units">in</property>
-    <list-property name="propertyBindings">
-        <structure>
-            <property name="name">HOME</property>
-            <property name="id">107</property>
-            <expression name="value">folderToChange</expression>
-        </structure>
-    </list-property>
     <property name="iconFile">/templates/sidebyside_chart_listing.gif</property>
     <property name="cheatSheet">org.eclipse.birt.report.designer.ui.cheatsheet.sidebysidechartlisting</property>
     <property name="bidiLayoutOrientation">ltr</property>
     <data-sources>
         <oda-data-source extensionID="org.eclipse.datatools.connectivity.oda.flatfile" name="Data Source" id="107">
+            <property name="HOME">folderToChange</property>
             <property name="DELIMTYPE">COMMA</property>
             <property name="CHARSET">UTF-8</property>
             <property name="INCLCOLUMNNAME">YES</property>
