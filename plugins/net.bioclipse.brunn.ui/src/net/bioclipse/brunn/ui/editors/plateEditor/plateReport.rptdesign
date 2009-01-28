@@ -373,6 +373,7 @@
                 <cell id="119">
                     <list name="list" id="9">
                         <property name="fontSize">small</property>
+                        <property name="pageBreakBefore">auto</property>
                         <property name="dataSet">Data Set</property>
                         <list-property name="boundDataColumns">
                             <structure>
@@ -420,7 +421,7 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                             </structure>
                         </list-property>
                         <property name="repeatHeader">false</property>
-                        <property name="pageBreakInterval">50</property>
+                        <property name="pageBreakInterval">5</property>
                         <list-property name="filter">
                             <structure>
                                 <property name="operator">eq</property>
@@ -552,6 +553,7 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                                     <property name="borderTopWidth">thin</property>
                                     <property name="marginTop">0pt</property>
                                     <property name="pageBreakBefore">auto</property>
+                                    <property name="pageBreakInside">auto</property>
                                     <property name="height">1.135in</property>
                                     <property name="width">100%</property>
                                     <column id="12">
@@ -837,7 +839,7 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
   <SeriesThickness>10.0</SeriesThickness>
   <SampleData>
     <BaseSampleData>
-      <DataSetRepresentation>'A','B','C','D','E'</DataSetRepresentation>
+      <DataSetRepresentation>6,4,12,8,10</DataSetRepresentation>
     </BaseSampleData>
     <OrthogonalSampleData>
       <DataSetRepresentation>6,4,12,8,10</DataSetRepresentation>
@@ -846,12 +848,12 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
   </SampleData>
   <Interactivity/>
   <Axes>
-    <Type>Text</Type>
+    <Type>Linear</Type>
     <Title>
       <Caption>
         <Value>Concentration</Value>
         <Font>
-          <Size>14.0</Size>
+          <Size>7.0</Size>
           <Bold>true</Bold>
           <Alignment>
             <horizontalAlignment>Center</horizontalAlignment>
@@ -890,7 +892,7 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
         <Caption>
           <Value>Survival index %</Value>
           <Font>
-            <Size>14.0</Size>
+            <Size>7.0</Size>
             <Bold>true</Bold>
             <Alignment>
               <horizontalAlignment>Center</horizontalAlignment>
@@ -1713,16 +1715,15 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                                                 <property name="width">150pt</property>
                                             </extended-item>
                                         </cell>
-                                        <cell id="20">
-                                            <property name="fontSize">x-small</property>
+                                        <cell id="327">
                                             <property name="borderLeftColor">#000000</property>
                                             <property name="borderLeftStyle">solid</property>
                                             <property name="borderLeftWidth">thin</property>
                                             <property name="borderTopColor">#000000</property>
                                             <property name="borderTopStyle">solid</property>
                                             <property name="borderTopWidth">thin</property>
-                                            <property name="textAlign">center</property>
                                             <table name="righttable" id="73">
+                                                <property name="fontSize">x-small</property>
                                                 <property name="height">0.9166666666666666in</property>
                                                 <property name="width">100%</property>
                                                 <property name="pageBreakInterval">50</property>
@@ -1801,6 +1802,7 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                 <cell id="120">
                     <list name="list1" id="121">
                         <property name="fontSize">small</property>
+                        <property name="pageBreakBefore">auto</property>
                         <property name="dataSet">Data Set</property>
                         <list-property name="boundDataColumns">
                             <structure>
@@ -1848,7 +1850,7 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                             </structure>
                         </list-property>
                         <property name="repeatHeader">false</property>
-                        <property name="pageBreakInterval">50</property>
+                        <property name="pageBreakInterval">5</property>
                         <list-property name="filter">
                             <structure>
                                 <property name="operator">eq</property>
@@ -1987,6 +1989,7 @@ dataSetRow["Compound Names"]+new String(" has no EC50 value")
                                     <property name="borderTopStyle">solid</property>
                                     <property name="borderTopWidth">thin</property>
                                     <property name="pageBreakBefore">auto</property>
+                                    <property name="pageBreakInside">auto</property>
                                     <property name="height">1.1354166666666667in</property>
                                     <property name="width">100%</property>
                                     <column id="124">

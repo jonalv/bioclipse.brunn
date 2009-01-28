@@ -46,7 +46,7 @@ import org.eclipse.ui.part.EditorPart;
 
 import com.sun.org.apache.xerces.internal.parsers.DOMParser;
 
-public class ReportViewer extends EditorPart implements OutlierChangedListener{
+public class PlateReport extends EditorPart implements OutlierChangedListener{
 	
 	private Replicates replicates;
 	private String[] neededData;
@@ -55,7 +55,7 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 	private Map<String, String[]> functions = new HashMap<String, String[]>();
 	private Map<String, Double> EC50 = new HashMap<String, Double>(); 
 	
-	public ReportViewer (PlateMultiPageEditor plateMultiPageEditor, Replicates replicates) {
+	public PlateReport (PlateMultiPageEditor plateMultiPageEditor, Replicates replicates) {
 		super();
 		this.replicates = replicates;
 		plateMultiPageEditor.addListener(this);
@@ -307,7 +307,7 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 	public void changeFile(String fileName, String from, String to) {
 		URL url = null;
         try {
-            url = FileLocator.toFileURL(ReportViewer.class.getResource(fileName));
+            url = FileLocator.toFileURL(PlateReport.class.getResource(fileName));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -353,7 +353,7 @@ public class ReportViewer extends EditorPart implements OutlierChangedListener{
 		
 		URL url = null;
         try {
-            url = FileLocator.toFileURL( ReportViewer.class.getResource( "plateReport.rptdesign" ) );
+            url = FileLocator.toFileURL( PlateReport.class.getResource( "plateReport.rptdesign" ) );
         } catch ( IOException e ) {
             throw new RuntimeException(e);
         }

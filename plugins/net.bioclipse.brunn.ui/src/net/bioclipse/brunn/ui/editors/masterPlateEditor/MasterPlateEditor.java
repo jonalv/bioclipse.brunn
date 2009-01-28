@@ -69,6 +69,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
 import de.kupzog.ktable.KTable;
+import de.kupzog.ktable.KTableModel;
 import de.kupzog.ktable.SWTX;
 
 public class MasterPlateEditor extends EditorPart {
@@ -221,13 +222,35 @@ public class MasterPlateEditor extends EditorPart {
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(compoundsTable);
-		compoundsTable.setMenu(menu);
+		compoundsTable.setMenu(menu);getSubstanceNames();
 	}
 
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public String[][] getSubstanceNames() {
+		TableItem[] items = compoundsTable.getItems();
+		String[][] substances = new String[items.length][2];
+		int count = 0;
+		for(TableItem item : items) {
+			substances[count][0] = ((SampleMarker) item.getData()).getName();
+			substances[count++][1] = ((SampleMarker) item.getData()).getSample().getName();
+		}
+		return substances;
+	}
+	
+	public String[][] getMasterPlateLayout() {
+		KTableModel tableModel = markersTable.getModel();
+		String[][] results = new String[tableModel.getRowCount()][tableModel.getColumnCount()];
+		for(int i=0; i<tableModel.getRowCount(); i++) {
+			for(int j=0; j<tableModel.getColumnCount(); j++) {
+				results[i][j] = tableModel.getContentAt(j,i).toString();
+			}
+		}
+		return results;
 	}
 	
 	class CompoundsTableContentProvider implements IStructuredContentProvider {
