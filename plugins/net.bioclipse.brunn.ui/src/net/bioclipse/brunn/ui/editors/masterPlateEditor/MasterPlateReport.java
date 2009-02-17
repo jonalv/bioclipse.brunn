@@ -30,25 +30,28 @@ public class MasterPlateReport extends EditorPart{
 	
 	private String[][] substances;
 	private String[][] masterPlateLayout;
-	private String[][] markerLayout;
+	private String[][] combinedMasterPlateAndMarkerLayout;
 	private int size;
 	
-	public MasterPlateReport(MasterPlateMultiPageEditor masterPlateMultiPageEditor) {
+	public MasterPlateReport(MasterPlateEditor masterPlateEditor) {
 		super();
-		substances = masterPlateMultiPageEditor.getMasterPlateEditor.getSubstanceNames();
-		masterPlateLayout = masterPlateMultiPageEditor.getMasterPlateEditor.getMasterPlateLayout();
-		markerLayout = new String[masterPlateLayout.length][masterPlateLayout[0].length];
+		substances = masterPlateEditor.getSubstanceNames();
+		masterPlateLayout = masterPlateEditor.getMasterPlateLayout();
+		combinedMasterPlateAndMarkerLayout = new String[masterPlateLayout.length][masterPlateLayout[0].length*2];
 		size = (masterPlateLayout.length-1)*(masterPlateLayout[0].length-1);
+		System.out.println(size);
 	}
 	
 	private void printDataSetToFile(String[][] Array, String filename) {
-		convertMasterPlateLayout();
 		try {
 			File folder = BioclipseCache.getCacheDir();
 			PrintWriter printWriter = new PrintWriter(new FileWriter(folder+File.separator+filename));
+			if(filename.equals("substances.csv")) {
+				printWriter.write("marker,sample\n");
+			}
 			for(int i=0; i<Array.length; i++) {
 				for(int j=0; j<Array[0].length; j++) {
-					printWriter.write(Array[i][j]+(j<Array.length-1?",":"\n"));
+					printWriter.write(Array[i][j]+(j<Array[0].length-1?",":"\n"));
 				}
 			}
 			printWriter.close();
@@ -61,17 +64,44 @@ public class MasterPlateReport extends EditorPart{
 		}
 	}
 	
-	public void convertMasterPlateLayout() {
-		for(int i=0; i<masterPlateLayout.length; i++) {
+	public void combineMasterPlateAndMarkerLayout() {
+		//This will correct the header row of the dataset so columns are correctly ordered.
+		for(int i=0; i<masterPlateLayout[0].length; i++) {
+			if(masterPlateLayout[0][i].length() == 0) {
+				masterPlateLayout[0][i] = "00";
+			}
+			if(masterPlateLayout[0][i].length() == 1) {
+				masterPlateLayout[0][i] = "0"+masterPlateLayout[0][i];
+			}
+		}
+		//This will fill the header row of dataset with correct numbers.
+		int column = 0;
+		for(int i=0; i<masterPlateLayout[0].length*2; i++) {
+			if(i<masterPlateLayout[0].length) {
+				column = Integer.parseInt(masterPlateLayout[0][i]);
+				combinedMasterPlateAndMarkerLayout[0][i] = masterPlateLayout[0][i];
+			}
+			else {
+				column++;
+				combinedMasterPlateAndMarkerLayout[0][i] = ""+column;
+			}
+		}
+		//This will fill the rest of the dataset.
+		for(int i=1; i<masterPlateLayout.length; i++) {
 			for(int j=0; j<masterPlateLayout[0].length; j++) {
 				String ij = masterPlateLayout[i][j];
 				if(ij.startsWith("M")) {
 					String[] ij2 = ij.split(" ",2);
-					markerLayout[i][j] = ij2[0];
-					masterPlateLayout[i][j] = ij2[1];	
+					combinedMasterPlateAndMarkerLayout[i][masterPlateLayout[0].length+j] = ij2[0];
+					combinedMasterPlateAndMarkerLayout[i][j] = ij2[1];
 				}
-				else if(ij.startsWith("[a-h]")) {
-					markerLayout[i][j] = ij;
+				else if(ij.startsWith("B") || ij.startsWith("C") || ij.startsWith("S")) {
+					combinedMasterPlateAndMarkerLayout[i][j] = masterPlateLayout[i][j];
+					combinedMasterPlateAndMarkerLayout[i][masterPlateLayout[0].length+j] = "";
+				}
+				else {
+					combinedMasterPlateAndMarkerLayout[i][j] = masterPlateLayout[i][j];
+					combinedMasterPlateAndMarkerLayout[i][masterPlateLayout[0].length+j] = masterPlateLayout[i][j];
 				}
 			}
 		}
@@ -112,7 +142,7 @@ public class MasterPlateReport extends EditorPart{
 	public void changeFile(String fileName, String from, String to) {
 		URL url = null;
         try {
-            url = FileLocator.toFileURL(PlateReport.class.getResource(fileName));
+            url = FileLocator.toFileURL(MasterPlateReport.class.getResource(fileName));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -145,16 +175,16 @@ public class MasterPlateReport extends EditorPart{
 
 	@Override
 	public void createPartControl(Composite parent) {
+		combineMasterPlateAndMarkerLayout();
 		printDataSetToFile(substances,"substances.csv");
-		printDataSetToFile(masterPlateLayout,"masterPlateLayout.csv");
-		printDataSetToFile(markerLayout,"markerLayout.csv");
+		printDataSetToFile(combinedMasterPlateAndMarkerLayout,"masterPlateLayout.csv");
 		URL url = null;
         try {
         	if(size == 96) {
-                url = FileLocator.toFileURL( PlateReport.class.getResource( "masterPlateReport96.rptdesign" ) );	
+                url = FileLocator.toFileURL( MasterPlateReport.class.getResource( "masterPlateReport96.rptdesign" ) );	
         	}
         	if(size == 384) {
-                url = FileLocator.toFileURL( PlateReport.class.getResource( "masterPlateReport384.rptdesign" ) );
+                url = FileLocator.toFileURL( MasterPlateReport.class.getResource( "masterPlateReport384.rptdesign" ) );
         	}
         } catch ( IOException e ) {
             throw new RuntimeException(e);

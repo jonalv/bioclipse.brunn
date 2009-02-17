@@ -22,7 +22,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	private PlateEditor plateEditor;
 	private Summary summary;
 	private Replicates replicates;
-	private PlateReport reportViewer;
+	private PlateReport plateReport;
 	private List<OutlierChangedListener> outLierListeners = new ArrayList<OutlierChangedListener>();
 	private Plate toBeSaved;
 	
@@ -55,7 +55,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		plateEditor = new PlateEditor( plateResults, this, toBeSaved             );
 		replicates  = new Replicates(  plateResults, this, toBeSaved             );
 		summary     = new Summary(     plateResults, this, toBeSaved, replicates );
-		reportViewer = new PlateReport(	this, replicates );
+		plateReport = new PlateReport(	this, replicates );
 		
 		try {
 			int index = this.addPage((IEditorPart) plateEditor, getEditorInput());
@@ -83,7 +83,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		}
 		
 		try {
-			int index = this.addPage((IEditorPart) reportViewer, getEditorInput());
+			int index = this.addPage((IEditorPart) plateReport, getEditorInput());
 			setPageText(index, "Report");
 		} 
 		catch (PartInitException e) {

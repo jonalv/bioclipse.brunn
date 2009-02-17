@@ -33,7 +33,7 @@ import net.bioclipse.brunn.ui.dialogs.createMasterPlateFromSDF.CreateMasterPlate
 import net.bioclipse.brunn.ui.dialogs.importResults.ImportResults;
 import net.bioclipse.brunn.ui.editors.cellTypeEditor.CellTypeEditor;
 import net.bioclipse.brunn.ui.editors.compoundEditor.CompoundEditor;
-import net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateEditor;
+import net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateMultiPageEditor;
 import net.bioclipse.brunn.ui.editors.patientSampleEditor.PatientCellEditor;
 import net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor;
 import net.bioclipse.brunn.ui.editors.plateLayoutEditor.PlateLayoutEditor;
@@ -306,7 +306,7 @@ public class View extends ViewPart implements IUserManagerListener {
 						          .getActiveWorkbenchWindow()
 						          .getActivePage()
 						          .openEditor( (MasterPlate)element, 
-						                       MasterPlateEditor.ID, 
+						                       MasterPlateMultiPageEditor.ID, 
 						                       true );
 					} catch (PartInitException e) {
 						// TODO Auto-generated catch block

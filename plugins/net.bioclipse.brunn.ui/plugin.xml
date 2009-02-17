@@ -51,10 +51,10 @@
             name="Plate Type Editor"
             class="net.bioclipse.brunn.ui.editors.plateTypeEditor.PlateTypeEditor" />
         <editor
-            id="net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateEditor"
+            id="net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateMultiPageEditor"
             icon="icons/masterPlate.gif"
             name="Master Plate Editor"
-            class="net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateEditor" />
+            class="net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateMultiPageEditor" />
         <editor
             id="net.bioclipse.brunn.ui.editors.compoundEditor.CompoundEditor"
             icon="icons/compound.gif"
