@@ -8,10 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.util.Map;
 
-import net.bioclipse.brunn.ui.editors.plateEditor.OutlierChangedListener;
-import net.bioclipse.brunn.ui.editors.plateEditor.PlateReport;
 import net.bioclipse.ui.BioclipseCache;
 
 import org.eclipse.birt.report.viewer.utilities.WebViewer;
@@ -28,6 +25,7 @@ import org.eclipse.ui.part.EditorPart;
 
 public class MasterPlateReport extends EditorPart{
 	
+	private String[][] masterPlateName = new String[2][1];
 	private String[][] substances;
 	private String[][] masterPlateLayout;
 	private String[][] combinedMasterPlateAndMarkerLayout;
@@ -35,6 +33,8 @@ public class MasterPlateReport extends EditorPart{
 	
 	public MasterPlateReport(MasterPlateEditor masterPlateEditor) {
 		super();
+		masterPlateName[0][0] = "MasterPlateName";
+		masterPlateName[1][0] = masterPlateEditor.getPartName();
 		substances = masterPlateEditor.getSubstanceNames();
 		masterPlateLayout = masterPlateEditor.getMasterPlateLayout();
 		combinedMasterPlateAndMarkerLayout = new String[masterPlateLayout.length][masterPlateLayout[0].length*2];
@@ -176,6 +176,7 @@ public class MasterPlateReport extends EditorPart{
 	@Override
 	public void createPartControl(Composite parent) {
 		combineMasterPlateAndMarkerLayout();
+		printDataSetToFile(masterPlateName,"masterPlateName.csv");
 		printDataSetToFile(substances,"substances.csv");
 		printDataSetToFile(combinedMasterPlateAndMarkerLayout,"masterPlateLayout.csv");
 		URL url = null;
@@ -191,13 +192,12 @@ public class MasterPlateReport extends EditorPart{
         }
         try {
         	if(size == 96) {
-    			changeFile("masterPlateReport96.rptdesign","folderToChange",BioclipseCache.getCacheDir().getAbsolutePath());	
+    			changeFile("masterPlateReport96.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());	
         	}
         	if(size == 384) {
-    			changeFile("masterPlateReport384.rptdesign","folderToChange",BioclipseCache.getCacheDir().getAbsolutePath());
+    			changeFile("masterPlateReport384.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
         	}
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		Browser browser = new Browser(parent, SWT.NONE);
@@ -207,7 +207,5 @@ public class MasterPlateReport extends EditorPart{
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
-		
 	}
-
 }
