@@ -192,7 +192,6 @@ public class MasterPlateEditor extends EditorPart {
 		tableViewer.addDropSupport(DND.DROP_COPY | DND.DROP_MOVE, transfers, new CompoundDropAdapter(tableViewer));
 		
 		createCompoundsTableMenu();
-System.out.println("compoundstablemenu created");
 	}
 
 	private void createCompoundsTableMenu() {
@@ -241,17 +240,13 @@ System.out.println("compoundstablemenu created");
 	}
 	
 	public String[][] getSubstanceNames() {
-		//System.out.println(Arrays.asList(tableViewer.getTable().getItems()));
 		TableItem[] items = compoundsTable.getItems();
-		//System.out.println(Arrays.asList(items));
 		String[][] substances = new String[items.length][2];
 		int count = 0;
 		boolean found = false;
 		for(TableItem item : items) {
 			substances[count][0] = ((SampleMarker)item.getData()).getName();
 			substances[count][1] = "";
-			//System.out.println(tableViewer.getCellModifier().getValue(item.getData(), "Marker"));
-			//System.out.println(tableViewer.getCellModifier().getValue(item.getData(), "Compound"));
 			for( Well well : toBeSaved.getWells() ) {
 				for( SampleMarker sampleMarker : well.getSampleMarkers() ) {
 					if(sampleMarker.getName().equals( ((SampleMarker)item.getData()).getName()) ) {
@@ -259,13 +254,10 @@ System.out.println("compoundstablemenu created");
 						if( sampleMarker.getSample() == null ) {
 							continue;
 						}
-						//substances[count][0] = sampleMarker.getName();
+						//substances[count][0] = sampleMarker.getName(); //already done in the beginning
 						substances[count][1] = sample.getName();
-						//substances[count][0] = tableViewer.getCellModifier().getValue(sampleMarker,"Marker").toString();
-						//substances[count][1] = tableViewer.getCellModifier().getValue(sampleMarker,"Compound").toString();
-						System.out.println(sampleMarker.getName()+" "+sample.getName());
 						count++;
-						found = true;System.out.println("found "+sampleMarker.getName());
+						found = true;
 						break;
 					}
 				}
@@ -274,19 +266,12 @@ System.out.println("compoundstablemenu created");
 					break;
 				}
 			}
-			/*substances[count][0] = ((SampleMarker) item.getData()).getName();
-			System.out.println((SampleMarker) item.getData());
-			System.out.println(((SampleMarker) item.getData()).getSample());
-			substances[count][1] = ((SampleMarker) item.getData()).getSample().getName();
-			count++;*/
 		}
+		//filters out markers with no attached compound
 		int numCompounds = 0;
-		for(int i=0; i<substances.length; i++) {//String[] substance : substances) {
-			System.out.println(substances[i][0]);
-			System.out.println(substances[i][1]);
+		for(int i=0; i<substances.length; i++) {
 			if(substances[i][1] != "") {
 				numCompounds++;
-				System.out.println("increasing compounds to "+numCompounds);
 			}
 		}
 		String[][] compounds = new String[numCompounds][2]; 

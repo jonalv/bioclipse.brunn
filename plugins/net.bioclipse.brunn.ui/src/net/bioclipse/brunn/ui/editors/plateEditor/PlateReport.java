@@ -176,7 +176,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		}
 	}
 
-	private void printEC50() {
+	private void printIC50() {
 		Iterator<String> substanceIter = IC50.keySet().iterator();
 		while(substanceIter.hasNext()) {
 			String substance = substanceIter.next();
@@ -335,7 +335,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		addPlateName();
 		printMapToFile(content, "values.csv", "Compound Names");
 		printMapToFile(functions, "functions.csv", "Function");
-		printEC50();
+		//printIC50();
 		
 		URL url = null;
         try {
@@ -351,7 +351,6 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		}
 		browser = new Browser(parent, SWT.NONE);
 		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "frameset");
-		//WebViewer.display("/home/jonas/brunnbranchesbirtExample/myJava/myReport.rptdesign", WebViewer.HTML, browser, "frameset");
 	}
 	
 	@Override
@@ -381,11 +380,8 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//Browser browser = new Browser(parent, SWT.NONE);
-		System.out.println("rerunning report");
 		WebViewer.cancel(browser);
 		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "frameset");
-		System.out.println("rerunned report");
 	}
 
 }

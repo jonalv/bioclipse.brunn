@@ -39,7 +39,6 @@ public class MasterPlateReport extends EditorPart{
 		masterPlateLayout = masterPlateEditor.getMasterPlateLayout();
 		combinedMasterPlateAndMarkerLayout = new String[masterPlateLayout.length][masterPlateLayout[0].length*2];
 		size = (masterPlateLayout.length-1)*(masterPlateLayout[0].length-1);
-		System.out.println(size);
 	}
 	
 	private void printDataSetToFile(String[][] Array, String filename) {
