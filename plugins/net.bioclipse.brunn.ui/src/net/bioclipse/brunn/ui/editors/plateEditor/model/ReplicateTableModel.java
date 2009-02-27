@@ -1,5 +1,7 @@
 package net.bioclipse.brunn.ui.editors.plateEditor.model;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -201,9 +203,11 @@ public class ReplicateTableModel extends KTableDefaultModel {
 	private String getConcentrations(DrugSample[] drugSamples) {
 
 		StringBuffer result = new StringBuffer();
+		MathContext mc = new MathContext(3); //number of precision digits for concentrations
 		
 		for( DrugSample drugSample : drugSamples ) {
-			result.append( drugSample.getConcentration() );
+			BigDecimal bd = new BigDecimal( drugSample.getConcentration() );
+			result.append( bd.round(mc).doubleValue() );
 			result.append(" ");
 			result.append( drugSample.getConcUnit() == null ? "?"
 			    		                                    : drugSample

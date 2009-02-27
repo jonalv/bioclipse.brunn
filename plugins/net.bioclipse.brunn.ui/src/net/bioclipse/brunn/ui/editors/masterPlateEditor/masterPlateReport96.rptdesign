@@ -898,8 +898,7 @@
       </design:resultSetColumns>
     </design:resultSetDefinitions>
   </design:ResultSets>
-</model:DesignValues>
-]]></xml-property>
+</model:DesignValues>]]></xml-property>
         </oda-data-set>
     </data-sets>
     <cubes>
@@ -995,11 +994,14 @@
                                 <property name="fontWeight">bold</property>
                                 <property name="paddingBottom">10pt</property>
                                 <property name="textAlign">center</property>
-                                <text-property name="text">Masterplate layout</text-property>
+                                <text-property name="text">Masterplate \"+row["PlateName"]+"\""</text-property>
                             </label>
                             <text-data id="177">
+                                <property name="fontFamily">sans-serif</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="paddingBottom">10pt</property>
                                 <property name="textAlign">center</property>
-                                <expression name="valueExpr">"for plate \""//+row["Plate Name"]+"\""</expression>
+                                <expression name="valueExpr">"Masterplate \""//+row["Plate Name"]+"\""</expression>
                                 <property name="contentType">html</property>
                             </text-data>
                         </cell>
@@ -1198,7 +1200,7 @@
                         </column>
                         <header>
                             <row id="208">
-                                <property name="height">1.7cm</property>
+                                <property name="height">0.7cm</property>
                                 <property name="verticalAlign">middle</property>
                                 <cell id="209">
                                     <property name="borderBottomColor">#000000</property>

@@ -253,6 +253,10 @@ public class MasterPlateEditor extends EditorPart {
 		return results;
 	}
 	
+	public String getMasterPlateName() {
+		return referenceMasterPlate.getName();
+	}
+	
 	class CompoundsTableContentProvider implements IStructuredContentProvider {
 
 		public Object[] getElements(Object inputElement) {

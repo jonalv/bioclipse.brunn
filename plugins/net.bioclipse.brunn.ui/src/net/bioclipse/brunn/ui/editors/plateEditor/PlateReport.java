@@ -358,7 +358,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
             throw new RuntimeException(e);
         }
         try {
-			changeFile("plateReport.rptdesign","folderToChange",BioclipseCache.getCacheDir().getAbsolutePath());
+			changeFile("plateReport.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

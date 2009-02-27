@@ -8,9 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.util.Map;
 
-import net.bioclipse.brunn.ui.editors.plateEditor.OutlierChangedListener;
 import net.bioclipse.brunn.ui.editors.plateEditor.PlateReport;
 import net.bioclipse.ui.BioclipseCache;
 
@@ -28,15 +26,17 @@ import org.eclipse.ui.part.EditorPart;
 
 public class MasterPlateReport extends EditorPart{
 	
+	private MasterPlateEditor masterPlateEditor;
 	private String[][] substances;
 	private String[][] masterPlateLayout;
 	private String[][] markerLayout;
 	private int size;
 	
-	public MasterPlateReport(MasterPlateMultiPageEditor masterPlateMultiPageEditor) {
+	public MasterPlateReport(/*MasterPlateMultiPageEditor masterPlateMultiPageEditor,*/ MasterPlateEditor masterPlateEditor) {
 		super();
-		substances = masterPlateMultiPageEditor.getMasterPlateEditor.getSubstanceNames();
-		masterPlateLayout = masterPlateMultiPageEditor.getMasterPlateEditor.getMasterPlateLayout();
+		this.masterPlateEditor = masterPlateEditor;
+		substances = masterPlateEditor.getSubstanceNames();
+		masterPlateLayout = masterPlateEditor.getMasterPlateLayout();
 		markerLayout = new String[masterPlateLayout.length][masterPlateLayout[0].length];
 		size = (masterPlateLayout.length-1)*(masterPlateLayout[0].length-1);
 	}
@@ -46,9 +46,12 @@ public class MasterPlateReport extends EditorPart{
 		try {
 			File folder = BioclipseCache.getCacheDir();
 			PrintWriter printWriter = new PrintWriter(new FileWriter(folder+File.separator+filename));
+			for(int i=0; i<Array[0].length; i++) {
+				printWriter.write(Array[0][i]+(i<Array.length-1?",":"Plate Name\n"));
+			}
 			for(int i=0; i<Array.length; i++) {
 				for(int j=0; j<Array[0].length; j++) {
-					printWriter.write(Array[i][j]+(j<Array.length-1?",":"\n"));
+					printWriter.write(Array[i][j]+(j<Array.length-1?",":masterPlateEditor.getMasterPlateName()+"\n"));
 				}
 			}
 			printWriter.close();
@@ -161,10 +164,10 @@ public class MasterPlateReport extends EditorPart{
         }
         try {
         	if(size == 96) {
-    			changeFile("masterPlateReport96.rptdesign","folderToChange",BioclipseCache.getCacheDir().getAbsolutePath());	
+    			changeFile("masterPlateReport96.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());	
         	}
         	if(size == 384) {
-    			changeFile("masterPlateReport384.rptdesign","folderToChange",BioclipseCache.getCacheDir().getAbsolutePath());
+    			changeFile("masterPlateReport384.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
         	}
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
