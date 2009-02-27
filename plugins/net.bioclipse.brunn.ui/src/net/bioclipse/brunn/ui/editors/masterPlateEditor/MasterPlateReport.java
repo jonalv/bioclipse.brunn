@@ -70,6 +70,7 @@ public class MasterPlateReport extends EditorPart{
 		}
 	}
 	
+	//Combines the layouts into one dataset to be used in the same table in the report
 	public void combineMasterPlateAndMarkerLayout() {
 		//This will correct the header row of the dataset so columns are correctly ordered.
 		for(int i=0; i<masterPlateLayout[0].length; i++) {
@@ -145,6 +146,7 @@ public class MasterPlateReport extends EditorPart{
 		return false;
 	}
 	
+	//returns the full path of the report file
 	public String getReportFile() {
 		URL url = null;
         try {
@@ -170,6 +172,8 @@ public class MasterPlateReport extends EditorPart{
 		return url.getFile();
 	}
 	
+	//changes report file location to full path required by BIRT
+	//could be done in BIRT, but does not work on windows then
 	public void changeFileLocation(String fileName, String from, String to) {
 		URL url = null;
         try {
@@ -215,6 +219,7 @@ public class MasterPlateReport extends EditorPart{
 		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 	
+	//reads the data and reloads the report when report tab is activated
 	public void onPageChange() {
 		readData();
 		combineMasterPlateAndMarkerLayout();

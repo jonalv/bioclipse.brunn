@@ -34,7 +34,7 @@ public class Well {
 		this.cellType = cellType;
 		this.cellName = cellName;
 		this.wellFunctions = wellFunctions;
-		this.substances= substances;
+		this.substances = substances;
 	}
 	
 	public void addSubstances(Set<Substance> substances) {

@@ -48,6 +48,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		neededData = new String[]{"Compound Names","SI%","IC50","Concentration","Unit","Column Index","Plate Name"};
 	}
 	
+	//adds default values for uninitialized variables in dataset
 	private void autoCompleteContent() {
 		for(String header : neededData) {
 			if(content.get(header) == null) {
@@ -58,6 +59,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		}
 	}
 	
+	//reads dataset from replicate table
 	private void fillContent() {
 		String[][] matrix = replicates.getReplicatesContent();
 		contentLength = matrix.length-1;
@@ -77,6 +79,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		storeIC50();
 	}
 	
+	//reads in all defined functions for the plate
 	private void fillFunctions() {
 		PlateResults plateResults = new PlateResults(replicates.getPlate(),null);
 		Iterator<PlateFunction> plateFunctionIterator = replicates.getPlate().getPlateFunctions().iterator();
@@ -175,7 +178,8 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 			}
 		}
 	}
-
+	
+	//just for printing to promt
 	private void printIC50() {
 		Iterator<String> substanceIter = IC50.keySet().iterator();
 		while(substanceIter.hasNext()) {
@@ -209,6 +213,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		content.put("Plate Name",names);
 	}
 	
+	//divides substances into two columns, and adds trailing newline in function list if needed
 	private void addReportColumnIndex(Map<String,String[]> map, String groupOnHeader) {
 		String[] names = map.get(groupOnHeader);
 		Arrays.sort(names);
@@ -290,6 +295,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		return false;
 	}
 	
+	//returns the full path of the report file
 	public String getReportFile() {
 		URL url = null;
         try {
@@ -298,15 +304,17 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
             throw new RuntimeException(e);
         }
         try {
-			changeFile("plateReport.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
+			changeFileLocation("plateReport.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return url.getFile();
 	}
-	
-	public void changeFile(String fileName, String from, String to) {
+
+	//changes report file location to full path required by BIRT
+	//could be done in BIRT, but does not work on windows then
+	public void changeFileLocation(String fileName, String from, String to) {
 		URL url = null;
         try {
             url = FileLocator.toFileURL(PlateReport.class.getResource(fileName));
