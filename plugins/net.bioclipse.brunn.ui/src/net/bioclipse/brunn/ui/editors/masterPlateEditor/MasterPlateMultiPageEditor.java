@@ -56,6 +56,13 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	protected void pageChange(int newPageIndex){
+		if(newPageIndex == 1) {
+			masterPlateReport.onPageChange();
+		}
+	}
 
 	@Override
 	public boolean isSaveAsAllowed() {

@@ -25,6 +25,8 @@ import org.eclipse.ui.part.EditorPart;
 
 public class MasterPlateReport extends EditorPart{
 	
+	private MasterPlateEditor masterPlateEditor;
+	private Browser browser;
 	private String[][] masterPlateName = new String[2][1];
 	private String[][] substances;
 	private String[][] masterPlateLayout;
@@ -33,6 +35,11 @@ public class MasterPlateReport extends EditorPart{
 	
 	public MasterPlateReport(MasterPlateEditor masterPlateEditor) {
 		super();
+		this.masterPlateEditor = masterPlateEditor;
+		readData();
+	}
+	
+	private void readData() {
 		masterPlateName[0][0] = "MasterPlateName";
 		masterPlateName[1][0] = masterPlateEditor.getPartName();
 		substances = masterPlateEditor.getSubstanceNames();
@@ -138,7 +145,32 @@ public class MasterPlateReport extends EditorPart{
 		return false;
 	}
 	
-	public void changeFile(String fileName, String from, String to) {
+	public String getReportFile() {
+		URL url = null;
+        try {
+        	if(size == 96) {
+                url = FileLocator.toFileURL( MasterPlateReport.class.getResource( "masterPlateReport96.rptdesign" ) );	
+        	}
+        	if(size == 384) {
+                url = FileLocator.toFileURL( MasterPlateReport.class.getResource( "masterPlateReport384.rptdesign" ) );
+        	}
+        } catch ( IOException e ) {
+            throw new RuntimeException(e);
+        }
+        try {
+        	if(size == 96) {
+    			changeFileLocation("masterPlateReport96.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());	
+        	}
+        	if(size == 384) {
+    			changeFileLocation("masterPlateReport384.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
+        	}
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		return url.getFile();
+	}
+	
+	public void changeFileLocation(String fileName, String from, String to) {
 		URL url = null;
         try {
             url = FileLocator.toFileURL(MasterPlateReport.class.getResource(fileName));
@@ -178,29 +210,21 @@ public class MasterPlateReport extends EditorPart{
 		printDataSetToFile(masterPlateName,"masterPlateName.csv");
 		printDataSetToFile(substances,"substances.csv");
 		printDataSetToFile(combinedMasterPlateAndMarkerLayout,"masterPlateLayout.csv");
-		URL url = null;
-        try {
-        	if(size == 96) {
-                url = FileLocator.toFileURL( MasterPlateReport.class.getResource( "masterPlateReport96.rptdesign" ) );	
-        	}
-        	if(size == 384) {
-                url = FileLocator.toFileURL( MasterPlateReport.class.getResource( "masterPlateReport384.rptdesign" ) );
-        	}
-        } catch ( IOException e ) {
-            throw new RuntimeException(e);
-        }
-        try {
-        	if(size == 96) {
-    			changeFile("masterPlateReport96.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());	
-        	}
-        	if(size == 384) {
-    			changeFile("masterPlateReport384.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
-        	}
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-		Browser browser = new Browser(parent, SWT.NONE);
-		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "frameset");
+       
+		browser = new Browser(parent, SWT.NONE);
+		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
+	}
+	
+	public void onPageChange() {
+		readData();
+		combineMasterPlateAndMarkerLayout();
+		printDataSetToFile(masterPlateName,"masterPlateName.csv");
+		printDataSetToFile(substances,"substances.csv");
+		printDataSetToFile(combinedMasterPlateAndMarkerLayout,"masterPlateLayout.csv");
+		
+		//Browser browser = new Browser(parent, SWT.NONE);
+		WebViewer.cancel(browser);
+		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 
 	@Override

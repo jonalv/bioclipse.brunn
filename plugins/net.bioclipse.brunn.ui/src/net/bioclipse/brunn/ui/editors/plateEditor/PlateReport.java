@@ -290,6 +290,22 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		return false;
 	}
 	
+	public String getReportFile() {
+		URL url = null;
+        try {
+            url = FileLocator.toFileURL( PlateReport.class.getResource( "plateReport.rptdesign" ) );
+        } catch ( IOException e ) {
+            throw new RuntimeException(e);
+        }
+        try {
+			changeFile("plateReport.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return url.getFile();
+	}
+	
 	public void changeFile(String fileName, String from, String to) {
 		URL url = null;
         try {
@@ -337,20 +353,8 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		printMapToFile(functions, "functions.csv", "Function");
 		//printIC50();
 		
-		URL url = null;
-        try {
-            url = FileLocator.toFileURL( PlateReport.class.getResource( "plateReport.rptdesign" ) );
-        } catch ( IOException e ) {
-            throw new RuntimeException(e);
-        }
-        try {
-			changeFile("plateReport.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		browser = new Browser(parent, SWT.NONE);
-		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "frameset");
+		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 	
 	@Override
@@ -368,20 +372,8 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		printMapToFile(content, "values.csv", "Compound Names");
 		printMapToFile(functions, "functions.csv", "Function");
 
-		URL url = null;
-        try {
-            url = FileLocator.toFileURL( PlateReport.class.getResource( "plateReport.rptdesign" ) );
-        } catch ( IOException e ) {
-            throw new RuntimeException(e);
-        }
-        try {
-			changeFile("plateReport.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		WebViewer.cancel(browser);
-		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "frameset");
+		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 
 }
