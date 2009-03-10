@@ -210,13 +210,13 @@ public class MasterPlateReport extends EditorPart{
 
 	@Override
 	public void createPartControl(Composite parent) {
-		combineMasterPlateAndMarkerLayout();
+		/*combineMasterPlateAndMarkerLayout();
 		printDataSetToFile(masterPlateName,"masterPlateName.csv");
 		printDataSetToFile(substances,"substances.csv");
 		printDataSetToFile(combinedMasterPlateAndMarkerLayout,"masterPlateLayout.csv");
-       
+       */
 		browser = new Browser(parent, SWT.NONE);
-		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
+		//WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 	
 	//reads the data and reloads the report when report tab is activated

@@ -31,7 +31,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
-public class PlateReport extends EditorPart implements OutlierChangedListener{
+public class PlateReport extends EditorPart{
 	
 	private Browser browser;
 	private Replicates replicates;
@@ -41,10 +41,9 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 	private Map<String, String[]> functions = new HashMap<String, String[]>();
 	private Map<String, Double> IC50 = new HashMap<String, Double>(); 
 	
-	public PlateReport (PlateMultiPageEditor plateMultiPageEditor, Replicates replicates) {
+	public PlateReport (Replicates replicates) {
 		super();
 		this.replicates = replicates;
-		plateMultiPageEditor.addListener(this);
 		neededData = new String[]{"Compound Names","SI%","IC50","Concentration","Unit","Column Index","Plate Name"};
 	}
 	
@@ -351,6 +350,19 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 	@Override
 	public void createPartControl(Composite parent) {
 		// TODO Auto-generated method stub
+		
+		browser = new Browser(parent, SWT.NONE);
+		//WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
+	}
+	
+	@Override
+	public void setFocus() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	//reads the data and reloads the report when report tab is activated
+	public void onPageChange() {
 		fillContent();
 		fillFunctions();
 		autoCompleteContent();
@@ -359,29 +371,13 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		addPlateName();
 		printMapToFile(content, "values.csv", "Compound Names");
 		printMapToFile(functions, "functions.csv", "Function");
-		//printIC50();
-		
-		browser = new Browser(parent, SWT.NONE);
+
+		WebViewer.cancel(browser);
 		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
-	}
-	
-	@Override
-	public void setFocus() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void onOutLierChange() {
 		// TODO Auto-generated method stub
-		fillContent();
-		fillFunctions();
-		addReportColumnIndex(content, "Compound Names");
-		addReportColumnIndex(functions, "Function");
-		printMapToFile(content, "values.csv", "Compound Names");
-		printMapToFile(functions, "functions.csv", "Function");
-
-		WebViewer.cancel(browser);
-		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 
 }

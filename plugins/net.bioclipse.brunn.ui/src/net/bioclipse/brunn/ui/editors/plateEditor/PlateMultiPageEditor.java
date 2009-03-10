@@ -55,7 +55,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		plateEditor = new PlateEditor( plateResults, this, toBeSaved             );
 		replicates  = new Replicates(  plateResults, this, toBeSaved             );
 		summary     = new Summary(     plateResults, this, toBeSaved, replicates );
-		plateReport = new PlateReport(	this, replicates );
+		plateReport = new PlateReport( replicates );
 		
 		try {
 			int index = this.addPage((IEditorPart) plateEditor, getEditorInput());
@@ -101,6 +101,13 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	public void doSaveAs() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	protected void pageChange(int newPageIndex){
+		if(newPageIndex == 3) {
+			plateReport.onPageChange();
+		}
 	}
 
 	@Override
