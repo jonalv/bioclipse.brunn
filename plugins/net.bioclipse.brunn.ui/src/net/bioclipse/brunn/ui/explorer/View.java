@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import net.bioclipse.actions.LoginAction;
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.audit.IAuditManager;
 import net.bioclipse.brunn.business.folder.IFolderManager;
@@ -61,7 +60,12 @@ import net.bioclipse.brunn.ui.explorer.model.nonFolders.PlateType;
 import net.bioclipse.brunn.ui.transferTypes.BrunnTransfer;
 import net.bioclipse.usermanager.IUserManagerListener;
 import net.bioclipse.usermanager.UserManagerEvent;
+import net.bioclipse.usermanager.handlers.LoginHandler;
 
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.NotEnabledException;
+import org.eclipse.core.commands.NotHandledException;
+import org.eclipse.core.commands.common.NotDefinedException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -91,6 +95,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.PluginTransfer;
 import org.eclipse.ui.part.ViewPart;
 
@@ -819,7 +824,23 @@ public class View extends ViewPart implements IUserManagerListener {
 		    
 		    @Override
 		    public void run() {
-		        new LoginAction().run( null );
+		    	try {
+					((IHandlerService) getSite()
+					.getService(IHandlerService.class))
+					.executeCommand("net.bioclipse.usermanager.commands.login", null);
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotDefinedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotEnabledException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotHandledException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		    }
 		    
         };
