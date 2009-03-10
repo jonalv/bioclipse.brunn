@@ -426,7 +426,7 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                             </structure>
                         </list-property>
                         <property name="repeatHeader">false</property>
-                        <property name="pageBreakInterval">5</property>
+                        <property name="pageBreakInterval">1</property>
                         <list-property name="filter">
                             <structure>
                                 <property name="operator">eq</property>
@@ -1860,7 +1860,7 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                             </structure>
                         </list-property>
                         <property name="repeatHeader">false</property>
-                        <property name="pageBreakInterval">5</property>
+                        <property name="pageBreakInterval">1</property>
                         <list-property name="filter">
                             <structure>
                                 <property name="operator">eq</property>

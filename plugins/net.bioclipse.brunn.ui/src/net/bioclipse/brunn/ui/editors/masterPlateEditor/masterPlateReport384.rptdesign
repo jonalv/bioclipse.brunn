@@ -1493,19 +1493,13 @@
             <property name="rightMargin">0.5in</property>
             <page-header>
                 <grid id="36">
+                    <property name="height">0.5in</property>
                     <property name="width">100%</property>
                     <column id="37"/>
                     <row id="38">
                         <cell id="39">
-                            <label id="35">
-                                <property name="fontFamily">sans-serif</property>
-                                <property name="fontSize">medium</property>
-                                <property name="fontWeight">bold</property>
-                                <property name="paddingBottom">10pt</property>
-                                <property name="textAlign">center</property>
-                                <text-property name="text">Masterplate layout</text-property>
-                            </label>
                             <text-data id="177">
+                                <property name="fontWeight">bold</property>
                                 <property name="textAlign">center</property>
                                 <property name="dataSet">masterPlateName</property>
                                 <list-property name="boundDataColumns">
@@ -1515,7 +1509,7 @@
                                         <property name="dataType">string</property>
                                     </structure>
                                 </list-property>
-                                <expression name="valueExpr">"for plate \""+row["MasterPlateName"]+"\""</expression>
+                                <expression name="valueExpr">"Masterplate \""+row["MasterPlateName"]+"\""</expression>
                                 <property name="contentType">html</property>
                             </text-data>
                         </cell>
@@ -1558,26 +1552,17 @@
                                 <property name="dataType">string</property>
                             </structure>
                         </list-property>
-                        <column id="197"/>
                         <column id="198"/>
                         <column id="199"/>
                         <header>
                             <row id="185">
-                                <cell id="186">
+                                <cell id="187">
                                     <property name="borderBottomColor">#000000</property>
                                     <property name="borderBottomStyle">solid</property>
                                     <property name="borderBottomWidth">thin</property>
                                     <property name="borderLeftColor">#000000</property>
                                     <property name="borderLeftStyle">solid</property>
-                                    <property name="borderLeftWidth">thin</property>
-                                    <property name="borderTopColor">#000000</property>
-                                    <property name="borderTopStyle">solid</property>
-                                    <property name="borderTopWidth">thin</property>
-                                </cell>
-                                <cell id="187">
-                                    <property name="borderBottomColor">#000000</property>
-                                    <property name="borderBottomStyle">solid</property>
-                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftWidth">medium</property>
                                     <property name="borderTopColor">#000000</property>
                                     <property name="borderTopStyle">solid</property>
                                     <property name="borderTopWidth">thin</property>
@@ -1606,12 +1591,10 @@
                         </header>
                         <detail>
                             <row id="189">
-                                <cell id="190">
+                                <cell id="191">
                                     <property name="borderLeftColor">#000000</property>
                                     <property name="borderLeftStyle">solid</property>
-                                    <property name="borderLeftWidth">thin</property>
-                                </cell>
-                                <cell id="191">
+                                    <property name="borderLeftWidth">medium</property>
                                     <data id="204">
                                         <property name="resultSetColumn">marker</property>
                                     </data>
@@ -1631,18 +1614,13 @@
                         </detail>
                         <footer>
                             <row id="193">
-                                <cell id="194">
+                                <cell id="195">
                                     <property name="borderBottomColor">#000000</property>
                                     <property name="borderBottomStyle">solid</property>
                                     <property name="borderBottomWidth">thin</property>
                                     <property name="borderLeftColor">#000000</property>
                                     <property name="borderLeftStyle">solid</property>
-                                    <property name="borderLeftWidth">thin</property>
-                                </cell>
-                                <cell id="195">
-                                    <property name="borderBottomColor">#000000</property>
-                                    <property name="borderBottomStyle">solid</property>
-                                    <property name="borderBottomWidth">thin</property>
+                                    <property name="borderLeftWidth">medium</property>
                                 </cell>
                                 <cell id="196">
                                     <property name="borderBottomColor">#000000</property>
@@ -1919,6 +1897,7 @@
                             </structure>
                         </list-property>
                         <column id="278">
+                            <property name="width">0in</property>
                             <property name="fontWeight">bold</property>
                         </column>
                         <column id="279">
