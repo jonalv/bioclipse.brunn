@@ -92,8 +92,17 @@ public class PlateReport extends EditorPart{
 		Arrays.sort(plateFunctionNames);
 		MathContext mc = new MathContext(3);
 		for(String plateFunctionName : plateFunctionNames) {
-			BigDecimal bd = new BigDecimal(plateResults.getValue(plateFunctionName));
-			functions.put("Function Value",addToStringArray(functions.get("Function Value"),String.valueOf(bd.round(mc))));	
+			double value = plateResults.getValue(plateFunctionName);
+			String result;
+			if ( Double.isInfinite(value) || Double.isNaN(value) ) {
+				result = String.valueOf(Double.MIN_VALUE);
+			}
+			else {
+				BigDecimal bd = new BigDecimal(value);
+				result = String.valueOf(bd.round(mc));
+			}
+			
+			functions.put("Function Value",addToStringArray(functions.get("Function Value"), result));	
 		}
 	}
 	
@@ -352,12 +361,13 @@ public class PlateReport extends EditorPart{
 		// TODO Auto-generated method stub
 		
 		browser = new Browser(parent, SWT.NONE);
+		WebViewer.startup(browser);
 		//WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 	
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
+			// TODO Auto-generated method stub
 		
 	}
 	
@@ -375,9 +385,4 @@ public class PlateReport extends EditorPart{
 		WebViewer.cancel(browser);
 		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
-
-	public void onOutLierChange() {
-		// TODO Auto-generated method stub
-	}
-
 }

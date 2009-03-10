@@ -992,7 +992,7 @@
                             </structure>
                         </list-property>
                         <column id="278">
-                            <property name="width">0in</property>
+                            <property name="width">0.1in</property>
                             <property name="fontWeight">bold</property>
                         </column>
                         <column id="279">
