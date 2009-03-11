@@ -19,13 +19,16 @@ import net.bioclipse.brunn.pojos.DrugOrigin;
 import net.bioclipse.brunn.pojos.DrugSample;
 import net.bioclipse.brunn.pojos.ILISObject;
 import net.bioclipse.brunn.pojos.MasterPlate;
+import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.pojos.SampleContainer;
 import net.bioclipse.brunn.pojos.SampleMarker;
 import net.bioclipse.brunn.pojos.Well;
+import net.bioclipse.brunn.results.PlateResults;
 import net.bioclipse.brunn.ui.Activator;
 import net.bioclipse.brunn.ui.dialogs.AddDrugToMasterPlate;
 import net.bioclipse.brunn.ui.transferTypes.BrunnTransfer;
 import net.bioclipse.brunn.ui.editors.masterPlateEditor.model.MarkersModel;
+import net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor;
 import net.bioclipse.brunn.ui.editors.plateEditor.model.MarkersTableRow;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -90,6 +93,11 @@ public class MasterPlateEditor extends EditorPart {
 
 	private TableViewer tableViewer;
 	
+	public MasterPlateEditor(MasterPlate toBeSaved) {
+		super();
+		this.toBeSaved = toBeSaved;
+	}
+	
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
@@ -116,12 +124,11 @@ public class MasterPlateEditor extends EditorPart {
 		masterPlate = (net.bioclipse.brunn.ui.explorer.model.nonFolders.MasterPlate)input;
 		setPartName(masterPlate.getName());
 		
-		MasterPlate plate = ((MasterPlate) ((net.bioclipse.brunn.ui.explorer.model.nonFolders.MasterPlate) input)
+		MasterPlate masterPlate = ((MasterPlate) ((net.bioclipse.brunn.ui.explorer.model.nonFolders.MasterPlate) input)
 				            .getPOJO()); 
 		toBeSaved = ((IPlateManager) Springcontact.getBean("plateManager"))
-		            .getMasterPlate( plate.getId() );
+		            .getMasterPlate( masterPlate.getId() );
 		referenceMasterPlate = toBeSaved.deepCopy();
-		masterPlate.getParent().fireUpdate();
 	}
 
 	@Override
@@ -222,7 +229,8 @@ public class MasterPlateEditor extends EditorPart {
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(compoundsTable);
-		compoundsTable.setMenu(menu);getSubstanceNames();
+		compoundsTable.setMenu(menu);
+		//getSubstanceNames();
 	}
 
 	@Override
@@ -235,11 +243,46 @@ public class MasterPlateEditor extends EditorPart {
 		TableItem[] items = compoundsTable.getItems();
 		String[][] substances = new String[items.length][2];
 		int count = 0;
+		boolean found = false;
 		for(TableItem item : items) {
-			substances[count][0] = ((SampleMarker) item.getData()).getName();
-			substances[count++][1] = ((SampleMarker) item.getData()).getSample().getName();
+			substances[count][0] = ((SampleMarker)item.getData()).getName();
+			substances[count][1] = "";
+			for( Well well : toBeSaved.getWells() ) {
+				for( SampleMarker sampleMarker : well.getSampleMarkers() ) {
+					if(sampleMarker.getName().equals( ((SampleMarker)item.getData()).getName()) ) {
+						AbstractSample sample = sampleMarker.getSample();
+						if( sampleMarker.getSample() == null ) {
+							continue;
+						}
+						//substances[count][0] = sampleMarker.getName(); //already done in the beginning
+						substances[count][1] = sample.getName();
+						count++;
+						found = true;
+						break;
+					}
+				}
+				if(found) {
+					found = false;
+					break;
+				}
+			}
 		}
-		return substances;
+		//filters out markers with no attached compound
+		int numCompounds = 0;
+		for(int i=0; i<substances.length; i++) {
+			if(substances[i][1] != "") {
+				numCompounds++;
+			}
+		}
+		String[][] compounds = new String[numCompounds][2]; 
+		for(int i=0, j=0; i<substances.length; i++) {
+			if(substances[i][1] != "") {
+				compounds[j][0] = substances[i][0];
+				compounds[j][1] = substances[i][1];
+				j++;
+			}
+		}
+		return compounds;
 	}
 	
 	public String[][] getMasterPlateLayout() {

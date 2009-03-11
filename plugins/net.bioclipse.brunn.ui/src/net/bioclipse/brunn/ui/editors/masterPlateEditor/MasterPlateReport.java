@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 
-import net.bioclipse.brunn.ui.editors.plateEditor.PlateReport;
 import net.bioclipse.ui.BioclipseCache;
 
 import org.eclipse.birt.report.viewer.utilities.WebViewer;
@@ -27,31 +26,38 @@ import org.eclipse.ui.part.EditorPart;
 public class MasterPlateReport extends EditorPart{
 	
 	private MasterPlateEditor masterPlateEditor;
+	private Browser browser;
+	private String[][] masterPlateName = new String[2][1];
 	private String[][] substances;
 	private String[][] masterPlateLayout;
-	private String[][] markerLayout;
+	private String[][] combinedMasterPlateAndMarkerLayout;
 	private int size;
 	
-	public MasterPlateReport(/*MasterPlateMultiPageEditor masterPlateMultiPageEditor,*/ MasterPlateEditor masterPlateEditor) {
+	public MasterPlateReport(MasterPlateEditor masterPlateEditor) {
 		super();
 		this.masterPlateEditor = masterPlateEditor;
+		readData();
+	}
+	
+	private void readData() {
+		masterPlateName[0][0] = "MasterPlateName";
+		masterPlateName[1][0] = masterPlateEditor.getPartName();
 		substances = masterPlateEditor.getSubstanceNames();
 		masterPlateLayout = masterPlateEditor.getMasterPlateLayout();
-		markerLayout = new String[masterPlateLayout.length][masterPlateLayout[0].length];
+		combinedMasterPlateAndMarkerLayout = new String[masterPlateLayout.length][masterPlateLayout[0].length*2];
 		size = (masterPlateLayout.length-1)*(masterPlateLayout[0].length-1);
 	}
 	
 	private void printDataSetToFile(String[][] Array, String filename) {
-		convertMasterPlateLayout();
 		try {
 			File folder = BioclipseCache.getCacheDir();
 			PrintWriter printWriter = new PrintWriter(new FileWriter(folder+File.separator+filename));
-			for(int i=0; i<Array[0].length; i++) {
-				printWriter.write(Array[0][i]+(i<Array.length-1?",":"Plate Name\n"));
+			if(filename.equals("substances.csv")) {
+				printWriter.write("marker,sample\n");
 			}
 			for(int i=0; i<Array.length; i++) {
 				for(int j=0; j<Array[0].length; j++) {
-					printWriter.write(Array[i][j]+(j<Array.length-1?",":masterPlateEditor.getMasterPlateName()+"\n"));
+					printWriter.write(Array[i][j]+(j<Array[0].length-1?",":"\n"));
 				}
 			}
 			printWriter.close();
@@ -64,17 +70,45 @@ public class MasterPlateReport extends EditorPart{
 		}
 	}
 	
-	public void convertMasterPlateLayout() {
-		for(int i=0; i<masterPlateLayout.length; i++) {
+	//Combines the layouts into one dataset to be used in the same table in the report
+	public void combineMasterPlateAndMarkerLayout() {
+		//This will correct the header row of the dataset so columns are correctly ordered.
+		for(int i=0; i<masterPlateLayout[0].length; i++) {
+			if(masterPlateLayout[0][i].length() == 0) {
+				masterPlateLayout[0][i] = "00";
+			}
+			if(masterPlateLayout[0][i].length() == 1) {
+				masterPlateLayout[0][i] = "0"+masterPlateLayout[0][i];
+			}
+		}
+		//This will fill the header row of dataset with correct numbers.
+		int column = 0;
+		for(int i=0; i<masterPlateLayout[0].length*2; i++) {
+			if(i<masterPlateLayout[0].length) {
+				column = Integer.parseInt(masterPlateLayout[0][i]);
+				combinedMasterPlateAndMarkerLayout[0][i] = masterPlateLayout[0][i];
+			}
+			else {
+				column++;
+				combinedMasterPlateAndMarkerLayout[0][i] = ""+column;
+			}
+		}
+		//This will fill the rest of the dataset.
+		for(int i=1; i<masterPlateLayout.length; i++) {
 			for(int j=0; j<masterPlateLayout[0].length; j++) {
 				String ij = masterPlateLayout[i][j];
 				if(ij.startsWith("M")) {
 					String[] ij2 = ij.split(" ",2);
-					markerLayout[i][j] = ij2[0];
-					masterPlateLayout[i][j] = ij2[1];	
+					combinedMasterPlateAndMarkerLayout[i][masterPlateLayout[0].length+j] = ij2[0];
+					combinedMasterPlateAndMarkerLayout[i][j] = ij2[1];
 				}
-				else if(ij.startsWith("[a-h]")) {
-					markerLayout[i][j] = ij;
+				else if(ij.startsWith("B") || ij.startsWith("C") || ij.startsWith("S")) {
+					combinedMasterPlateAndMarkerLayout[i][j] = masterPlateLayout[i][j];
+					combinedMasterPlateAndMarkerLayout[i][masterPlateLayout[0].length+j] = "";
+				}
+				else {
+					combinedMasterPlateAndMarkerLayout[i][j] = masterPlateLayout[i][j];
+					combinedMasterPlateAndMarkerLayout[i][masterPlateLayout[0].length+j] = masterPlateLayout[i][j];
 				}
 			}
 		}
@@ -112,10 +146,38 @@ public class MasterPlateReport extends EditorPart{
 		return false;
 	}
 	
-	public void changeFile(String fileName, String from, String to) {
+	//returns the full path of the report file
+	public String getReportFile() {
 		URL url = null;
         try {
-            url = FileLocator.toFileURL(PlateReport.class.getResource(fileName));
+        	if(size == 96) {
+                url = FileLocator.toFileURL( MasterPlateReport.class.getResource( "masterPlateReport96.rptdesign" ) );	
+        	}
+        	if(size == 384) {
+                url = FileLocator.toFileURL( MasterPlateReport.class.getResource( "masterPlateReport384.rptdesign" ) );
+        	}
+        } catch ( IOException e ) {
+            throw new RuntimeException(e);
+        }
+        try {
+        	if(size == 96) {
+    			changeFileLocation("masterPlateReport96.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());	
+        	}
+        	if(size == 384) {
+    			changeFileLocation("masterPlateReport384.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
+        	}
+		} catch (CoreException e) {
+			e.printStackTrace();
+		}
+		return url.getFile();
+	}
+	
+	//changes report file location to full path required by BIRT
+	//could be done in BIRT, but does not work on windows then
+	public void changeFileLocation(String fileName, String from, String to) {
+		URL url = null;
+        try {
+            url = FileLocator.toFileURL(MasterPlateReport.class.getResource(fileName));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -148,39 +210,30 @@ public class MasterPlateReport extends EditorPart{
 
 	@Override
 	public void createPartControl(Composite parent) {
+		/*combineMasterPlateAndMarkerLayout();
+		printDataSetToFile(masterPlateName,"masterPlateName.csv");
 		printDataSetToFile(substances,"substances.csv");
-		printDataSetToFile(masterPlateLayout,"masterPlateLayout.csv");
-		printDataSetToFile(markerLayout,"markerLayout.csv");
-		URL url = null;
-        try {
-        	if(size == 96) {
-                url = FileLocator.toFileURL( PlateReport.class.getResource( "masterPlateReport96.rptdesign" ) );	
-        	}
-        	if(size == 384) {
-                url = FileLocator.toFileURL( PlateReport.class.getResource( "masterPlateReport384.rptdesign" ) );
-        	}
-        } catch ( IOException e ) {
-            throw new RuntimeException(e);
-        }
-        try {
-        	if(size == 96) {
-    			changeFile("masterPlateReport96.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());	
-        	}
-        	if(size == 384) {
-    			changeFile("masterPlateReport384.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
-        	}
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Browser browser = new Browser(parent, SWT.NONE);
-		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "frameset");
+		printDataSetToFile(combinedMasterPlateAndMarkerLayout,"masterPlateLayout.csv");
+       */
+		browser = new Browser(parent, SWT.NONE);
+		//WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
+	}
+	
+	//reads the data and reloads the report when report tab is activated
+	public void onPageChange() {
+		readData();
+		combineMasterPlateAndMarkerLayout();
+		printDataSetToFile(masterPlateName,"masterPlateName.csv");
+		printDataSetToFile(substances,"substances.csv");
+		printDataSetToFile(combinedMasterPlateAndMarkerLayout,"masterPlateLayout.csv");
+		
+		//Browser browser = new Browser(parent, SWT.NONE);
+		WebViewer.cancel(browser);
+		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 
 	@Override
 	public void setFocus() {
 		// TODO Auto-generated method stub
-		
 	}
-
 }

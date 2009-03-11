@@ -1,25 +1,11 @@
 package net.bioclipse.brunn.ui.editors.plateEditor;
 
-import org.osgi.framework.Bundle;
-import org.w3c.dom.*;
-import org.xml.sax.InputSource;
-
-import net.bioclipse.brunn.pojos.PlateFunction;
-import net.bioclipse.brunn.results.PlateResults;
-import net.bioclipse.ui.BioclipseCache;
-
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -28,9 +14,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import net.bioclipse.brunn.pojos.PlateFunction;
+import net.bioclipse.brunn.results.PlateResults;
+import net.bioclipse.ui.BioclipseCache;
 
 import org.eclipse.birt.report.viewer.utilities.WebViewer;
 import org.eclipse.core.runtime.CoreException;
@@ -44,24 +31,23 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
-import com.sun.org.apache.xerces.internal.parsers.DOMParser;
-
-public class PlateReport extends EditorPart implements OutlierChangedListener{
+public class PlateReport extends EditorPart{
 	
+	private Browser browser;
 	private Replicates replicates;
 	private String[] neededData;
 	private Map<String, String[]> content = new HashMap<String, String[]>();
 	private int contentLength = 0;
 	private Map<String, String[]> functions = new HashMap<String, String[]>();
-	private Map<String, Double> EC50 = new HashMap<String, Double>(); 
+	private Map<String, Double> IC50 = new HashMap<String, Double>(); 
 	
-	public PlateReport (PlateMultiPageEditor plateMultiPageEditor, Replicates replicates) {
+	public PlateReport (Replicates replicates) {
 		super();
 		this.replicates = replicates;
-		plateMultiPageEditor.addListener(this);
-		neededData = new String[]{"Compound Names","SI%","EC50","Concentration","Unit","Column Index","Plate Name"};
+		neededData = new String[]{"Compound Names","SI%","IC50","Concentration","Unit","Column Index","Plate Name"};
 	}
 	
+	//adds default values for uninitialized variables in dataset
 	private void autoCompleteContent() {
 		for(String header : neededData) {
 			if(content.get(header) == null) {
@@ -72,6 +58,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		}
 	}
 	
+	//reads dataset from replicate table
 	private void fillContent() {
 		String[][] matrix = replicates.getReplicatesContent();
 		contentLength = matrix.length-1;
@@ -88,9 +75,10 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 			}
 		}
 		splitConcAndUnit();
-		storeEC50();
+		storeIC50();
 	}
 	
+	//reads in all defined functions for the plate
 	private void fillFunctions() {
 		PlateResults plateResults = new PlateResults(replicates.getPlate(),null);
 		Iterator<PlateFunction> plateFunctionIterator = replicates.getPlate().getPlateFunctions().iterator();
@@ -104,8 +92,17 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		Arrays.sort(plateFunctionNames);
 		MathContext mc = new MathContext(3);
 		for(String plateFunctionName : plateFunctionNames) {
-			BigDecimal bd = new BigDecimal(plateResults.getValue(plateFunctionName));
-			functions.put("Function Value",addToStringArray(functions.get("Function Value"),String.valueOf(bd.round(mc))));	
+			double value = plateResults.getValue(plateFunctionName);
+			String result;
+			if ( Double.isInfinite(value) || Double.isNaN(value) ) {
+				result = String.valueOf(Double.MIN_VALUE);
+			}
+			else {
+				BigDecimal bd = new BigDecimal(value);
+				result = String.valueOf(bd.round(mc));
+			}
+			
+			functions.put("Function Value",addToStringArray(functions.get("Function Value"), result));	
 		}
 	}
 	
@@ -123,7 +120,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		}
 	}
 	
-	private void storeEC50() {
+	private void storeIC50() {
 		if(content.containsKey("SI%") && content.containsKey("Concentration")) {
 			String[] names = content.get("Compound Names");
 			double[] conc = null;
@@ -136,16 +133,16 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 					si = addToDoubleArray(si, Double.parseDouble(content.get("SI%")[i]));
 				}
 				else {
-					BigDecimal bd = new BigDecimal(calculateEC50(conc, si));
-					EC50.put(current, bd.round(mc).doubleValue());
+					BigDecimal bd = new BigDecimal(calculateIC50(conc, si));
+					IC50.put(current, bd.round(mc).doubleValue());
 					current = names[i];
 					conc = addToDoubleArray(null, Double.parseDouble(content.get("Concentration")[i]));
 					si = addToDoubleArray(null, Double.parseDouble(content.get("SI%")[i]));
 				}
 			}
-			BigDecimal bd = new BigDecimal(calculateEC50(conc, si));
-			EC50.put(current, bd.round(mc).doubleValue());
-			addEC50ToContent();
+			BigDecimal bd = new BigDecimal(calculateIC50(conc, si));
+			IC50.put(current, bd.round(mc).doubleValue());
+			addIC50ToContent();
 		}
 	}
 
@@ -163,7 +160,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		}
 	}
 	
-	private double calculateEC50(double[] conc, double[] si) {
+	private double calculateIC50(double[] conc, double[] si) {
 		double x1=0,x2=0,y1=0,y2=0;
 		for(int i=0; i<conc.length; i++) {
 			if(si[i]<50) {
@@ -177,24 +174,25 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		return (x1>0 && x2>0)?(x1-x2)/(y1-y2)*(50-y1)+x1:-1.;
 	}
 	
-	private void addEC50ToContent() {
-		content.put("EC50", null);
+	private void addIC50ToContent() {
+		content.put("IC50", null);
 		String[] names = content.get("Compound Names");
 		for(String name : names) {
-			if(!EC50.isEmpty()) {
-				String ec50 = EC50.get(name).toString();
-				String[] values = content.get("EC50");
-				String[] newValues = addToStringArray(values, ec50);
-				content.put("EC50", newValues);	
+			if(!IC50.isEmpty()) {
+				String ic50 = IC50.get(name).toString();
+				String[] values = content.get("IC50");
+				String[] newValues = addToStringArray(values, ic50);
+				content.put("IC50", newValues);	
 			}
 		}
 	}
-
-	private void printEC50() {
-		Iterator<String> substanceIter = EC50.keySet().iterator();
+	
+	//just for printing to promt
+	private void printIC50() {
+		Iterator<String> substanceIter = IC50.keySet().iterator();
 		while(substanceIter.hasNext()) {
 			String substance = substanceIter.next();
-			System.out.println(substance+" "+EC50.get(substance));
+			System.out.println(substance+" "+IC50.get(substance));
 		}
 	}
 
@@ -223,6 +221,7 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		content.put("Plate Name",names);
 	}
 	
+	//divides substances into two columns, and adds trailing newline in function list if needed
 	private void addReportColumnIndex(Map<String,String[]> map, String groupOnHeader) {
 		String[] names = map.get(groupOnHeader);
 		Arrays.sort(names);
@@ -304,7 +303,26 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		return false;
 	}
 	
-	public void changeFile(String fileName, String from, String to) {
+	//returns the full path of the report file
+	public String getReportFile() {
+		URL url = null;
+        try {
+            url = FileLocator.toFileURL( PlateReport.class.getResource( "plateReport.rptdesign" ) );
+        } catch ( IOException e ) {
+            throw new RuntimeException(e);
+        }
+        try {
+			changeFileLocation("plateReport.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return url.getFile();
+	}
+
+	//changes report file location to full path required by BIRT
+	//could be done in BIRT, but does not work on windows then
+	public void changeFileLocation(String fileName, String from, String to) {
 		URL url = null;
         try {
             url = FileLocator.toFileURL(PlateReport.class.getResource(fileName));
@@ -341,6 +359,20 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 	@Override
 	public void createPartControl(Composite parent) {
 		// TODO Auto-generated method stub
+		
+		browser = new Browser(parent, SWT.NONE);
+		WebViewer.startup(browser);
+		//WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
+	}
+	
+	@Override
+	public void setFocus() {
+			// TODO Auto-generated method stub
+		
+	}
+	
+	//reads the data and reloads the report when report tab is activated
+	public void onPageChange() {
 		fillContent();
 		fillFunctions();
 		autoCompleteContent();
@@ -349,37 +381,8 @@ public class PlateReport extends EditorPart implements OutlierChangedListener{
 		addPlateName();
 		printMapToFile(content, "values.csv", "Compound Names");
 		printMapToFile(functions, "functions.csv", "Function");
-		printEC50();
-		
-		URL url = null;
-        try {
-            url = FileLocator.toFileURL( PlateReport.class.getResource( "plateReport.rptdesign" ) );
-        } catch ( IOException e ) {
-            throw new RuntimeException(e);
-        }
-        try {
-			changeFile("plateReport.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
-		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Browser browser = new Browser(parent, SWT.NONE);
-		WebViewer.display(url.getFile(), WebViewer.HTML, browser, "frameset");
-		//WebViewer.display("/home/jonas/brunnbranchesbirtExample/myJava/myReport.rptdesign", WebViewer.HTML, browser, "frameset");
-	}
-	
-	@Override
-	public void setFocus() {
-		// TODO Auto-generated method stub
-		
-	}
 
-	public void onOutLierChange() {
-		// TODO Auto-generated method stub
-		fillContent();
-		fillFunctions();
-		printMapToFile(content, "values.csv", "Compound Names");
-		printMapToFile(functions, "functions.csv", "Function");
+		WebViewer.cancel(browser);
+		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
-
 }
