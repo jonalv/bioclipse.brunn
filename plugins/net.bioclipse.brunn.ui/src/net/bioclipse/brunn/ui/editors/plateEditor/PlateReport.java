@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Map;
 
 import net.bioclipse.brunn.pojos.PlateFunction;
@@ -39,7 +40,8 @@ public class PlateReport extends EditorPart{
 	private Map<String, String[]> content = new HashMap<String, String[]>();
 	private int contentLength = 0;
 	private Map<String, String[]> functions = new HashMap<String, String[]>();
-	private Map<String, Double> IC50 = new HashMap<String, Double>(); 
+	private Map<String, Double> IC50 = new HashMap<String, Double>();
+	private int numberOfColumns;
 	
 	public PlateReport (Replicates replicates) {
 		super();
@@ -223,31 +225,48 @@ public class PlateReport extends EditorPart{
 	
 	//divides substances into two columns, and adds trailing newline in function list if needed
 	private void addReportColumnIndex(Map<String,String[]> map, String groupOnHeader) {
+		//retrieves and sorts the names, they should be in order in the report
 		String[] names = map.get(groupOnHeader);
 		Arrays.sort(names);
-		String currentName = names[0];
-		String index = "1";
-		boolean indexNotChanged = true;
-		String[] indexes = null;
-		int columnLength = (names.length+1)/2;
+		//removes duplicates for correct column assignment
+		LinkedHashSet<String> noDuplicates = new LinkedHashSet<String>(Arrays.asList(names));
+		String[] noDupNames = (String[]) noDuplicates.toArray();
+		//determines number of columns for report based on number of compounds
+		numberOfColumns = noDupNames.length<6?1:noDupNames.length<13?2:3;
+		//calculates correct column numbers
+		int index = numberOfColumns;
+		Integer[] indexes = new Integer[noDupNames.length];
+		for(int i=0; i<noDupNames.length; i++) {
+			indexes[i] = nextIndex(index,numberOfColumns);
+		}
+		Arrays.sort(indexes);
+		//connects correct column number for items
+		Map<String,Integer> nameIndex = new HashMap<String,Integer>();
+		for(int i=0; i<indexes.length; i++) {
+			nameIndex.put(noDupNames[i], indexes[i]);
+		}
+		//assigns correct column number to items
+		String[] nameIndexes = new String[names.length];
 		for(int i=0; i<names.length; i++) {
-			if(indexNotChanged && !names[i].equals(currentName)) {
-				if(i>=columnLength) {
-					index = "2";
-					indexNotChanged = false;
-				}
-				currentName = names[i];
+			nameIndexes[i] = String.valueOf(nameIndex.get(names[i]));
+		}
+		//adds trailing spaces in case of non equal column lengths
+		if(map.containsKey("Function") && indexes.length%numberOfColumns!=0) {
+			int toAdd = numberOfColumns - indexes.length%numberOfColumns;
+			for(int i=0; i<toAdd; i++) {
+				nameIndexes = addToStringArray(nameIndexes,String.valueOf(numberOfColumns));
+				map.put("Function", addToStringArray(map.get("Function"),""));
+				map.put("Function Value", addToStringArray(map.get("Function Value"),""));
 			}
-			indexes = addToStringArray(indexes, index);
 		}
-		if(names.length%2!=0 && map.containsKey("Function")) {
-			indexes = addToStringArray(indexes, index);
-			map.put("Function", addToStringArray(map.get("Function"),""));
-			map.put("Function Value", addToStringArray(map.get("Function Value"),""));
-		}
-		map.put("Column Index",indexes);
+		//stores the result in dataset
+		map.put("Column Index", nameIndexes);
 	}
-		
+	
+	private int nextIndex(int current, int numberOf) {
+		return numberOf%current + 1;
+	}
+	
 	private void printMapToFile(Map<String,String[]> map, String filename, String headerInMap) {
 		try {
 			File folder = BioclipseCache.getCacheDir();
@@ -306,13 +325,14 @@ public class PlateReport extends EditorPart{
 	//returns the full path of the report file
 	public String getReportFile() {
 		URL url = null;
+		String filename = numberOfColumns==1?"plateReport1.rptdesign":numberOfColumns==2?"plateReport2.rptdesign":"plateReport3.rptdesign";
         try {
-            url = FileLocator.toFileURL( PlateReport.class.getResource( "plateReport.rptdesign" ) );
+        	url = FileLocator.toFileURL( PlateReport.class.getResource( filename ) );
         } catch ( IOException e ) {
             throw new RuntimeException(e);
         }
         try {
-			changeFileLocation("plateReport.rptdesign","/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
+			changeFileLocation(filename,"/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -376,8 +396,8 @@ public class PlateReport extends EditorPart{
 		fillContent();
 		fillFunctions();
 		autoCompleteContent();
-		addReportColumnIndex(content, "Compound Names");
 		addReportColumnIndex(functions, "Function");
+		addReportColumnIndex(content, "Compound Names");
 		addPlateName();
 		printMapToFile(content, "values.csv", "Compound Names");
 		printMapToFile(functions, "functions.csv", "Function");
