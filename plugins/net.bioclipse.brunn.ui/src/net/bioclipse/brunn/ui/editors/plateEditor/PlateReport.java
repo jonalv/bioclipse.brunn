@@ -32,7 +32,7 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.EditorPart;
 
-public class PlateReport extends EditorPart{
+public class PlateReport extends EditorPart {
 	
 	private Browser browser;
 	private Replicates replicates;
@@ -97,7 +97,7 @@ public class PlateReport extends EditorPart{
 			double value = plateResults.getValue(plateFunctionName);
 			String result;
 			if ( Double.isInfinite(value) || Double.isNaN(value) ) {
-				result = String.valueOf(Double.MIN_VALUE);
+				result = String.valueOf(Double.MAX_VALUE);
 			}
 			else {
 				BigDecimal bd = new BigDecimal(value);
@@ -223,21 +223,22 @@ public class PlateReport extends EditorPart{
 		content.put("Plate Name",names);
 	}
 	
-	//divides substances into two columns, and adds trailing newline in function list if needed
+	//divides substances into columns, and adds trailing newline in function list if needed
 	private void addReportColumnIndex(Map<String,String[]> map, String groupOnHeader) {
 		//retrieves and sorts the names, they should be in order in the report
 		String[] names = map.get(groupOnHeader);
 		Arrays.sort(names);
 		//removes duplicates for correct column assignment
 		LinkedHashSet<String> noDuplicates = new LinkedHashSet<String>(Arrays.asList(names));
-		String[] noDupNames = (String[]) noDuplicates.toArray();
+		String[] noDupNames = noDuplicates.toArray(new String[noDuplicates.size()]);
 		//determines number of columns for report based on number of compounds
 		numberOfColumns = noDupNames.length<6?1:noDupNames.length<13?2:3;
 		//calculates correct column numbers
 		int index = numberOfColumns;
 		Integer[] indexes = new Integer[noDupNames.length];
 		for(int i=0; i<noDupNames.length; i++) {
-			indexes[i] = nextIndex(index,numberOfColumns);
+		    index = nextIndex(index,numberOfColumns);
+			indexes[i] = index;
 		}
 		Arrays.sort(indexes);
 		//connects correct column number for items
@@ -264,7 +265,7 @@ public class PlateReport extends EditorPart{
 	}
 	
 	private int nextIndex(int current, int numberOf) {
-		return numberOf%current + 1;
+		return (current%numberOf) + 1;
 	}
 	
 	private void printMapToFile(Map<String,String[]> map, String filename, String headerInMap) {
@@ -332,7 +333,7 @@ public class PlateReport extends EditorPart{
             throw new RuntimeException(e);
         }
         try {
-			changeFileLocation(filename,"/home/jonas/runtime-bioclipse.product/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
+			changeFileLocation(filename,"C:\\Program\\Eclipse\\runtime-bioclipse.product\\tmp",BioclipseCache.getCacheDir().getAbsolutePath());
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

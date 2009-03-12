@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.17" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 2.3.2.r232_20090202 Build &lt;2.3.2.v20090218-0730></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 2.3.1.v20080911 Build &lt;2.3.1.v20080917-1340></property>
     <property name="units">in</property>
     <property name="iconFile">/templates/sidebyside_chart_listing.gif</property>
     <property name="cheatSheet">org.eclipse.birt.report.designer.ui.cheatsheet.sidebysidechartlisting</property>
@@ -279,7 +279,7 @@
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
             <property name="type">a4</property>
-            <property name="orientation">landscape</property>
+            <property name="orientation">portrait</property>
             <property name="topMargin">0.5in</property>
             <property name="leftMargin">0.5in</property>
             <property name="bottomMargin">0.5in</property>
@@ -803,7 +803,7 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
     <Bounds>
       <Left>0.0</Left>
       <Top>0.0</Top>
-      <Width>150.0</Width>
+      <Width>120.0</Width>
       <Height>80.0</Height>
     </Bounds>
     <Insets>
@@ -1713,7 +1713,7 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                                 <property name="outputFormat">SVG</property>
                                                 <property name="marginTop">0pt</property>
                                                 <property name="height">80pt</property>
-                                                <property name="width">150pt</property>
+                                                <property name="width">120pt</property>
                                             </extended-item>
                                         </cell>
                                         <cell id="327">
@@ -1725,24 +1725,13 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                             <property name="borderTopWidth">thin</property>
                                             <table name="righttable" id="73">
                                                 <property name="fontSize">x-small</property>
-                                                <property name="height">0.917in</property>
-                                                <property name="width">1.229in</property>
+                                                <property name="height">100%</property>
                                                 <property name="pageBreakInterval">50</property>
-                                                <column id="86">
-                                                    <property name="width">0.20833333333333334in</property>
-                                                </column>
-                                                <column id="87">
-                                                    <property name="width">0.75in</property>
-                                                </column>
-                                                <column id="88">
-                                                    <property name="width">0.2708333333333333in</property>
-                                                </column>
+                                                <column id="87"/>
+                                                <column id="88"/>
                                                 <header>
                                                     <row id="74">
                                                         <property name="height">25px</property>
-                                                        <cell id="75">
-                                                            <property name="textAlign">left</property>
-                                                        </cell>
                                                         <cell id="76">
                                                             <property name="textAlign">left</property>
                                                             <text-data id="174">
@@ -1762,9 +1751,6 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                                 </header>
                                                 <detail>
                                                     <row id="78">
-                                                        <cell id="79">
-                                                            <property name="textAlign">left</property>
-                                                        </cell>
                                                         <cell id="80">
                                                             <property name="textAlign">left</property>
                                                             <data id="112">
@@ -1781,9 +1767,6 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                                 </detail>
                                                 <footer>
                                                     <row id="82">
-                                                        <cell id="83">
-                                                            <property name="textAlign">left</property>
-                                                        </cell>
                                                         <cell id="84">
                                                             <property name="textAlign">left</property>
                                                         </cell>
@@ -2244,7 +2227,7 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
     <Bounds>
       <Left>0.0</Left>
       <Top>0.0</Top>
-      <Width>150.0</Width>
+      <Width>120.0</Width>
       <Height>80.0</Height>
     </Bounds>
     <Insets>
@@ -3153,7 +3136,7 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
 ]]></xml-property>
                                                 <property name="outputFormat">SVG</property>
                                                 <property name="height">80pt</property>
-                                                <property name="width">150pt</property>
+                                                <property name="width">120pt</property>
                                             </extended-item>
                                         </cell>
                                         <cell id="131">
@@ -3165,20 +3148,13 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                             <property name="borderTopStyle">solid</property>
                                             <property name="borderTopWidth">thin</property>
                                             <table name="righttable1" id="154">
-                                                <property name="height">0.917in</property>
-                                                <property name="width">1.229in</property>
+                                                <property name="height">100%</property>
                                                 <property name="pageBreakInterval">50</property>
-                                                <column id="171">
-                                                    <property name="width">0.20833333333333334in</property>
-                                                </column>
-                                                <column id="172">
-                                                    <property name="width">0.75in</property>
-                                                </column>
+                                                <column id="172"/>
                                                 <column id="173"/>
                                                 <header>
                                                     <row id="155">
                                                         <property name="height">25px</property>
-                                                        <cell id="156"/>
                                                         <cell id="157">
                                                             <property name="textAlign">left</property>
                                                             <text-data id="176">
@@ -3196,7 +3172,6 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                                 </header>
                                                 <detail>
                                                     <row id="161">
-                                                        <cell id="162"/>
                                                         <cell id="163">
                                                             <data id="164">
                                                                 <property name="resultSetColumn">Concentration</property>
@@ -3211,7 +3186,6 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                                 </detail>
                                                 <footer>
                                                     <row id="167">
-                                                        <cell id="168"/>
                                                         <cell id="169"/>
                                                         <cell id="170"/>
                                                     </row>
@@ -3661,7 +3635,7 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
     <Bounds>
       <Left>0.0</Left>
       <Top>0.0</Top>
-      <Width>150.0</Width>
+      <Width>120.0</Width>
       <Height>80.0</Height>
     </Bounds>
     <Insets>
@@ -4571,7 +4545,7 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                                 <property name="outputFormat">SVG</property>
                                                 <property name="marginTop">0pt</property>
                                                 <property name="height">80pt</property>
-                                                <property name="width">150pt</property>
+                                                <property name="width">120pt</property>
                                             </extended-item>
                                         </cell>
                                         <cell id="367">
@@ -4583,15 +4557,10 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                             <property name="borderTopWidth">thin</property>
                                             <table name="righttable2" id="368">
                                                 <property name="fontSize">x-small</property>
-                                                <property name="height">0.917in</property>
-                                                <property name="width">1.229in</property>
+                                                <property name="height">100%</property>
                                                 <property name="pageBreakInterval">50</property>
-                                                <column id="386">
-                                                    <property name="width">0.75in</property>
-                                                </column>
-                                                <column id="387">
-                                                    <property name="width">0.2708333333333333in</property>
-                                                </column>
+                                                <column id="386"/>
+                                                <column id="387"/>
                                                 <header>
                                                     <row id="369">
                                                         <property name="height">25px</property>
