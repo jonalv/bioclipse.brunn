@@ -227,7 +227,7 @@ public class OperationManager extends AbstractDAOBasedOperationManager
 //			sampleContainer = sampleContainerDAO.merge(sampleContainer);
 //			sampleContainerDAO.save(sampleContainer);
 			
-			System.out.println("iteration: " + j++ + "of " + plate.getWells().size());
+			System.out.println("iteration: " + j++ + " of " + plate.getWells().size());
 		}
 		
 		plateDAO.save(plate);

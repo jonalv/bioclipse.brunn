@@ -278,7 +278,9 @@
     </styles>
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
-            <property name="type">a4</property>
+            <property name="type">custom</property>
+            <property name="height">420mm</property>
+            <property name="width">297mm</property>
             <property name="orientation">auto</property>
             <property name="topMargin">0.5in</property>
             <property name="leftMargin">0.5in</property>
@@ -336,13 +338,14 @@
                             <property name="textAlign">center</property>
                             <label id="8">
                                 <property name="fontFamily">sans-serif</property>
-                                <property name="fontSize">medium</property>
+                                <property name="fontSize">18pt</property>
                                 <property name="fontWeight">bold</property>
                                 <property name="paddingBottom">10pt</property>
                                 <property name="textAlign">center</property>
                                 <text-property name="text">Dose-response report</text-property>
                             </label>
                             <text-data id="177">
+                                <property name="fontSize">18pt</property>
                                 <property name="textAlign">center</property>
                                 <expression name="valueExpr">"for plate \""+row["Plate Name"]+"\""</expression>
                                 <property name="contentType">html</property>
@@ -353,6 +356,7 @@
             </page-header>
             <page-footer>
                 <text id="3">
+                    <property name="fontSize">12pt</property>
                     <property name="contentType">html</property>
                     <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
                 </text>
@@ -453,7 +457,6 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                 <property name="borderTopStyle">solid</property>
                                 <property name="borderTopWidth">thin</property>
                                 <property name="verticalAlign">bottom</property>
-                                <property name="width">100%</property>
                                 <property name="dataSet">functions</property>
                                 <list-property name="boundDataColumns">
                                     <structure>
@@ -493,11 +496,13 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                         <cell id="183"/>
                                         <cell id="184">
                                             <label id="197">
+                                                <property name="fontSize">12pt</property>
                                                 <text-property name="text">Function</text-property>
                                             </label>
                                         </cell>
                                         <cell id="185">
                                             <label id="199">
+                                                <property name="fontSize">12pt</property>
                                                 <text-property name="text">Value</text-property>
                                             </label>
                                         </cell>
@@ -508,11 +513,13 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                         <cell id="187"/>
                                         <cell id="188">
                                             <data id="198">
+                                                <property name="fontSize">12pt</property>
                                                 <property name="resultSetColumn">Function</property>
                                             </data>
                                         </cell>
                                         <cell id="189">
                                             <data id="201">
+                                                <property name="fontSize">12pt</property>
                                                 <property name="marginTop">0pt</property>
                                                 <structure name="numberFormat">
                                                     <property name="category">Unformatted</property>
@@ -561,20 +568,16 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                     <property name="marginTop">0pt</property>
                                     <property name="pageBreakBefore">auto</property>
                                     <property name="pageBreakInside">auto</property>
-                                    <property name="height">1.135in</property>
-                                    <property name="width">100%</property>
                                     <column id="12">
-                                        <property name="width">1.59375in</property>
+                                        <property name="width">75%</property>
                                     </column>
-                                    <column id="13">
-                                        <property name="width">1.1458333333333333in</property>
-                                    </column>
+                                    <column id="13"/>
                                     <row id="14">
                                         <cell id="15">
                                             <property name="colSpan">2</property>
                                             <property name="rowSpan">1</property>
                                             <data id="114">
-                                                <property name="fontSize">medium</property>
+                                                <property name="fontSize">10pt</property>
                                                 <property name="resultSetColumn">Compound Names</property>
                                             </data>
                                         </cell>
@@ -810,8 +813,8 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
     <Bounds>
       <Left>0.0</Left>
       <Top>0.0</Top>
-      <Width>150.0</Width>
-      <Height>80.0</Height>
+      <Width>212.0</Width>
+      <Height>130.0</Height>
     </Bounds>
     <Insets>
       <Top>3.0</Top>
@@ -856,7 +859,7 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
   </SampleData>
   <Interactivity/>
   <Axes>
-    <Type>Linear</Type>
+    <Type>Logarithmic</Type>
     <Title>
       <Caption>
         <Value>Concentration</Value>
@@ -1343,7 +1346,14 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
         </TickAttributes>
       </MinorGrid>
       <Scale>
+        <Min xsi:type="data:NumberDataElement">
+          <Value>0.0</Value>
+        </Min>
+        <Max xsi:type="data:NumberDataElement">
+          <Value>120.0</Value>
+        </Max>
         <MinorGridsPerUnit>5</MinorGridsPerUnit>
+        <ShowOutside>true</ShowOutside>
       </Scale>
       <Origin>
         <Type>Min</Type>
@@ -1717,8 +1727,6 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
 ]]></xml-property>
                                                 <property name="outputFormat">SVG</property>
                                                 <property name="marginTop">0pt</property>
-                                                <property name="height">80pt</property>
-                                                <property name="width">150pt</property>
                                             </extended-item>
                                         </cell>
                                         <cell id="327">
@@ -1730,27 +1738,18 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                             <property name="borderTopWidth">thin</property>
                                             <table name="righttable" id="73">
                                                 <property name="fontSize">small</property>
-                                                <property name="height">100%</property>
-                                                <property name="width">100%</property>
                                                 <property name="pageBreakInterval">50</property>
-                                                <column id="86">
-                                                    <property name="width">0.20833333333333334in</property>
-                                                </column>
-                                                <column id="87">
-                                                    <property name="width">0.75in</property>
-                                                </column>
+                                                <column id="87"/>
                                                 <column id="88">
-                                                    <property name="width">0.2708333333333333in</property>
+                                                    <property name="width">30%</property>
                                                 </column>
                                                 <header>
                                                     <row id="74">
                                                         <property name="height">25px</property>
-                                                        <cell id="75">
-                                                            <property name="textAlign">left</property>
-                                                        </cell>
                                                         <cell id="76">
                                                             <property name="textAlign">left</property>
                                                             <text-data id="174">
+                                                                <property name="fontSize">9pt</property>
                                                                 <property name="textAlign">left</property>
                                                                 <expression name="valueExpr">"C ["+row["Unit"]+"]"</expression>
                                                                 <property name="contentType">html</property>
@@ -1759,6 +1758,7 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                                         <cell id="77">
                                                             <property name="textAlign">left</property>
                                                             <label id="89">
+                                                                <property name="fontSize">9pt</property>
                                                                 <property name="textAlign">left</property>
                                                                 <text-property name="text">SI%</text-property>
                                                             </label>
@@ -1767,18 +1767,17 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                                 </header>
                                                 <detail>
                                                     <row id="78">
-                                                        <cell id="79">
-                                                            <property name="textAlign">left</property>
-                                                        </cell>
                                                         <cell id="80">
                                                             <property name="textAlign">left</property>
                                                             <data id="112">
+                                                                <property name="fontSize">9pt</property>
                                                                 <property name="resultSetColumn">Concentration</property>
                                                             </data>
                                                         </cell>
                                                         <cell id="81">
                                                             <property name="textAlign">left</property>
                                                             <data id="113">
+                                                                <property name="fontSize">9pt</property>
                                                                 <property name="resultSetColumn">SI%</property>
                                                             </data>
                                                         </cell>
@@ -1786,9 +1785,6 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                                 </detail>
                                                 <footer>
                                                     <row id="82">
-                                                        <cell id="83">
-                                                            <property name="textAlign">left</property>
-                                                        </cell>
                                                         <cell id="84">
                                                             <property name="textAlign">left</property>
                                                         </cell>
@@ -1896,7 +1892,6 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                         </simple-property-list>
                                     </structure>
                                 </list-property>
-                                <property name="width">100%</property>
                                 <property name="dataSet">functions</property>
                                 <list-property name="boundDataColumns">
                                     <structure>
@@ -1936,11 +1931,13 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                         <cell id="204"/>
                                         <cell id="205">
                                             <label id="206">
+                                                <property name="fontSize">12pt</property>
                                                 <text-property name="text">Function</text-property>
                                             </label>
                                         </cell>
                                         <cell id="207">
                                             <label id="208">
+                                                <property name="fontSize">12pt</property>
                                                 <text-property name="text">Value</text-property>
                                             </label>
                                         </cell>
@@ -1951,11 +1948,13 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                         <cell id="210"/>
                                         <cell id="211">
                                             <data id="212">
+                                                <property name="fontSize">12pt</property>
                                                 <property name="resultSetColumn">Function</property>
                                             </data>
                                         </cell>
                                         <cell id="213">
                                             <data id="214">
+                                                <property name="fontSize">12pt</property>
                                                 <structure name="numberFormat">
                                                     <property name="category">Unformatted</property>
                                                 </structure>
@@ -2002,20 +2001,16 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                     <property name="borderTopWidth">thin</property>
                                     <property name="pageBreakBefore">auto</property>
                                     <property name="pageBreakInside">auto</property>
-                                    <property name="height">1.1354166666666667in</property>
-                                    <property name="width">100%</property>
                                     <column id="124">
-                                        <property name="width">1.59375in</property>
+                                        <property name="width">75%</property>
                                     </column>
-                                    <column id="125">
-                                        <property name="width">1.1458333333333333in</property>
-                                    </column>
+                                    <column id="125"/>
                                     <row id="126">
                                         <cell id="127">
                                             <property name="colSpan">2</property>
                                             <property name="rowSpan">1</property>
                                             <data id="152">
-                                                <property name="fontSize">medium</property>
+                                                <property name="fontSize">10pt</property>
                                                 <property name="resultSetColumn">Compound Names</property>
                                             </data>
                                         </cell>
@@ -2251,8 +2246,8 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
     <Bounds>
       <Left>0.0</Left>
       <Top>0.0</Top>
-      <Width>150.0</Width>
-      <Height>80.0</Height>
+      <Width>212.0</Width>
+      <Height>130.0</Height>
     </Bounds>
     <Insets>
       <Top>3.0</Top>
@@ -2297,7 +2292,7 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
   </SampleData>
   <Interactivity/>
   <Axes>
-    <Type>Linear</Type>
+    <Type>Logarithmic</Type>
     <Title>
       <Caption>
         <Value>X-Axis Title</Value>
@@ -2784,7 +2779,14 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
         </TickAttributes>
       </MinorGrid>
       <Scale>
+        <Min xsi:type="data:NumberDataElement">
+          <Value>0.0</Value>
+        </Min>
+        <Max xsi:type="data:NumberDataElement">
+          <Value>120.0</Value>
+        </Max>
         <MinorGridsPerUnit>5</MinorGridsPerUnit>
+        <ShowOutside>true</ShowOutside>
       </Scale>
       <Origin>
         <Type>Min</Type>
@@ -3157,8 +3159,6 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
 </model:ChartWithAxes>
 ]]></xml-property>
                                                 <property name="outputFormat">SVG</property>
-                                                <property name="height">80pt</property>
-                                                <property name="width">150pt</property>
                                             </extended-item>
                                         </cell>
                                         <cell id="131">
@@ -3171,29 +3171,25 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                             <property name="borderTopWidth">thin</property>
                                             <table name="righttable1" id="154">
                                                 <property name="fontSize">small</property>
-                                                <property name="height">100%</property>
-                                                <property name="width">100%</property>
                                                 <property name="pageBreakInterval">50</property>
-                                                <column id="171">
-                                                    <property name="width">0.20833333333333334in</property>
+                                                <column id="172"/>
+                                                <column id="173">
+                                                    <property name="width">30%</property>
                                                 </column>
-                                                <column id="172">
-                                                    <property name="width">0.75in</property>
-                                                </column>
-                                                <column id="173"/>
                                                 <header>
                                                     <row id="155">
                                                         <property name="height">25px</property>
-                                                        <cell id="156"/>
                                                         <cell id="157">
                                                             <property name="textAlign">left</property>
                                                             <text-data id="176">
+                                                                <property name="fontSize">9pt</property>
                                                                 <expression name="valueExpr">"C ["+row["Unit"]+"]"</expression>
                                                                 <property name="contentType">html</property>
                                                             </text-data>
                                                         </cell>
                                                         <cell id="159">
                                                             <label id="160">
+                                                                <property name="fontSize">9pt</property>
                                                                 <property name="textAlign">left</property>
                                                                 <text-property name="text">SI%</text-property>
                                                             </label>
@@ -3202,14 +3198,17 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                                 </header>
                                                 <detail>
                                                     <row id="161">
-                                                        <cell id="162"/>
                                                         <cell id="163">
                                                             <data id="164">
+                                                                <property name="fontSize">9pt</property>
+                                                                <property name="textAlign">left</property>
                                                                 <property name="resultSetColumn">Concentration</property>
                                                             </data>
                                                         </cell>
                                                         <cell id="165">
                                                             <data id="166">
+                                                                <property name="fontSize">9pt</property>
+                                                                <property name="textAlign">left</property>
                                                                 <property name="resultSetColumn">SI%</property>
                                                             </data>
                                                         </cell>
@@ -3217,7 +3216,6 @@ dataSetRow["Compound Names"]+new String(" has no IC50 value")
                                                 </detail>
                                                 <footer>
                                                     <row id="167">
-                                                        <cell id="168"/>
                                                         <cell id="169"/>
                                                         <cell id="170"/>
                                                     </row>

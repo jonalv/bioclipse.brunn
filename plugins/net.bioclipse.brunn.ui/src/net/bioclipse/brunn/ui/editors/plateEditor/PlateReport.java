@@ -382,7 +382,7 @@ public class PlateReport extends EditorPart {
 		// TODO Auto-generated method stub
 		
 		browser = new Browser(parent, SWT.NONE);
-		WebViewer.startup(browser);
+		//WebViewer.startup(browser);
 		//WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 	

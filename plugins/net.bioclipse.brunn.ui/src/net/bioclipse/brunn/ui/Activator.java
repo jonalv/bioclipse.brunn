@@ -49,7 +49,7 @@ public class Activator extends AbstractUIPlugin implements IUserManagerListener 
         String accountId = userManager.getAccountIdsByAccountTypeName( "BrunnAccountType" ).get( 0 );
         
 		for ( User user : ( (IAuditManager)Springcontact.getBean("auditManager") ).getAllUsers() ) {
-		    
+
 			if( user.getName().equals( userManager.getProperty( accountId, "Brunn user" )  ) ) {
 				if( user.passwordMatch( userManager.getProperty( accountId, "Brunn password" ) ) ) {
 					currentUser = user;
