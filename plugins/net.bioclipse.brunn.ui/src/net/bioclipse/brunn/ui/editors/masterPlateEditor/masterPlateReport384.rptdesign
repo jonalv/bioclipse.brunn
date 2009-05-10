@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.17" id="1">
-    <property name="createdBy">Eclipse BIRT Designer Version 2.3.1.v20080911 Build &lt;2.3.1.v20080917-1340></property>
+    <property name="createdBy">Eclipse BIRT Designer Version 2.3.2.r232_20090202 Build &lt;2.3.2.v20090218-0730></property>
     <property name="units">in</property>
     <property name="iconFile">/templates/blank_report.gif</property>
     <property name="bidiLayoutOrientation">ltr</property>
@@ -1529,7 +1529,7 @@
             <property name="height">100%</property>
             <property name="width">100%</property>
             <column id="179">
-                <property name="width">1.2604166666666667in</property>
+                <property name="width">15%</property>
             </column>
             <column id="180"/>
             <row id="181">
@@ -2404,7 +2404,6 @@
                         </header>
                         <detail>
                             <row id="222">
-                                <property name="height">0.85cm</property>
                                 <property name="verticalAlign">middle</property>
                                 <cell id="223">
                                     <property name="borderBottomColor">#000000</property>

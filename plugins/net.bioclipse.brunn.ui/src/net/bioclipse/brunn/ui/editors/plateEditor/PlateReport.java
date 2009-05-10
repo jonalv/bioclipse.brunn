@@ -62,6 +62,7 @@ public class PlateReport extends EditorPart {
 	
 	//reads dataset from replicate table
 	private void fillContent() {
+		content.clear();
 		String[][] matrix = replicates.getReplicatesContent();
 		contentLength = matrix.length-1;
 		String[] headers = matrix[0];
@@ -72,8 +73,13 @@ public class PlateReport extends EditorPart {
 			content.put(headers[i], null);
 		}
 		for(int i=1; i<matrix.length; i++) {
-			for(int j=0; j<headers.length; j++) {
-				content.put(headers[j],addToStringArray(content.get(headers[j]), matrix[i][j]));	
+			if(Character.isDigit(matrix[i][3].charAt(0))) {
+				for(int j=0; j<headers.length; j++) {
+					content.put(headers[j],addToStringArray(content.get(headers[j]), matrix[i][j]));	
+				}
+			}
+			else {
+				contentLength--;
 			}
 		}
 		splitConcAndUnit();
@@ -82,6 +88,7 @@ public class PlateReport extends EditorPart {
 	
 	//reads in all defined functions for the plate
 	private void fillFunctions() {
+		functions.clear();
 		PlateResults plateResults = new PlateResults(replicates.getPlate(),null);
 		Iterator<PlateFunction> plateFunctionIterator = replicates.getPlate().getPlateFunctions().iterator();
 		functions.put("Function", null);
@@ -124,6 +131,7 @@ public class PlateReport extends EditorPart {
 	
 	private void storeIC50() {
 		if(content.containsKey("SI%") && content.containsKey("Concentration")) {
+			IC50.clear();
 			String[] names = content.get("Compound Names");
 			double[] conc = null;
 			double[] si = null;

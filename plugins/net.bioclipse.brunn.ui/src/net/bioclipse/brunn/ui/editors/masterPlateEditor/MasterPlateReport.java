@@ -100,6 +100,7 @@ public class MasterPlateReport extends EditorPart{
 				if(ij.startsWith("M")) {
 					String[] ij2 = ij.split(" ",2);
 					combinedMasterPlateAndMarkerLayout[i][masterPlateLayout[0].length+j] = ij2[0];
+					ij2[1] = ij2[1].replace(',', '.'); //can not have 100,00 in csv file
 					combinedMasterPlateAndMarkerLayout[i][j] = ij2[1];
 				}
 				else if(ij.startsWith("B") || ij.startsWith("C") || ij.startsWith("S")) {
