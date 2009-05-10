@@ -40,7 +40,7 @@ public class PlateReport extends EditorPart {
 	private Map<String, String[]> content = new HashMap<String, String[]>();
 	private int contentLength = 0;
 	private Map<String, String[]> functions = new HashMap<String, String[]>();
-	private Map<String, Double> IC50 = new HashMap<String, Double>();
+	private Map<String, String> IC50 = new HashMap<String, String>();
 	private int numberOfColumns;
 	
 	public PlateReport (Replicates replicates) {
@@ -104,7 +104,7 @@ public class PlateReport extends EditorPart {
 			double value = plateResults.getValue(plateFunctionName);
 			String result;
 			if ( Double.isInfinite(value) || Double.isNaN(value) ) {
-				result = String.valueOf(Double.MAX_VALUE);
+				result = "nonexistent";
 			}
 			else {
 				BigDecimal bd = new BigDecimal(value);
@@ -136,22 +136,22 @@ public class PlateReport extends EditorPart {
 			double[] conc = null;
 			double[] si = null;
 			String current = names[0];
-			MathContext mc = new MathContext(3);
+			//MathContext mc = new MathContext(3);
 			for(int i=0;i<names.length; i++) {
 				if(names[i].equals(current)) {
 					conc = addToDoubleArray(conc, Double.parseDouble(content.get("Concentration")[i]));
 					si = addToDoubleArray(si, Double.parseDouble(content.get("SI%")[i]));
 				}
 				else {
-					BigDecimal bd = new BigDecimal(calculateIC50(conc, si));
-					IC50.put(current, bd.round(mc).doubleValue());
+					//BigDecimal bd = new BigDecimal(calculateIC50(conc, si));
+					IC50.put(current, calculateIC50(conc, si));//bd.round(mc).doubleValue());
 					current = names[i];
 					conc = addToDoubleArray(null, Double.parseDouble(content.get("Concentration")[i]));
 					si = addToDoubleArray(null, Double.parseDouble(content.get("SI%")[i]));
 				}
 			}
-			BigDecimal bd = new BigDecimal(calculateIC50(conc, si));
-			IC50.put(current, bd.round(mc).doubleValue());
+			//BigDecimal bd = new BigDecimal(calculateIC50(conc, si));
+			IC50.put(current, calculateIC50(conc, si));//bd.round(mc).doubleValue());
 			addIC50ToContent();
 		}
 	}
@@ -170,7 +170,18 @@ public class PlateReport extends EditorPart {
 		}
 	}
 	
-	private double calculateIC50(double[] conc, double[] si) {
+	private String calculateIC50(double[] conc, double[] si) {
+		String ic50 = "-";
+		int crosses = 0;
+		for(int i=0; i<si.length-1; i++) {
+			if(si[i]<50 && 50<si[i+1] || si[i+1]<50 && 50<si[i]) {
+				crosses++;
+			}
+		}
+		if(crosses>1) {
+			return ic50;
+		}
+		MathContext mc = new MathContext(3);
 		double x1=0,x2=0,y1=0,y2=0;
 		for(int i=0; i<conc.length; i++) {
 			if(si[i]<50) {
@@ -181,7 +192,19 @@ public class PlateReport extends EditorPart {
 			x1 = conc[i];
 			y1 = si[i];
 		}
-		return (x1>0 && x2>0)?(x1-x2)/(y1-y2)*(50-y1)+x1:-1.;
+		if (x1>0 && x2>0) {
+			BigDecimal bd = new BigDecimal((x1-x2)/(y1-y2)*(50-y1)+x1);
+			ic50 = String.valueOf(bd.round(mc).doubleValue());
+		}
+		else if(x2==0) {
+			ic50 = ">"+x1;
+		}
+		else if(x1==0) {
+			if(!(crosses==1)) {
+				ic50 = "<"+x2;
+			}
+		}
+		return ic50;
 	}
 	
 	private void addIC50ToContent() {
@@ -341,7 +364,8 @@ public class PlateReport extends EditorPart {
             throw new RuntimeException(e);
         }
         try {
-			changeFileLocation(filename,"C:\\Program\\Eclipse\\runtime-bioclipse.product\\tmp",BioclipseCache.getCacheDir().getAbsolutePath());
+			//changeFileLocation(filename,"C:\\Program\\Eclipse\\runtime-bioclipse.product\\tmp",BioclipseCache.getCacheDir().getAbsolutePath());
+			changeFileLocation(filename,"/home/jonas/bioclipse/tmp",BioclipseCache.getCacheDir().getAbsolutePath());
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

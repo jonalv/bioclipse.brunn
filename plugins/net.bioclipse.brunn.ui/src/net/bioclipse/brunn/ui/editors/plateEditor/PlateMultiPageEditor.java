@@ -22,6 +22,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	private PlateEditor plateEditor;
 	private Summary summary;
 	private Replicates replicates;
+	private IC50 ic50;
 	private PlateReport plateReport;
 	private List<OutlierChangedListener> outLierListeners = new ArrayList<OutlierChangedListener>();
 	private Plate toBeSaved;
@@ -55,6 +56,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		plateEditor = new PlateEditor( plateResults, this, toBeSaved             );
 		replicates  = new Replicates(  plateResults, this, toBeSaved             );
 		summary     = new Summary(     plateResults, this, toBeSaved, replicates );
+		ic50        = new IC50(        this, replicates );
 		plateReport = new PlateReport( replicates );
 		
 		try {
@@ -73,10 +75,18 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		catch (PartInitException e) {
 			e.printStackTrace();			
 		}
-		
+
 		try {
 			int index = this.addPage((IEditorPart) replicates, getEditorInput());
 			setPageText(index, "Average");
+		} 
+		catch (PartInitException e) {
+			e.printStackTrace();			
+		}
+
+		try {
+			int index = this.addPage((IEditorPart) ic50, getEditorInput());
+			setPageText(index, "IC50");
 		} 
 		catch (PartInitException e) {
 			e.printStackTrace();			
@@ -105,7 +115,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	
 	@Override
 	protected void pageChange(int newPageIndex){
-		if(newPageIndex == 3) {
+		if(newPageIndex == 4) {
 			plateReport.onPageChange();
 		}
 	}
