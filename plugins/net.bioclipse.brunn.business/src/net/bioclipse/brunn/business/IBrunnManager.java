@@ -13,23 +13,12 @@
  ******************************************************************************/
 package net.bioclipse.brunn.business;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
-import net.bioclipse.brunn.business.plate.PlateManager;
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.core.Recorded;
-import net.bioclipse.core.ResourcePathTransformer;
-import net.bioclipse.core.business.BioclipseException;
-import net.bioclipse.core.business.IBioclipseManager;
-import net.bioclipse.core.domain.IMolecule;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
+import net.bioclipse.managers.business.IBioclipseManager;
 
 @PublishedClass( "Contains Brunn related methods")
 public interface IBrunnManager extends IBioclipseManager {

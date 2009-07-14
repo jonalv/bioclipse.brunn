@@ -45,10 +45,10 @@ public class BrunnManager implements IBrunnManager {
 	IPlateManager plateManager = null;
 	Plate plate = new Plate();
 	
-	public String getNamespace() {
-		return "brunn";
+	public String getManagerName() {
+	    return "brunn";
 	}
-
+	
 	public String run() {
 		return "weehow";
 	}
