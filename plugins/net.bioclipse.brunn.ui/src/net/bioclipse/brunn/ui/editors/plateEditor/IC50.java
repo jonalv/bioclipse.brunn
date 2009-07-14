@@ -134,7 +134,6 @@ public class IC50 extends EditorPart implements OutlierChangedListener {
 		cb.dispose();
 	}
 
-	@Override
 	public void onOutLierChange() {
 		tableModel = new IC50TableModel(replicates);
 		table.setModel( tableModel );

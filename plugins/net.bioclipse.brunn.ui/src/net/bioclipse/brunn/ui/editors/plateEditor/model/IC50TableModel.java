@@ -288,42 +288,35 @@ public class IC50TableModel extends KTableDefaultModel{
 		return 20;
 	}
 
-	@Override
 	public int getFixedHeaderColumnCount() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public int getFixedHeaderRowCount() {
 		// TODO Auto-generated method stub
 		return 1;
 	}
 
-	@Override
 	public int getFixedSelectableColumnCount() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public int getFixedSelectableRowCount() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public int getRowHeightMinimum() {
 		// TODO Auto-generated method stub
 		return 30;
 	}
 
-	@Override
 	public boolean isColumnResizable(int col) {
 		return true;
 	}
 
-	@Override
 	public boolean isRowResizable(int row) {
 		return true;
 	}
