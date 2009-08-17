@@ -126,8 +126,7 @@ public class MasterPlateEditor extends EditorPart {
 		
 		MasterPlate masterPlate = ((MasterPlate) ((net.bioclipse.brunn.ui.explorer.model.nonFolders.MasterPlate) input)
 				            .getPOJO()); 
-		toBeSaved = ((IPlateManager) Springcontact.getBean("plateManager"))
-		            .getMasterPlate( masterPlate.getId() );
+		toBeSaved = masterPlate.deepCopy();
 		referenceMasterPlate = toBeSaved.deepCopy();
 	}
 
