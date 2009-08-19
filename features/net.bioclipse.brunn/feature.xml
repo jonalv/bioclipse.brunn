@@ -2,7 +2,7 @@
 <feature
       id="net.bioclipse.brunn"
       label="Brunn Feature"
-      version="20081007.0.0">
+      version="0.9.0.v20090819">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -16,9 +16,9 @@
       [Enter License Description here.]
    </license>
 
-   <requires>
-      <import feature="net.bioclipse.usermanager_feature" version="1.0.0"/>
-   </requires>
+   <includes
+         id="net.bioclipse.birt_feature"
+         version="0.0.0"/>
 
    <plugin
          id="org.junit4"
