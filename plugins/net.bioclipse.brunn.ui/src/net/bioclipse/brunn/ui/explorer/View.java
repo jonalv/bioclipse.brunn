@@ -58,10 +58,12 @@ import net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.PlateLayout;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.PlateType;
 import net.bioclipse.brunn.ui.transferTypes.BrunnTransfer;
+import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.usermanager.IUserManagerListener;
 import net.bioclipse.usermanager.UserManagerEvent;
 import net.bioclipse.usermanager.handlers.LoginHandler;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.NotEnabledException;
 import org.eclipse.core.commands.NotHandledException;
@@ -660,7 +662,21 @@ public class View extends ViewPart implements IUserManagerListener {
 						                          .getActiveWorkbenchWindow()
 						                          .getShell(), 
 						                wizard );
-				dialog.open();
+				try {
+				    dialog.open();
+				}
+				catch (Exception e) {
+				    LogUtils.debugTrace( 
+				        Logger.getLogger( this.getClass() ), e );
+				    MessageDialog.openInformation( 
+				        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+				        "Ooops",
+				        "Something went wrong. There might be a missing refresh " +
+				        "or so. If nothing else works a restart will most " +
+				        "likely fix things. \n\n"
+				        + "The error was: " + e.getClass().getSimpleName() + ": " 
+				        + e.getMessage() );
+				}
 			}
 		};
 		

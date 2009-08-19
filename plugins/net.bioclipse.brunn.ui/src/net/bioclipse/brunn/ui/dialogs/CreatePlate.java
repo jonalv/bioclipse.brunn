@@ -13,8 +13,11 @@ import net.bioclipse.brunn.pojos.CellOrigin;
 import net.bioclipse.brunn.pojos.MasterPlate;
 import net.bioclipse.brunn.pojos.PatientOrigin;
 import net.bioclipse.brunn.ui.explorer.model.nonFolders.CellType;
+import net.bioclipse.core.util.LogUtils;
 
+import org.apache.log4j.Logger;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -31,6 +34,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 
 public class CreatePlate extends TitleAreaDialog {
 
@@ -156,7 +160,20 @@ public class CreatePlate extends TitleAreaDialog {
 		 * populate the comboboxes
 		 */
 		IPlateManager pm  = (IPlateManager) Springcontact.getBean("plateManager");
-		masterPlates = pm.getAllMasterPlatesNotDeleted().toArray(masterPlates);
+		try {
+		    masterPlates = pm.getAllMasterPlatesNotDeleted().toArray(masterPlates);
+		}
+		catch (Exception e) {
+		    LogUtils.debugTrace( Logger.getLogger( this.getClass() ), e );
+		    MessageDialog.openInformation( 
+		        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+		        "Ooops",
+		        "Something went wrong. There might be a missing refresh " +
+		            "or so. If nothing else works a restart will most " +
+		            "likely fix things. \n\n"
+		        + "The error was: " + e.getClass().getSimpleName() + ": " 
+		        + e.getMessage() );
+		}
         Arrays.sort(masterPlates, new Comparator<MasterPlate>() {
             public int compare(MasterPlate a, MasterPlate b)
                {
