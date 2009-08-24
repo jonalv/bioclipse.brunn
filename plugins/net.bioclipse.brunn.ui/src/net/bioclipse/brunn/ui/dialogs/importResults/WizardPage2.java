@@ -202,7 +202,16 @@ public class WizardPage2 extends WizardPage {
 				
 				
 				IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
-				barcodesInDatabase = pm.getAllPlateBarcodes();
+				
+                try {
+                    barcodesInDatabase = pm.getAllPlateBarcodes();
+                } catch (Exception e) {
+                    MessageDialog.openError( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+                                             "Something went wrong while loading all barcodes. There is probably " +
+                                             "a missing refresh somewhere. Try to restart if nothing else helps.",  
+                                             e.getMessage() ); 
+                }
+
 				
 				plateReads = parser.getPlatesInFile();
 				tableViewer.setInput(plateReads);
