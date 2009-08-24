@@ -42,10 +42,15 @@ public class IC50TableModel extends KTableDefaultModel{
 		Collections.addAll( columnNames, new String[] {"Compound Names", "IC50"} );
 		
 		/*
-		 * set up the matrix from the replicates 
+		 * set up the matrix if there are any results for the plate 
 		 */
-		fillContent(replicates);
-		extractEntries();
+		if ( replicates.getPlate().getWell( 1, 'a' )
+		               .getSampleContainer()
+		               .getWorkList()
+		               .getAbstractOperations().size() > 1 ) {
+    		fillContent(replicates);
+    		extractEntries();
+		}
 
 		List<String[]> rows = new ArrayList<String[]>();
 		for( String compound : entries.keySet() ) {
