@@ -1586,7 +1586,9 @@ public class View extends ViewPart implements IUserManagerListener {
             }
             recievingFolder.fireUpdate();
             if ( CreateCompound.isKeepAddingCompounds() ) {
-                final Action a = new CreateCompoundAction(treeViewer);
+                final CreateCompoundAction a 
+                    = new CreateCompoundAction(treeViewer);
+                a.selection = selection;
                 Display.getDefault().asyncExec( new Runnable() {
                     public void run() {
                         a.run();
