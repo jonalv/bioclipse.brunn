@@ -60,6 +60,9 @@ public class PlateTableModel extends KTableDefaultModel {
 						m.getSample() == null ? 0 
                                               : ( (DrugSample)m.getSample() )
                                                 .getConcentration() );
+                localWell.concUnits.add( m.getSample() == null ? "" 
+                                                               : ( (DrugSample)m.getSample() )
+                                                                     .getConcUnit().toString() );
 			}
 
 			try {
@@ -221,6 +224,7 @@ public class PlateTableModel extends KTableDefaultModel {
 		
 		List<String> markers = new ArrayList<String>();
 		List<Double> concentrations = new ArrayList<Double>();
+		List<String> concUnits = new ArrayList<String>();
 		double value = -1;
 		
 		public String toString() {
@@ -244,6 +248,8 @@ public class PlateTableModel extends KTableDefaultModel {
 				if( markers.get(i).matches("M\\d+") && concentrations.get(i) != 0 ) {
 					s.append( "[" );
 					s.append( String.format( "%.2f", concentrations.get(i) ) ); 
+					s.append( " " );
+					s.append( concUnits.get(i) );
 					s.append( "]" );
 				}
 				s.append("\n");
