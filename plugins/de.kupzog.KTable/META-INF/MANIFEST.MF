@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: KTable Plug-in
+Bundle-SymbolicName: de.kupzog.ktable
+Bundle-Version: 2.1.4
+Bundle-ClassPath: KTable.jar
+Bundle-Vendor: ktable.sourceforge.net
+Bundle-Localization: plugin
+Export-Package: de.kupzog.ktable,
+ de.kupzog.ktable.editors,
+ de.kupzog.ktable.renderers
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.ui

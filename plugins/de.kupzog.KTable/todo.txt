@@ -1,0 +1,13 @@
+TODOs: 
+
+* Allow the definition of lines outside of cells.
+  Currently lines are rendered by CellRenderers. The table assumes a
+  1px border, but this must be drawn by cellrenderers.
+  
+-------------------------------------------------------------------------------
+
+PARTLY DONE:
+* Profile for performance on large tables. 
+  State: Results are acceptable, but small tweaks are possible.
+  Look at the huge examples (BooleanModelExample and SpanModelExample)
+  that have >=100000 rows and cols.
