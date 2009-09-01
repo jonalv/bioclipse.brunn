@@ -143,11 +143,6 @@ public class View extends ViewPart implements IUserManagerListener {
 	
 	private TreeRoot treeRoot;
 	private boolean showPojosMarkedAsDeleted;
-	/*
-	 * Used while creating many compounds by automagicly opening a new dialog 
-	 * after the first
-	 */
-	private static IStructuredSelection treeSelection;
 
 	private Action createUserAction;
 
@@ -1589,6 +1584,7 @@ public class View extends ViewPart implements IUserManagerListener {
                 final CreateCompoundAction a 
                     = new CreateCompoundAction(treeViewer);
                 a.selection = selection;
+                a.keepSelection = true;
                 Display.getDefault().asyncExec( new Runnable() {
                     public void run() {
                         a.run();

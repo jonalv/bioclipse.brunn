@@ -28,6 +28,7 @@ public abstract class BrunnAction extends Action {
     private TreeViewer treeViewer;
     protected ITreeObject selectedDomainObject;
     IStructuredSelection selection;
+    protected volatile boolean keepSelection = false;
     
     public BrunnAction( String name, TreeViewer treeViewer ) {
         super(name);
@@ -37,13 +38,14 @@ public abstract class BrunnAction extends Action {
     @Override
     public final void run() {
         
-        if ( selection == null ) {
+        if ( !keepSelection ) {
             if ( treeViewer.getSelection().isEmpty() ) {
                 throw new IllegalStateException( 
                     "No folder was selected in the treeviewer");
             }
             selection = (IStructuredSelection) treeViewer.getSelection();
         }
+        keepSelection = false;
         
         selectedDomainObject = (ITreeObject) selection.getFirstElement();
         
