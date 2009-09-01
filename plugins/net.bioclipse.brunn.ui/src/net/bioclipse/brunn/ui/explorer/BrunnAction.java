@@ -57,6 +57,7 @@ public abstract class BrunnAction extends Action {
                     return Status.OK_STATUS;
                 }
             };
+            job.setUser( true );
             job.schedule();
         }
     }

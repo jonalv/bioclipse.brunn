@@ -5,6 +5,7 @@ import net.bioclipse.brunn.business.plateLayout.IPlateLayoutManager;
 import net.bioclipse.brunn.pojos.PlateType;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -16,6 +17,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 
 public class CreatePlateLayout extends TitleAreaDialog {
 
@@ -61,7 +63,17 @@ public class CreatePlateLayout extends TitleAreaDialog {
 		
 		//populate the combobox
 		IPlateLayoutManager plm  = (IPlateLayoutManager) Springcontact.getBean("plateLayoutManager");
-		plateTypes = plm.getAllPlateTypesNotDeleted().toArray(plateTypes);
+		try {
+		    plateTypes = plm.getAllPlateTypesNotDeleted().toArray(plateTypes);
+		}
+		catch (Exception e) {
+		    MessageDialog.openError( 
+		        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+		        "An error has occured", 
+		        "Could not load plate types. Maybe a missing refresh. "
+		            + "If nothing else works please restart." );
+        }
+		
 		String[] items = new String[plateTypes.length];
 		for (int i = 0; i < items.length; i++) {
 			items[i] = plateTypes[i].getName();

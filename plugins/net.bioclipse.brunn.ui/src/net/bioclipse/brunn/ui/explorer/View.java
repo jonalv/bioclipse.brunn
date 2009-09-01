@@ -426,17 +426,25 @@ public class View extends ViewPart implements IUserManagerListener {
             @Override
             public void performWork( IProgressMonitor monitor ) {
 
-                AbstractFolder recievingFolder 
-                    = (AbstractFolder) selectedDomainObject.getFolder();
-                IFolderManager fom 
-                    = (IFolderManager) Springcontact.getBean("folderManager");
-
-                fom.createFolder( Activator.getDefault().getCurrentUser(), 
-                                  dialog.getName(),
-                                  (net.bioclipse.brunn.pojos.Folder)
-                                      recievingFolder.getPOJO() );
-
-                recievingFolder.fireUpdate();                   
+                monitor.beginTask( "Creating Folder", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    AbstractFolder recievingFolder 
+                        = (AbstractFolder) selectedDomainObject.getFolder();
+                    IFolderManager fom 
+                        = (IFolderManager) 
+                          Springcontact.getBean("folderManager");
+    
+                    fom.createFolder( Activator.getDefault().getCurrentUser(), 
+                                      dialog.getName(),
+                                      (net.bioclipse.brunn.pojos.Folder)
+                                          recievingFolder.getPOJO() );
+    
+                    recievingFolder.fireUpdate();                
+                }
+                finally {
+                    monitor.done();
+                }
             }
 		};
 
@@ -447,6 +455,7 @@ public class View extends ViewPart implements IUserManagerListener {
             @Override
             public void performWork( IProgressMonitor monitor ) {
 
+                monitor.beginTask( "Creating Plate", IProgressMonitor.UNKNOWN );
                 AbstractFolder recievingFolder 
                     = (AbstractFolder) selectedDomainObject.getFolder();
                 IPlateManager pm 
@@ -487,6 +496,9 @@ public class View extends ViewPart implements IUserManagerListener {
                         }
                     });
                 }
+                finally {
+                    monitor.done();
+                }
                 recievingFolder.fireUpdate();
             }
 
@@ -509,18 +521,25 @@ public class View extends ViewPart implements IUserManagerListener {
             @Override
             public void performWork( IProgressMonitor monitor ) {
 
-                AbstractFolder recievingFolder 
-                    = (AbstractFolder) selectedDomainObject.getFolder();
-                IOriginManager orm 
-                    = (IOriginManager) Springcontact.getBean("originManager");
-
-                orm.createCellOrigin( Activator.getDefault()
-                                               .getCurrentUser(), 
-                                      dialog.getName(),
-                                      (net.bioclipse.brunn.pojos.Folder)
-                                          recievingFolder.getPOJO() );
-
-                recievingFolder.fireUpdate();                
+                monitor.beginTask( "Creating Cell Line", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    AbstractFolder recievingFolder 
+                        = (AbstractFolder) selectedDomainObject.getFolder();
+                    IOriginManager orm 
+                        = (IOriginManager) Springcontact.getBean("originManager");
+    
+                    orm.createCellOrigin( Activator.getDefault()
+                                                   .getCurrentUser(), 
+                                          dialog.getName(),
+                                          (net.bioclipse.brunn.pojos.Folder)
+                                              recievingFolder.getPOJO() );
+    
+                    recievingFolder.fireUpdate();
+                }
+                finally {
+                    monitor.done();
+                }
             }
 
             @Override
@@ -541,18 +560,27 @@ public class View extends ViewPart implements IUserManagerListener {
 
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                AbstractFolder recievingFolder 
-                    = (AbstractFolder) selectedDomainObject.getFolder();
-                IOriginManager orm 
-                    = (IOriginManager) Springcontact.getBean("originManager");
-
-                orm.createPatientOrigin( Activator.getDefault()
-                                                  .getCurrentUser(), 
-                                         dialog.getName(),
-                                         dialog.getLid(),
-                                         (net.bioclipse.brunn.pojos.Folder)
-                                            recievingFolder.getPOJO() );
-                recievingFolder.fireUpdate();
+                
+                monitor.beginTask( "Creating Platient Cell", 
+                                   IProgressMonitor.UNKNOWN );
+                
+                try {
+                    AbstractFolder recievingFolder 
+                        = (AbstractFolder) selectedDomainObject.getFolder();
+                    IOriginManager orm = (IOriginManager) 
+                                         Springcontact.getBean("originManager");
+    
+                    orm.createPatientOrigin( Activator.getDefault()
+                                                      .getCurrentUser(), 
+                                             dialog.getName(),
+                                             dialog.getLid(),
+                                             (net.bioclipse.brunn.pojos.Folder)
+                                                recievingFolder.getPOJO() );
+                    recievingFolder.fireUpdate();
+                }
+                finally {
+                    monitor.done();
+                }
             }
 
             @Override
@@ -574,19 +602,27 @@ public class View extends ViewPart implements IUserManagerListener {
 
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                AbstractFolder recievingFolder 
-                    = (AbstractFolder) selectedDomainObject.getFolder();
-                IPlateManager pm 
-                    = (IPlateManager) Springcontact.getBean("plateManager");
-
-                pm.createMasterPlate( Activator.getDefault().getCurrentUser(), 
-                                      dialog.getName(),
-                                      dialog.getSelectedPlateLayout(),
-                                      (net.bioclipse.brunn.pojos.Folder)
-                                          recievingFolder.getPOJO(), 
-                                      dialog.getNumOfPlates() );
-                
-                recievingFolder.fireUpdate();
+                monitor.beginTask( "Creating Master Plate", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    AbstractFolder recievingFolder 
+                        = (AbstractFolder) selectedDomainObject.getFolder();
+                    IPlateManager pm = (IPlateManager) 
+                                       Springcontact.getBean("plateManager");
+    
+                    pm.createMasterPlate( Activator.getDefault()
+                                                   .getCurrentUser(), 
+                                          dialog.getName(),
+                                          dialog.getSelectedPlateLayout(),
+                                          (net.bioclipse.brunn.pojos.Folder)
+                                              recievingFolder.getPOJO(), 
+                                          dialog.getNumOfPlates() );
+                    
+                    recievingFolder.fireUpdate();
+                }
+                finally {
+                    monitor.done();
+                }
             }
 
             @Override
@@ -744,20 +780,27 @@ public class View extends ViewPart implements IUserManagerListener {
             @Override
             public void performWork( IProgressMonitor monitor ) {
 
-                AbstractFolder recievingFolder 
-                    = (AbstractFolder) selectedDomainObject.getFolder();
-                IPlateLayoutManager plm
-                    = (IPlateLayoutManager) 
-                          Springcontact.getBean("plateLayoutManager");
-
-                plm.createPlateLayout( Activator.getDefault()
-                                                .getCurrentUser(), 
-                                       dialog.getName(),
-                                       dialog.getPlateType(),
-                                       (net.bioclipse.brunn.pojos.Folder)
-                                           recievingFolder.getPOJO() );
-
-                recievingFolder.fireUpdate();
+                monitor.beginTask( "Creating Plate Layout", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    AbstractFolder recievingFolder 
+                        = (AbstractFolder) selectedDomainObject.getFolder();
+                    IPlateLayoutManager plm
+                        = (IPlateLayoutManager) 
+                              Springcontact.getBean("plateLayoutManager");
+    
+                    plm.createPlateLayout( Activator.getDefault()
+                                                    .getCurrentUser(), 
+                                           dialog.getName(),
+                                           dialog.getPlateType(),
+                                           (net.bioclipse.brunn.pojos.Folder)
+                                               recievingFolder.getPOJO() );
+    
+                    recievingFolder.fireUpdate();
+                }
+                finally {
+                    monitor.done();
+                }
             }
 
             @Override
@@ -776,20 +819,27 @@ public class View extends ViewPart implements IUserManagerListener {
 			
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                AbstractFolder recievingFolder 
-                    = (AbstractFolder) selectedDomainObject.getFolder();
-                IPlateLayoutManager plm 
-                    = (IPlateLayoutManager) 
-                        Springcontact.getBean("plateLayoutManager");
-
-                plm.createPlateType( Activator.getDefault().getCurrentUser(), 
-                        dialog.getNumberOfColumns(),
-                        dialog.getNumberOfRows(), 
-                        dialog.getName(), 
-                        (net.bioclipse.brunn.pojos.Folder)
-                            recievingFolder.getPOJO() );
-
-                recievingFolder.fireUpdate();                   
+                monitor.beginTask( "Creating Plate Type", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    AbstractFolder recievingFolder 
+                        = (AbstractFolder) selectedDomainObject.getFolder();
+                    IPlateLayoutManager plm 
+                        = (IPlateLayoutManager) 
+                            Springcontact.getBean("plateLayoutManager");
+    
+                    plm.createPlateType( Activator.getDefault().getCurrentUser(), 
+                            dialog.getNumberOfColumns(),
+                            dialog.getNumberOfRows(), 
+                            dialog.getName(), 
+                            (net.bioclipse.brunn.pojos.Folder)
+                                recievingFolder.getPOJO() );
+    
+                    recievingFolder.fireUpdate();                   
+                }
+                finally { 
+                    monitor.done();
+                }
             }
 
             @Override
@@ -863,18 +913,26 @@ public class View extends ViewPart implements IUserManagerListener {
             @Override
             public void performWork( IProgressMonitor monitor ) {
 
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.PlateType plateType 
-                        = (net.bioclipse.brunn.pojos.PlateType) 
-                            element.getPOJO();
-                    IPlateLayoutManager pm 
-                        = (IPlateLayoutManager) 
-                            Springcontact.getBean("plateLayoutManager");
-                    plateType.delete();
-                    pm.edit( Activator.getDefault().getCurrentUser(), 
-                             plateType );
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for (Iterator iter = selection.iterator(); iter.hasNext();) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.PlateType plateType 
+                            = (net.bioclipse.brunn.pojos.PlateType) 
+                                element.getPOJO();
+                        IPlateLayoutManager pm 
+                            = (IPlateLayoutManager) 
+                                Springcontact.getBean("plateLayoutManager");
+                        plateType.delete();
+                        pm.edit( Activator.getDefault().getCurrentUser(), 
+                                 plateType );
+                        element.fireUpdate();
+                        monitor.worked( 1 );
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
@@ -893,17 +951,25 @@ public class View extends ViewPart implements IUserManagerListener {
 		    
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.PlateLayout pojo 
-                        = (net.bioclipse.brunn.pojos.PlateLayout) 
-                            element.getPOJO();
-                    IPlateLayoutManager pm 
-                        = (IPlateLayoutManager) 
-                            Springcontact.getBean("plateLayoutManager");
-                    pojo.delete();
-                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for (Iterator iter = selection.iterator(); 
+                         iter.hasNext();) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.PlateLayout pojo 
+                            = (net.bioclipse.brunn.pojos.PlateLayout) 
+                                element.getPOJO();
+                        IPlateLayoutManager pm 
+                            = (IPlateLayoutManager) 
+                                Springcontact.getBean("plateLayoutManager");
+                        pojo.delete();
+                        pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
@@ -920,16 +986,25 @@ public class View extends ViewPart implements IUserManagerListener {
 		    
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.Plate pojo 
-                        = (net.bioclipse.brunn.pojos.Plate) element.getPOJO();
-                    IPlateManager pm 
-                        = (IPlateManager) 
-                            Springcontact.getBean("plateManager");
-                    pojo.delete();
-                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.Plate pojo 
+                            = (net.bioclipse.brunn.pojos.Plate) 
+                              element.getPOJO();
+                        IPlateManager pm 
+                            = (IPlateManager) 
+                                Springcontact.getBean("plateManager");
+                        pojo.delete();
+                        pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
@@ -946,17 +1021,25 @@ public class View extends ViewPart implements IUserManagerListener {
 
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.MasterPlate pojo 
-                        = (net.bioclipse.brunn.pojos.MasterPlate) 
-                            element.getPOJO();
-                    IPlateManager pm 
-                        = (IPlateManager) 
-                            Springcontact.getBean("plateManager");
-                    pojo.delete();
-                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.MasterPlate pojo 
+                            = (net.bioclipse.brunn.pojos.MasterPlate) 
+                                element.getPOJO();
+                        IPlateManager pm 
+                            = (IPlateManager) 
+                                Springcontact.getBean("plateManager");
+                        pojo.delete();
+                        pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
@@ -973,17 +1056,25 @@ public class View extends ViewPart implements IUserManagerListener {
 
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.DrugOrigin pojo 
-                        = (net.bioclipse.brunn.pojos.DrugOrigin) 
-                            element.getPOJO();
-                    IOriginManager om 
-                        = (IOriginManager) 
-                            Springcontact.getBean("originManager");
-                    pojo.delete();
-                    om.edit(Activator.getDefault().getCurrentUser(), pojo);
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.DrugOrigin pojo 
+                            = (net.bioclipse.brunn.pojos.DrugOrigin) 
+                                element.getPOJO();
+                        IOriginManager om 
+                            = (IOriginManager) 
+                                Springcontact.getBean("originManager");
+                        pojo.delete();
+                        om.edit(Activator.getDefault().getCurrentUser(), pojo);
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
@@ -1000,17 +1091,25 @@ public class View extends ViewPart implements IUserManagerListener {
 
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.CellOrigin pojo 
-                        = (net.bioclipse.brunn.pojos.CellOrigin) 
-                            element.getPOJO();
-                    IOriginManager pm 
-                        = (IOriginManager) 
-                            Springcontact.getBean("originManager");
-                    pojo.delete();
-                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.CellOrigin pojo 
+                            = (net.bioclipse.brunn.pojos.CellOrigin) 
+                                element.getPOJO();
+                        IOriginManager pm 
+                            = (IOriginManager) 
+                                Springcontact.getBean("originManager");
+                        pojo.delete();
+                        pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
@@ -1027,18 +1126,26 @@ public class View extends ViewPart implements IUserManagerListener {
 
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.Folder pojo 
-                        = (net.bioclipse.brunn.pojos.Folder) 
-                            element.getPOJO();
-                    IFolderManager fm 
-                        = (IFolderManager) 
-                            Springcontact.getBean("folderManager");
-                    pojo.delete();
-                    fm.editMerging( Activator.getDefault().getCurrentUser(), 
-                                    pojo );
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.Folder pojo 
+                            = (net.bioclipse.brunn.pojos.Folder) 
+                                element.getPOJO();
+                        IFolderManager fm 
+                            = (IFolderManager) 
+                                Springcontact.getBean("folderManager");
+                        pojo.delete();
+                        fm.editMerging( Activator.getDefault().getCurrentUser(), 
+                                        pojo );
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
@@ -1055,17 +1162,25 @@ public class View extends ViewPart implements IUserManagerListener {
 
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.PatientOrigin pojo 
-                        = (net.bioclipse.brunn.pojos.PatientOrigin) 
-                            element.getPOJO();
-                    IOriginManager m 
-                        = (IOriginManager) 
-                            Springcontact.getBean("originManager");
-                    pojo.delete();
-                    m.edit(Activator.getDefault().getCurrentUser(), pojo);
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.PatientOrigin pojo 
+                            = (net.bioclipse.brunn.pojos.PatientOrigin) 
+                                element.getPOJO();
+                        IOriginManager m 
+                            = (IOriginManager) 
+                                Springcontact.getBean("originManager");
+                        pojo.delete();
+                        m.edit(Activator.getDefault().getCurrentUser(), pojo);
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
@@ -1083,18 +1198,26 @@ public class View extends ViewPart implements IUserManagerListener {
 	
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.PlateType plateType 
-                        = (net.bioclipse.brunn.pojos.PlateType) 
-                            element.getPOJO();
-                    IPlateLayoutManager pm 
-                        = (IPlateLayoutManager) 
-                            Springcontact.getBean("plateLayoutManager");
-                    plateType.unDelete();
-                    pm.edit( Activator.getDefault().getCurrentUser(), 
-                             plateType );
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.PlateType plateType 
+                            = (net.bioclipse.brunn.pojos.PlateType) 
+                                element.getPOJO();
+                        IPlateLayoutManager pm 
+                            = (IPlateLayoutManager) 
+                                Springcontact.getBean("plateLayoutManager");
+                        plateType.unDelete();
+                        pm.edit( Activator.getDefault().getCurrentUser(), 
+                                 plateType );
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
@@ -1112,17 +1235,25 @@ public class View extends ViewPart implements IUserManagerListener {
 
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.PlateLayout pojo 
-                        = (net.bioclipse.brunn.pojos.PlateLayout) 
-                            element.getPOJO();
-                    IPlateLayoutManager pm 
-                        = (IPlateLayoutManager) 
-                            Springcontact.getBean("plateLayoutManager");
-                    pojo.unDelete();
-                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as not deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.PlateLayout pojo 
+                            = (net.bioclipse.brunn.pojos.PlateLayout) 
+                                element.getPOJO();
+                        IPlateLayoutManager pm 
+                            = (IPlateLayoutManager) 
+                                Springcontact.getBean("plateLayoutManager");
+                        pojo.unDelete();
+                        pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
@@ -1141,17 +1272,25 @@ public class View extends ViewPart implements IUserManagerListener {
             @Override
             public void performWork( IProgressMonitor monitor ) {
 
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.Plate pojo 
-                        = (net.bioclipse.brunn.pojos.Plate) 
-                            element.getPOJO();
-                    IPlateManager pm 
-                        = (IPlateManager) 
-                            Springcontact.getBean("plateManager");
-                    pojo.unDelete();
-                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as not deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.Plate pojo 
+                            = (net.bioclipse.brunn.pojos.Plate) 
+                                element.getPOJO();
+                        IPlateManager pm 
+                            = (IPlateManager) 
+                                Springcontact.getBean("plateManager");
+                        pojo.unDelete();
+                        pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
@@ -1169,14 +1308,27 @@ public class View extends ViewPart implements IUserManagerListener {
 		    
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.MasterPlate pojo = (net.bioclipse.brunn.pojos.MasterPlate) element.getPOJO();
-                    IPlateManager pm = (IPlateManager) Springcontact.getBean("plateManager");
-                    pojo.unDelete();
-                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-                    element.fireUpdate();
-                }            }
+                monitor.beginTask( "Marking as not deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.MasterPlate pojo 
+                            = (net.bioclipse.brunn.pojos.MasterPlate) 
+                              element.getPOJO();
+                        IPlateManager pm 
+                            = (IPlateManager) 
+                              Springcontact.getBean("plateManager");
+                        pojo.unDelete();
+                        pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
+                }
+            }
 
             @Override
             public int popUpDialog( IStructuredSelection selection ) {
@@ -1193,17 +1345,25 @@ public class View extends ViewPart implements IUserManagerListener {
             @Override
             public void performWork( IProgressMonitor monitor ) {
 
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.DrugOrigin pojo 
-                        = (net.bioclipse.brunn.pojos.DrugOrigin) 
-                            element.getPOJO();
-                    IOriginManager om 
-                        = (IOriginManager) 
-                            Springcontact.getBean("originManager");
-                    pojo.unDelete();
-                    om.edit(Activator.getDefault().getCurrentUser(), pojo);
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as not deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.DrugOrigin pojo 
+                            = (net.bioclipse.brunn.pojos.DrugOrigin) 
+                                element.getPOJO();
+                        IOriginManager om 
+                            = (IOriginManager) 
+                                Springcontact.getBean("originManager");
+                        pojo.unDelete();
+                        om.edit(Activator.getDefault().getCurrentUser(), pojo);
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
@@ -1221,18 +1381,26 @@ public class View extends ViewPart implements IUserManagerListener {
 	
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.CellOrigin pojo 
-                        = (net.bioclipse.brunn.pojos.CellOrigin) 
-                            element.getPOJO();
-                    IOriginManager pm 
-                        = (IOriginManager) 
-                            Springcontact.getBean("originManager");
-                    pojo.unDelete();
-                    pm.edit(Activator.getDefault().getCurrentUser(), pojo);
-                    element.fireUpdate();
-                }                
+                monitor.beginTask( "Marking as not deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.CellOrigin pojo 
+                            = (net.bioclipse.brunn.pojos.CellOrigin) 
+                                element.getPOJO();
+                        IOriginManager pm 
+                            = (IOriginManager) 
+                                Springcontact.getBean("originManager");
+                        pojo.unDelete();
+                        pm.edit(Activator.getDefault().getCurrentUser(), pojo);
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
+                }
             }
 
             @Override
@@ -1249,18 +1417,27 @@ public class View extends ViewPart implements IUserManagerListener {
 
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.Folder pojo 
-                        = (net.bioclipse.brunn.pojos.Folder) element.getPOJO();
-                    IFolderManager fm 
-                        = (IFolderManager) 
-                            Springcontact.getBean("folderManager");
-                    pojo.unDelete();
-                    fm.editMerging( Activator.getDefault().getCurrentUser(), 
-                                    pojo );
-                    element.fireUpdate();
-                }                
+                monitor.beginTask( "Marking as not deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.Folder pojo 
+                            = (net.bioclipse.brunn.pojos.Folder) 
+                              element.getPOJO();
+                        IFolderManager fm 
+                            = (IFolderManager) 
+                                Springcontact.getBean("folderManager");
+                        pojo.unDelete();
+                        fm.editMerging( Activator.getDefault().getCurrentUser(), 
+                                        pojo );
+                        element.fireUpdate();
+                    } 
+                }
+                finally {
+                    monitor.done();
+                }
             }
 
             @Override
@@ -1277,17 +1454,25 @@ public class View extends ViewPart implements IUserManagerListener {
 
             @Override
             public void performWork( IProgressMonitor monitor ) {
-                for (Iterator iter = selection.iterator(); iter.hasNext();) {
-                    ITreeObject element = (ITreeObject) iter.next();
-                    net.bioclipse.brunn.pojos.PatientOrigin pojo 
-                        = (net.bioclipse.brunn.pojos.PatientOrigin) 
-                            element.getPOJO();
-                    IOriginManager m 
-                        = (IOriginManager) 
-                            Springcontact.getBean("originManager");
-                    pojo.unDelete();
-                    m.edit(Activator.getDefault().getCurrentUser(), pojo);
-                    element.fireUpdate();
+                monitor.beginTask( "Marking as not deleted", 
+                                   IProgressMonitor.UNKNOWN );
+                try {
+                    for ( Iterator iter = selection.iterator(); 
+                          iter.hasNext(); ) {
+                        ITreeObject element = (ITreeObject) iter.next();
+                        net.bioclipse.brunn.pojos.PatientOrigin pojo 
+                            = (net.bioclipse.brunn.pojos.PatientOrigin) 
+                                element.getPOJO();
+                        IOriginManager m 
+                            = (IOriginManager) 
+                                Springcontact.getBean("originManager");
+                        pojo.unDelete();
+                        m.edit(Activator.getDefault().getCurrentUser(), pojo);
+                        element.fireUpdate();
+                    }
+                }
+                finally {
+                    monitor.done();
                 }
             }
 
