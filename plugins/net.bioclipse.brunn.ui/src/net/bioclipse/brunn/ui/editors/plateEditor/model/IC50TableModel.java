@@ -47,7 +47,7 @@ public class IC50TableModel extends KTableDefaultModel{
 		if ( replicates.getPlate().getWell( 1, 'a' )
 		               .getSampleContainer()
 		               .getWorkList()
-		               .getAbstractOperations().size() > 1 ) {
+		               .getAbstractOperations().size() > 0 ) {
     		fillContent(replicates);
     		extractEntries();
 		}
