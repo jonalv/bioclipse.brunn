@@ -14,7 +14,7 @@
     <description>
 	    All things stored in the Brunn database can be viewed using the Brunn 
 	    view. In order to show this view click 
-	    <b>Window -> Show View -> Other...</b> and choose the Brunn view in
+	    <b>Window -> Show View -> Other...</b> and choose Brunn Explorer view in
 	    the Brunn category.
     </description>
   </item>
@@ -31,7 +31,7 @@
   <item title="Create the Plate Layout">
     <description>
 	    Right click on Plate Layouts or a sub folder to Plate Layouts in the 
-	    Brunn view and select <b>create Plate Layout</b>. In the dialog that 
+	    Brunn view and select <b>Create Plate Layout</b>. In the dialog that 
 	    pops up give your new Plate Layout a name and choose a Plate Type.
     </description>
   </item>
@@ -54,7 +54,6 @@
         <b>Mx</b>: Substance marker. The first created will be M1 then M2 
                    and so on. One marker signifies one substance. <br/>
         <b>B</b>: Blank. <br/>
-        <b>S</b>: Solvent. <br/>
         In order to place markers, select some wells and right click and choose 
         what marker to add. (One M1 symbolizes one substance, so to make a 
         dilution serie for a substance mark a line of wells with the same M 
@@ -65,7 +64,7 @@
   <item title="Creating Plate Functions">
     <description>
     Plate Functions are values calculated for the plate. For example the average
-    of all controls would be a plate functions. While the markers where added a 
+    of all controls would be a plate function. While the markers where added a 
     couple of standard Plate Functions where automagicly generated. More can be 
     added by right clicking in the Plate Functions table in the lower part of 
     the editor and choosing <b>Add Function</b>. <br/>
@@ -86,7 +85,7 @@
       The same functions available when writing Plate Functions are available 
       for Well functions. In order to get the raw value of the well just write 
       well. <br/>
-      A SI% functions can look something like this: <br/>
+      An SI% functions can look something like this: <br/>
       100 * ( well - AVG_AllBlanks() ) / ( AVG_C1() - AVG_AllBlanks() ) <br/>
       (Note that the SI% function for all wells using the same control can be 
       made at the same time)
