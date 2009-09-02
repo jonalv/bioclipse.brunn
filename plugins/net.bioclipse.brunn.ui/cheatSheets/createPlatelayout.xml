@@ -1,12 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cheatsheet title="Create and configure Plate Layout tutorial">
+<cheatsheet title="Creating and configuring a Plate Layout">
+  
   <intro>
-    <description>This tutorial explains how a Plate Layout with markers and calculation functions are created.</description>
+    <description>
+	    This tutorial explains how a Plate Layout with markers and calculation 
+	    functions are created. A Plate Layout defines which wells are used for 
+	    controls, blanks or dilution series. It also defines the calculation 
+	    functions applied on the raw values in order to reach for example SI%. 
+    </description>
   </intro>
+  
   <item title="Show the Brunn View" skip="true">
-    <description></description>
+    <description>
+	    All things stored in the Brunn database can be viewed using the Brunn 
+	    view. In order to show this view click 
+	    <b>Window -> Show View -> Other...</b> and choose the Brunn view in
+	    the Brunn category.
+    </description>
   </item>
+  
+  <item title="Log In" skip="true">
+    <description>
+        In order to access what is stored in the Brunn database you need to 
+        sign in with your username and password. This can be done by right 
+        clicking in the Brunn view where it says "Not Logged In" and select 
+        <b>Log In</b> or by <b>File -> Log In</b>.
+    </description>
+  </item>
+  
   <item title="Create the Plate Layout">
-    <description>Right click on Plate Layouts in the Brunn view and select create Plate Layout.</description>
+    <description>
+	    Right click on Plate Layouts or a sub folder to Plate Layouts in the 
+	    Brunn view and select <b>create Plate Layout</b>. In the dialog that 
+	    pops up give your new Plate Layout a name and choose a Plate Type.
+    </description>
   </item>
+  
+  <item title="Open the new Plate Layout in the Plate Layout editor">
+    <description>
+        In order to place well markers and enter calculation functions the 
+        Plate Layout needs to be opened in an editor. Double click the new 
+        Plate Layout in the Brunn View. (It should be created now in the folder 
+        you right clicked in the previous step)
+    </description>
+  </item>
+  
+  <item title="Place Markers">
+    <description>
+        The well markers signal what the well is to be used for. There are 
+        5 different sort of markers. <br/>
+        <b>P</b>: Positive Control <br/>
+        <b>C</b>: Control <br/>       
+        <b>Mx</b>: Substance marker. The first created will be M1 then M2 
+                   and so on. One marker signifies one substance. <br/>
+        <b>B</b>: Blank. <br/>
+        <b>S</b>: Solvent. <br/>
+        In order to place markers, select some wells and right click and choose 
+        what marker to add. (One M1 symbolizes one substance, so to make a 
+        dilution serie for a substance mark a line of wells with the same M 
+        marker.)
+    </description>
+  </item>
+
+  <item title="Creating Plate Functions">
+    <description>
+    Plate Functions are values calculated for the plate. For example the average
+    of all controls would be a plate functions. While the markers where added a 
+    couple of standard Plate Functions where automagicly generated. More can be 
+    added by right clicking in the Plate Functions table in the lower part of 
+    the editor and choosing <b>Add Function</b>. <br/>
+    The following functions can be of use when writing Plate Functions: stddev, 
+    avg, and sum. They can be called either like stddev(A1:B2) or 
+    stddev(A1, A2, B1, B2).
+    </description>
+  </item>
+  
+  <item title="Creating Well Functions">
+    <description>
+      Well functions are used for calculating well specific like for example
+      SI%. To add an SI% well function to a couple of wells do like this: <br/>
+      <b>*</b> Select the wells that should have the new Well function <br/>
+      <b>*</b> Make sure the bottom part of the editor shows 
+               Well functions. <br/>
+      <b>*</b> Right click and choose <b>Add function</b> <br/>
+      The same functions available when writing Plate Functions are available 
+      for Well functions. In order to get the raw value of the well just write 
+      well. <br/>
+      A SI% functions can look something like this: <br/>
+      100 * ( well - AVG_AllBlanks() ) / ( AVG_C1() - AVG_AllBlanks() ) <br/>
+      (Note that the SI% function for all wells using the same control can be 
+      made at the same time)
+    </description>
+  </item>
+    
 </cheatsheet>
