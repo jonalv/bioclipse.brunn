@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="Create and configure Plate Layout tutorial">
+  <intro>
+    <description>This tutorial explains how a Plate Layout with markers and calculation functions are created.</description>
+  </intro>
+  <item title="Show the Brunn View" skip="true">
+    <description></description>
+  </item>
+  <item title="Create the Plate Layout">
+    <description>Right click on Plate Layouts in the Brunn view and select create Plate Layout.</description>
+  </item>
+</cheatsheet>
