@@ -881,7 +881,7 @@ public class View extends ViewPart implements IUserManagerListener {
             }
 		};
 		
-		login = new Action("Login") {
+		login = new Action("Log In") {
 		    
 		    @Override
 		    public void run() {
