@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="Creating and configuring a Master Plate">
+  
+  <intro>
+    <description>
+      This tutorial explains how a Master Plate is created. A Master Plate 
+      defines which compounds and with what concentration the wells contains.
+    </description>
+  </intro>
+  
+  <item title="Show the Brunn View" skip="true">
+    <description>
+      All things stored in the Brunn database can be viewed using the Brunn 
+      view. In order to show this view click 
+      <b>Window -> Show View -> Other...</b> and choose Brunn Explorer view in
+      the Brunn category.
+    </description>
+  </item>
+  
+  <item title="Log In" skip="true">
+    <description>
+      In order to access what is stored in the Brunn database you need to 
+      sign in with your username and password. This can be done by right 
+      clicking in the Brunn view where it says "Not Logged In" and select 
+      <b>Log In</b> or by <b>File -> Log In</b>.
+    </description>
+  </item>
+  
+  <item title="Create the Master Plate">
+    <description>
+      Right click on Master Plate or a sub folder to Master Plates in the 
+      Brunn view and select <b>Create Master Plate</b>. In the dialog that 
+      pops up choose a Plate Layout to base your Master Plate on, give the 
+      number of plates in the batch and give your new Master Plate a name.
+    </description>
+  </item>
+
+  <item title="Create Compounds" skip="true">
+    <description>
+      Before adding compounds to the Master Plate, some compounds might need 
+      to be created. Compounds are created in the same way as Master Plates. 
+      Right click the Compounds folder or any of it's subfolders and select 
+      <b>Create Compound</b>. Give it a name and a molecular weight if 
+      applicable. Checking the "Keep creating more compunds" box opens a new 
+      instance of the dialog ready to create another compound when <b>OK</b> 
+      is clicked.
+    </description>
+  </item>
+  
+  <item title="Open the new Master Plate in the Master Plate Editor">
+    <description>
+      In order to place compounds on the Master Plate it needs to be opened 
+      in an editor. Double click the new Master Plate in the Brunn View. (It 
+      should be created by now in the folder you right clicked in the previous 
+      step)
+    </description>
+  </item>
+
+  <item title="Add Compounds to the Master Plate">
+	<description>
+	  Compounds are added by dragging them from the Brunn Explorer view to one
+	  of the list of markers in the bottom part of the editor. This brings up a 
+	  dialog where dilutions series can be created. When <b>OK</b> is clicked in 
+	  this dialog the compound is added to all wells with that marker.
+	</description>
+  </item>
+  
+  <item title="Edit Compound Concentrations on the Master Plate" skip="true">
+    <description>
+      If the desired concentrations could not be achieved using the dialog, the 
+      concentration of a compound in a well can be changed by double clicking 
+      and editing the value in a dialog.
+    </description>
+  </item>
+  
+  <item title="The Report">
+    <description>
+      Once all markers have been connected to a compound, a report of the master 
+      plate can be viewed. Change to the report tab by clicking <b>Report</b> in 
+      the bottom left corner of the editor. The report can be exported to PDF by
+      clicking the <b>Export Report</b> icon (fourth from left) and choose PDF 
+      as export format. Also recommended is to tick the fit to page box. The 
+      exported pdf will be opened in some program depending on how the local 
+      computer is set up and can hopefully be printed from that program. (It is
+      alos possible to export to as a .doc file and open it in Microsoft Word).
+    </description>
+  </item>
+
+</cheatsheet>

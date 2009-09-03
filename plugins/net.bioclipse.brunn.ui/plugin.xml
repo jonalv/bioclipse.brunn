@@ -93,12 +93,15 @@
             required="true" />
 	    </AccountType>
   </extension>
+  
   <extension
         point="org.eclipse.ui.cheatsheets.cheatSheetContent">
+
      <category
            id="net.bioclipse.brunn.ui.cheatsheets.category"
            name="Brunn Tutorials">
      </category>
+
      <cheatsheet
            category="net.bioclipse.brunn.ui.cheatsheets.category"
            composite="false"
@@ -106,5 +109,15 @@
            id="net.bioclipse.brunn.ui.creatingPlateLayoutCheatsheet"
            name="Creating a Plate Layout">
      </cheatsheet>
+
+     <cheatsheet
+           category="net.bioclipse.brunn.ui.cheatsheets.category"
+           composite="false"
+           contentFile="cheatSheets/createMasterPlate.xml"
+           id="net.bioclipse.brunn.ui.creatingMasterPlateCheatsheet"
+           name="Creating a Master Plate">
+     </cheatsheet>
+     
   </extension>
+
 </plugin>
