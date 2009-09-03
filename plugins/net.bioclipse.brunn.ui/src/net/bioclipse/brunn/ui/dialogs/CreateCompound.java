@@ -100,6 +100,7 @@ public class CreateCompound extends TitleAreaDialog {
 		textMW.setLayoutData(fd_textMW);
 
 		textStructure = new Text(container, SWT.BORDER);
+		textStructure.setEnabled(false);
 		final FormData fd_textStructure = new FormData();
 		fd_textStructure.bottom = new FormAttachment(0, 94);
 		fd_textStructure.top = new FormAttachment(0, 69);
@@ -108,6 +109,7 @@ public class CreateCompound extends TitleAreaDialog {
 		textStructure.setLayoutData(fd_textStructure);
 
 		browseButton = new Button(container, SWT.NONE);
+		browseButton.setEnabled(false);
 		final FormData fd_browseButton = new FormData();
 		fd_browseButton.bottom = new FormAttachment(0, 94);
 		fd_browseButton.top = new FormAttachment(0, 64);
