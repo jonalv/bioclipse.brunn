@@ -76,7 +76,16 @@ public class CreateMasterPlate extends TitleAreaDialog {
 		
 		//populate the comboMasterPlate
 		IPlateLayoutManager plm  = (IPlateLayoutManager) Springcontact.getBean("plateLayoutManager");
-		plateLayouts = plm.getAllPlateLayoutsNotDeleted().toArray(plateLayouts);
+		try {
+		    plateLayouts = plm.getAllPlateLayoutsNotDeleted().toArray(plateLayouts);
+		}
+		catch (Exception e) {
+	        MessageDialog.openError( 
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+	            "An error has occured", 
+	            "Could not load plate layouts. Maybe a missing refresh. "
+	            + "If nothing else works please restart." );
+        } 
 		String[] items = new String[plateLayouts.length];
 		for (int i = 0; i < items.length; i++) {
 			items[i] = plateLayouts[i].getName();
