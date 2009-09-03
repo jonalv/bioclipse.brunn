@@ -25,6 +25,11 @@ import org.junit.Test;
  */
 public class FunctionsTest extends CalculatorBaseTest {
 	
+    /**
+     * 
+     */
+    private static final double EPSILON = 1E-5;
+
     @Test
     public void zeroParamFunctions() {
         // Some functions have zero params
@@ -95,16 +100,19 @@ public class FunctionsTest extends CalculatorBaseTest {
         assertTrue( "vertical colon notation is syntactical", 
                     calcWithFunctions.isSyntactical("colonTest(A1:C1)") );
     	
-        assertFalse( "colon notation horizontally spanning undefined variables is not syntactical", 
+        assertFalse( "colon notation horizontally spanning undefined " 
+                     + "variables is not syntactical", 
                      calcWithFunctions.isSyntactical("colonTest(A1:A5)") );
     	
-        assertFalse( "colon notation vertically spanning undefined variables is not syntactical", 
+        assertFalse( "colon notation vertically spanning undefined variables " 
+                     + "is not syntactical", 
                      calcWithFunctions.isSyntactical("colonTest(A1:F1)") );
     	
         assertTrue( "box colon notation is syntactical", 
                     calcWithFunctions.isSyntactical("colonTest(A1:B2)") );
     	
-        assertFalse( "box colon notation including undefined variables is not syntactical",
+        assertFalse( "box colon notation including undefined variables " +
+        		     "is not syntactical",
                      calcWithFunctions.isSyntactical("colonTest(A1:C3)") );
     }
     
@@ -207,7 +215,9 @@ public class FunctionsTest extends CalculatorBaseTest {
                 assertEquals( "args should contain one value",
                               1, args.length );
                 assertEquals( "args[0] should be \"A1\"",
-                              calc.valueOf("A1"), args[0] );
+                              (double)calc.valueOf("A1"), 
+                              (double)args[0], 
+                              EPSILON );
                 return 0;
             }
         });
@@ -229,8 +239,9 @@ public class FunctionsTest extends CalculatorBaseTest {
                     for ( int i = 0; i < wantedVariables.length; i++ ) {
                         assertEquals("arguments should be: "
                                      + wantedVariables[i],
-                                     calc.valueOf( wantedVariables[i] ),
-                                     args[i] );
+                                     (double)calc.valueOf( wantedVariables[i] ),
+                                     (double)args[i],
+                                     EPSILON );
                     }
     				
                     return 0;
@@ -285,10 +296,10 @@ public class FunctionsTest extends CalculatorBaseTest {
             }
         });
     	
-        assertEquals( 0, calcWithFunctions.valueOf("A3-oneParam(0)") );
-        assertEquals( 1, calcWithFunctions.valueOf("A3/oneParam(0)") );
-        assertEquals( 1, calcWithFunctions.valueOf("A3*oneParam(0)") );
-        assertEquals( 2, calcWithFunctions.valueOf("A3+oneParam(0)") );
+        assertEquals( 0, calcWithFunctions.valueOf("A3-oneParam(0)"), EPSILON );
+        assertEquals( 1, calcWithFunctions.valueOf("A3/oneParam(0)"), EPSILON );
+        assertEquals( 1, calcWithFunctions.valueOf("A3*oneParam(0)"), EPSILON );
+        assertEquals( 2, calcWithFunctions.valueOf("A3+oneParam(0)"), EPSILON );
     }
     
     @Test
@@ -342,6 +353,6 @@ public class FunctionsTest extends CalculatorBaseTest {
     	
         String expression = "(f1())";
         assertTrue( calcWithFunctions.isSyntactical( expression ) );
-        assertEquals( 1, calcWithFunctions.valueOf(expression) );
+        assertEquals( 1, calcWithFunctions.valueOf(expression), EPSILON );
     }
 }
