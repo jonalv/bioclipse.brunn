@@ -118,6 +118,13 @@
            name="Creating a Master Plate">
      </cheatsheet>
      
+     <cheatsheet
+           category="net.bioclipse.brunn.ui.cheatsheets.category"
+           composite="false"
+           contentFile="cheatSheets/createPlate.xml"
+           id="net.bioclipse.brunn.ui.creatingPlateCheatsheet"
+           name="Creating a Plate and Importing Results">
+     </cheatsheet>
   </extension>
 
 </plugin>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="Creating and configuring a Master Plate">
+  
+  <intro>
+    <description>
+      This tutorial explains how a Plate is created and how results are
+      imported and connected with that plate. It also explains how the results 
+      can be examined.
+    </description>
+  </intro>
+  
+  <item title="Show the Brunn View" skip="true">
+    <description>
+      All things stored in the Brunn database can be viewed using the Brunn 
+      view. In order to show this view click 
+      <b>Window -> Show View -> Other...</b> and choose Brunn Explorer view in
+      the Brunn category.
+    </description>
+  </item>
+  
+  <item title="Log In" skip="true">
+    <description>
+      In order to access what is stored in the Brunn database you need to 
+      sign in with your username and password. This can be done by right 
+      clicking in the Brunn view where it says "Not Logged In" and select 
+      <b>Log In</b> or by <b>File -> Log In</b>.
+    </description>
+  </item>
+  
+  <item title="Create Plate">
+    <description>
+      Right click on Plates or a sub folder to Plates in the Brunn view and 
+      select <b>Create Plate</b>. In the dialog that
+      pops up give your new Plate a name, choose a Master Plate to base 
+      it on, either a cell sample or a patient sample and enter the plates 
+      barcode which will be used when importing data for it.
+    </description>
+  </item>
+
+  <item title="Opening the Import Results Wizard">
+    <description>
+      Results are imported into Brunn by clicking 
+      <b>Import Results from File</b> in the menu for the Brunn View. To open 
+      this menu click the little triangle in the upper right corner of the 
+      Brunn Explorer view.  
+    </description>
+  </item>
+  
+  <item title="Choosing Results File">
+    <description>
+      In the first wizard page click <B>Browse</B> and locate the file to 
+      import and click <B>OK</B>. Brunn supports imports from three 
+      different file formats. Two of them are file formats of files generated 
+      by machines and the third one is CSV files.
+    </description>
+  </item>
+  
+  <item title="Select Plates to Import">
+    <description>
+        The next wizard page looks a bit different depending on what file was 
+        used. If the file contained barcodes makes sure that the plate to be
+        imported really exists in the database and check the box next to it to 
+        import it when Finish is clicked. However if the file does not contain 
+        that barcode or if the barcode reader has failed to read the barcode the
+        barcode must be added manually. Select the row representing the plate to
+        be imported and right click and choose <b>Change barcode</b>. Once the 
+        wizard page reports that the plate with the given barcode exists in the 
+        database results can be imported for it.
+    </description>
+  </item>
+  
+  <item title="Opening the Plate Editor to View Results">
+    <description>
+      When data has been imported for a plate it can be viewed using the Plate 
+      editor. Locate the plate in the Brunn Explorer and doubleclick it to open 
+      it in the Plate Editor.
+    </description>
+  </item>
+  
+  <item title="The Overview tab in the Plate Editor">
+    <description>
+      The overview tab shows the values for the plate as they are organized on 
+      the actual plate. In the right end there is a list of all markers and 
+      another one of all plate functions. Selecting a marker will select the 
+      cells corresponding to the wells with that marker. At the bottom of the 
+      editor there is a combo box for showing different well functions in the 
+      big table and to the right there is a button for marking selected wells
+      as outliers. The results can be copied (to be pasted in for example Excel)
+      by clicking the <b>Copy data to Clipboard</b> button.<br/>
+      To switch to the Summary tab click <b>Summary</b> in the bottom left 
+      corner of the editor.
+    </description>
+  </item>
+  
+  <item title="The Summary tab in the Plate Editor">
+    <description>
+      The Summary tab shows all well functions for all wells and som more info. 
+      Wells can be marked as outliers by selecting the row corresponding to a 
+      well and clicking the <b>Mark as outlier</b> button in the bottom part of 
+      the editor.The table can be copied (to be pasted in for example Excel) by
+      clicking the <b>Copy Table to Clipboard</b> button. <br/>
+      To switch to the Average tab click <b>Average</b> in the bottom left 
+      corner of the editor.
+    </description>
+  </item>
+  
+  <item title="The Average tab in the Plate Editor">
+    <description>
+      The Average tab shows a similar table to the Summary tab but it has 
+      mashed together all replicates and shows the averages for them. <br/>
+      To switch to the IC50 tab click <b>IC50</b> in the bottom left corner of 
+      the editor.
+    </description>
+  </item>
+  
+  <item title="The IC50 tab in the Plate Editor">
+    <description>
+      This tab shows the estimated IC50 values for the compounds. <br/>
+      To switch to the report tab click <b>Report</b> in the bottom left corner 
+      of the editor. <br/>
+    </description>
+  </item>
+  
+  <item title="The Report tab in the Plate Editor">
+    <description>
+      The report tab contains a report with plots and numbers. It can be 
+      exported in multiple formats and hopefully printed from one of those 
+      exported formats. To export, click the export icon (fourth from the left) 
+      and choose a format and export.
+    </description>
+  </item>
+</cheatsheet>
