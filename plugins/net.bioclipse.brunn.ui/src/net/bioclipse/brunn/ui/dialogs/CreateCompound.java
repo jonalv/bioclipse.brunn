@@ -58,52 +58,46 @@ public class CreateCompound extends TitleAreaDialog {
 
 		nameLabel = new Label(container, SWT.NONE);
 		final FormData fd_nameLabel = new FormData();
-		fd_nameLabel.bottom = new FormAttachment(0, 47);
-		fd_nameLabel.top = new FormAttachment(0, 27);
-		fd_nameLabel.right = new FormAttachment(0, 149);
 		fd_nameLabel.left = new FormAttachment(0, 104);
 		nameLabel.setLayoutData(fd_nameLabel);
 		nameLabel.setText("Name:");
 
 		structureLabel = new Label(container, SWT.NONE);
 		final FormData fd_structureLabel = new FormData();
-		fd_structureLabel.bottom = new FormAttachment(0, 94);
-		fd_structureLabel.top = new FormAttachment(0, 74);
-		fd_structureLabel.right = new FormAttachment(0, 149);
+		fd_structureLabel.right = new FormAttachment(nameLabel, 0, SWT.RIGHT);
 		fd_structureLabel.left = new FormAttachment(0, 84);
 		structureLabel.setLayoutData(fd_structureLabel);
 		structureLabel.setText("Structure:");
 
 		molceularWeightLabel = new Label(container, SWT.NONE);
 		final FormData fd_molceularWeightLabel = new FormData();
-		fd_molceularWeightLabel.bottom = new FormAttachment(0, 141);
-		fd_molceularWeightLabel.top = new FormAttachment(0, 121);
-		fd_molceularWeightLabel.right = new FormAttachment(0, 149);
+		fd_molceularWeightLabel.right = new FormAttachment(nameLabel, 0, SWT.RIGHT);
 		fd_molceularWeightLabel.left = new FormAttachment(0, 39);
 		molceularWeightLabel.setLayoutData(fd_molceularWeightLabel);
 		molceularWeightLabel.setText("Molecular weight:");
 
 		textName = new Text(container, SWT.BORDER);
+		fd_nameLabel.right = new FormAttachment(textName, -6);
+		fd_nameLabel.bottom = new FormAttachment(textName, 0, SWT.BOTTOM);
 		final FormData fd_textName = new FormData();
 		fd_textName.bottom = new FormAttachment(0, 47);
-		fd_textName.top = new FormAttachment(0, 22);
 		fd_textName.right = new FormAttachment(0, 277);
 		fd_textName.left = new FormAttachment(0, 155);
 		textName.setLayoutData(fd_textName);
 
 		textMW = new Text(container, SWT.BORDER);
+		fd_molceularWeightLabel.top = new FormAttachment(textMW, 0, SWT.TOP);
 		final FormData fd_textMW = new FormData();
 		fd_textMW.bottom = new FormAttachment(0, 141);
-		fd_textMW.top = new FormAttachment(0, 116);
 		fd_textMW.right = new FormAttachment(0, 277);
 		fd_textMW.left = new FormAttachment(0, 155);
 		textMW.setLayoutData(fd_textMW);
 
 		textStructure = new Text(container, SWT.BORDER);
+		fd_structureLabel.bottom = new FormAttachment(textStructure, 0, SWT.BOTTOM);
 		textStructure.setEnabled(false);
 		final FormData fd_textStructure = new FormData();
 		fd_textStructure.bottom = new FormAttachment(0, 94);
-		fd_textStructure.top = new FormAttachment(0, 69);
 		fd_textStructure.right = new FormAttachment(0, 277);
 		fd_textStructure.left = new FormAttachment(0, 155);
 		textStructure.setLayoutData(fd_textStructure);
@@ -111,10 +105,8 @@ public class CreateCompound extends TitleAreaDialog {
 		browseButton = new Button(container, SWT.NONE);
 		browseButton.setEnabled(false);
 		final FormData fd_browseButton = new FormData();
-		fd_browseButton.bottom = new FormAttachment(0, 94);
-		fd_browseButton.top = new FormAttachment(0, 64);
-		fd_browseButton.right = new FormAttachment(0, 353);
-		fd_browseButton.left = new FormAttachment(0, 283);
+		fd_browseButton.bottom = new FormAttachment(structureLabel, 0, SWT.BOTTOM);
+		fd_browseButton.left = new FormAttachment(textStructure, 6);
 		browseButton.setLayoutData(fd_browseButton);
 		browseButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -130,8 +122,8 @@ public class CreateCompound extends TitleAreaDialog {
 
 		keepCreatingButton = new Button(container, SWT.CHECK);
 		final FormData fd_keepCreatingButton = new FormData();
+		fd_keepCreatingButton.left = new FormAttachment(0, 84);
 		fd_keepCreatingButton.top = new FormAttachment(0, 155);
-		fd_keepCreatingButton.left = new FormAttachment(structureLabel, 0, SWT.LEFT);
 		keepCreatingButton.setLayoutData(fd_keepCreatingButton);
 		keepCreatingButton.setText("Keep creating more compounds");
 		keepCreatingButton.setSelection(keepAddingCompounds);
