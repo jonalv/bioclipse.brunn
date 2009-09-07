@@ -35,6 +35,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Point;
@@ -333,6 +334,17 @@ public class PlateLayoutEditor extends EditorPart {
 		 */
 		mgr.add( new Action("Add function") {
 			public void run() {
+			    
+			    if ( markersTable.getCellSelection().length == 0 ) {
+			        MessageDialog.openInformation( 
+			            PlatformUI.getWorkbench()
+			                      .getActiveWorkbenchWindow()
+			                      .getShell(), 
+			            "No well selected", 
+			            "Select one or many wells to add the well "
+			            + "function to first" );
+			        return; 
+			    }
 	
 				CreateWellFunction dialog = new CreateWellFunction( PlatformUI.
                                                                     getWorkbench().
