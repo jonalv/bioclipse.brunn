@@ -659,8 +659,11 @@ public class View extends ViewPart implements IUserManagerListener {
                             return Dialog.CANCEL;
                         }
                     }
+                    return Dialog.OK;
                 }
-                return Dialog.OK;
+                else {
+                    return Dialog.CANCEL;
+                }
             }
 		};
 		

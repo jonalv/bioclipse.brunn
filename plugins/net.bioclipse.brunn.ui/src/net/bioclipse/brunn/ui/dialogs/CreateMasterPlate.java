@@ -147,6 +147,9 @@ public class CreateMasterPlate extends TitleAreaDialog {
 		nameLabel_1.setText("Number of plates in batch:");
 		setTitle("Create Master Plate");
 		//
+		if ( comboPlateLayout.getItemCount() > 0 ) {
+		    comboPlateLayout.select( 0 );
+		}
 		return area;
 	}
 
@@ -172,6 +175,14 @@ public class CreateMasterPlate extends TitleAreaDialog {
 	
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == IDialogConstants.OK_ID) {
+		    if ( comboPlateLayout.getItemCount() > 0 ) {
+		        MessageDialog.openInformation( 
+		            PlatformUI.getWorkbench()
+		                      .getActiveWorkbenchWindow()
+		                      .getShell(), 
+		            "Select a plate layout", 
+		            "Select a plate layout to base the masterplate on" );
+		    }
 			name = text.getText();
 			selectedPlateLayout = plateLayouts[comboPlateLayout.getSelectionIndex()];
 			try {
