@@ -498,7 +498,10 @@ public class PlateLayoutEditor extends EditorPart {
 	
     public void updatePlateFunctions( String markerName ) {
 
-        assert ( markerName.contains( "C" ) || markerName.contains( "B" ) ); 
+        if ( !markerName.contains( "C" ) && 
+             !markerName.contains( "B" ) ) {
+            return;
+        }
         
         /*
          * Collect all platefunction names
