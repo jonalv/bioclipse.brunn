@@ -82,6 +82,9 @@ public class CreatePlateLayout extends TitleAreaDialog {
 		
 		setTitle("Create Plate Layout");
 		//
+		if ( combo.getItemCount() > 0 ) {
+		    combo.select( 0 );
+		}
 		return area;
 	}
 
