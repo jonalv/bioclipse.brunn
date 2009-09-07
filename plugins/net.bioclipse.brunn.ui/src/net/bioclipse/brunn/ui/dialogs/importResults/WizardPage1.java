@@ -12,11 +12,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.layout.FormAttachment;
 
 public class WizardPage1 extends WizardPage {
 
 	private Text path;
 	private String thePath;
+	private FormData formData_1;
 	/**
 	 * Create the wizard
 	 */
@@ -35,11 +39,26 @@ public class WizardPage1 extends WizardPage {
 		Composite container = new Composite(parent, SWT.NULL);
 		//
 		setControl(container);
+		container.setLayout(new FormLayout());
 
 		path = new Text(container, SWT.BORDER | SWT.READ_ONLY);
-		path.setBounds(140, 62, 80, 25);
+		{
+		    formData_1 = new FormData();
+		    formData_1.bottom = new FormAttachment(100, -53);
+		    formData_1.left = new FormAttachment(0, 10);
+		    path.setLayoutData(formData_1);
+		}
 
 		final Button browseButton = new Button(container, SWT.NONE);
+		formData_1.right = new FormAttachment(100, -86);
+		{
+		    FormData formData = new FormData();
+		    formData.left = new FormAttachment(path, 6);
+		    formData.top = new FormAttachment(path, -2, SWT.TOP);
+		    formData.bottom = new FormAttachment(path, 0, SWT.BOTTOM);
+		    formData.right = new FormAttachment(100);
+		    browseButton.setLayoutData(formData);
+		}
 		browseButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				FileDialog fd = 
@@ -53,7 +72,6 @@ public class WizardPage1 extends WizardPage {
 			}
 		});
 		browseButton.setText("Browse");
-		browseButton.setBounds(256, 58, 60, 30);
 	}
 
 	public String getPath() {
