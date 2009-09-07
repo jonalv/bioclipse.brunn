@@ -53,35 +53,35 @@ public class CreateWellFunction extends TitleAreaDialog {
 
 		nameLabel = new Label(container, SWT.NONE);
 		final FormData formData = new FormData();
+		formData.top = new FormAttachment(0, 28);
 		formData.bottom = new FormAttachment(0, 42);
-		formData.top = new FormAttachment(0, 22);
-		formData.right = new FormAttachment(0, 110);
 		formData.left = new FormAttachment(0, 70);
 		nameLabel.setLayoutData(formData);
-		nameLabel.setText("Name");
+		nameLabel.setText("Name:");
 
 		expressionLabel = new Label(container, SWT.NONE);
+		//		formData.top = new FormAttachment(0, 22);
+				formData.right = new FormAttachment(expressionLabel, 0, SWT.RIGHT);
 		final FormData formData_1 = new FormData();
-		formData_1.bottom = new FormAttachment(0, 80);
-		formData_1.top = new FormAttachment(0, 60);
-		formData_1.right = new FormAttachment(0, 110);
-		formData_1.left = new FormAttachment(0, 40);
+//		formData_1.left = new FormAttachment(0, 40);
 		expressionLabel.setLayoutData(formData_1);
-		expressionLabel.setText("Expression");
+		expressionLabel.setText("Expression:");
 
 		textExpression = new Text(container, SWT.BORDER);
+		formData_1.right = new FormAttachment(textExpression, -6);
+		formData_1.top = new FormAttachment(textExpression, -14);
+		formData_1.bottom = new FormAttachment(textExpression, 0, SWT.BOTTOM);
 		final FormData formData_2 = new FormData();
-		formData_2.bottom = new FormAttachment(0, 80);
-		formData_2.top = new FormAttachment(0, 55);
 		formData_2.left = new FormAttachment(0, 116);
+		formData_2.right = new FormAttachment(100, -5);
+		formData_2.bottom = new FormAttachment(0, 80);
 		textExpression.setLayoutData(formData_2);
 
 		textName = new Text(container, SWT.BORDER);
-		formData_2.right = new FormAttachment(textName, 0, SWT.RIGHT);
 		final FormData formData_3 = new FormData();
-		formData_3.right = new FormAttachment(100, -5);
+//		formData_3.top = new FormAttachment(0, 17);
 		formData_3.bottom = new FormAttachment(0, 42);
-		formData_3.top = new FormAttachment(0, 17);
+		formData_3.right = new FormAttachment(100, -5);
 		formData_3.left = new FormAttachment(0, 116);
 		textName.setLayoutData(formData_3);
 		container.setTabList(new Control[] {textName, textExpression, nameLabel, expressionLabel});
@@ -149,5 +149,10 @@ public class CreateWellFunction extends TitleAreaDialog {
             }
 		}
 		super.buttonPressed(buttonId);
+	}
+
+	@Override
+	protected boolean isResizable() {
+	    return true;
 	}
 }
