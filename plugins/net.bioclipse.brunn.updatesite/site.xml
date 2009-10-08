@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/net.bioclipse.brunn_0.9.3.v20091009.jar" id="net.bioclipse.brunn" version="0.9.3.v20091009"/>
+   <category-def name="Brunn" label="net.bioclipse.brunn"/>
+</site>
