@@ -17,7 +17,7 @@
    </license>
 
    <requires>
-      <import feature="net.bioclipse.birt_feature" version="2.1.1.v20091002"/>
+      <import feature="net.bioclipse.birt_feature" version="2.1.1.v20091016" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -56,6 +56,13 @@
 
    <plugin
          id="net.bioclipse.brunn.business"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.hamcrest.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
