@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Brunn Business
-Bundle-SymbolicName: net.bioclipse.brunn.business;singleton:=true
+Bundle-SymbolicName: net.bioclipse.brunn.business.obsolete;singleton:=true
 Bundle-Version: 0.9.3.v20091009
 Bundle-Activator: net.bioclipse.brunn.business.Activator
 Bundle-Vendor: The Bioclipse Team

@@ -26,7 +26,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.birt.chart.reportitem,
  org.eclipse.birt.report.engine.emitter.pdf,
  org.eclipse.birt.report.engine.emitter.postscript,
- net.bioclipse.brunn.business;bundle-version="0.1.1",
  org.eclipse.ui.cheatsheets
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
