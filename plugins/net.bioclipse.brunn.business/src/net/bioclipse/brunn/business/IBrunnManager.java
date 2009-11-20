@@ -10,6 +10,7 @@
  ******************************************************************************/
 package net.bioclipse.brunn.business;
 
+import net.bioclipse.brunn.business.domain.Plate;
 import net.bioclipse.core.PublishedClass;
 import net.bioclipse.managers.business.IBioclipseManager;
 
@@ -17,5 +18,7 @@ import net.bioclipse.managers.business.IBioclipseManager;
     value="TODO: Describe the manager here."
 )
 public interface IBrunnManager extends IBioclipseManager {
+
+	Plate getPlateByBarcode(String string);
 
 }

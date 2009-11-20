@@ -14,22 +14,64 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 
 import net.bioclipse.core.ResourcePathTransformer;
+import net.bioclipse.usermanager.AccountType;
+import net.bioclipse.usermanager.Activator;
+import net.bioclipse.usermanager.business.IUserManager;
+import net.bioclipse.usermanager.business.UserManager;
 import net.bioclipse.brunn.business.IBrunnManager;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.FileLocator;
-import org.junit.Assert;
+import static org.junit.Assert.*;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public abstract class AbstractBrunnManagerPluginTest {
 
-    protected static IBrunnManager managerNamespace;
+    protected static IBrunnManager brunn;
     
-    @Test public void testDoSomething() {
-        // FIXME: managerNamespace.doSomething();
+    static IUserManager userManager;
+    
+    @BeforeClass public static void login() {
+    	userManager = Activator.getDefault().getUserManager();
+    	userManager.deleteUser("me");
+    	userManager.createUser("me", "me");
+    	userManager.logIn("me", "me");
+    	
+		AccountType brunnType=null;
+			    	
+    	for ( AccountType t : userManager.getAvailableAccountTypes() ) {
+    		if (t.getName().equals("BrunnAccountType")) {
+    	    	brunnType = t;
+    		}
+    	}
+    	
+    	userManager.createAccount(
+    			"brunn", 
+    			new HashMap() {{
+    				put("Database password","qu!ss89");
+    				put("Brunn user", "Administrator");
+    				put("Brunn password", "masterkey");
+    				put("Database user", "brunn");
+    				put("URL", "jdbc:mysql://malinda.medsci.uu.se/brunn");
+    				
+    		    }}, 
+    		    brunnType);
+    	userManager.logOut();
+    	userManager.logIn("me", "me");
+    }
+    
+    @Test public void testIsLoggedIn() {
+    	assertTrue(userManager.isLoggedIn());
+    }
+    
+    @Test public void testFetchPlate() {
+    	assertNotNull( brunn.getPlateByBarcode("6271"));
     }
 
 }

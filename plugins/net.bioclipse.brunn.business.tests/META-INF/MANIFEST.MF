@@ -13,6 +13,8 @@ Require-Bundle: org.eclipse.ui,
  net.sf.cglib,
  org.springframework.osgi.aopalliance.osgi,
  org.junit4,
- net.bioclipse.brunn.business
+ net.bioclipse.brunn.business,
+ net.bioclipse.usermanager;bundle-version="2.2.0",
+ net.bioclipse.brunn.ui;bundle-version="0.9.3"
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

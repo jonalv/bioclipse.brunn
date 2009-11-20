@@ -16,7 +16,7 @@ public class JavaScriptBrunnManagerPluginTest
     extends AbstractBrunnManagerPluginTest {
 
     @BeforeClass public static void setup() {
-        managerNamespace = net.bioclipse.brunn.Activator.getDefault()
+        brunn = net.bioclipse.brunn.Activator.getDefault()
             .getJavaScriptBrunnManager();
     }
 
