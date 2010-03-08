@@ -12,13 +12,16 @@ package net.bioclipse.brunn.business;
 
 import net.bioclipse.brunn.business.domain.Plate;
 import net.bioclipse.core.PublishedClass;
+import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.managers.business.IBioclipseManager;
 
 @PublishedClass(
-    value="TODO: Describe the manager here."
+    value="Retrieves data from Brunn."
 )
-public interface IBrunnManager extends IBioclipseManager {
 
-	Plate getPlateByBarcode(String string);
+
+public interface IBrunnManager extends IBioclipseManager {
+	@PublishedMethod(params = "String barcode",methodSummary="Retrieves a Plate from Brunn by barcode.")
+	Plate getPlateByBarcode(String barcode);
 
 }
