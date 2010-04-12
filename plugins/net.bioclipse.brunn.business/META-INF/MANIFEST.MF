@@ -5,7 +5,8 @@ Bundle-SymbolicName: net.bioclipse.brunn.business; singleton:=true
 Bundle-Version: 0.0.1
 Bundle-Activator: net.bioclipse.brunn.Activator
 Export-Package: net.bioclipse.brunn,
- net.bioclipse.brunn.business
+ net.bioclipse.brunn.business,
+ net.bioclipse.brunn.business.domain
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  net.bioclipse.core,

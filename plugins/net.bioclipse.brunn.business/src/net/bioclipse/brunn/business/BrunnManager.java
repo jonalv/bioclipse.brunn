@@ -35,11 +35,11 @@ public class BrunnManager implements IBioclipseManager {
 			plateManager = (IPlateManager) Springcontact.getBean("plateManager");
 		}
 		
-		Plate returnedPlate = new Plate();
 		
 		net.bioclipse.brunn.pojos.Plate brunnPlate = plateManager.getPlate(barcode);
+		Plate returnedPlate = new Plate(brunnPlate);
 		
-		returnedPlate.setName(brunnPlate.getName());
+		
 		
 		return returnedPlate;
     }
