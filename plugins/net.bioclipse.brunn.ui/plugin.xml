@@ -127,4 +127,11 @@
      </cheatsheet>
   </extension>
 
+  <extension point="org.eclipse.help.toc">
+    <toc file="help/book.xml" primary="true" />
+  </extension>
+  
+  <extension point="org.eclipse.help.toc">
+    <toc file="help/overview/overview-toc.xml" />
+  </extension>
 </plugin>

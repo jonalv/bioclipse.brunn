@@ -1,0 +1,5 @@
+=Cell Line=
+A cell line in Brunn represents a laboratory grown heritage of cells. They can be seeded on plates.
+
+==Creating a Cell Line==
+To create a Cell Line right click on the folder named "Cell Lines" or any of the subfolder and choose "Create Cell Line" and typet a name in the dialog.

@@ -1,0 +1,16 @@
+=Compound=
+
+A compound in Brunn represents a substance of interest and can be placed in
+wells in the Master Plate editor. 
+
+==Creating a Compound==
+To create a Compound right click on the folder named "Compounds" or any of the
+subfolder and choose "Create Compound" and type a name in the dialog. You can
+also type a molecular weight if you want to keep track of that for future
+reference. There is a checkbox "keep creating more compounds" which will
+relaunch the dialog when clicking Ok. This is handy when creating a big number
+of compounds.
+
+==Editing a Compound==
+By double clicking a compound the compound is opened in an editor where name
+and molecular weight can be edited.
