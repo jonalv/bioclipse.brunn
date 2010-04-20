@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='utf-8' ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/></head><body><h1 id="Plate_Layout">Plate Layout</h1><p>A plate layout defines which wells are to be used for which dilution series and
+for controls and such. A plate layout also contains calculation formulae for
+wells (such as survial index) and for plates (for example variation for all
+blanks).</p><h2 id="Creating_a_Plate_Layout">Creating a Plate Layout</h2><p>To create a plate layout right click on the folder named "Plate Layouts" or any
+of it's subfolders and choose "Create Plate Layout", type a name in the
+dialog and choose a plate type for the new plate layout. </p><h2 id="Editing_a_Plate_Layout">Editing a Plate Layout</h2><p>By double clicking a plate layout the plate layout is opened in an editor where
+well markers can be placed and calculation functions defined. Each well is
+represented by a cell in the matrix.</p><h3 id="Defining_what_wells_are_to_be_used_for">Defining what wells are to be used for</h3><p>There are 5 different markers that can be placed on wells:</p><dl><dt>M1, M2, M3...</dt><dd>Substance marker, one number for each compound</dd><dt>C1, C2, C3... </dt><dd>Control markers, different controls can be used for different part of the plate</dd><dt>B</dt><dd>Blank</dd><dt>P</dt><dd>Positive Control</dd><dt>S</dt><dd>Solvent</dd></dl><p>To add marker select one or many cells in the matrix, right click and left
+click on appropriate action. The menu popping up on right click will change
+depending on what you are right clicking so in order to remove a marker right
+click on it and click on the corresponding action for removing it.</p><p>As markers are added to the platelayout so are a bunch of automaticly generated
+plate functions. Among others functions for average of controls and average of
+blanks. More about plate functions in the next paragraph.</p><h3 id="Writing_Calculation_Functions">Writing Calculation Functions</h3><p>Calculation functions in Brunn comes in two flavours - for plates and for
+wells. A plate function is a general function for the plate. It can for example
+be mean value or variance for all blanks. A well function is a value directly
+connected to a well, typical example is survival index (SI%). From the
+beginning all wells have a well function raw() which gives the raw value for
+them.</p><p>Below the matrix representing the wells in the plate layout editor are two tabs
+named "Plate Functions" and "Well Functions". These are for creating the
+calculation functions. To create a plate function right click somewhere in that
+tab and click "Add function". In the dialog type a name, and the expression. It
+is also possible to define an interval within which the plate function is
+considered to have a good value.</p><p>There are a couple of convenience methods, and notations defined which are useful 
+when writing calculation functions:</p><dl><dt>sum</dt><dd>Sum of the given values </dd><dt>avg</dt><dd>The average of the given values </dd><dt>stddev</dt><dd>The standard deviation of the given values</dd></dl><p>It is also possible to give intervals of wells like method(well1:well2) so to
+write a function that calculates the average over the raw values for wells A1,
+A2, B1, B2 one could write avg(A1, A2, B1, B2) or avg(A1:B2).</p><p>Creating well functions is done in a similar way as a plate function. Start by
+making sure that the "Well Functions" tab is selected, then select the wells
+that should be given the new function (you don't have to write the same
+functions once for each well if they are similar) and once right click
+somewhere in the bottom half of the editor and then click "Add function". In
+the dialog that pops up write a name (for example si%) and write the
+expression. If you are doing multiple wells at once and you want to use each
+wells raw value in the calculation you can reach it by using the variable well,
+which will be converted into the variable holding the raw value for each well. 
+So for example a typical SI% function using control group C1 could look like this:</p><p>100 * ( well - AVG_AllBlanks() ) / ( AVG_C1() - AVG_AllBlanks() ) </p><p>Notice the references to the automatically generated methods AVG_AllBlanks()
+and AVG_C1().</p></body></html>

@@ -21,5 +21,19 @@
             <topic href="help/concepts/compound/compound.html#Editing_a_Compound" 
                    label="Editing a Compound" />
         </topic>
+        
+        <topic label="Plate Layout"
+               href="help/concepts/platelayout/platelayout.html" > 
+            <topic label="Creating a Plate Layout"
+                   href="help/concepts/platelayout/platelayout.html#Creating_a_Plate_Layout" />
+            <topic label="Editing a Plate Layout"
+                   href="help/concepts/platelayout/platelayout.html#Editing_a_Plate_Layout">
+                <topic label="Defining what wells are to be used for"
+                       href="help/concepts/platelayout/platelayout.html#Defining_what_wells_are_to_be_used_for" />
+                <topic label="Writing Calculation Functions"
+                       href="help/concepts/platelayout/platelayout.html#Writing_Calculation_Functions" />
+            </topic>
+        </topic>
+        
     </topic>
 </toc>

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<toc topic="help/concepts/platelayout/platelayout.html" label="platelayout">
+	<topic href="help/concepts/platelayout/platelayout.html" label="Plate Layout">
+		<topic href="help/concepts/platelayout/platelayout.html#Creating_a_Plate_Layout" label="Creating a Plate Layout"></topic>
+		<topic href="help/concepts/platelayout/platelayout.html#Editing_a_Plate_Layout" label="Editing a Plate Layout">
+			<topic href="help/concepts/platelayout/platelayout.html#Defining_what_wells_are_to_be_used_for" label="Defining what wells are to be used for"></topic>
+			<topic href="help/concepts/platelayout/platelayout.html#Writing_Calculation_Functions" label="Writing Calculation Functions"></topic>
+		</topic>
+	</topic>
+</toc>
