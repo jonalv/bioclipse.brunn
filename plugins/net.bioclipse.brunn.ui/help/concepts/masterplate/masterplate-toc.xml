@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<toc topic="help/concepts/masterplate/masterplate.html" label="masterplate">
+	<topic href="help/concepts/masterplate/masterplate.html" label="Master Plate">
+		<topic href="help/concepts/masterplate/masterplate.html#Creating_a_Master_Plate" label="Creating a Master Plate"></topic>
+		<topic href="help/concepts/masterplate/masterplate.html#Editing_a_Master_Plate" label="Editing a Master Plate">
+			<topic href="help/concepts/masterplate/masterplate.html#Creating_a_Dilution_Serie" label="Creating a Dilution Serie"></topic>
+		</topic>
+	</topic>
+</toc>

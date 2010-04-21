@@ -1,5 +1,24 @@
-=Master plate=
+=Master Plate=
+A master plate defines which compound marker correspond to which compound and
+with what concentration. So a master plate corresponds to how substances are
+placed on a batch of plates. 
 
-==Creating a Masterplate ==
+==Creating a Master Plate==
+To create a master plate, right click on the folder named "Master Plates" or
+any of it's subfolders and choose "Create Master Plate", type a name in the
+dialog box and choose a plate layout for the new master plate. You will also be
+asked to type in the number of plates in the batch so the system can keep track
+of how many plates are left in cryo store
 
-==Editing a Compound==
+==Editing a Master Plate==
+By double-clicking on a master plate, you can open it in an editor where you
+can connect well markers with substances by dragging and dropping and create
+dilution series. 
+
+===Creating a Dilution Serie===
+Dilution series are created through connecting a substance to a marker by
+dragging the substance from the Brunn Explorer and into the list of markers at
+the bottom part of the editor. A dialog pops up and asks for information on how
+to perform dilution over wells with that marker. It is possible to do the
+dilution horisontally or vertically and wells with the marker in the other
+direction will become replicates.
