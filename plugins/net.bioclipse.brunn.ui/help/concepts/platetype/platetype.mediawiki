@@ -2,6 +2,6 @@
 A plate type in Brunn defines the size of a plate. 
 
 ==Creating a Plate Type==
-To create a Plate Type right click on the folder named "Plate Types" or any 
-of the subfolders and choose "Create Plate Type" and type a name and the 
-number of rows and columns the plate type should have in the dialog.
+To create a plate type, right click on the folder named "Plate Types" or any 
+of its subfolders, and choose "Create Plate Type". In the dialog box, type a
+name and the number of rows and columns the plate type should have.
