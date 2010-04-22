@@ -43,7 +43,17 @@
                    label="Editing a Master Plate">
                 <topic href="help/concepts/masterplate/masterplate.html#Creating_a_Dilution_Serie" 
                        label="Creating a Dilution Serie" />
-                </topic>
             </topic>
         </topic>
+        
+        <topic label="Plate" 
+               href="help/concepts/plate/plate.html" >
+            <topic href="help/concepts/plate/plate.html#Creating_a_Plate" 
+                   label="Creating a Plate" />
+            <topic href="help/concepts/plate/plate.html#Importing_result" 
+                   label="Importing result" />
+            <topic href="help/concepts/plate/plate.html#Editing_a_Plate" 
+                   label="Editing a Plate" />
+        </topic>
+    </topic>
 </toc>
