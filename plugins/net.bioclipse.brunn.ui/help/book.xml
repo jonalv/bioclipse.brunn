@@ -55,5 +55,11 @@
             <topic href="help/concepts/plate/plate.html#Editing_a_Plate" 
                    label="Editing a Plate" />
         </topic>
+        
+        <topic label="Users"
+               href="help/concepts/users/users.html">
+            <topic label="Creating a User"
+                   href="help/concepts/users/users.html#Creating_a_User" />
+        </topic>
     </topic>
 </toc>
