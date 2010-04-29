@@ -1,24 +1,24 @@
 =Plate=
-A Brunn plate represents a real life plate. It has substances and cells seeded
-on it and when results are imported they are added to plates.  
+A Brunn plate represents a real-life plate. It has substances and cells seeded
+on it. When results are imported, they are added to plates.  
 
 ==Creating a Plate==
-To create a plate, right click on the folder named "Plates" or any of it's
-subfolders and choose "Create Plate", type a name in the dialog box and choose
+To create a plate, right click on the folder named "Plates" or any of its
+subfolders, and choose "Create Plate". Type a name in the dialog box and choose
 a master plate for the new plate. You will also have to type in a barcode for
-the plate which will be used when importing results for the plate and a cell
-line or patient cell to seed on the plate. 
+the plate (which will be used when importing results for the plate), as well as
+a cell line or patient cell to seed on the plate. 
 
 ==Importing result==
-Result import is done by selcting "Import results from File" action in the
+Result import is done by selecting the "Import results from File" action in the
 Brunn Explorer view. The menu can be found by clicking the little triangle in
 the upper right corner of the Brunn Explorer view. 
 
-In the dialog, browse for the data file, click next and select which plates to
-import. IF there are no barcodes you might have to add barcoes by double
-clicking the barcode cell in the table and type the barcode for that plate.
-When clicking the "Finnish" button the data will be imported and added to the
-plates in the system with the corresponding barcode. 
+In the dialog box, browse for the data file, proceed using the "Next" button, and select which
+plates to import. If there are no barcodes you might have to add barcodes by
+double-clicking the barcode cell in the table and typing the barcode for that
+plate. After you've clicked the "Finish" button, the data will be imported and
+added to the plates in the system with the corresponding barcode. 
 
 ==Editing a Plate==
 By double-clicking on a plate, you can open it in an editor with multiple tabs

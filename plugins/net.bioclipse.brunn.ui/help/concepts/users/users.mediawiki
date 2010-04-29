@@ -1,7 +1,7 @@
 =Users=
-Brunn features two user levels, user and administrator. An administrator can do
-everything that a user can plus undeleting resources marked as deleted and
-creating new users.
+Brunn features two user levels, "user" and "administrator". Besides the
+capabilities of a user, an administrator can undelete resources marked as
+deleted, and create new users.
 
 Brunn keeps track of who created resources and when. This information can be
 viewed in the outline view for resources that are selected in the Brunn
@@ -9,4 +9,4 @@ Explorer.
 
 ==Creating a User==
 Administrators can create new users from the Brunn Explorer menu. To 
-show the menu click the triangel at the top of the Brunn Explorer view.
+show the menu, click the triangle at the top of the Brunn Explorer view.
