@@ -4,19 +4,22 @@ class PlateFunctionEvaluator {
 	String  expression;
 	double  goodFrom;
 	double  goodTo;
-	boolean hasSpecifiedValue;
+	boolean hasSpecifiedToValue;
+	boolean hasSpecifiedFromValue;
 	String  name;
 	
 	PlateFunctionEvaluator( String expression, 
                             double goodFrom, 
                             double goodTo, 
-                            boolean hasSpecifiedValue, 
+                            boolean hasSpecifiedFromValue, 
+                            boolean hasSpecifiedToValue, 
                             String name ) {
 	    super();
 	    this.expression = expression;
 	    this.goodFrom = goodFrom;
 	    this.goodTo = goodTo;
-	    this.hasSpecifiedValue = hasSpecifiedValue;
+	    this.hasSpecifiedFromValue = hasSpecifiedFromValue;
+	    this.hasSpecifiedToValue = hasSpecifiedToValue;
 	    this.name = name;
     }
 }

@@ -87,7 +87,7 @@ public class PlateLayoutManager extends AbstractDAOBasedPlateLayoutManager imple
 		//TODO check whether necessary:
 		//plate = plateDAO.getByid( plate.getID() );
 		
-		PlateFunction plateFunction = new PlateFunction(creator, name, expression, goodFrom, goodTo, true, plate);
+		PlateFunction plateFunction = new PlateFunction(creator, name, expression, goodFrom, goodTo, true,true, plate);
 		plate.getPlateFunctions().add(plateFunction);
 		
 		getAuditService().audit(creator, AuditType.UPDATE_EVENT, plate);
@@ -100,7 +100,7 @@ public class PlateLayoutManager extends AbstractDAOBasedPlateLayoutManager imple
 		//TODO check whether necessary:
 		//plate = plateDAO.getByid( plate.getID() );
 		
-		PlateFunction plateFunction = new PlateFunction(creator, name, expression, 0, 0, false, plate);
+		PlateFunction plateFunction = new PlateFunction(creator, name, expression, 0, 0, false,false, plate);
 		plate.getPlateFunctions().add(plateFunction);
 		
 		getAuditService().audit(creator, AuditType.UPDATE_EVENT, plate);

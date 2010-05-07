@@ -14,7 +14,8 @@ public class PlateFunction extends AbstractBaseObject {
 	private String expression;
 	private double goodFrom;
 	private double goodTo;
-	private boolean hasSpecifiedValues;
+	private boolean hasSpecifiedFromValue;
+	private boolean hasSpecifiedToValue;
 	private AbstractBasePlate plate;
 	
 	public PlateFunction() {
@@ -26,14 +27,16 @@ public class PlateFunction extends AbstractBaseObject {
 	                      String expression, 
 	                      double goodFrom, 
 	                      double goodTo, 
-	                      boolean hasSpecifiedValue, 
+	                      boolean hasSpecifiedFromValue, 
+	                      boolean hasSpecifiedToValue, 
 	                      AbstractBasePlate plate ) {
 		
 	    super(creator, name);
 	    this.expression = expression;
 	    this.goodFrom = goodFrom;
 	    this.goodTo = goodTo;
-	    this.hasSpecifiedValues = hasSpecifiedValue;
+	    this.hasSpecifiedFromValue = hasSpecifiedFromValue;
+	    this.hasSpecifiedToValue = hasSpecifiedToValue;
 	    this.plate = plate;
     }
 
@@ -81,16 +84,6 @@ public class PlateFunction extends AbstractBaseObject {
 
 	
 	
-	public boolean isHasSpecifiedValues() {
-    	return hasSpecifiedValues;
-    }
-
-	/**
-	 * @param hasSpecifiedValue  the hasSpecifiedValue to set
-	 */
-	public void setHasSpecifiedValues(boolean hasSpecifiedValues) {
-    	this.hasSpecifiedValues = hasSpecifiedValues;
-    }
 
 	/**
 	 * @return  the plate
@@ -125,7 +118,9 @@ public class PlateFunction extends AbstractBaseObject {
 		    return false;
 	    if (Double.doubleToLongBits(goodTo) != Double.doubleToLongBits(other.getGoodTo()))
 		    return false;
-	    if (hasSpecifiedValues != other.isHasSpecifiedValues())
+	    if (hasSpecifiedToValue != other.isHasSpecifiedToValue())
+		    return false;
+	    if (hasSpecifiedFromValue != other.isHasSpecifiedFromValue())
 		    return false;
 	    return true;
     }
@@ -138,7 +133,8 @@ public class PlateFunction extends AbstractBaseObject {
 		plateFunction.setExpression(expression);
 		plateFunction.setGoodFrom(goodFrom);
 		plateFunction.setGoodTo(goodTo);
-		plateFunction.setHasSpecifiedValues(hasSpecifiedValues);
+		plateFunction.setHasSpecifiedToValue(hasSpecifiedToValue);
+		plateFunction.setHasSpecifiedFromValue(hasSpecifiedFromValue);
 		
 		plateFunction.setHashCode(hashCode);
 		plateFunction.setId(id);
@@ -154,8 +150,25 @@ public class PlateFunction extends AbstractBaseObject {
 		plateFunction.setExpression(expression);
 		plateFunction.setGoodFrom(goodFrom);
 		plateFunction.setGoodTo(goodTo);
-		plateFunction.setHasSpecifiedValues(hasSpecifiedValues);
+		plateFunction.setHasSpecifiedToValue(hasSpecifiedToValue);
+		plateFunction.setHasSpecifiedFromValue(hasSpecifiedFromValue);
 		
 		return plateFunction;
+    }
+
+	public void setHasSpecifiedFromValue(boolean hasSpecifiedFromValue) {
+	    this.hasSpecifiedFromValue = hasSpecifiedFromValue;
+    }
+
+	public boolean isHasSpecifiedFromValue() {
+	    return hasSpecifiedFromValue;
+    }
+
+	public void setHasSpecifiedToValue(boolean hasSpecifiedToValue) {
+	    this.hasSpecifiedToValue = hasSpecifiedToValue;
+    }
+
+	public boolean isHasSpecifiedToValue() {
+	    return hasSpecifiedToValue;
     }
 }

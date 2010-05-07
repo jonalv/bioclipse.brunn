@@ -155,7 +155,7 @@ public class PlateManager extends
 	public long createPlateFunction(User creator, String name, Plate plate, String expression, double goodFrom, double goodTo) {
 	    
 		plate = plateDAO.merge(plate);
-		PlateFunction plateFunction = new PlateFunction(creator, name, expression, goodFrom, goodTo, true, plate);
+		PlateFunction plateFunction = new PlateFunction(creator, name, expression, goodFrom, goodTo, true,true, plate);
 	    plate.getPlateFunctions().add(plateFunction);
 	    
 	    getAuditService().audit(creator, AuditType.UPDATE_EVENT, plate);
@@ -167,7 +167,7 @@ public class PlateManager extends
 	    
 	    plate = masterPlateDAO.merge(plate);
 		
-		PlateFunction plateFunction = new PlateFunction(creator, name, expression, goodFrom, goodTo, true, plate);
+		PlateFunction plateFunction = new PlateFunction(creator, name, expression, goodFrom, goodTo, true,true, plate);
 	    plate.getPlateFunctions().add(plateFunction);
 	    
 	    getAuditService().audit(creator, AuditType.UPDATE_EVENT, plate);
@@ -179,7 +179,7 @@ public class PlateManager extends
 	public long createPlateFunction(User creator, String name, Plate plate, String expression) {
 	    
 		
-		PlateFunction plateFunction = new PlateFunction(creator, name, expression, 0, 0, false, plate);
+		PlateFunction plateFunction = new PlateFunction(creator, name, expression, 0, 0, false,false, plate);
 		plate.getPlateFunctions().add(plateFunction);
 		
 		getAuditService().audit(creator, AuditType.UPDATE_EVENT, plate);
@@ -191,7 +191,7 @@ public class PlateManager extends
 	public long createPlateFunction(User creator, String name, MasterPlate plate, String expression) {
 	    
 		masterPlateDAO.merge(plate);
-		PlateFunction plateFunction = new PlateFunction(creator, name, expression, 0, 0, false, plate);
+		PlateFunction plateFunction = new PlateFunction(creator, name, expression, 0, 0, false,false, plate);
 		plate.getPlateFunctions().add(plateFunction);
 		
 		getAuditService().audit(creator, AuditType.UPDATE_EVENT, plate);

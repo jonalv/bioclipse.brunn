@@ -80,8 +80,8 @@ public class PlateFunctionsModel extends KTableDefaultModel {
 			plateFunctions.put(i + "", function);
 			matrix[0][i] = function.getName();
 			matrix[1][i] = function.getExpression();
-			matrix[2][i] = function.isHasSpecifiedValues() ? function.getGoodFrom() + "" : "";
-			matrix[3][i] = function.isHasSpecifiedValues() ? function.getGoodTo()   + "" : "";
+			matrix[2][i] = function.isHasSpecifiedFromValue() ? function.getGoodFrom() + "" : "";
+			matrix[3][i] = function.isHasSpecifiedToValue() ? function.getGoodTo()   + "" : "";
 			i++;
 		}
 		

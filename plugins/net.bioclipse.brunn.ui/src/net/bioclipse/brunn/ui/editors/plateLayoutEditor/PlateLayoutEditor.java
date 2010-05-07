@@ -431,7 +431,8 @@ public class PlateLayoutEditor extends EditorPart {
 									           dialog.getExpression(),
 									           dialog.getGoodFrom(),
 									           dialog.getGoodTo(),
-									           dialog.hasSpecifiedValues(), 
+									           dialog.hasSpecifiedFromValue(), 
+									           dialog.hasSpecifiedToValue(), 
 									           toBeSaved ) );
 	
 					calculator.addFunction( dialog.getName(), 
@@ -542,6 +543,7 @@ public class PlateLayoutEditor extends EditorPart {
                     0,
                     0,
                     false, 
+                    false, 
                     toBeSaved ) );
             plateFunctions.add( 
                 new PlateFunction( 
@@ -550,6 +552,7 @@ public class PlateLayoutEditor extends EditorPart {
                     "avg(" + controlWellNames + ")",
                     0,
                     0,
+                    false, 
                     false, 
                     toBeSaved ) );
             plateFunctions.add( 
@@ -560,6 +563,7 @@ public class PlateLayoutEditor extends EditorPart {
                     0,
                     0,
                     false, 
+                    false, 
                     toBeSaved ) );
             plateFunctions.add( 
                 new PlateFunction( 
@@ -568,6 +572,7 @@ public class PlateLayoutEditor extends EditorPart {
                     "avg(" + wellNames + ")",
                     0,
                     0,
+                    false, 
                     false, 
                     toBeSaved ) );
         }
@@ -579,6 +584,7 @@ public class PlateLayoutEditor extends EditorPart {
                     "avg(" + blankWellNames + ")",
                     0,
                     0,
+                    false, 
                     false, 
                     toBeSaved ) );
         }
@@ -598,6 +604,7 @@ public class PlateLayoutEditor extends EditorPart {
                                    "AVG_AllControls() / AVG_AllBlanks()",
                                    0,
                                    0,
+                                   false, 
                                    false, 
                                    toBeSaved ) );
         }

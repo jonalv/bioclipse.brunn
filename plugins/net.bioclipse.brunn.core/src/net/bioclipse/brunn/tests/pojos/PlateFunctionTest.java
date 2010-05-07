@@ -29,7 +29,7 @@ public class PlateFunctionTest extends BaseTest {
 	public void testDeepCopy() {
 		
 		User tester = new User("tester");
-		PlateFunction plateFunction = new PlateFunction(tester, "plateFunction", "", 12, 24, true, null);
+		PlateFunction plateFunction = new PlateFunction(tester, "plateFunction", "", 12, 24,true, true, null);
 		
 		PlateFunction plateFunction2 = plateFunction.deepCopy();
 		

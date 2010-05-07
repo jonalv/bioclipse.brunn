@@ -30,7 +30,8 @@ public class CreatePlateFunction extends TitleAreaDialog {
 	private double goodFrom;
 	private String expression;
 	private String name;
-	private boolean hasSpecifiedValues;
+	private boolean hasSpecifiedToValue;
+	private boolean hasSpecifiedFromValue;
 	private Calculator calculator;
 	
 	/**
@@ -188,10 +189,8 @@ public class CreatePlateFunction extends TitleAreaDialog {
 			this.expression = textExpression.getText();
 			this.name       = textName.getText();
 			
-			if( "".equals( textGoodFrom.getText() ) && 
-				"".equals(   textGoodTo.getText() ) ) {
-
-				hasSpecifiedValues = false;
+			if( "".equals( textGoodFrom.getText() ))  
+				hasSpecifiedFromValue = false;
 			}
 			else {
 				try{
@@ -203,6 +202,12 @@ public class CreatePlateFunction extends TitleAreaDialog {
 						                           "Good from must be a double" );
 					return;
 				}
+				hasSpecifiedFromValue = true;
+			}
+			if( "".equals( textGoodTo.getText() )) { 
+				hasSpecifiedToValue = false;
+			}
+			else {
 				try{
 					this.goodTo = Double.parseDouble(textGoodTo.getText()); 
 				}
@@ -212,14 +217,16 @@ public class CreatePlateFunction extends TitleAreaDialog {
 						                           "Good to must be a double" );
 					return;
 				}
-				hasSpecifiedValues = true;
+				hasSpecifiedToValue = true;
 			}
 			
-		}
 		super.buttonPressed(buttonId);
 	}
 
-	public boolean hasSpecifiedValues() {
-		return hasSpecifiedValues;
+	public boolean hasSpecifiedToValue() {
+		return hasSpecifiedToValue;
+	}
+	public boolean hasSpecifiedFromValue() {
+		return hasSpecifiedFromValue;
 	}
 }
