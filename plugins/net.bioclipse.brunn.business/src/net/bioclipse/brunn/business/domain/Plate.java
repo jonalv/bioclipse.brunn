@@ -33,7 +33,8 @@ public class Plate {
 			this.addFunction(new PlateFunction(pf.getName(), 
 					interpreter.getValue(pf.getName()),
 					pf.getExpression(),
-					pf.getGoodFrom(), pf.getGoodTo()
+					pf.getGoodFrom(), pf.getGoodTo(),
+					pf.getHasSpecifiedFromValue(),pf.getHasSpecifiedToValue()
 					));
 		}
 		

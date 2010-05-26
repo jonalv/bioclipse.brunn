@@ -5,6 +5,7 @@ public class PlateFunction {
 	private String name;
 	private String expression;
 	private double goodFrom, goodTo;
+	private boolean hasGoodFrom,hasGoodTo; 
 	
 	public String getExpression() {
 		return expression;
@@ -16,7 +17,8 @@ public class PlateFunction {
 
 	private double value;
 	
-	public PlateFunction(String name, double value, String expression, double goodFrom,  double goodTo) {
+	public PlateFunction(String name, double value, String expression, 
+			double goodFrom,  double goodTo, boolean hasGoodFrom, boolean hasGoodTo) {
 		this.name = name;
 		this.value = value;
 		this.expression = expression;
@@ -62,6 +64,22 @@ public class PlateFunction {
 
 	public Double getGoodTo() {
 		return goodTo;
+	}
+
+	public void setHasGoodTo(boolean hasGoodTo) {
+		this.hasGoodTo = hasGoodTo;
+	}
+
+	public boolean isHasGoodTo() {
+		return hasGoodTo;
+	}
+
+	public void setHasGoodFrom(boolean hasGoodFrom) {
+		this.hasGoodFrom = hasGoodFrom;
+	}
+
+	public boolean isHasGoodFrom() {
+		return hasGoodFrom;
 	}
 
 }

@@ -118,9 +118,9 @@ public class PlateFunction extends AbstractBaseObject {
 		    return false;
 	    if (Double.doubleToLongBits(goodTo) != Double.doubleToLongBits(other.getGoodTo()))
 		    return false;
-	    if (hasSpecifiedToValue != other.isHasSpecifiedToValue())
+	    if (hasSpecifiedToValue != other.getHasSpecifiedToValue())
 		    return false;
-	    if (hasSpecifiedFromValue != other.isHasSpecifiedFromValue())
+	    if (hasSpecifiedFromValue != other.getHasSpecifiedFromValue())
 		    return false;
 	    return true;
     }
@@ -160,7 +160,7 @@ public class PlateFunction extends AbstractBaseObject {
 	    this.hasSpecifiedFromValue = hasSpecifiedFromValue;
     }
 
-	public boolean isHasSpecifiedFromValue() {
+	public boolean getHasSpecifiedFromValue() {
 	    return hasSpecifiedFromValue;
     }
 
@@ -168,7 +168,7 @@ public class PlateFunction extends AbstractBaseObject {
 	    this.hasSpecifiedToValue = hasSpecifiedToValue;
     }
 
-	public boolean isHasSpecifiedToValue() {
+	public boolean getHasSpecifiedToValue() {
 	    return hasSpecifiedToValue;
     }
 }

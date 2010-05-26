@@ -55,8 +55,8 @@ public class PlateResults implements IEditorInput {
 					new PlateFunctionEvaluator( function.getExpression(),
 							                    function.getGoodFrom(), 
 							                    function.getGoodTo(), 
-							                    function.isHasSpecifiedFromValue(),
-							                    function.isHasSpecifiedToValue(),
+							                    function.getHasSpecifiedFromValue(),
+							                    function.getHasSpecifiedToValue(),
 							                    function.getName() );
 				
 				PlateFunctionBody pfb = new PlateFunctionBody( function.getExpression() ); 
