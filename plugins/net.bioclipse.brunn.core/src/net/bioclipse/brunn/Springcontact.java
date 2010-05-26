@@ -27,6 +27,10 @@ public class Springcontact {
 		return CONTEXT.getBean(beanName);
 	}
 	
+	public static void clearContext() {
+		CONTEXT = null;
+	}
+	
 	public static URL getPluginURL() {
 		try {
 	        return FileLocator.toFileURL(Platform.getBundle(PLUGIN_ID).getEntry("/"));

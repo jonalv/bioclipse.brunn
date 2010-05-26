@@ -80,8 +80,13 @@ public class PlateFunctionsModel extends KTableDefaultModel {
 			plateFunctions.put(i + "", function);
 			matrix[0][i] = function.getName();
 			matrix[1][i] = function.getExpression();
+<<<<<<< HEAD
 			matrix[2][i] = function.isHasSpecifiedValues() ? function.getGoodFrom() + "" : "";
 			matrix[3][i] = function.isHasSpecifiedValues() ? function.getGoodTo()   + "" : "";
+=======
+			matrix[2][i] = function.getHasSpecifiedFromValue() ? function.getGoodFrom() + "" : "";
+			matrix[3][i] = function.getHasSpecifiedToValue() ? function.getGoodTo()   + "" : "";
+>>>>>>> 315c21b... Fix hibernate mapping for new specified value
 			i++;
 		}
 		

@@ -55,7 +55,12 @@ public class PlateResults implements IEditorInput {
 					new PlateFunctionEvaluator( function.getExpression(),
 							                    function.getGoodFrom(), 
 							                    function.getGoodTo(), 
+<<<<<<< HEAD
 							                    function.isHasSpecifiedValues(),
+=======
+							                    function.getHasSpecifiedFromValue(),
+							                    function.getHasSpecifiedToValue(),
+>>>>>>> 315c21b... Fix hibernate mapping for new specified value
 							                    function.getName() );
 				
 				PlateFunctionBody pfb = new PlateFunctionBody( function.getExpression() ); 

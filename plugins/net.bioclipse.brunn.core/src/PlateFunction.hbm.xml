@@ -55,8 +55,13 @@
 		 type="double" />
 
 		<property
-		 name="hasSpecifiedValues"
-		 column="hasSpecifiedValues"
+		 name="hasSpecifiedFromValue"
+		 column="hasGoodFrom"
+		 type="boolean" />
+		 
+		<property
+		 name="hasSpecifiedToValue"
+		 column="hasGoodTo"
 		 type="boolean" />
 		 
 		<many-to-one
