@@ -71,4 +71,4 @@ Export-Package: net.bioclipse.brunn,
  net.bioclipse.brunn.results.parser96,
  org.apache.commons.dbcp
 Import-Package: org.apache.commons.logging,
- org.apache.log4j;version="1.2.15"
+ org.apache.log4j
