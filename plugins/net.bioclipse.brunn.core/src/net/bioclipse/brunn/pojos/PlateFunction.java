@@ -3,8 +3,6 @@
  */
 package net.bioclipse.brunn.pojos;
 
-import net.bioclipse.brunn.tests.daos.PlateDAOTest;
-
 /**
  * @author jonathan
  *
