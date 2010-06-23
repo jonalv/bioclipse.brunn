@@ -107,7 +107,7 @@ public class LayoutWell extends AbstractWell {
 	    return layoutWell;
     }
 	
-	public LayoutWell makeNewCopy() {
+	public LayoutWell makeNewCopy(User creator) {
 		
 	    LayoutWell layoutWell = new LayoutWell();
 	    layoutWell.setName(name);
@@ -123,7 +123,7 @@ public class LayoutWell extends AbstractWell {
         }
 	    
 	    for (WellFunction function : wellFunctions) {
-	    	WellFunction copy = function.makeNewCopy();
+	    	WellFunction copy = function.makeNewCopy(creator);
 	    	copy.setWell(layoutWell);
 	    	layoutWell.getWellFunctions().add(copy);
         }

@@ -140,7 +140,7 @@ public class PlateFunction extends AbstractBaseObject {
 		return plateFunction;
     }
 	
-	public PlateFunction makeNewCopy() {
+	public PlateFunction makeNewCopy(User creator) {
 	    
 		PlateFunction plateFunction = new PlateFunction();
 		plateFunction.setCreator(creator);

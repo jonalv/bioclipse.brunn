@@ -1,5 +1,6 @@
 package net.bioclipse.brunn.pojos;
 
+
 /**
  * @author jonathan
  *
@@ -100,20 +101,18 @@ public class DrugSample extends AbstractSample {
 		return drugSample;
 	}
 	
-	public DrugSample makeNewCopy(){
+	public DrugSample makeNewCopy(User creator){
 		
 		DrugSample drugSample = new DrugSample();
 		drugSample.setName(name);
-		drugSample.setCreator(creator);
 		drugSample.setConcentration(concentration);
 		drugSample.setConcUnit(concUnit);
 		drugSample.setDrugOrigin(drugOrigin);
 		drugSample.setDeleted(deleted);
 		drugOrigin.getDrugSamples().add(drugSample);
-		drugSample.setSampleMarker(sampleMarker);
 		
 		for (AbstractAnnotationInstance ai : getAbstractAnnotationInstances()) {
-			AbstractAnnotationInstance copy = ai.makeNewCopy();
+			AbstractAnnotationInstance copy = ai.makeNewCopy(creator);
 	        drugSample.getAbstractAnnotationInstances().add(ai);
 	        copy.setAbstractAnnotatableObject(drugSample);
         }

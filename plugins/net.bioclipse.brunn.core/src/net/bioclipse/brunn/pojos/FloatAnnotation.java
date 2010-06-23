@@ -75,7 +75,7 @@ public class FloatAnnotation extends AbstractAnnotationInstance {
 	    return floatAnnotation;
     }
 	
-	public FloatAnnotation makeNewCopy() {
+	public FloatAnnotation makeNewCopy(User creator) {
 
 		FloatAnnotation floatAnnotation = new FloatAnnotation();
 	    floatAnnotation.setName(name);

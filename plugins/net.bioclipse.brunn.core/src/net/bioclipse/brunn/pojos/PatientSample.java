@@ -24,7 +24,7 @@ public class PatientSample extends AbstractSample {
 	@Override
 	public PatientSample deepCopy() {
 		
-		PatientSample patientSample = (PatientSample)makeNewCopy();
+		PatientSample patientSample = (PatientSample)makeNewCopy(creator);
 		
 		patientSample.setHashCode(hashCode);
 		patientSample.setId(id);
@@ -33,14 +33,13 @@ public class PatientSample extends AbstractSample {
 	}
 
 	@Override
-	public AbstractSample makeNewCopy() {
+	public AbstractSample makeNewCopy(User creator) {
 		PatientSample patientSample = new PatientSample();
 		patientSample.setName(name);
 		patientSample.setCreator(creator);
 		patientSample.setPatientOrigin(patientOrigin);
 		patientOrigin.getPatientSamples().add(patientSample);
 		patientSample.setDeleted(deleted);
-		patientSample.setSampleMarker(sampleMarker);
 		patientSample.setDefrostingDate(defrostingDate);
 		
 		for (AbstractAnnotationInstance ai : getAbstractAnnotationInstances()) {

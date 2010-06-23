@@ -85,7 +85,7 @@ public class WorkList extends AbstractBaseObject {
 		return workList;
 	}
 	
-	public WorkList makeNewCopy() {
+	public WorkList makeNewCopy(User creator) {
 		
 		WorkList workList = new WorkList();
 		workList.setCreator(creator);
@@ -94,7 +94,7 @@ public class WorkList extends AbstractBaseObject {
 		
 		for (AbstractOperation operation : abstractOperations) {
 	        
-			AbstractOperation copy = operation.makeNewCopy();
+			AbstractOperation copy = operation.makeNewCopy(creator);
 			copy.setWorkList(workList);
 			workList.abstractOperations.add(copy);
         }

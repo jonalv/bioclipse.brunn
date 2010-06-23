@@ -115,7 +115,7 @@ public class Measurement extends AbstractOperation {
 		return measurement;
 	}
 	
-	public Measurement makeNewCopy(){
+	public Measurement makeNewCopy(User creator){
 		
 		Measurement measurement = new Measurement();
 		measurement.setCreator(creator);

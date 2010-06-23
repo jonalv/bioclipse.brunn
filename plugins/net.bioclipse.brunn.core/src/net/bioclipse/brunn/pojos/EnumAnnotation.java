@@ -76,7 +76,7 @@ public class EnumAnnotation extends AbstractAnnotationInstance {
 		return result;
     }
 	
-    public EnumAnnotation makeNewCopy() {
+    public EnumAnnotation makeNewCopy(User creator) {
 		EnumAnnotation result = new EnumAnnotation();
 		result.setName(name);
 		result.setCreator(creator);

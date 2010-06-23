@@ -87,7 +87,7 @@ public class WellFunction extends AbstractBaseObject {
 		return function;
     }
 
-	public WellFunction makeNewCopy() {
+	public WellFunction makeNewCopy(User creator) {
 		WellFunction function = new WellFunction();
 		function.setName(name);
 		function.setCreator(creator);
