@@ -125,7 +125,7 @@ public class Measurement extends AbstractOperation {
 		measurement.setDeleted(deleted);
 		
 		for (Result result : results) {
-	        measurement.getResults().add( result.makeNewCopy() );
+	        measurement.getResults().add( result.makeNewCopy(creator) );
         }
 		
 		return measurement;

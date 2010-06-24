@@ -66,7 +66,7 @@ public class Result extends AbstractBaseObject {
 	    return result;
     }
 	
-	public Result makeNewCopy() {
+	public Result makeNewCopy(User creator) {
 	    
 		Result result = new Result();
 		result.creator = creator;
