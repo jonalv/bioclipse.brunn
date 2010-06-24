@@ -105,8 +105,10 @@ public class DrugSample extends AbstractSample {
 		
 		DrugSample drugSample = new DrugSample();
 		drugSample.setName(name);
+		drugSample.setCreator(creator);
 		drugSample.setConcentration(concentration);
 		drugSample.setConcUnit(concUnit);
+		
 		drugSample.setDrugOrigin(drugOrigin);
 		drugSample.setDeleted(deleted);
 		drugOrigin.getDrugSamples().add(drugSample);
