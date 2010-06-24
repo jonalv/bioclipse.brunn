@@ -2,10 +2,13 @@ package net.bioclipse.brunn.business.plate;
 
 import net.bioclipse.brunn.business.IAuditService;
 import net.bioclipse.brunn.genericDAO.IAnnotationInstanceDAO;
+import net.bioclipse.brunn.genericDAO.ICellOriginDAO;
 import net.bioclipse.brunn.genericDAO.ICellSampleDAO;
+import net.bioclipse.brunn.genericDAO.IDrugOriginDAO;
 import net.bioclipse.brunn.genericDAO.IDrugSampleDAO;
 import net.bioclipse.brunn.genericDAO.IFolderDAO;
 import net.bioclipse.brunn.genericDAO.IMasterPlateDAO;
+import net.bioclipse.brunn.genericDAO.IPatientOriginDAO;
 import net.bioclipse.brunn.genericDAO.IPatientSampleDAO;
 import net.bioclipse.brunn.genericDAO.IPlateDAO;
 import net.bioclipse.brunn.genericDAO.ISampleContainerDAO;
@@ -32,6 +35,33 @@ public abstract class AbstractDAOBasedPlateManager implements
 	protected ICellSampleDAO          cellSampleDAO;
 	protected IWellDAO                wellDAO;
 	protected IPatientSampleDAO       patientSampleDAO;
+	protected IPatientOriginDAO		  patientOriginDAO;
+	protected ICellOriginDAO		  cellOriginDAO;
+	protected IDrugOriginDAO		  drugOriginDAO;
+	
+	public IDrugOriginDAO getDrugOriginDAO() {
+    	return drugOriginDAO;
+    }
+
+	public void setDrugOriginDAO(IDrugOriginDAO drugOriginDAO) {
+    	this.drugOriginDAO = drugOriginDAO;
+    }
+
+	public IPatientOriginDAO getPatientOriginDAO() {
+    	return patientOriginDAO;
+    }
+
+	public void setPatientOriginDAO(IPatientOriginDAO patientOriginDAO) {
+    	this.patientOriginDAO = patientOriginDAO;
+    }
+
+	public ICellOriginDAO getCellOriginDAO() {
+    	return cellOriginDAO;
+    }
+
+	public void setCellOriginDAO(ICellOriginDAO cellOriginDAO) {
+    	this.cellOriginDAO = cellOriginDAO;
+    }
 
 	public void setCellSampleDAO(ICellSampleDAO cellSampleDAO) {
     	this.cellSampleDAO = cellSampleDAO;
