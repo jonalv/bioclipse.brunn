@@ -44,7 +44,7 @@ public class PatientSample extends AbstractSample {
 		
 		for (AbstractAnnotationInstance ai : getAbstractAnnotationInstances()) {
 			AbstractAnnotationInstance copy = ai.deepCopy();
-	        patientSample.getAbstractAnnotationInstances().add(ai);
+	        patientSample.getAbstractAnnotationInstances().add(copy);
 	        copy.setAbstractAnnotatableObject(patientSample);
         }
 		
