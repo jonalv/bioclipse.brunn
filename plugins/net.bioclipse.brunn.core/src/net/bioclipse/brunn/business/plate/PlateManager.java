@@ -368,7 +368,8 @@ public class PlateManager extends
 		
 		net.bioclipse.brunn.pojos.MasterPlate copy = masterPlate.makeNewCopy(creator);
     	copy.setName(name);
-
+    	copy.setPlatesLeft(numOfPlates);
+    	
 		folder.getObjects().add(copy);
 		
 		masterPlateDAO.save(copy);
