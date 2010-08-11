@@ -8,9 +8,6 @@ import net.bioclipse.brunn.pojos.AbstractAnnotationInstance;
 import net.bioclipse.brunn.pojos.AbstractAuditableObject;
 import net.bioclipse.brunn.pojos.Annotation;
 import net.bioclipse.brunn.pojos.AnnotationType;
-import net.bioclipse.brunn.pojos.EnumAnnotation;
-import net.bioclipse.brunn.pojos.FloatAnnotation;
-import net.bioclipse.brunn.pojos.TextAnnotation;
 import net.bioclipse.brunn.pojos.User;
 
 /**
