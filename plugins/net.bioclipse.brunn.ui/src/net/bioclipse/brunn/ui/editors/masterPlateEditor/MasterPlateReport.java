@@ -11,12 +11,9 @@ import java.net.URL;
 
 import net.bioclipse.ui.BioclipseCache;
 
-import org.eclipse.birt.report.viewer.utilities.WebViewer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -26,7 +23,6 @@ import org.eclipse.ui.part.EditorPart;
 public class MasterPlateReport extends EditorPart{
 	
 	private MasterPlateEditor masterPlateEditor;
-	private Browser browser;
 	private String[][] masterPlateName = new String[2][1];
 	private String[][] substances;
 	private String[][] masterPlateLayout;
@@ -211,13 +207,6 @@ public class MasterPlateReport extends EditorPart{
 
 	@Override
 	public void createPartControl(Composite parent) {
-		/*combineMasterPlateAndMarkerLayout();
-		printDataSetToFile(masterPlateName,"masterPlateName.csv");
-		printDataSetToFile(substances,"substances.csv");
-		printDataSetToFile(combinedMasterPlateAndMarkerLayout,"masterPlateLayout.csv");
-       */
-		browser = new Browser(parent, SWT.NONE);
-		//WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 	
 	//reads the data and reloads the report when report tab is activated
@@ -228,9 +217,6 @@ public class MasterPlateReport extends EditorPart{
 		printDataSetToFile(substances,"substances.csv");
 		printDataSetToFile(combinedMasterPlateAndMarkerLayout,"masterPlateLayout.csv");
 		
-		//Browser browser = new Browser(parent, SWT.NONE);
-		WebViewer.cancel(browser);
-		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 
 	@Override

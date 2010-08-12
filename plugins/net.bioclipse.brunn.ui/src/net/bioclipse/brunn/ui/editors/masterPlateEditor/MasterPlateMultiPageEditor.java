@@ -1,6 +1,7 @@
 package net.bioclipse.brunn.ui.editors.masterPlateEditor;
 
 import net.bioclipse.brunn.pojos.MasterPlate;
+import net.bioclipse.jasper.editor.ReportEditor;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.IEditorPart;
@@ -10,7 +11,7 @@ import org.eclipse.ui.part.MultiPageEditorPart;
 public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
 
 	private MasterPlateEditor masterPlateEditor;
-	private MasterPlateReport masterPlateReport;
+	private ReportEditor masterPlateReport;
 	private MasterPlate toBeSaved;
 	
 	public final static String ID = "net.bioclipse.brunn.ui.editors.masterPlateEditor.MasterPlateMultiPageEditor"; 
@@ -35,7 +36,7 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
 			e.printStackTrace();
 		}
 
-		masterPlateReport = new MasterPlateReport(masterPlateEditor);
+		masterPlateReport = new ReportEditor();
 
 		try {
 			int index = this.addPage((IEditorPart) masterPlateReport, getEditorInput());
@@ -60,7 +61,7 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
 	@Override
 	protected void pageChange(int newPageIndex){
 		if(newPageIndex == 1) {
-			masterPlateReport.onPageChange();
+		    //TODO: Do something here to update the report?
 		}
 	}
 

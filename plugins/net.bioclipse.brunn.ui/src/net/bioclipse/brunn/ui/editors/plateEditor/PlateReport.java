@@ -20,12 +20,9 @@ import net.bioclipse.brunn.pojos.PlateFunction;
 import net.bioclipse.brunn.results.PlateResults;
 import net.bioclipse.ui.BioclipseCache;
 
-import org.eclipse.birt.report.viewer.utilities.WebViewer;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -34,7 +31,6 @@ import org.eclipse.ui.part.EditorPart;
 
 public class PlateReport extends EditorPart {
 	
-	private Browser browser;
 	private Replicates replicates;
 	private String[] neededData;
 	private Map<String, String[]> content = new HashMap<String, String[]>();
@@ -413,9 +409,6 @@ public class PlateReport extends EditorPart {
 	public void createPartControl(Composite parent) {
 		// TODO Auto-generated method stub
 		
-		browser = new Browser(parent, SWT.NONE);
-		//WebViewer.startup(browser);
-		//WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 	
 	@Override
@@ -434,8 +427,5 @@ public class PlateReport extends EditorPart {
 		addPlateName();
 		printMapToFile(content, "values.csv", "Compound Names");
 		printMapToFile(functions, "functions.csv", "Function");
-
-		WebViewer.cancel(browser);
-		WebViewer.display(getReportFile(), WebViewer.HTML, browser, "frameset");
 	}
 }

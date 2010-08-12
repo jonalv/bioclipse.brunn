@@ -16,10 +16,6 @@
       [Enter License Description here.]
    </license>
 
-   <requires>
-      <import feature="net.bioclipse.birt_feature" version="2.1.1.v20091016" match="greaterOrEqual"/>
-   </requires>
-
    <plugin
          id="org.junit4"
          download-size="0"
@@ -63,34 +59,6 @@
 
    <plugin
          id="org.hamcrest.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.birt.report.designer.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.birt.report.designer.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.gef"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.draw2d"
          download-size="0"
          install-size="0"
          version="0.0.0"
