@@ -115,6 +115,10 @@ public class MasterPlateEditor extends EditorPart {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public MasterPlate getCurrentMasterPlate() {
+	    return toBeSaved;
+	}
 
 	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
@@ -238,62 +242,62 @@ public class MasterPlateEditor extends EditorPart {
 		
 	}
 	
-	public String[][] getSubstanceNames() {
-		TableItem[] items = compoundsTable.getItems();
-		String[][] substances = new String[items.length][2];
-		int count = 0;
-		boolean found = false;
-		for(TableItem item : items) {
-			substances[count][0] = ((SampleMarker)item.getData()).getName();
-			substances[count][1] = "";
-			for( Well well : toBeSaved.getWells() ) {
-				for( SampleMarker sampleMarker : well.getSampleMarkers() ) {
-					if(sampleMarker.getName().equals( ((SampleMarker)item.getData()).getName()) ) {
-						AbstractSample sample = sampleMarker.getSample();
-						if( sampleMarker.getSample() == null ) {
-							continue;
-						}
-						//substances[count][0] = sampleMarker.getName(); //already done in the beginning
-						substances[count][1] = sample.getName();
-						count++;
-						found = true;
-						break;
-					}
-				}
-				if(found) {
-					found = false;
-					break;
-				}
-			}
-		}
-		//filters out markers with no attached compound
-		int numCompounds = 0;
-		for(int i=0; i<substances.length; i++) {
-			if(substances[i][1] != "") {
-				numCompounds++;
-			}
-		}
-		String[][] compounds = new String[numCompounds][2]; 
-		for(int i=0, j=0; i<substances.length; i++) {
-			if(substances[i][1] != "") {
-				compounds[j][0] = substances[i][0];
-				compounds[j][1] = substances[i][1];
-				j++;
-			}
-		}
-		return compounds;
-	}
+//	public String[][] getSubstanceNames() {
+//		TableItem[] items = compoundsTable.getItems();
+//		String[][] substances = new String[items.length][2];
+//		int count = 0;
+//		boolean found = false;
+//		for(TableItem item : items) {
+//			substances[count][0] = ((SampleMarker)item.getData()).getName();
+//			substances[count][1] = "";
+//			for( Well well : toBeSaved.getWells() ) {
+//				for( SampleMarker sampleMarker : well.getSampleMarkers() ) {
+//					if(sampleMarker.getName().equals( ((SampleMarker)item.getData()).getName()) ) {
+//						AbstractSample sample = sampleMarker.getSample();
+//						if( sampleMarker.getSample() == null ) {
+//							continue;
+//						}
+//						//substances[count][0] = sampleMarker.getName(); //already done in the beginning
+//						substances[count][1] = sample.getName();
+//						count++;
+//						found = true;
+//						break;
+//					}
+//				}
+//				if(found) {
+//					found = false;
+//					break;
+//				}
+//			}
+//		}
+//		//filters out markers with no attached compound
+//		int numCompounds = 0;
+//		for(int i=0; i<substances.length; i++) {
+//			if(substances[i][1] != "") {
+//				numCompounds++;
+//			}
+//		}
+//		String[][] compounds = new String[numCompounds][2]; 
+//		for(int i=0, j=0; i<substances.length; i++) {
+//			if(substances[i][1] != "") {
+//				compounds[j][0] = substances[i][0];
+//				compounds[j][1] = substances[i][1];
+//				j++;
+//			}
+//		}
+//		return compounds;
+//	}
 	
-	public String[][] getMasterPlateLayout() {
-		KTableModel tableModel = markersTable.getModel();
-		String[][] results = new String[tableModel.getRowCount()][tableModel.getColumnCount()];
-		for(int i=0; i<tableModel.getRowCount(); i++) {
-			for(int j=0; j<tableModel.getColumnCount(); j++) {
-				results[i][j] = tableModel.getContentAt(j,i).toString();
-			}
-		}
-		return results;
-	}
+//	public String[][] getMasterPlateLayout() {
+//		KTableModel tableModel = markersTable.getModel();
+//		String[][] results = new String[tableModel.getRowCount()][tableModel.getColumnCount()];
+//		for(int i=0; i<tableModel.getRowCount(); i++) {
+//			for(int j=0; j<tableModel.getColumnCount(); j++) {
+//				results[i][j] = tableModel.getContentAt(j,i).toString();
+//			}
+//		}
+//		return results;
+//	}
 	
 	public String getMasterPlateName() {
 		return referenceMasterPlate.getName();
