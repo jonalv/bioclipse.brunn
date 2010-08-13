@@ -113,6 +113,7 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
 	                            " rows is not supported." ), 
 	                    logger, 
 	                    "net.bioclipse.brunn.ui" );
+	                return;
 	            }
 	            
 	            String basePath 
