@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="masterplate96" language="groovy" columnCount="13" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="60" columnSpacing="1" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="2.565790591153534"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="4"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="masterplate96" language="groovy" columnCount="13" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="61" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="6.050000000000006"/>
+	<property name="ireport.x" value="364"/>
+	<property name="ireport.y" value="403"/>
 	<parameter name="MASTERPLATE_NAME" class="java.lang.String"/>
 	<parameter name="CREATION_DATE" class="java.lang.String"/>
 	<parameter name="CREATOR" class="java.lang.String"/>
@@ -45,7 +45,7 @@
 	<columnHeader>
 		<band height="24" splitType="Stretch">
 			<line>
-				<reportElement x="61" y="23" width="60" height="1">
+				<reportElement x="61" y="23" width="61" height="1">
 					<printWhenExpression><![CDATA[!$F{col}.equals("12")]]></printWhenExpression>
 				</reportElement>
 			</line>
@@ -87,7 +87,7 @@
 				<reportElement x="61" y="0" width="1" height="53"/>
 			</line>
 			<line>
-				<reportElement x="61" y="52" width="60" height="1">
+				<reportElement x="61" y="52" width="61" height="1">
 					<printWhenExpression><![CDATA[!$F{col}.equals("12")]]></printWhenExpression>
 				</reportElement>
 			</line>
