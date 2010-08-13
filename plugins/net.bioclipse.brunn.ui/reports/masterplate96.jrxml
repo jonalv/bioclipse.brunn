@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="masterplate96" language="groovy" columnCount="13" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="60" columnSpacing="1" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.565790591153534"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="4"/>
+	<parameter name="MASTERPLATE_NAME" class="java.lang.String"/>
+	<parameter name="CREATION_DATE" class="java.lang.String"/>
+	<parameter name="CREATOR" class="java.lang.String"/>
+	<parameter name="CHANGE_DATE" class="java.lang.String"/>
+	<parameter name="CHANGER" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="col" class="java.lang.String">
+		<fieldDescription><![CDATA[col]]></fieldDescription>
+	</field>
+	<field name="concentrations" class="java.lang.String">
+		<fieldDescription><![CDATA[concentrations]]></fieldDescription>
+	</field>
+	<field name="substances" class="java.lang.String">
+		<fieldDescription><![CDATA[substances]]></fieldDescription>
+	</field>
+	<field name="units" class="java.lang.String">
+		<fieldDescription><![CDATA[units]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="57" y="0" width="745" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Masterplate]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="57" y="13" width="745" height="18"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{MASTERPLATE_NAME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<line>
+				<reportElement x="61" y="23" width="60" height="1">
+					<printWhenExpression><![CDATA[!$F{col}.equals("12")]]></printWhenExpression>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="57" height="23">
+					<printWhenExpression><![CDATA[!$F{col}.equals("0")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{col}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="53" splitType="Stretch">
+			<textField>
+				<reportElement x="2" y="3" width="55" height="12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{substances}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="0" width="55" height="52"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{concentrations}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2" y="36" width="55" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{units}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="61" y="0" width="1" height="53"/>
+			</line>
+			<line>
+				<reportElement x="61" y="52" width="60" height="1">
+					<printWhenExpression><![CDATA[!$F{col}.equals("12")]]></printWhenExpression>
+				</reportElement>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="50">
+			<textField>
+				<reportElement x="2" y="37" width="372" height="13"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Created " + $P{CREATION_DATE} + " by " + $P{CREATOR} + " and last changed " + $P{CHANGE_DATE} + " by " + $P{CHANGER} + "."]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

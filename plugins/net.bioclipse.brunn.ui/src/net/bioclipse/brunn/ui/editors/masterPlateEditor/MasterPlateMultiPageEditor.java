@@ -90,10 +90,31 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
 	protected void pageChange(int newPageIndex){
 	    try {
 	        if(newPageIndex == 1) {
-	            String reportPath 
-	                = FileUtil.getFilePath( 
-	                      "reports/masterplate384.jasper", 
-	                      net.bioclipse.brunn.ui.Activator.PLUGIN_ID );
+	            String reportPath = null;
+	            int cols = masterPlateEditor.getCurrentMasterPlate().getCols();
+	            int rows = masterPlateEditor.getCurrentMasterPlate().getRows();
+	            if ( cols == 24 && rows == 16 ) {
+	                reportPath 
+	                    = FileUtil.getFilePath( 
+	                          "reports/masterplate384.jasper", 
+                              net.bioclipse.brunn.ui.Activator.PLUGIN_ID );
+	            }
+	            else if ( cols == 12  && rows == 8 ) {
+	                reportPath
+	                    = FileUtil.getFilePath( 
+	                          "reports/masterplate96.jasper",
+	                          net.bioclipse.brunn.ui.Activator.PLUGIN_ID );
+	            }
+	            else {
+	                LogUtils.handleException( 
+	                    new IllegalStateException( 
+	                            "Report generation for plates with " + cols + 
+	                            " cols and " + rows + 
+	                            " rows is not supported." ), 
+	                    logger, 
+	                    "net.bioclipse.brunn.ui" );
+	            }
+	            
 	            String basePath 
 	                = FileUtil.getFilePath( 
 	                      "reports/", 
@@ -183,6 +204,17 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
             c.setUnits( "" );
             result.add( c );
         }
+        int maxLength = 0, newLength = 0;
+          
+        switch ( wells.size() ) {
+            case 384 : 
+                maxLength = 9;
+                newLength = 7;
+                break;
+            case 96 :
+                maxLength = 14;
+                newLength = 12;
+        }        
         for ( Well w : wells ) {
             JasperCell c = new JasperCell();
             c.setCol( w.getCol() + "" );
@@ -212,14 +244,16 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
                     markers.append( ',' ).append( ' ' );
                 }
             }
-            c.setSubstances( substances.length() > 9 
-                                 ? substances.substring( 0, 7 ) + "..."
+            c.setSubstances( substances.length() > maxLength 
+                                 ? substances.substring( 0, newLength ) + "..."
                                  : substances.toString() );
-            c.setConcentrations( concentrations.length() > 9 
-                                     ? concentrations.substring( 0, 7 ) + "..."
+            c.setConcentrations( concentrations.length() > maxLength 
+                                     ? concentrations.substring( 
+                                                          0, 
+                                                          newLength ) + "..."
                                      : concentrations.toString() );
-            c.setUnits( units.length() > 9 
-                            ? substances.substring( 0, 7 ) + "..."
+            c.setUnits( units.length() > maxLength 
+                            ? substances.substring( 0, newLength ) + "..."
                             : units.toString() );
             if ( "".equals( c.getSubstances() ) ) {
                 c.setConcentrations( markers.toString() );

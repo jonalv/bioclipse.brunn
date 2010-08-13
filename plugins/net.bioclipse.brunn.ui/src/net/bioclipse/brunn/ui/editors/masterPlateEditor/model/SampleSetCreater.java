@@ -6,9 +6,18 @@ import java.util.Collection;
 
 public class SampleSetCreater {
 
-    public static Collection<JasperCell> createCollection() {
+    public static Collection<JasperCell> create384Collection() {
+        return createCollection( 'P', 384 );
+    }
+    
+    public static Collection<JasperCell> create96Collection() {
+        return createCollection( 'H', 96 );
+    }
+    
+    public static Collection<JasperCell> createCollection( char toChar, 
+                                                           int numOfWells ) {
         Collection<JasperCell> cells = new ArrayList<JasperCell>();
-        for ( char c = 'A' ; c <= 'P' ; c++ ) {
+        for ( char c = 'A' ; c <= toChar ; c++ ) {
             JasperCell cell = new JasperCell();
             cell.setSubstances( "" );
             cell.setUnits( "" );
@@ -16,7 +25,7 @@ public class SampleSetCreater {
             cell.setConcentrations( c + "" );
             cells.add( cell );
         }
-        for ( int i = 0 ; i < 384 ; i++ ) {
+        for ( int i = 0 ; i < numOfWells ; i++ ) {
             JasperCell cell = new JasperCell();
             if ( i%12 == 0 ) {
                 cell.setSubstances( "" );
@@ -28,7 +37,7 @@ public class SampleSetCreater {
                 cell.setConcentrations( "10" );
                 cell.setUnits( "M" );
             }
-            cell.setCol( i/16 + 1 + "" );
+            cell.setCol( i/(toChar - 'A' + 1 ) + 1 + "" );
             cells.add( cell );
         }
         return cells;
