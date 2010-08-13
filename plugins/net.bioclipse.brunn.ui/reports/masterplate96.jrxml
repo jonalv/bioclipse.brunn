@@ -79,7 +79,7 @@
 			<textField>
 				<reportElement x="2" y="36" width="55" height="14"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="8" pdfEncoding="Cp1253"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{units}]]></textFieldExpression>
 			</textField>

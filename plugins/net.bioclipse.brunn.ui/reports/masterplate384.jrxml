@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="masterplate384" language="groovy" columnCount="25" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="31" columnSpacing="1" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="8.857805000000013"/>
-	<property name="ireport.x" value="47"/>
-	<property name="ireport.y" value="486"/>
+	<property name="ireport.zoom" value="5.500000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="294"/>
 	<property name="ireport.callouts" value="##Thu Aug 12 15:40:09 CEST 2010"/>
 	<style name="table">
 		<box>
@@ -105,7 +105,7 @@
 			<textField>
 				<reportElement x="2" y="16" width="27" height="6"/>
 				<textElement textAlignment="Center">
-					<font size="5"/>
+					<font size="5" pdfEncoding="Cp1253"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{units}]]></textFieldExpression>
 			</textField>
