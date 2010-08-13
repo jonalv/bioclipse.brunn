@@ -6,7 +6,6 @@ public class JasperCell {
     String substances;
     String concentrations;
     String units;
-    String row;
     String col;
     
     public void setSubstances( String substances ) {
@@ -26,14 +25,6 @@ public class JasperCell {
     }
     public String getUnits() {
         return units;
-    }
-    public void setRow( String row ) {
-
-        this.row = row;
-    }
-    public String getRow() {
-
-        return row;
     }
     public void setCol( String col ) {
 

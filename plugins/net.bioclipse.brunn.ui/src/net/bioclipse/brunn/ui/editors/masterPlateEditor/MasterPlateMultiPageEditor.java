@@ -1,13 +1,17 @@
 package net.bioclipse.brunn.ui.editors.masterPlateEditor;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import net.bioclipse.brunn.pojos.AuditLog;
+import net.bioclipse.brunn.pojos.AuditType;
 import net.bioclipse.brunn.pojos.DrugSample;
 import net.bioclipse.brunn.pojos.MasterPlate;
 import net.bioclipse.brunn.pojos.SampleContainer;
@@ -36,7 +40,9 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
 	
 	public final static String ID 
 	    = "net.bioclipse.brunn.ui.editors.masterPlateEditor." +
-	    		"MasterPlateMultiPageEditor"; 
+	    		"MasterPlateMultiPageEditor";
+    public static final SimpleDateFormat dateFormatter = 
+        new SimpleDateFormat("yyyy-MM-dd"); 
 	
 	@Override
 	protected void createPages() {
@@ -93,7 +99,7 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
 	                      "reports/", 
 	                      net.bioclipse.brunn.ui.Activator.PLUGIN_ID );
 	            HashMap<String, String> parameters 
-	                = new HashMap<String, String>();
+	                = getParameters();
 	            parameters.put("DS_BASE_PATH",basePath);
 
 	            masterPlateReport.openReport( 
@@ -107,7 +113,49 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
         }
 	}
 	
-	@SuppressWarnings({ "rawtypes" })
+	public HashMap<String, String> getParameters() {
+	    HashMap<String, String> params = new HashMap<String, String>();
+	    params.put( "MASTERPLATE_NAME", 
+	                masterPlateEditor.getCurrentMasterPlate().getName() );
+	    String creationDate = "[UNKNOWN DATE]";
+	    String creator = masterPlateEditor.getCurrentMasterPlate()
+	                                      .getCreator().getName();
+	    String changeDate = "[UNKNOWN DATE]";
+	    String changer = "[UNKNOWN]";
+	    
+	    List<AuditLog> changes = new ArrayList<AuditLog>();
+	    
+	    for ( AuditLog log : masterPlateEditor.getCurrentMasterPlate()
+	                                          .getAuditLogs() ) {
+	        if ( log.getAuditType() == AuditType.CREATE_EVENT ) {
+	            creationDate = dateFormatter.format( log.getTimeStamp() );
+	        }
+	        if ( log.getAuditType() == AuditType.UPDATE_EVENT ) {
+	            changes.add( log );
+	        }
+	    }
+	    Collections.sort( changes, new Comparator<AuditLog>() {
+            @Override
+            public int compare( AuditLog l1, AuditLog l2 ) {
+                return l1.getTimeStamp().compareTo( l2.getTimeStamp() );
+            }
+	    });
+	    
+	    if ( changes.size() > 0 ) {
+	        changer = changes.get( 0 ).getUser().getName();
+	        changeDate = dateFormatter.format( changes.get( 0 )
+	                                                  .getTimeStamp() );
+	    }
+	    
+	    params.put( "CREATION_DATE", creationDate );
+	    params.put( "CREATOR",       creator      );
+	    params.put( "CHANGE_DATE",   changeDate   );
+	    params.put( "CHANGER",       changer      );
+        
+	    return params;
+    }
+
+    @SuppressWarnings({ "rawtypes" })
     public Collection<JasperCell> getCellsCollection() {
         List<Well> wells = new ArrayList<Well>( 
                                    masterPlateEditor.getCurrentMasterPlate()
@@ -125,10 +173,19 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
             
         });
         Collection<JasperCell> result = new ArrayList<JasperCell>();
+        for ( char row = 'A' ; 
+              row < 'A' + masterPlateEditor.getCurrentMasterPlate().getRows() ;
+              row++ ) {
+            JasperCell c = new JasperCell();
+            c.setCol( "0" );
+            c.setConcentrations( row + "" );
+            c.setSubstances( "" );
+            c.setUnits( "" );
+            result.add( c );
+        }
         for ( Well w : wells ) {
             JasperCell c = new JasperCell();
             c.setCol( w.getCol() + "" );
-            c.setRow( w.getRow() + "" );
             StringBuilder substances     = new StringBuilder();
             StringBuilder concentrations = new StringBuilder();
             StringBuilder units          = new StringBuilder();
@@ -155,9 +212,15 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
                     markers.append( ',' ).append( ' ' );
                 }
             }
-            c.setSubstances(     substances.toString()     );
-            c.setConcentrations( concentrations.toString() );
-            c.setUnits(          units.toString()          );
+            c.setSubstances( substances.length() > 9 
+                                 ? substances.substring( 0, 7 ) + "..."
+                                 : substances.toString() );
+            c.setConcentrations( concentrations.length() > 9 
+                                     ? concentrations.substring( 0, 7 ) + "..."
+                                     : concentrations.toString() );
+            c.setUnits( units.length() > 9 
+                            ? substances.substring( 0, 7 ) + "..."
+                            : units.toString() );
             if ( "".equals( c.getSubstances() ) ) {
                 c.setConcentrations( markers.toString() );
             }
