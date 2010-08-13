@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" columnCount="25" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="31" columnSpacing="1" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.5"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="masterplate384" language="groovy" columnCount="25" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="31" columnSpacing="1" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="5.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="ireport.callouts" value="##Thu Aug 12 15:40:09 CEST 2010"/>
@@ -68,7 +68,9 @@
 	<columnHeader>
 		<band height="13" splitType="Stretch">
 			<textField evaluationTime="Column">
-				<reportElement x="2" y="0" width="27" height="13"/>
+				<reportElement x="2" y="0" width="27" height="13">
+					<printWhenExpression><![CDATA[!$F{col}.equals("0")]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="5"/>
 				</textElement>
@@ -93,7 +95,9 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{concentrations}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="32" y="28" width="32" height="1"/>
+				<reportElement x="32" y="28" width="32" height="1">
+					<printWhenExpression><![CDATA[!$F{col}.equals("24")]]></printWhenExpression>
+				</reportElement>
 			</line>
 			<line>
 				<reportElement x="32" y="0" width="1" height="29"/>
@@ -106,7 +110,9 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{units}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="32" y="-1" width="32" height="1"/>
+				<reportElement x="32" y="-1" width="32" height="1">
+					<printWhenExpression><![CDATA[!$F{col}.equals("24")]]></printWhenExpression>
+				</reportElement>
 			</line>
 		</band>
 	</detail>
