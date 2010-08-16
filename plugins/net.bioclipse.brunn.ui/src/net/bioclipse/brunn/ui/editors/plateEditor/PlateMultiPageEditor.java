@@ -1,6 +1,8 @@
 package net.bioclipse.brunn.ui.editors.plateEditor;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,7 +11,11 @@ import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.plate.IPlateManager;
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.results.PlateResults;
+import net.bioclipse.core.util.FileUtil;
+import net.bioclipse.core.util.LogUtils;
+import net.bioclipse.jasper.editor.ReportEditor;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -23,9 +29,11 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	private Summary summary;
 	private Replicates replicates;
 	private IC50 ic50;
-	private PlateReport plateReport;
+	private ReportEditor plateReport;
 	private List<OutlierChangedListener> outLierListeners = new ArrayList<OutlierChangedListener>();
 	private Plate toBeSaved;
+    private static final Logger logger 
+        = Logger.getLogger( PlateMultiPageEditor.class );
 	
 	public final static String ID = "net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor"; 
 	
@@ -57,7 +65,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		replicates  = new Replicates(  plateResults, this, toBeSaved             );
 		summary     = new Summary(     plateResults, this, toBeSaved, replicates );
 		ic50        = new IC50(        this, replicates );
-		plateReport = new PlateReport( replicates );
+		plateReport = new ReportEditor();
 		
 		try {
 			int index = this.addPage((IEditorPart) plateEditor, getEditorInput());
@@ -116,7 +124,20 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	@Override
 	protected void pageChange(int newPageIndex){
 		if(newPageIndex == 4) {
-			plateReport.onPageChange();
+            String reportPath;
+            try {
+                reportPath = FileUtil.getFilePath( 
+                               "reports/384Plate.jasper", 
+                               net.bioclipse.brunn.ui.Activator.PLUGIN_ID );
+			plateReport.openReport( reportPath, 
+			                        new HashMap<String, String>(), 
+			                        new ArrayList() );
+            }
+            catch ( Exception e ) {
+                LogUtils.handleException( e, 
+                                          logger , 
+                                          "net.bioclipse.brunn.ui" );
+            }
 		}
 	}
 
