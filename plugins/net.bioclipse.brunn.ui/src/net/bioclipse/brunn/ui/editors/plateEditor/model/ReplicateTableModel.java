@@ -158,7 +158,7 @@ public class ReplicateTableModel extends KTableDefaultModel {
 		return row;
 	}
 
-	private List<List<Well>> groupWells(Set<Well> wells) {
+	public static List<List<Well>> groupWells(Set<Well> wells) {
 		
 		Map<String, List<Well>> result = new HashMap<String, List<Well>>();
 		

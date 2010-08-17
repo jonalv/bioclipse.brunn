@@ -13,36 +13,36 @@
 		<fieldDescription><![CDATA[value]]></fieldDescription>
 	</field>
 	<columnHeader>
-		<band height="12" splitType="Stretch">
+		<band height="9" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="60" height="12"/>
+				<reportElement x="0" y="0" width="60" height="9"/>
 				<textElement verticalAlignment="Bottom">
-					<font size="8" isBold="true"/>
+					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Function]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="60" y="0" width="35" height="12"/>
+				<reportElement x="60" y="0" width="35" height="9"/>
 				<textElement verticalAlignment="Bottom">
-					<font size="8" isBold="true"/>
+					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Value]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="12" splitType="Stretch">
+		<band height="10" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="60" height="12"/>
+				<reportElement x="0" y="0" width="60" height="10"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="60" y="0" width="35" height="12"/>
+				<reportElement x="60" y="0" width="35" height="10"/>
 				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+					<font size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{value}]]></textFieldExpression>
 			</textField>

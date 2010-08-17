@@ -43,7 +43,7 @@ public class JasperBeanCollectionCreator {
             List<JasperPoint> points    = new ArrayList<JasperPoint>();
             for ( int j = 0 ; j < numOfValues ; j++ ) {
                 JasperPoint point = new JasperPoint();
-                point.setValue( Math.random() * (i + 1) );
+                point.setValue( Math.random() * 100 );
                 point.setConcentration( Math.pow(10, j) );
                 points.add( point );
             }

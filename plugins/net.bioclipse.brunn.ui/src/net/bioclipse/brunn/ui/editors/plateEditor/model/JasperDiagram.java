@@ -1,5 +1,6 @@
 package net.bioclipse.brunn.ui.editors.plateEditor.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -12,6 +13,10 @@ public class JasperDiagram {
     private Double       ic50;
     private String       unit;
     private List<JasperPoint> points;
+    
+    public JasperDiagram() {
+        points = new ArrayList<JasperPoint>();
+    }
     
     public void setName( String name ) {
         this.name = name;

@@ -545,4 +545,8 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
                                                   wellFunctionCombo.getText(), 
                                                   plateResults ) );
 	}
+
+    public PlateResults getPlateResults() {
+        return plateResults;
+    }
 }

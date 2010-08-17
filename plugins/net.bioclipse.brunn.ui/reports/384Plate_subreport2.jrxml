@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="384Plate_subreport2" language="groovy" columnCount="3" pageWidth="555" pageHeight="802" columnWidth="185" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="1.9487171000000016"/>
+	<property name="ireport.zoom" value="4.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<subDataset name="chartDataset">
@@ -33,22 +33,22 @@
 		<fieldDescription><![CDATA[unit]]></fieldDescription>
 	</field>
 	<detail>
-		<band height="83" splitType="Stretch">
+		<band height="84" splitType="Stretch">
 			<subreport>
-				<reportElement x="95" y="23" width="89" height="47"/>
+				<reportElement x="107" y="13" width="72" height="67"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{points})]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "384Plate_subreport2_subreport2.jasper"]]></subreportExpression>
 			</subreport>
 			<textField>
-				<reportElement x="0" y="0" width="184" height="13"/>
+				<reportElement x="7" y="0" width="172" height="13"/>
 				<textElement>
-					<font size="8"/>
+					<font size="8" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{name} + " " + $F{ic50} + " " + $F{unit}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<xyLineChart>
-				<chart isShowLegend="false">
-					<reportElement x="0" y="23" width="95" height="47"/>
+				<chart isShowLegend="false" customizerClass="net.bioclipse.jasper.charCustomizers.DoseResponseChartCustomizer">
+					<reportElement x="1" y="13" width="106" height="67"/>
 					<chartTitle>
 						<font size="5"/>
 					</chartTitle>
@@ -73,7 +73,7 @@
 						<yValueExpression><![CDATA[$F{value}]]></yValueExpression>
 					</xySeries>
 				</xyDataset>
-				<linePlot>
+				<linePlot isShowShapes="false">
 					<plot/>
 					<categoryAxisFormat>
 						<axisFormat>
@@ -97,6 +97,22 @@
 					</valueAxisFormat>
 				</linePlot>
 			</xyLineChart>
+			<textField>
+				<reportElement x="7" y="0" width="172" height="13"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["IC50: " + $F{ic50} + " " + $F{unit}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="1" height="83"/>
+			</line>
+			<line>
+				<reportElement x="0" y="83" width="184" height="1"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="84"/>
+			</line>
 		</band>
 	</detail>
 </jasperReport>

@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="384Plate" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.4363522962149813"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["/Users/jonathan/Work/Bioclipse/bioclipse.brunn/plugins/net.bioclipse.brunn.ui/reports/"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="NAME" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
 	<field name="diagrams" class="java.util.List">
 		<fieldDescription><![CDATA[diagrams]]></fieldDescription>
 	</field>
-	<field name="functions" class="java.util.List">
-		<fieldDescription><![CDATA[functions]]></fieldDescription>
+	<field name="functions1" class="java.util.List">
+		<fieldDescription><![CDATA[functions1]]></fieldDescription>
+	</field>
+	<field name="functions2" class="java.util.List">
+		<fieldDescription><![CDATA[functions2]]></fieldDescription>
+	</field>
+	<field name="functions3" class="java.util.List">
+		<fieldDescription><![CDATA[functions3]]></fieldDescription>
+	</field>
+	<field name="functions4" class="java.util.List">
+		<fieldDescription><![CDATA[functions4]]></fieldDescription>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -21,12 +31,22 @@
 	<title>
 		<band height="32" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="555" height="19"/>
+				<reportElement x="0" y="0" width="555" height="15"/>
 				<textElement textAlignment="Center">
-					<font size="14"/>
+					<font size="12"/>
 				</textElement>
 				<text><![CDATA[Dose-response report]]></text>
 			</staticText>
+			<line>
+				<reportElement x="0" y="31" width="555" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="15" width="554" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{NAME}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -36,19 +56,50 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="60" splitType="Stretch">
+		<band height="300" splitType="Stretch">
 			<subreport>
-				<reportElement x="0" y="0" width="555" height="60"/>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{functions})]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "384Plate_subreport1.jasper"]]></subreportExpression>
-			</subreport>
-		</band>
-		<band height="223">
-			<subreport>
-				<reportElement x="0" y="1" width="555" height="221"/>
+				<reportElement x="0" y="70" width="555" height="230"/>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{diagrams})]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "384Plate_subreport2.jasper"]]></subreportExpression>
 			</subreport>
+			<subreport>
+				<reportElement x="145" y="0" width="134" height="70"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{functions2})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "384Plate_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="286" y="0" width="133" height="70"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{functions3})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "384Plate_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="426" y="0" width="125" height="70"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{functions4})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "384Plate_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="5" y="0" width="133" height="70"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{functions1})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "384Plate_subreport1.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement x="282" y="0" width="1" height="70"/>
+			</line>
+			<line>
+				<reportElement x="422" y="0" width="1" height="70"/>
+			</line>
+			<line>
+				<reportElement x="141" y="0" width="1" height="70"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="70"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="70"/>
+			</line>
+			<line>
+				<reportElement x="1" y="69" width="554" height="1"/>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>

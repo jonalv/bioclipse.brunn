@@ -19,6 +19,15 @@ public class JasperPoint {
     private double concentration;
     private double value;
     
+    public JasperPoint() {
+        
+    }
+    
+    public JasperPoint( double concentration, double value ) {
+        this.concentration = concentration;
+        this.value = value;
+    }
+    
     public void setConcentration( double concentration ) {
         this.concentration = concentration;
     }
