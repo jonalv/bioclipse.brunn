@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="384Plate_subreport2_subreport2" language="groovy" pageWidth="72" pageHeight="72" columnWidth="72" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
-	<property name="ireport.zoom" value="3.452271214393107"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="384Plate_subreport2_subreport2" language="groovy" pageWidth="72" pageHeight="67" columnWidth="72" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="8.954302432552401"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<parameter name="UNIT" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -16,41 +17,41 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band splitType="Stretch"/>
+		<band height="1" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
 		<band height="7" splitType="Stretch">
 			<staticText>
+				<reportElement x="48" y="0" width="22" height="7"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="5" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SI [%]]]></text>
+			</staticText>
+			<textField>
 				<reportElement x="0" y="0" width="45" height="7"/>
-				<textElement verticalAlignment="Bottom">
-					<font size="5" isBold="true"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="5" isBold="true" pdfEncoding="Cp1253"/>
 				</textElement>
-				<text><![CDATA[Concentration]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="45" y="0" width="22" height="7"/>
-				<textElement verticalAlignment="Bottom">
-					<font size="5" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Value]]></text>
-			</staticText>
+				<textFieldExpression class="java.lang.String"><![CDATA["Conc. [" + $P{UNIT} + "]"]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="8" splitType="Stretch">
+		<band height="7" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="45" height="7"/>
-				<textElement>
+				<textElement textAlignment="Right">
 					<font size="5"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{concentration}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="45" y="0" width="22" height="7"/>
+			<textField pattern="###0">
+				<reportElement x="48" y="0" width="22" height="7"/>
 				<textElement>
 					<font size="5"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{value}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{value}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

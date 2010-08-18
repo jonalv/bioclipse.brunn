@@ -36,6 +36,9 @@
 		<band height="84" splitType="Stretch">
 			<subreport>
 				<reportElement x="107" y="13" width="72" height="67"/>
+				<subreportParameter name="UNIT">
+					<subreportParameterExpression><![CDATA[$F{unit}]]></subreportParameterExpression>
+				</subreportParameter>
 				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{points})]]></dataSourceExpression>
 				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "384Plate_subreport2_subreport2.jasper"]]></subreportExpression>
 			</subreport>
@@ -100,7 +103,7 @@
 			<textField>
 				<reportElement x="7" y="0" width="172" height="13"/>
 				<textElement textAlignment="Right">
-					<font size="8"/>
+					<font size="8" pdfEncoding="Cp1253"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["IC50: " + $F{ic50} + " " + $F{unit}]]></textFieldExpression>
 			</textField>
