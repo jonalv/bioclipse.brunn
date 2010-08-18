@@ -316,8 +316,8 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		bottom.setLayout(new FormLayout());
 		formData_1.bottom = new FormAttachment(bottom, -2, SWT.DEFAULT);
 		final FormData formData_2 = new FormData();
+		formData_2.top = new FormAttachment(100, -71);
 		formData_2.right = new FormAttachment(center, 0, SWT.RIGHT);
-		formData_2.top = new FormAttachment(100, -43);
 		formData_2.bottom = new FormAttachment(100, -5);
 		formData_2.left = new FormAttachment(center, 0, SWT.LEFT);
 		bottom.setLayoutData(formData_2);
@@ -442,10 +442,9 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		final Group exportGroup = new Group(bottom, SWT.NONE);
 		exportGroup.setText("Export");
 		final FormData fd_exportGroup = new FormData();
-		fd_exportGroup.bottom = new FormAttachment(wellFunctionCombo, 0, SWT.BOTTOM);
-		fd_exportGroup.top = new FormAttachment(copyDataToButton, 0, SWT.TOP);
 		fd_exportGroup.right = new FormAttachment(100, -5);
-		fd_exportGroup.left = new FormAttachment(0, 705);
+		fd_exportGroup.bottom = new FormAttachment(100, -5);
+		fd_exportGroup.top = new FormAttachment(0, 5);
 		exportGroup.setLayoutData(fd_exportGroup);
 		exportGroup.setLayout(new FormLayout());
 
@@ -459,7 +458,7 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		Button goButton;
 		goButton = new Button(exportGroup, SWT.NONE);
 		final FormData fd_goButton = new FormData();
-		fd_goButton.bottom = new FormAttachment(exportActionCombo, 0, SWT.BOTTOM);
+		fd_goButton.bottom = new FormAttachment(100, -5);
 		fd_goButton.left = new FormAttachment(exportActionCombo, 5, SWT.RIGHT);
 		goButton.setLayoutData(fd_goButton);
 		goButton.addSelectionListener(new SelectionAdapter() {
