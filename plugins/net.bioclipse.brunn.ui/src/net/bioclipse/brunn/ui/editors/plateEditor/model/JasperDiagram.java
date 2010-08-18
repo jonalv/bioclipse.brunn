@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class JasperDiagram {
     private String       name;
-    private Double       ic50;
+    private String       ic50;
     private String       unit;
     private List<JasperPoint> points;
     
@@ -26,11 +26,11 @@ public class JasperDiagram {
         return name;
     }
     
-    public void setIc50( double ic50 ) {
+    public void setIc50( String ic50 ) {
         this.ic50 = ic50;
     }
     
-    public double getIc50() {
+    public String getIc50() {
         return ic50;
     }
 

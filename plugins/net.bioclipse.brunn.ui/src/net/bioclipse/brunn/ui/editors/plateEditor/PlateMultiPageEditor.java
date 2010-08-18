@@ -222,7 +222,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
             
             if ( diagram == null ) {
                 diagram = new JasperDiagram();
-                diagram.setIc50( 0 );
+                diagram.setIc50( ic50.getIC50(substanceName) );
                 diagram.setName( substanceName );
                 diagram.setUnit( unit );
                 diagrams.put( substanceName, diagram );

@@ -49,7 +49,7 @@ public class JasperBeanCollectionCreator {
             }
             diagram.setPoints(points);
             diagram.setUnit( "\u03bcg/ml" );
-            diagram.setIc50( Math.random() );
+            diagram.setIc50( Math.random() + "" );
             diagrams.add( diagram );
             
         }

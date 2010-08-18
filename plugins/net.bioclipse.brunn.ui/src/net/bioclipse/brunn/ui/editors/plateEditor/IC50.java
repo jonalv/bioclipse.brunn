@@ -139,4 +139,13 @@ public class IC50 extends EditorPart implements OutlierChangedListener {
 		table.setModel( tableModel );
 	}
 
+    /**
+     * @param substanceName
+     * @return
+     */
+    public String getIC50( String substanceName ) {
+
+        return tableModel.getIC50(substanceName);
+    }
+
 }

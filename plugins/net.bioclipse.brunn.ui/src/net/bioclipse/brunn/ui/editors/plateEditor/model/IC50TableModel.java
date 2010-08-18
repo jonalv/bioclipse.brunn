@@ -326,4 +326,11 @@ public class IC50TableModel extends KTableDefaultModel{
 		return true;
 	}
 
+    /**
+     * @param substanceName
+     * @return
+     */
+    public String getIC50( String substanceName ) {
+        return IC50.get( substanceName );
+    }
 }

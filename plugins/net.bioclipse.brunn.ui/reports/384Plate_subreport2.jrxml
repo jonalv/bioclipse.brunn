@@ -20,7 +20,7 @@
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
-	<field name="ic50" class="java.lang.Double">
+	<field name="ic50" class="java.lang.String">
 		<fieldDescription><![CDATA[ic50]]></fieldDescription>
 	</field>
 	<field name="name" class="java.lang.String">
