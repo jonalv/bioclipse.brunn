@@ -29,7 +29,13 @@ import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.jasper.editor.ReportEditor;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
@@ -38,6 +44,34 @@ import org.eclipse.ui.part.MultiPageEditorPart;
 
 public class PlateMultiPageEditor extends MultiPageEditorPart {
 
+    private static final Logger logger 
+        = Logger.getLogger( PlateMultiPageEditor.class );
+    private static List<IPlateExportAction> exportActions;
+    
+    static {
+        IExtensionRegistry registry = Platform.getExtensionRegistry();
+        IExtensionPoint extensionPoint 
+            = registry.getExtensionPoint(
+                           "net.bioclipse.brunn.plateExportAction" );
+        IExtension[] extensions = extensionPoint.getExtensions();
+        for ( IExtension extension: extensions ) {
+            for ( IConfigurationElement element 
+                            : extension.getConfigurationElements() ) {
+                IPlateExportAction action = null;
+                try {
+                    action = (IPlateExportAction) 
+                             element.createExecutableExtension( "action" );
+                }
+                catch (CoreException e) {
+                    LogUtils.handleException( e, 
+                                              logger, 
+                                              "net.bioclipse.brunn.ui" );
+                }
+                exportActions.add( action );
+            }
+        }
+    }
+    
     private static final Pattern siPattern 
         = Pattern.compile( "si?%", Pattern.CASE_INSENSITIVE );
 	private PlateEditor plateEditor;
@@ -48,8 +82,7 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	private List<OutlierChangedListener> outLierListeners 
 	    = new ArrayList<OutlierChangedListener>();
 	private Plate toBeSaved;
-    private static final Logger logger 
-        = Logger.getLogger( PlateMultiPageEditor.class );
+
 	
 	public final static String ID 
 	    = "net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor"; 
@@ -81,15 +114,18 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		
 		plateEditor = new PlateEditor( plateResults, 
 		                               this, 
-		                               toBeSaved );
+		                               toBeSaved,
+		                               exportActions );
 		replicates  = new Replicates( plateResults, 
 		                              this, 
-		                              toBeSaved );
+		                              toBeSaved,
+		                              exportActions );
 		summary     = new Summary( plateResults, 
 		                           this, 
 		                           toBeSaved, 
-		                           replicates );
-		ic50        = new IC50( this, replicates );
+		                           replicates,
+		                           exportActions );
+		ic50        = new IC50( this, replicates, exportActions );
 		plateReport = new ReportEditor();
 		
 		try {

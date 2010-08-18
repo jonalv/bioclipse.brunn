@@ -1,6 +1,8 @@
 package net.bioclipse.brunn.ui.editors.plateEditor;
 
 
+import java.util.List;
+
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.pojos.Well;
 import net.bioclipse.brunn.results.PlateResults;
@@ -41,17 +43,20 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 	private final Clipboard cb = new Clipboard(
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay() );
 	private Plate toBeSaved;
+    private List<IPlateExportAction> plateExportActions;
 	
 		
 	public Summary( PlateResults plateResults, 
 			        PlateMultiPageEditor plateMultiPageEditor, 
-			        Plate toBeSaved, Replicates replicates) {
+			        Plate toBeSaved, Replicates replicates, 
+			        List<IPlateExportAction> plateExportActions ) {
 		super();
 		this.plateResults = plateResults;
 		plateMultiPageEditor.addListener(this);
 		this.plateMultiPageEditor = plateMultiPageEditor;
 		this.replicates = replicates;
 		this.toBeSaved = toBeSaved;
+		this.plateExportActions = plateExportActions;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package net.bioclipse.brunn.ui.editors.plateEditor;
 
+import java.util.List;
+
 import net.bioclipse.brunn.ui.editors.plateEditor.model.IC50TableModel;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -32,13 +34,15 @@ public class IC50 extends EditorPart implements OutlierChangedListener {
 	
 	private final Clipboard cb = new Clipboard(
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay() );
+    private List<IPlateExportAction> exportActions;
 	
 		
-	public IC50(PlateMultiPageEditor plateMultiPageEditor, Replicates replicates) {
+	public IC50(PlateMultiPageEditor plateMultiPageEditor, Replicates replicates, List<IPlateExportAction> exportActions) {
 		super();
 		plateMultiPageEditor.addListener(this);
 		this.replicates = replicates;
 		tableModel = new IC50TableModel(replicates);
+		this.exportActions = exportActions;
 	}
 
 	@Override

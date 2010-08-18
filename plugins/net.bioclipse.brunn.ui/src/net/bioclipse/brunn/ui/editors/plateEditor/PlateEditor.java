@@ -99,14 +99,16 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 	
 	public final static String ID = "net.bioclipse.brunn.ui.editors.plateEditor.PlateEditor";
 	private Button markAsOutlierButton;
-	private PlateMultiPageEditor plateMultiPageEditor; 
+	private PlateMultiPageEditor plateMultiPageEditor;
+    private List<IPlateExportAction> exportActions; 
 	
-	public PlateEditor(PlateResults plateResults, PlateMultiPageEditor plateMultiPageEditor, Plate toBeSaved) {
+	public PlateEditor(PlateResults plateResults, PlateMultiPageEditor plateMultiPageEditor, Plate toBeSaved, List<IPlateExportAction> exportActions) {
 		super();
 		this.plateResults = plateResults;
 		this.plateMultiPageEditor = plateMultiPageEditor;
 		plateMultiPageEditor.addListener(this);
 		this.toBeSaved = toBeSaved;
+		this.exportActions = exportActions; 
 	}
 
 	@Override
