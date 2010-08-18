@@ -45,12 +45,14 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	private Replicates replicates;
 	private IC50 ic50;
 	private ReportEditor plateReport;
-	private List<OutlierChangedListener> outLierListeners = new ArrayList<OutlierChangedListener>();
+	private List<OutlierChangedListener> outLierListeners 
+	    = new ArrayList<OutlierChangedListener>();
 	private Plate toBeSaved;
     private static final Logger logger 
         = Logger.getLogger( PlateMultiPageEditor.class );
 	
-	public final static String ID = "net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor"; 
+	public final static String ID 
+	    = "net.bioclipse.brunn.ui.editors.plateEditor.PlateMultiPageEditor"; 
 	
 	public void fireOutliersChanged() {
 		for( OutlierChangedListener l : outLierListeners ) {
@@ -70,20 +72,29 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	protected void createPages() {
 		
 		net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate plate =
-			(net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate)getEditorInput();
+			(net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate)
+			getEditorInput();
 		PlateResults plateResults = plate.getPlateResults();
 		this.setPartName(plate.getName()); 
 		
 		toBeSaved = ( (Plate)plate.getPOJO() ).deepCopy(); 
 		
-		plateEditor = new PlateEditor( plateResults, this, toBeSaved             );
-		replicates  = new Replicates(  plateResults, this, toBeSaved             );
-		summary     = new Summary(     plateResults, this, toBeSaved, replicates );
-		ic50        = new IC50(        this, replicates );
+		plateEditor = new PlateEditor( plateResults, 
+		                               this, 
+		                               toBeSaved );
+		replicates  = new Replicates( plateResults, 
+		                              this, 
+		                              toBeSaved );
+		summary     = new Summary( plateResults, 
+		                           this, 
+		                           toBeSaved, 
+		                           replicates );
+		ic50        = new IC50( this, replicates );
 		plateReport = new ReportEditor();
 		
 		try {
-			int index = this.addPage((IEditorPart) plateEditor, getEditorInput());
+			int index = this.addPage( (IEditorPart) plateEditor, 
+			                          getEditorInput() );
 			setPageText(index, "Overview");
 			this.setActivePage(index);
 		} 
@@ -100,7 +111,8 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		}
 
 		try {
-			int index = this.addPage((IEditorPart) replicates, getEditorInput());
+			int index = this.addPage( (IEditorPart) replicates, 
+			                          getEditorInput() );
 			setPageText(index, "Average");
 		} 
 		catch (PartInitException e) {
@@ -116,7 +128,8 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		}
 		
 		try {
-			int index = this.addPage((IEditorPart) plateReport, getEditorInput());
+			int index = this.addPage( (IEditorPart) plateReport, 
+			                          getEditorInput() );
 			setPageText(index, "Report");
 		} 
 		catch (PartInitException e) {
@@ -228,8 +241,9 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
                 diagrams.put( substanceName, diagram );
             }
             
-            diagram.getPoints().add( new JasperPoint( concentration == 0 ? 1 : concentration, 
-                                                      sum/numOf ) );
+            diagram.getPoints().add( 
+                new JasperPoint( concentration == 0 ? 1 : concentration, 
+                                 sum/numOf ) );
             
         }
             
