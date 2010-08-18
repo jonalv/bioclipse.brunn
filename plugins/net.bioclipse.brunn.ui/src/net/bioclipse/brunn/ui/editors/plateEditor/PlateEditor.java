@@ -52,6 +52,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
@@ -78,7 +79,7 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 			return M1 - M2;
 		}
 	}
-	private Combo markPlateCombo;
+	private Combo exportActionCombo;
 	private Combo wellFunctionCombo;
 	
 	private net.bioclipse.brunn.ui.explorer.model.nonFolders.Plate plate;
@@ -323,6 +324,7 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 
 		final Label viewWellFunctionLabel = new Label(bottom, SWT.NONE);
 		final FormData formData_3 = new FormData();
+		formData_3.bottom = new FormAttachment(0, 40);
 		formData_3.left = new FormAttachment(0, 5);
 		formData_3.right = new FormAttachment(0, 120);
 		viewWellFunctionLabel.setLayoutData(formData_3);
@@ -407,25 +409,8 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		markAsOutlierButton.setLayoutData(formData_5);
 		markAsOutlierButton.setText("Mark as outlier");
 
-		Label markPlateAsLabel;
-		markPlateAsLabel = new Label(bottom, SWT.NONE);
-		formData_3.bottom = new FormAttachment(markPlateAsLabel, 20, SWT.TOP);
-		final FormData formData_6 = new FormData();
-		markPlateAsLabel.setLayoutData(formData_6);
-		markPlateAsLabel.setText("Mark plate as");
-
-		markPlateCombo = new Combo(bottom, SWT.NONE|SWT.READ_ONLY);
-		markPlateCombo.setEnabled(false);
-		formData_6.bottom = new FormAttachment(markPlateCombo, 0, SWT.BOTTOM);
-		formData_6.left = new FormAttachment(markPlateCombo, -90, SWT.LEFT);
-		formData_6.right = new FormAttachment(markPlateCombo, 0, SWT.LEFT);
-		final FormData formData_7 = new FormData();
-		formData_7.bottom = new FormAttachment(markAsOutlierButton, 0, SWT.BOTTOM);
-		formData_7.left = new FormAttachment(100, -90);
-		formData_7.right = new FormAttachment(100, -5);
-		markPlateCombo.setLayoutData(formData_7);
-
-		final Button copyDataToButton = new Button(bottom, SWT.NONE);
+		Button copyDataToButton;
+		copyDataToButton = new Button(bottom, SWT.NONE);
 		copyDataToButton.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * Copy data to Clipboard
@@ -453,6 +438,36 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		fd_copyDataToButton.left = new FormAttachment(markAsOutlierButton, 5, SWT.RIGHT);
 		copyDataToButton.setLayoutData(fd_copyDataToButton);
 		copyDataToButton.setText("Copy data to Clipboard");
+
+		final Group exportGroup = new Group(bottom, SWT.NONE);
+		exportGroup.setText("Export");
+		final FormData fd_exportGroup = new FormData();
+		fd_exportGroup.bottom = new FormAttachment(wellFunctionCombo, 0, SWT.BOTTOM);
+		fd_exportGroup.top = new FormAttachment(copyDataToButton, 0, SWT.TOP);
+		fd_exportGroup.right = new FormAttachment(100, -5);
+		fd_exportGroup.left = new FormAttachment(0, 705);
+		exportGroup.setLayoutData(fd_exportGroup);
+		exportGroup.setLayout(new FormLayout());
+
+		exportActionCombo = new Combo(exportGroup, SWT.NONE|SWT.READ_ONLY);
+		final FormData fd_exportActionCombo = new FormData();
+		fd_exportActionCombo.bottom = new FormAttachment(0, 29);
+		fd_exportActionCombo.right = new FormAttachment(0, 225);
+		fd_exportActionCombo.left = new FormAttachment(0, 5);
+		exportActionCombo.setLayoutData(fd_exportActionCombo);
+
+		Button goButton;
+		goButton = new Button(exportGroup, SWT.NONE);
+		final FormData fd_goButton = new FormData();
+		fd_goButton.bottom = new FormAttachment(exportActionCombo, 0, SWT.BOTTOM);
+		fd_goButton.left = new FormAttachment(exportActionCombo, 5, SWT.RIGHT);
+		goButton.setLayoutData(fd_goButton);
+		goButton.addSelectionListener(new SelectionAdapter() {
+		    public void widgetSelected(final SelectionEvent e) {
+		        //TODO run export action
+		    }
+		});
+		goButton.setText("Go");
 		
 		sashForm.setWeights(new int[] {4, 1});
 		
