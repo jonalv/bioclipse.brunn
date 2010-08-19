@@ -22,3 +22,4 @@ Eclipse-LazyStart: true
 Bundle-ClassPath: .,
  jars/KTable.jar
 Import-Package: org.apache.log4j
+Export-Package: net.bioclipse.brunn.ui.editors.plateEditor

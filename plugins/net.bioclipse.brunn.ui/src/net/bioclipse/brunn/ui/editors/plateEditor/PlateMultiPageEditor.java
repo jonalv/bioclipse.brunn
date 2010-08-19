@@ -46,7 +46,8 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 
     private static final Logger logger 
         = Logger.getLogger( PlateMultiPageEditor.class );
-    private static List<IPlateExportAction> exportActions;
+    private static List<IPlateExportAction> exportActions 
+        = new ArrayList<IPlateExportAction>();
     
     static {
         IExtensionRegistry registry = Platform.getExtensionRegistry();

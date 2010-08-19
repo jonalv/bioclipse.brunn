@@ -101,7 +101,8 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 	public final static String ID = "net.bioclipse.brunn.ui.editors.plateEditor.PlateEditor";
 	private Button markAsOutlierButton;
 	private PlateMultiPageEditor plateMultiPageEditor;
-    private List<IPlateExportAction> exportActions; 
+    private List<IPlateExportAction> exportActions;
+    private Button goButton; 
 	
 	public PlateEditor(PlateResults plateResults, PlateMultiPageEditor plateMultiPageEditor, Plate toBeSaved, List<IPlateExportAction> exportActions) {
 		super();
@@ -455,7 +456,6 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		fd_exportActionCombo.left = new FormAttachment(0, 5);
 		exportActionCombo.setLayoutData(fd_exportActionCombo);
 
-		Button goButton;
 		goButton = new Button(exportGroup, SWT.NONE);
 		final FormData fd_goButton = new FormData();
 		fd_goButton.bottom = new FormAttachment(100, -5);
@@ -463,11 +463,24 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		goButton.setLayoutData(fd_goButton);
 		goButton.addSelectionListener(new SelectionAdapter() {
 		    public void widgetSelected(final SelectionEvent e) {
-		        //TODO run export action
+		        exportActions.get( exportActionCombo.getSelectionIndex() )
+		                     .run( toBeSaved );
 		    }
 		});
 		goButton.setText("Go");
 		
+		if ( exportActions.size() > 0 ) {
+		    List<String> content 
+		        = new ArrayList<String>();
+		    for ( IPlateExportAction action : exportActions ) {
+		        content.add( action.getName() );
+		    }
+		    exportActionCombo.setItems( content.toArray(new String[0]) );
+		}
+		else {
+		    exportActionCombo.setEnabled( false );
+		    goButton.setEnabled( false );
+		}
 		sashForm.setWeights(new int[] {4, 1});
 		
 		barcodeText.setText(toBeSaved.getBarcode());
