@@ -76,7 +76,7 @@
 						<yValueExpression><![CDATA[$F{value}]]></yValueExpression>
 					</xySeries>
 				</xyDataset>
-				<linePlot isShowShapes="false">
+				<linePlot isShowShapes="true">
 					<plot/>
 					<categoryAxisFormat>
 						<axisFormat>
