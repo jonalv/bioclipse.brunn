@@ -39,12 +39,12 @@
 	</columnHeader>
 	<detail>
 		<band height="7" splitType="Stretch">
-			<textField>
+			<textField pattern="0.0#E0">
 				<reportElement x="0" y="0" width="45" height="7"/>
 				<textElement textAlignment="Right">
 					<font size="5"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{concentration}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.Double"><![CDATA[$F{concentration}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
 				<reportElement x="48" y="0" width="22" height="7"/>

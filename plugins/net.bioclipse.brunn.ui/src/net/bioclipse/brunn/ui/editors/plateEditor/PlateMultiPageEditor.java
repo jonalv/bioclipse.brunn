@@ -190,13 +190,22 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 	protected void pageChange(int newPageIndex){
 		if(newPageIndex == 4) {
             String reportPath;
+            Collection<JasperRootBean> beanCollection = createBeanCollection();
             try {
-                reportPath = FileUtil.getFilePath( 
-                               "reports/384Plate.jasper", 
-                               net.bioclipse.brunn.ui.Activator.PLUGIN_ID );
+                if ( beanCollection.toArray( new JasperRootBean[1] )[0]
+                         .getDiagrams().size() > 10 ) {
+                    reportPath = FileUtil.getFilePath( 
+                                   "reports/384Plate.jasper", 
+                                   net.bioclipse.brunn.ui.Activator.PLUGIN_ID );
+                }
+                else {
+                    reportPath = FileUtil.getFilePath( 
+                                   "reports/small384Plate.jasper", 
+                                   net.bioclipse.brunn.ui.Activator.PLUGIN_ID );
+                }
 			plateReport.openReport( reportPath, 
 			                        createParamaters(), 
-			                        createBeanCollection() );
+			                        beanCollection );
             }
             catch ( Exception e ) {
                 LogUtils.handleException( e, 
