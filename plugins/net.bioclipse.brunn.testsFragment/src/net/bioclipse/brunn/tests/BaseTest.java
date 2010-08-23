@@ -1,7 +1,6 @@
 package net.bioclipse.brunn.tests;
 
 import java.io.FileInputStream;
-import java.sql.Timestamp;
 
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.LazyLoadingSessionHolder;
@@ -14,7 +13,6 @@ import net.bioclipse.brunn.business.plate.IPlateManager;
 import net.bioclipse.brunn.business.plateLayout.IPlateLayoutManager;
 import net.bioclipse.brunn.business.sample.ISampleManager;
 import net.bioclipse.brunn.genericDAO.ICellOriginDAO;
-import net.bioclipse.brunn.genericDAO.ICellSampleDAO;
 import net.bioclipse.brunn.genericDAO.IDrugOriginDAO;
 import net.bioclipse.brunn.genericDAO.IDrugSampleDAO;
 import net.bioclipse.brunn.genericDAO.IInstrumentDAO;
@@ -27,7 +25,6 @@ import net.bioclipse.brunn.genericDAO.IResultTypeDAO;
 import net.bioclipse.brunn.genericDAO.ISampleContainerDAO;
 import net.bioclipse.brunn.genericDAO.IUniqueFolderDAO;
 import net.bioclipse.brunn.genericDAO.IUserDAO;
-import net.bioclipse.brunn.pojos.AbstractPlate;
 import net.bioclipse.brunn.pojos.CellOrigin;
 import net.bioclipse.brunn.pojos.CellSample;
 import net.bioclipse.brunn.pojos.ConcUnit;
@@ -48,7 +45,6 @@ import net.bioclipse.brunn.pojos.UniqueFolder;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.pojos.Well;
 import net.bioclipse.brunn.pojos.WorkList;
-import net.bioclipse.brunn.tests.daos.CellSampleDAOTest;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.tools.ant.Project;
@@ -56,14 +52,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.BeforeClass;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 import org.springframework.orm.hibernate3.SessionHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 public abstract class BaseTest {
 
-	protected static ApplicationContext context;
+	public static ApplicationContext context;
 	
 	static {
 		

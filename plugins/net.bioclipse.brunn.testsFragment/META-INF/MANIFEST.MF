@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: TestsFragment
+Bundle-SymbolicName: net.bioclipse.brunn.testsFragment
+Bundle-Version: 1.0.0.qualifier
+Fragment-Host: net.bioclipse.brunn.core;bundle-version="0.9.3"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: slf4j.api;bundle-version="1.5.11",
+ ch.qos.logback.classic;bundle-version="0.9.20",
+ ch.qos.logback.core;bundle-version="0.9.20"
+Import-Package: org.springframework.aop;version="2.5.1"

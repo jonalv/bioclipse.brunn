@@ -1,5 +1,6 @@
 package net.bioclipse.brunn.tests.results;
 
+import static net.bioclipse.brunn.tests.BaseTest.context;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -8,41 +9,25 @@ import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.bioclipse.brunn.business.folder.IFolderManager;
-import net.bioclipse.brunn.business.plate.IPlateManager;
-import net.bioclipse.brunn.genericDAO.ICellOriginDAO;
 import net.bioclipse.brunn.genericDAO.IMasterPlateDAO;
 import net.bioclipse.brunn.genericDAO.IPlateDAO;
 import net.bioclipse.brunn.genericDAO.IPlateLayoutDAO;
 import net.bioclipse.brunn.genericDAO.IPlateTypeDAO;
-import net.bioclipse.brunn.genericDAO.IUniqueFolderDAO;
-import net.bioclipse.brunn.genericDAO.IUserDAO;
-import net.bioclipse.brunn.pojos.CellOrigin;
 import net.bioclipse.brunn.pojos.MasterPlate;
 import net.bioclipse.brunn.pojos.Measurement;
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.pojos.PlateLayout;
 import net.bioclipse.brunn.pojos.PlateType;
 import net.bioclipse.brunn.pojos.Result;
-import net.bioclipse.brunn.pojos.UniqueFolder;
-import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.results.PlateRead;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser;
 import net.bioclipse.brunn.results.orcaParser.OrcaParser.OrcaPlateRead;
 import net.bioclipse.brunn.tests.BaseTest;
 
-import org.apache.tools.ant.Project;
 import org.eclipse.swt.graphics.Point;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.orm.hibernate3.SessionHolder;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 
 public class OrcaParserDBTest extends BaseTest {
