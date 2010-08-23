@@ -8,4 +8,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: slf4j.api;bundle-version="1.5.11",
  ch.qos.logback.classic;bundle-version="0.9.20",
  ch.qos.logback.core;bundle-version="0.9.20"
-Import-Package: org.springframework.aop;version="2.5.1"
+Import-Package: org.springframework.aop;version="2.5.1",
+ org.springframework.beans.factory;version="2.5.1"
