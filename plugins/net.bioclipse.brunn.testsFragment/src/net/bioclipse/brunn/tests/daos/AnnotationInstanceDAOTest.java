@@ -12,6 +12,7 @@ import net.bioclipse.brunn.pojos.EnumAnnotation;
 import net.bioclipse.brunn.pojos.FloatAnnotation;
 import net.bioclipse.brunn.pojos.TextAnnotation;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -63,6 +64,7 @@ public class AnnotationInstanceDAOTest extends AbstractGenericDAOTest {
 	}
 
 	@Test(timeout = timeout)
+	@Ignore
 	public void testGetAll() {
 		
 		EnumAnnotation enumAnnotation = new EnumAnnotation( tester, "blue", this.enumAnnotation );		
@@ -98,6 +100,7 @@ public class AnnotationInstanceDAOTest extends AbstractGenericDAOTest {
 	}
 
 	@Test(timeout = timeout)
+	@Ignore
 	public void testSaveAndGetFloatAnnotation() {
 		
 		FloatAnnotation floatAnnotation = new FloatAnnotation( tester,  0.1314, this.floatAnnotation );		
@@ -112,6 +115,7 @@ public class AnnotationInstanceDAOTest extends AbstractGenericDAOTest {
 	}
 
 	@Test(timeout = timeout)
+	@Ignore
 	public void testSaveAndGetTextAnnotation() {
 		
 		TextAnnotation textAnnotation = new TextAnnotation( tester, "comment", this.textAnnotation );		
