@@ -43,9 +43,10 @@ public class PlateResults implements IEditorInput {
 		createFunctionBodies(calculator);
 		
 		this.plate = plate;
-		int createEvaluatorTicks = (int) (plate.getWells().size() * 0.1);
+		
+		
 		if(monitor != null) {
-			monitor.beginTask("Loading plate", plate.getWells().size() + createEvaluatorTicks);
+			monitor.beginTask("Loading plate",IProgressMonitor.UNKNOWN);
 		}
 		try {
 			// create and place the PlateFunctionEvaluator in the hashmap
@@ -64,7 +65,7 @@ public class PlateResults implements IEditorInput {
 				plateFunctionEvaluators.put(plateFunctionEvaluator.name, plateFunctionEvaluator);
 			}
 			if(monitor != null) {
-				monitor.worked(createEvaluatorTicks);
+				monitor.worked(1);
 			}
 			for( Well well : plate.getWells() ) {
 				
