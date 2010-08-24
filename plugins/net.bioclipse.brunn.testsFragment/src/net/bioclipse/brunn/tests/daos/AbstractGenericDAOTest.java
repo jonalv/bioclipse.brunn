@@ -106,7 +106,7 @@ public abstract class AbstractGenericDAOTest {
 	protected Annotation floatAnnotation;
 	protected Annotation textAnnotation;
 	
-	protected static final int timeout = 10000;
+	protected static final int timeout = 5000;
 	
 	/**
 	 * @param DAOBeanName The Bean name of the DAO that should be loaded from Springs container.
@@ -232,6 +232,7 @@ public abstract class AbstractGenericDAOTest {
 	 */
 	@After
 	public void tearDown(){
+	    session.cancelQuery();
 		TransactionSynchronizationManager.unbindResource(dao.getSessionFactory());
 		SessionFactoryUtils.releaseSession(session, dao.getSessionFactory());
 	}
