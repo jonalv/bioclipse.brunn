@@ -395,7 +395,7 @@
 				 	<key column="id" />
 					 
 					<set 
-					 lazy="false"
+					
 					 name="measurements" 
 					 cascade="all">
 						<key column="measurementId"/>
