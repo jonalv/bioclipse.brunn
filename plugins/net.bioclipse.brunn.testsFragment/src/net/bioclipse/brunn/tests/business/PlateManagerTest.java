@@ -89,15 +89,18 @@ public class PlateManagerTest extends BaseTest {
 
 	@Test
 	public void testGetPlate() {
-		
-		Plate plate = pm.getPlate(pm.createPlate(tester, "plate", "123", folder, masterPlate, cellOrigin, null));
+		long plateId = pm.createPlate(tester, "plate", "123", folder, masterPlate, cellOrigin, null);
+		Plate plate = pm.getPlate(plateId);
+
 		
 		session.flush();
 		session.clear();
 		
-		Plate fetched = pm.getPlate(plate.getId());
 		
-		assertEquals(plate, fetched);
+		Plate fetched = pm.getPlate(plate.getId());
+		assertEquals(plate, fetched);		
+		
+		
 	}
 
 	@Test

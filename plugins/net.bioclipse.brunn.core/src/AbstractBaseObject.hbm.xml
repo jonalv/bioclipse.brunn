@@ -292,7 +292,7 @@
 						 type="integer" />
 					
 					<set 
-					 lazy="false"
+	
 					 name="plateFunctions" 
 					 cascade="all">
 						<key column="plateFunctionId"/>
@@ -328,7 +328,9 @@
 					 	
 						<set 
 						 name="wells" 
-						 cascade="all">
+						 cascade="all"
+						 fetch = "subselect"
+						 >
 							<key column="wellId"/>
 							<one-to-many class="Well"/>
 						</set>
@@ -531,7 +533,7 @@
 					<key column="id" />
 	
 					<set 
-					 lazy="false"
+			
 					 cascade="none"
 					 name="doneAuditings">
 						<key

@@ -51,7 +51,9 @@
 		<set 
 		 name="wellFunctions" 
 		 cascade="all"
-		 lazy="false">
+		 lazy="false"
+		 fetch="subselect"
+		 >
 		 	<key column="wellFunctionId"/>
 				<one-to-many class="net.bioclipse.brunn.pojos.WellFunction" />
 		</set>
@@ -74,7 +76,9 @@
 			 column="sampleContainer"
 			 class="SampleContainer"
 			 cascade="all"
-		 	 lazy="false" />
+		 	 lazy="false" 
+		 	 fetch="join"
+		 	 />
 			 
 			<property
               name="outlier"
@@ -84,7 +88,9 @@
 			<set 
 			 name="sampleMarkers" 
 		 	 cascade="all"
-			 lazy="false">
+			 lazy="false"
+			 fetch="subselect"
+			 >
 				<key column="sampleMarkerId"/>
 				<one-to-many class="net.bioclipse.brunn.pojos.SampleMarker"/>
 			</set>

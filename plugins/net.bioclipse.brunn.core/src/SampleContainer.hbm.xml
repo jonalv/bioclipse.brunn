@@ -47,11 +47,15 @@
 		 name="workList"
 		 column="workList"
 		 class="net.bioclipse.brunn.pojos.WorkList"
-		 cascade="all" />
+		 cascade="all" 
+		 fetch="join"
+		 />
 		
 		<set 
 		 name="samples"
-		 cascade="all" >
+		 cascade="all" 
+		 fetch="subselect"
+		 >
 			<key column="samplesId" />
 		 	<one-to-many class="AbstractSample" />
 		</set>

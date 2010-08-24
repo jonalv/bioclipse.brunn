@@ -14,13 +14,13 @@
 	   	</property>
 
 	   	<property name="url">
-	   		<value>jdbc:mysql://localhost:3306/brunn</value>
+	   		<value>jdbc:mysql://localhost:3306/brunnTest</value>
 	   	</property>
 	   	<property name="username">
 	   		<value>brunn</value>
 	   	</property>
 	   	<property name="password">
-	   		<value>brunnbrunn</value>
+	   		<value>brunn</value>
 	   	</property>
  
 <!-- 
