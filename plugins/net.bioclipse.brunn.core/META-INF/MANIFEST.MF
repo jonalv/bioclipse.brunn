@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: net.bioclipse.brunn.core
 Bundle-SymbolicName: net.bioclipse.brunn.core;singleton:=true
-Bundle-Version: 0.9.3.v20091009
+Bundle-Version: 0.9.4.v20100825
 Bundle-ClassPath: .,
  mysql-connector-java-3.1.13-bin.jar,
  lib/ant-1.6.5.jar,
@@ -47,7 +47,6 @@ Bundle-ClassPath: .,
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui,
- org.junit4,
  net.bioclipse.brunn.expression,
  net.bioclipse.usermanager;bundle-version="0.1.1",
  net.bioclipse.encryption;bundle-version="0.1.0",
