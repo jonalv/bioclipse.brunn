@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="masterplate96" language="groovy" columnCount="13" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="61" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="6.050000000000006"/>
-	<property name="ireport.x" value="364"/>
-	<property name="ireport.y" value="403"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="MASTERPLATE_NAME" class="java.lang.String"/>
 	<parameter name="CREATION_DATE" class="java.lang.String"/>
 	<parameter name="CREATOR" class="java.lang.String"/>
@@ -30,13 +30,15 @@
 		<band height="31" splitType="Stretch">
 			<staticText>
 				<reportElement x="57" y="0" width="745" height="13"/>
-				<textElement textAlignment="Center"/>
+				<textElement textAlignment="Center">
+					<font fontName="DejaVu Sans"/>
+				</textElement>
 				<text><![CDATA[Masterplate]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="57" y="13" width="745" height="18"/>
 				<textElement textAlignment="Center">
-					<font size="12"/>
+					<font fontName="DejaVu Sans" size="12"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{MASTERPLATE_NAME}]]></textFieldExpression>
 			</textField>
@@ -54,7 +56,7 @@
 					<printWhenExpression><![CDATA[!$F{col}.equals("0")]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="DejaVu Sans" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{col}]]></textFieldExpression>
 			</textField>
@@ -65,21 +67,21 @@
 			<textField>
 				<reportElement x="2" y="3" width="55" height="12"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="6"/>
+					<font fontName="DejaVu Sans" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{substances}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="2" y="0" width="55" height="52"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8"/>
+					<font fontName="DejaVu Sans" size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{concentrations}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="2" y="36" width="55" height="14"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="8" pdfEncoding="Cp1253"/>
+					<font fontName="DejaVu Sans" size="8" pdfEncoding="Cp1253"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{units}]]></textFieldExpression>
 			</textField>
@@ -98,7 +100,7 @@
 			<textField>
 				<reportElement x="2" y="37" width="372" height="13"/>
 				<textElement verticalAlignment="Bottom">
-					<font size="6"/>
+					<font fontName="DejaVu Sans" size="6"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Created " + $P{CREATION_DATE} + " by " + $P{CREATOR} + " and last changed " + $P{CHANGE_DATE} + " by " + $P{CHANGER} + "."]]></textFieldExpression>
 			</textField>
