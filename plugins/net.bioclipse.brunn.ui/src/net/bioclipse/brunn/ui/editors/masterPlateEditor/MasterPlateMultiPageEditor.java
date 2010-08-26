@@ -1,5 +1,6 @@
 package net.bioclipse.brunn.ui.editors.masterPlateEditor;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -96,13 +97,15 @@ public class MasterPlateMultiPageEditor extends MultiPageEditorPart {
 	            if ( cols == 24 && rows == 16 ) {
 	                reportPath 
 	                    = FileUtil.getFilePath( 
-	                          "reports/masterplate384.jasper", 
+	                          "reports" + File.separator 
+	                                    + "masterplate384.jasper", 
                               net.bioclipse.brunn.ui.Activator.PLUGIN_ID );
 	            }
 	            else if ( cols == 12  && rows == 8 ) {
 	                reportPath
 	                    = FileUtil.getFilePath( 
-	                          "reports/masterplate96.jasper",
+	                          "reports" + File.separator
+	                                    + "masterplate96.jasper",
 	                          net.bioclipse.brunn.ui.Activator.PLUGIN_ID );
 	            }
 	            else {
