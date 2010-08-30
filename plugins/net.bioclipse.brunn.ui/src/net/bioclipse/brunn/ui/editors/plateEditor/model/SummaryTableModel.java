@@ -51,7 +51,7 @@ public class SummaryTableModel extends KTableDefaultModel {
 			                   Map<String, String> cvMap ) {
 		
 		columnNames = new ArrayList<String>();
-		Collections.addAll( columnNames, new String[] {"Cell Type", "Compound Names", "Concentration"} );
+		Collections.addAll( columnNames, new String[] {"Well","Cell Type", "Compound Names", "Concentration"} );
 		columnNames.addAll( plate.getWellFunctionNames() );
 		columnNames.add( "CV%" );
 		
@@ -71,8 +71,13 @@ public class SummaryTableModel extends KTableDefaultModel {
 
 			for (int col = 0; col < columnNames.size(); col++) {
 				
+				if (col == 0) {
+					row[col] = well.getName().toUpperCase();
+					continue;
+				}
+				
 				//Cell Type
-				if(col == 0) {
+				if(col == 1) {
 					row[col] = getCellType(well);
 					continue;
 				}
@@ -80,19 +85,19 @@ public class SummaryTableModel extends KTableDefaultModel {
 				DrugSample[] drugSamples = getDrugSamples(well);
 				
 				//Compound Names
-				if(col == 1) {
+				if(col == 2) {
 					row[col] = getCompoundNames(drugSamples);
 					continue;
 				}
 				
 				//Concentration
-				if(col == 2) {
+				if(col == 3) {
 					row[col] = getConcentrations(drugSamples);
 					continue;
 				}
 				
 				//Wellfunctions
-				for( String wellFunction : columnNames.subList(3, columnNames.size()) ) {
+				for( String wellFunction : columnNames.subList(4, columnNames.size()) ) {
 					if ( "raw".equals(wellFunction) && 
 						 well.isOutlier() ) {
 						row[col] = "outlier";
@@ -111,7 +116,7 @@ public class SummaryTableModel extends KTableDefaultModel {
 					col++;
 				}
 				
-				row[col-1] = cvMap.get(row[1]+row[2]);
+				row[col-1] = cvMap.get(row[2]+row[3]);
 				if( row[col-1] == null ) {
 					row[col-1] = "?";
 				}
@@ -122,17 +127,17 @@ public class SummaryTableModel extends KTableDefaultModel {
 		}
 		Collections.sort(values, new Comparator<String[]>() {
 			public int compare(String[] o1, String[] o2) {
-				int c = o1[1].compareTo( o2[1] );
+				int c = o1[2].compareTo( o2[2] );
 				if ( c != 0 ) 
 					return c;
 				c = Double.compare( Double.parseDouble( 
-		                                o1[2].contains(" ") ? o1[2].substring( 0, 
-		                		                                               o1[2].indexOf(' '))
-		                		                            : o1[2]), 
+		                                o1[3].contains(" ") ? o1[3].substring( 0, 
+		                		                                               o1[3].indexOf(' '))
+		                		                            : o1[3]), 
 		                            Double.parseDouble(
-		                                o2[2].contains(" ") ? o2[2].substring( 0, 
-		                				                  					   o2[2].indexOf(' '))
-		                				                    : o2[2]) );
+		                                o2[3].contains(" ") ? o2[3].substring( 0, 
+		                				                  					   o2[3].indexOf(' '))
+		                				                    : o2[3]) );
 					return c;
 			}
 		});
