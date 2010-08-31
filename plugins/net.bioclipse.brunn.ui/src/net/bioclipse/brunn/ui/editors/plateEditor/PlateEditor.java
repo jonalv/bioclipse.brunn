@@ -578,4 +578,9 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
     public PlateResults getPlateResults() {
         return plateResults;
     }
+
+	public KTable getTable() {
+		return plateTable;
+		
+	}
 }

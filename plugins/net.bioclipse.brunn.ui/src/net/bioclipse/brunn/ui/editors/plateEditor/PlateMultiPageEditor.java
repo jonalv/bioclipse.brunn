@@ -24,6 +24,7 @@ import net.bioclipse.brunn.ui.editors.plateEditor.model.JasperFunction;
 import net.bioclipse.brunn.ui.editors.plateEditor.model.JasperPoint;
 import net.bioclipse.brunn.ui.editors.plateEditor.model.JasperRootBean;
 import net.bioclipse.brunn.ui.editors.plateEditor.model.ReplicateTableModel;
+import net.bioclipse.brunn.ui.editors.plateEditor.model.SummaryTableModel;
 import net.bioclipse.core.util.FileUtil;
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.jasper.editor.ReportEditor;
@@ -36,11 +37,15 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.MultiPageEditorPart;
+
+import de.kupzog.ktable.KTable;
+import de.kupzog.ktable.KTableCellSelectionAdapter;
 
 public class PlateMultiPageEditor extends MultiPageEditorPart {
 
@@ -129,6 +134,10 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		ic50        = new IC50( this, replicates, exportActions );
 		plateReport = new ReportEditor();
 		
+
+
+			
+		
 		try {
 			int index = this.addPage( (IEditorPart) plateEditor, 
 			                          getEditorInput() );
@@ -142,6 +151,25 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
 		try {
 			int index = this.addPage((IEditorPart) summary, getEditorInput());
 			setPageText(index, "Summary");
+			
+			summary.getTable().addCellSelectionListener(new KTableCellSelectionAdapter() {
+				public void cellSelected(int col, int row, int statemask) {
+					Well well;
+					ArrayList<Point> selection = new ArrayList<Point>();
+					
+					for( int selectedRow : summary.getTable().getRowSelection() ) {
+						well = ( (SummaryTableModel)summary.getTable().getModel() )
+								.getWellFromSelectedRowNumber(selectedRow);
+						selection.add(new Point(well.getCol(),well.getRow()-'a'+1));
+						
+					}
+					plateEditor.getTable().clearSelection();
+					
+					plateEditor
+						.getTable()
+						.setSelection(selection.toArray(new Point[selection.size()]), true);
+				}
+			});
 		} 
 		catch (PartInitException e) {
 			e.printStackTrace();			

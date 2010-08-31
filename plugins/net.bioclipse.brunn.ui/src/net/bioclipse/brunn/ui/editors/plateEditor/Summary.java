@@ -29,6 +29,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.EditorPart;
 
 import de.kupzog.ktable.KTable;
+import de.kupzog.ktable.KTableCellSelectionAdapter;
 import de.kupzog.ktable.KTableCellSelectionListener;
 import de.kupzog.ktable.SWTX;
 
@@ -177,6 +178,8 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 						outlierSelected = false;
 					}
 				}
+				
+				
 			}
 
 			public void fixedCellSelected(int col, int row, int statemask) {
@@ -203,5 +206,9 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 				                               this, 
 				                               plateResults, 
 				                               replicates.getCVMap() ) );
+	}
+
+	public KTable getTable() {
+		return table;
 	}
 }
