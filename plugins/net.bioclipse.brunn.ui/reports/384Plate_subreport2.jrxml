@@ -36,6 +36,9 @@
 		<band height="84" splitType="Stretch">
 			<subreport>
 				<reportElement x="107" y="13" width="72" height="67"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="UNIT">
 					<subreportParameterExpression><![CDATA[$F{unit}]]></subreportParameterExpression>
 				</subreportParameter>
