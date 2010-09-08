@@ -2,7 +2,7 @@
 <feature
       id="net.bioclipse.brunn"
       label="Brunn Feature"
-      version="0.9.4.v20100825">
+      version="0.9.6.v20100831">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -16,26 +16,27 @@
       [Enter License Description here.]
    </license>
 
+   <requires>
+      <import feature="net.bioclipse.core_feature_patch_241" version="2.4.1.v20100830"/>
+   </requires>
+
    <plugin
          id="net.bioclipse.brunn.ui"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="net.bioclipse.brunn.core"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="net.bioclipse.brunn.expression"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="de.kupzog.ktable"
@@ -47,7 +48,6 @@
          id="net.bioclipse.brunn.business"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
 </feature>

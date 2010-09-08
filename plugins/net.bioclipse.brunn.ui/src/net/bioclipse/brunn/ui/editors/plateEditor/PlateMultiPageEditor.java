@@ -346,8 +346,9 @@ public class PlateMultiPageEditor extends MultiPageEditorPart {
         catch ( Exception e ) {
             throw new IllegalStateException("Failed to get file path", e);
         }
-        parameters.put("DS_BASE_PATH",basePath);
-        parameters.put( "NAME", toBeSaved.getName() );
+        parameters.put( "DS_BASE_PATH",  basePath            );
+        parameters.put( "SUBREPORT_DIR", basePath            );
+        parameters.put( "NAME",          toBeSaved.getName() );
         return parameters;
     }
 

@@ -187,6 +187,19 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 				
 			}
 		});
+
+		final Button sortByCvButton = new Button(composite, SWT.NONE | 
+		                                                    SWT.TOGGLE);
+		sortByCvButton.addSelectionListener(new SelectionAdapter() {
+		    public void widgetSelected(final SelectionEvent e) {
+		        //TODO: Claes do stuff here
+		    }
+		});
+		final FormData fd_sortByCvButton = new FormData();
+		fd_sortByCvButton.bottom = new FormAttachment(markAsOutlierButton, 0, SWT.BOTTOM);
+		fd_sortByCvButton.right = new FormAttachment(table, 0, SWT.RIGHT);
+		sortByCvButton.setLayoutData(fd_sortByCvButton);
+		sortByCvButton.setText("Sort by CV%");
 	}
 
 	@Override
