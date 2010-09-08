@@ -17,14 +17,14 @@
 			<staticText>
 				<reportElement x="0" y="0" width="60" height="9"/>
 				<textElement verticalAlignment="Bottom">
-					<font size="7" isBold="true"/>
+					<font fontName="DejaVu Sans" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Function]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="60" y="0" width="35" height="9"/>
 				<textElement verticalAlignment="Bottom">
-					<font size="7" isBold="true"/>
+					<font fontName="DejaVu Sans" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Value]]></text>
 			</staticText>
@@ -35,14 +35,14 @@
 			<textField>
 				<reportElement x="0" y="0" width="60" height="10"/>
 				<textElement verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="DejaVu Sans" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="60" y="0" width="35" height="10"/>
 				<textElement verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="DejaVu Sans" size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{value}]]></textFieldExpression>
 			</textField>

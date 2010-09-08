@@ -24,14 +24,14 @@
 			<staticText>
 				<reportElement x="48" y="0" width="22" height="7"/>
 				<textElement verticalAlignment="Bottom">
-					<font size="5" isBold="true"/>
+					<font fontName="DejaVu Sans" size="5" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SI [%]]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="0" y="0" width="45" height="7"/>
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
-					<font size="5" isBold="true" pdfEncoding="Cp1253"/>
+					<font fontName="DejaVu Sans" size="5" isBold="true" pdfEncoding="Cp1253"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Conc. [" + $P{UNIT} + "]"]]></textFieldExpression>
 			</textField>
@@ -42,14 +42,14 @@
 			<textField pattern="0.0#E0">
 				<reportElement x="0" y="0" width="45" height="7"/>
 				<textElement textAlignment="Right">
-					<font size="5"/>
+					<font fontName="DejaVu Sans" size="5"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{concentration}]]></textFieldExpression>
 			</textField>
 			<textField pattern="###0">
 				<reportElement x="48" y="0" width="22" height="7"/>
 				<textElement>
-					<font size="5"/>
+					<font fontName="DejaVu Sans" size="5"/>
 				</textElement>
 				<textFieldExpression class="java.lang.Double"><![CDATA[$F{value}]]></textFieldExpression>
 			</textField>

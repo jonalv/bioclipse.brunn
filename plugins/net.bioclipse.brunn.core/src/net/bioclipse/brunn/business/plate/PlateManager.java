@@ -1,19 +1,12 @@
 package net.bioclipse.brunn.business.plate;
 
-import static org.junit.Assert.assertEquals;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import org.eclipse.core.runtime.IProgressMonitor;
 
 import net.bioclipse.brunn.business.IAuditService;
 import net.bioclipse.brunn.business.LazyLoadingSessionHolder;
-import net.bioclipse.brunn.genericDAO.IPlateDAO;
 import net.bioclipse.brunn.pojos.AbstractBasePlate;
 import net.bioclipse.brunn.pojos.AbstractPlate;
 import net.bioclipse.brunn.pojos.AbstractSample;
@@ -29,13 +22,13 @@ import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.pojos.PlateFunction;
 import net.bioclipse.brunn.pojos.PlateLayout;
 import net.bioclipse.brunn.pojos.SampleContainer;
-import net.bioclipse.brunn.pojos.UniqueFolder;
 import net.bioclipse.brunn.pojos.User;
 import net.bioclipse.brunn.pojos.Well;
 import net.bioclipse.brunn.pojos.WellFunction;
 import net.bioclipse.brunn.results.PlateResults;
 import net.bioclipse.brunn.results.ResultParser;
-import net.bioclipse.brunn.results.orcaParser.OrcaParser;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * This class handles everything that has to do with the Plate classes:

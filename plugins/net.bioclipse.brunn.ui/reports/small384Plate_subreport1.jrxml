@@ -37,14 +37,14 @@
 			<textField>
 				<reportElement x="0" y="0" width="262" height="13"/>
 				<textElement textAlignment="Right">
-					<font size="10" pdfEncoding="Cp1253"/>
+					<font fontName="DejaVu Sans" size="10" pdfEncoding="Cp1253"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["IC50: " + $F{ic50} + " " + $F{unit}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="4" y="0" width="97" height="13"/>
 				<textElement>
-					<font isBold="true"/>
+					<font fontName="DejaVu Sans" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
