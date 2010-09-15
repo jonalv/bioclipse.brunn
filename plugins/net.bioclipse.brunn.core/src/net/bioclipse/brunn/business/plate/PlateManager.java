@@ -72,6 +72,8 @@ public class PlateManager extends
 		masterPlate = masterPlateDAO.merge(masterPlate);
 		folder = folderDAO.merge(folder);
 		
+		creator = userDAO.merge(creator);
+		
 		Plate plate = AbstractPlate.createPlate( creator, 
 												 name, 
 												 masterPlate, 
