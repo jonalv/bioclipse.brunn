@@ -45,6 +45,7 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay() );
 	private Plate toBeSaved;
     private List<IPlateExportAction> plateExportActions;
+	private Button sortByCvButton;
 	
 		
 	public Summary( PlateResults plateResults, 
@@ -108,7 +109,7 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 		formData.top = new FormAttachment(0, 0);
 		table.setLayoutData(formData);
 		
-		onOutLierChange();
+		
 
 		Button copyTableToButton;
 		copyTableToButton = new Button(composite, SWT.NONE);
@@ -188,11 +189,13 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 			}
 		});
 
-		final Button sortByCvButton = new Button(composite, SWT.NONE | 
+		sortByCvButton = new Button(composite, SWT.NONE | 
 		                                                    SWT.TOGGLE);
+		
+		
 		sortByCvButton.addSelectionListener(new SelectionAdapter() {
 		    public void widgetSelected(final SelectionEvent e) {
-		        //TODO: Claes do stuff here
+		    	updateModel();
 		    }
 		});
 		final FormData fd_sortByCvButton = new FormData();
@@ -200,6 +203,8 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 		fd_sortByCvButton.right = new FormAttachment(table, 0, SWT.RIGHT);
 		sortByCvButton.setLayoutData(fd_sortByCvButton);
 		sortByCvButton.setText("Sort by CV%");
+		
+		updateModel();
 	}
 
 	@Override
@@ -213,12 +218,16 @@ public class Summary extends EditorPart implements OutlierChangedListener {
 		cb.dispose();
 	}
 
-	public void onOutLierChange() {
+	private void updateModel() {
 		table.setModel( new SummaryTableModel( toBeSaved, 
-				                               table, 
-				                               this, 
-				                               plateResults, 
-				                               replicates.getCVMap() ) );
+                table, 
+                this, 
+                plateResults, 
+                replicates.getCVMap(), sortByCvButton.getSelection() ) );
+	}
+	
+	public void onOutLierChange() {
+		updateModel();
 	}
 
 	public KTable getTable() {
