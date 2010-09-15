@@ -218,7 +218,7 @@ public class Well extends AbstractWell {
 		return isOutlier();
 	}
 
-	public Well makeNewCopy() {
+	public Well makeNewCopy(User creator) {
 
 		Well well = new Well();
 		
@@ -230,7 +230,7 @@ public class Well extends AbstractWell {
 		//wellFunctions
 		Set<WellFunction> wellFunctions = new HashSet<WellFunction>();
 		for (WellFunction f : this.getWellFunctions()) {
-			WellFunction copy = f.makeNewCopy();
+			WellFunction copy = f.makeNewCopy(creator);
 			copy.setWell(well);
 	        wellFunctions.add(copy);
         }
@@ -239,12 +239,12 @@ public class Well extends AbstractWell {
 		//sampleContainer
 		SampleContainer sampleContainer = new SampleContainer(creator, this.sampleContainer.getName(), well );
 		well.setSampleContainer( sampleContainer );
-		sampleContainer.setWorkList( this.sampleContainer.getWorkList().makeNewCopy() );
+		sampleContainer.setWorkList( this.sampleContainer.getWorkList().makeNewCopy(creator) );
 		
 		//sampleMarkers
 		Set<SampleMarker> sampleMarkers = new HashSet<SampleMarker>();
 		for (SampleMarker marker : this.sampleMarkers) {
-			SampleMarker sampleMarker = marker.makeNewCopy();
+			SampleMarker sampleMarker = marker.makeNewCopy(creator);
 			sampleMarker.setWell(well);
 			//Add any samples to the samplecontainer
 			if( sampleMarker.getSample() != null ) {

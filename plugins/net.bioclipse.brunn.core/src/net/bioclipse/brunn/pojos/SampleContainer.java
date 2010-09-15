@@ -121,7 +121,7 @@ public class SampleContainer extends AbstractBaseObject {
 		workList.delete();
 	}
 
-	public SampleContainer makeNewCopy() {
+	public SampleContainer makeNewCopy(User creator) {
 		
 		SampleContainer container = new SampleContainer();
 	    container.setName(name);
@@ -129,12 +129,12 @@ public class SampleContainer extends AbstractBaseObject {
 	    container.setDeleted(deleted);
 	    
 	    for (AbstractSample sample : this.samples) {
-	        AbstractSample copy = sample.makeNewCopy();
+	        AbstractSample copy = sample.makeNewCopy(creator);
 	    	copy.setSampleContainer(container);
 	    	container.getSamples().add(copy);
         }
 
-	    container.setWorkList(workList.makeNewCopy());
+	    container.setWorkList(workList.makeNewCopy(creator));
 	    container.getWorkList().setSampleContainer(container);
 	    
 	    return container;

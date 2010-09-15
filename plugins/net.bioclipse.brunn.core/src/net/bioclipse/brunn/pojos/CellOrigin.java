@@ -68,7 +68,7 @@ public class CellOrigin extends AbstractAuditableObject {
 	    return result;
     }
 	
-	public CellOrigin makeNewCopy() {
+	public CellOrigin makeNewCopy(User creator) {
 		
 		CellOrigin result = new CellOrigin();
 		result.setCreator(creator);
@@ -77,7 +77,7 @@ public class CellOrigin extends AbstractAuditableObject {
 		
 		HashSet<CellSample> cellSamples = new HashSet<CellSample>();
 		for(CellSample cs : this.cellSamples) {
-			cellSamples.add(cs.makeNewCopy());
+			cellSamples.add(cs.makeNewCopy(creator));
 		}
 		result.setCellSamples(cellSamples);
 		

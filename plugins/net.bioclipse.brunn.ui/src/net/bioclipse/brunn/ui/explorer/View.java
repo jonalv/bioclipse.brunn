@@ -610,15 +610,26 @@ public class View extends ViewPart implements IUserManagerListener {
                     IPlateManager pm = (IPlateManager) 
                                        Springcontact.getBean("plateManager");
     
-                    pm.createMasterPlate( Activator.getDefault()
-                                                   .getCurrentUser(), 
-                                          dialog.getName(),
-                                          dialog.getSelectedPlateLayout(),
-                                          (net.bioclipse.brunn.pojos.Folder)
-                                              recievingFolder.getPOJO(), 
-                                          dialog.getNumOfPlates() );
+                    if (dialog.userPickedPlateLayout()) {
+	                    pm.createMasterPlate( Activator.getDefault()
+	                                                   .getCurrentUser(), 
+	                                          dialog.getName(),
+	                                          dialog.getSelectedPlateLayout(),
+	                                          (net.bioclipse.brunn.pojos.Folder)
+	                                              recievingFolder.getPOJO(), 
+	                                          dialog.getNumOfPlates() );
+                    } else {
+                    	pm.createMasterPlate( Activator.getDefault().getCurrentUser(), 
+                    			              dialog.getName(), 
+                    			              dialog.getSelectedMasterPlate(), 
+                    			              (net.bioclipse.brunn.pojos.Folder)
+                    			              	recievingFolder.getPOJO(),
+                    			              dialog.getNumOfPlates() );
+
+                    }
                     
                     recievingFolder.fireUpdate();
+                    
                 }
                 finally {
                     monitor.done();
@@ -635,35 +646,37 @@ public class View extends ViewPart implements IUserManagerListener {
                 
                 int status =  dialog.open();
                 if ( status == dialog.OK ) {
-                    // Check for well functions
-                    boolean foundWellFunction = false;
-                    
-                    for ( LayoutWell lw : dialog.getSelectedPlateLayout()
-                                                .getLayoutWells() ) {
-                        if ( lw.getWellFunctions().size() > 1) {
-                            foundWellFunction = true;
-                            break;
-                        }
-                    }
-                    
-                    if ( !foundWellFunction ) {
-                        if ( !MessageDialog
-                              .openConfirm( PlatformUI
-                                            .getWorkbench()
-                                            .getActiveWorkbenchWindow()
-                                            .getShell(), 
-                                            "No well functions", 
-                                            "Selected plate layout has no "
-                                            + "well functions. Are you sure "
-                                            + "you want to continue?") ) {
-                            return Dialog.CANCEL;
-                        }
-                    }
+                	if (dialog.userPickedPlateLayout()) {
+	                    // Check for well functions
+	                    boolean foundWellFunction = false;
+	                    
+	                    for ( LayoutWell lw : dialog.getSelectedPlateLayout()
+	                                                .getLayoutWells() ) {
+	                        if ( lw.getWellFunctions().size() > 1) {
+	                            foundWellFunction = true;
+	                            break;
+	                        }
+	                    }
+	                    
+	                    if ( !foundWellFunction ) {
+	                        if ( !MessageDialog
+	                              .openConfirm( PlatformUI
+	                                            .getWorkbench()
+	                                            .getActiveWorkbenchWindow()
+	                                            .getShell(), 
+	                                            "No well functions", 
+	                                            "Selected plate layout has no "
+	                                            + "well functions. Are you sure "
+	                                            + "you want to continue?") ) {
+	                            return Dialog.CANCEL;
+	                        }
+	                    }
+                	}
                     return Dialog.OK;
                 }
                 else {
                     return Dialog.CANCEL;
-                }
+                }	
             }
 		};
 		

@@ -42,7 +42,7 @@ public abstract class AbstractSample extends AbstractAuditableObject {
     }
     
     public abstract AbstractSample deepCopy();
-    public abstract AbstractSample makeNewCopy();
+    public abstract AbstractSample makeNewCopy(User creator);
     
 	public SampleMarker getSampleMarker() {
     	return sampleMarker;

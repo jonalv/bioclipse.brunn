@@ -122,7 +122,7 @@ public class PlateLayoutManager extends AbstractDAOBasedPlateLayoutManager imple
     }
 
 	public void edit(User editor, PlateType plateType) {
-	    
+	    editor = userDAO.merge(editor);
 		plateType = plateTypeDAO.merge(plateType);
 		plateTypeDAO.save(plateType);
 		getAuditService().audit(editor, AuditType.UPDATE_EVENT, plateType);

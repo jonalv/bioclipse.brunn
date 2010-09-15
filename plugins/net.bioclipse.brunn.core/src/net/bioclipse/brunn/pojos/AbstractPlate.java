@@ -51,7 +51,7 @@ public class AbstractPlate extends AbstractBasePlate {
 		//copy wells
 		Set<Well> wells = new HashSet<Well>();
 		for(Well well : masterPlate.getWells()) {
-			Well copy = well.makeNewCopy();
+			Well copy = well.makeNewCopy(creator);
 			copy.setPlate(plate);
 			wells.add(copy);
 		}
@@ -63,7 +63,7 @@ public class AbstractPlate extends AbstractBasePlate {
 		//copy platefunctions
 		Set<PlateFunction> plateFunctions = new HashSet<PlateFunction>();
 		for( PlateFunction pf : masterPlate.getPlateFunctions() ) {
-			PlateFunction copy = pf.makeNewCopy();
+			PlateFunction copy = pf.makeNewCopy(creator);
 			copy.setPlate( plate );
 			plateFunctions.add( copy );
 		}
@@ -98,7 +98,7 @@ public class AbstractPlate extends AbstractBasePlate {
 			//copy wellFunctions
 			Set<WellFunction> wellFunctions = new HashSet<WellFunction>();
 			for( WellFunction wellFunction : layoutWell.getWellFunctions() ) {
-				WellFunction newCopy = wellFunction.makeNewCopy();
+				WellFunction newCopy = wellFunction.makeNewCopy(creator);
 				newCopy.setCreator(creator);
 				wellFunctions.add(newCopy);
 			}
@@ -117,7 +117,7 @@ public class AbstractPlate extends AbstractBasePlate {
 		// copy platefunctions
 		Set<PlateFunction> plateFunctions = new HashSet<PlateFunction>();
 		for( PlateFunction pf : plateLayout.getPlateFunctions() ) {
-			PlateFunction newCopy = pf.makeNewCopy();
+			PlateFunction newCopy = pf.makeNewCopy(creator);
 			newCopy.setCreator(creator);
 			plateFunctions.add( newCopy );
 		}

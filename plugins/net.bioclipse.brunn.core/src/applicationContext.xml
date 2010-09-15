@@ -359,6 +359,15 @@
   	 	<property name="patientSampleDAO">
   	 	   <ref local="patientSampleDAO" />
   	 	</property>
+  	 	<property name="patientOriginDAO">
+  	 	   <ref local="patientOriginDAO" />
+  	 	</property>
+  	    <property name="cellOriginDAO">
+  	 		<ref local="cellOriginDAO" />
+  	 	</property>
+  	    <property name="drugOriginDAO">
+  	 		<ref local="drugOriginDAO" />
+  	 	</property>
   	</bean>
   	
 <!--  PlateManager bean -->

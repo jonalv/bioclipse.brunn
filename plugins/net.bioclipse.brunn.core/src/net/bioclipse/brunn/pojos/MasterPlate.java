@@ -93,7 +93,7 @@ public class MasterPlate extends AbstractPlate {
 		return masterPlate;
     }
 
-	public MasterPlate makeNewCopy() {
+	public MasterPlate makeNewCopy(User creator) {
 	    
 		MasterPlate masterPlate = new MasterPlate();
 		
@@ -104,19 +104,19 @@ public class MasterPlate extends AbstractPlate {
 		masterPlate.setDeleted(deleted);
 		
 		for (Well well : wells) {
-	        Well copy = well.makeNewCopy();
+	        Well copy = well.makeNewCopy(creator);
 	        copy.setPlate(masterPlate);
 	        masterPlate.getWells().add(copy);
         }
 		
 		for (PlateFunction function : plateFunctions) {
-	        PlateFunction copy = function.makeNewCopy();
+	        PlateFunction copy = function.makeNewCopy(creator);
 	        copy.setPlate(masterPlate);
 	        masterPlate.getPlateFunctions().add(copy);
         }
 		
 		for (AbstractAnnotationInstance annotationInstance : this.getAbstractAnnotationInstances()) {
-			AbstractAnnotationInstance copy = annotationInstance.makeNewCopy();
+			AbstractAnnotationInstance copy = annotationInstance.makeNewCopy(creator);
 	        copy.setAbstractAnnotatableObject(masterPlate);
 	        masterPlate.getAbstractAnnotationInstances().add(copy);
         }

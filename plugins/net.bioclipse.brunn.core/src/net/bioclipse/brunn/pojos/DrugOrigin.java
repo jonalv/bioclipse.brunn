@@ -148,7 +148,7 @@ public class DrugOrigin extends AbstractAuditableObject {
 	    return result;
     }
 	
-	public DrugOrigin makeNewCopy() {
+	public DrugOrigin makeNewCopy(User creator) {
 
 		DrugOrigin result = new DrugOrigin();
 		result.setCreator(creator);
@@ -160,7 +160,7 @@ public class DrugOrigin extends AbstractAuditableObject {
 
 		HashSet<DrugSample> drugSamples = new HashSet<DrugSample>();
 		for(DrugSample drugSample : this.getDrugSamples()){
-			drugSamples.add(drugSample.makeNewCopy());
+			drugSamples.add(drugSample.makeNewCopy(creator));
 		}
 		result.setDrugSamples(drugSamples);
 		
