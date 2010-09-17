@@ -2,7 +2,7 @@
 <feature
       id="net.bioclipse.brunn"
       label="Brunn Feature"
-      version="0.9.7.v2010099">
+      version="0.9.8.v20100915">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
