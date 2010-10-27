@@ -13,7 +13,7 @@ package net.bioclipse.brunn.business;
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.domain.Plate;
 import net.bioclipse.brunn.business.plate.IPlateManager;
-import net.bioclipse.managers.business.IBioclipseManager;
+import net.bioclipse.core.api.managers.IBioclipseManager;
 
 import org.apache.log4j.Logger;
 

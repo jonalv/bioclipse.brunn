@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
-import net.bioclipse.core.ResourcePathTransformer;
+import net.bioclipse.core.api.ResourcePathTransformer;
 import net.bioclipse.usermanager.AccountType;
 import net.bioclipse.usermanager.Activator;
 import net.bioclipse.usermanager.business.IUserManager;

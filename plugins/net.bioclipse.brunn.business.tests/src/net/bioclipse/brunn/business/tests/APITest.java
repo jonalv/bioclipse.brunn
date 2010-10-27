@@ -10,8 +10,8 @@
  ******************************************************************************/
 package net.bioclipse.brunn.business.tests;
 
+import net.bioclipse.core.api.managers.IBioclipseManager;
 import net.bioclipse.core.tests.AbstractManagerTest;
-import net.bioclipse.managers.business.IBioclipseManager;
 import net.bioclipse.brunn.business.IBrunnManager;
 import net.bioclipse.brunn.business.BrunnManager;
 

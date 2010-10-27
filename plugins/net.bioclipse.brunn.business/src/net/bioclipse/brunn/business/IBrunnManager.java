@@ -11,9 +11,9 @@
 package net.bioclipse.brunn.business;
 
 import net.bioclipse.brunn.business.domain.Plate;
-import net.bioclipse.core.PublishedClass;
-import net.bioclipse.core.PublishedMethod;
-import net.bioclipse.managers.business.IBioclipseManager;
+import net.bioclipse.core.api.managers.IBioclipseManager;
+import net.bioclipse.core.api.managers.PublishedClass;
+import net.bioclipse.core.api.managers.PublishedMethod;
 
 @PublishedClass(
     value="Retrieves data from Brunn."

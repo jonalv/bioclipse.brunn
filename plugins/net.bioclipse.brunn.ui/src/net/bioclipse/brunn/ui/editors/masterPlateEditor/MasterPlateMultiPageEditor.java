@@ -20,7 +20,7 @@ import net.bioclipse.brunn.pojos.SampleMarker;
 import net.bioclipse.brunn.pojos.Well;
 import net.bioclipse.brunn.ui.editors.masterPlateEditor.model.JasperCell;
 import net.bioclipse.brunn.ui.editors.masterPlateEditor.model.SampleSetCreater;
-import net.bioclipse.core.business.BioclipseException;
+import net.bioclipse.core.api.BioclipseException;
 import net.bioclipse.core.util.FileUtil;
 import net.bioclipse.core.util.LogUtils;
 import net.bioclipse.jasper.editor.ReportEditor;
