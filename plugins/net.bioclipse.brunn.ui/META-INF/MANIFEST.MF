@@ -19,6 +19,7 @@ Require-Bundle: org.eclipse.ui,
  net.bioclipse.jasper;bundle-version="1.2.0"
 Eclipse-LazyStart: true
 Bundle-ClassPath: .,
- jars/KTable.jar
+ jars/KTable.jar,
+ libs/commons-math-2.2.jar
 Import-Package: org.apache.log4j
 Export-Package: net.bioclipse.brunn.ui.editors.plateEditor
