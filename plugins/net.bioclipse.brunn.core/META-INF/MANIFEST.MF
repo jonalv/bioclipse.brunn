@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: net.bioclipse.brunn.core
 Bundle-SymbolicName: net.bioclipse.brunn.core;singleton:=true
-Bundle-Version: 0.9.6.v20100831
+Bundle-Version: 0.9.8.v20100915
 Bundle-ClassPath: .,
  mysql-connector-java-3.1.13-bin.jar,
  lib/ant-1.6.5.jar,

@@ -85,7 +85,8 @@ public class CellTypeEditor extends EditorPart {
 		setInput(input);
 		orm = (IOriginManager) Springcontact.getBean("originManager");
 		cellType = (CellType)input;
-		cellOrigin = (CellOrigin) ((CellType) input).getPOJO(); 
+		
+		cellOrigin = orm.getCellOrigin(((CellOrigin) ((CellType) input).getPOJO()).getId()); 
 		setPartName(cellOrigin.getName());
 		cellType.getParent().fireUpdate();
 	}

@@ -72,7 +72,7 @@ public class TextAnnotation extends AbstractAnnotationInstance {
     	return result;
     }
     
-    public TextAnnotation makeNewCopy() {
+    public TextAnnotation makeNewCopy(User creator) {
     	TextAnnotation result = new TextAnnotation();
     	result.setName(name);
     	result.setCreator(creator);

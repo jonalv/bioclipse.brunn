@@ -87,6 +87,9 @@
 			</xyLineChart>
 			<subreport>
 				<reportElement x="202" y="13" width="75" height="109"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="UNIT">
 					<subreportParameterExpression><![CDATA[$F{unit}]]></subreportParameterExpression>
 				</subreportParameter>

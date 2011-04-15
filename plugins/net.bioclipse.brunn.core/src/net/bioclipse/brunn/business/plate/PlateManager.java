@@ -72,6 +72,8 @@ public class PlateManager extends
 		masterPlate = masterPlateDAO.merge(masterPlate);
 		folder = folderDAO.merge(folder);
 		
+		creator = userDAO.merge(creator);
+		
 		Plate plate = AbstractPlate.createPlate( creator, 
 												 name, 
 												 masterPlate, 
@@ -317,6 +319,7 @@ public class PlateManager extends
 		
 		masterPlate = masterPlateDAO.merge(masterPlate);
 		folder = folderDAO.merge(folder);
+		creator = userDAO.merge(creator);
 		
 		Plate plate = AbstractPlate.createPlate( creator, 
 												 name, 
@@ -356,5 +359,29 @@ public class PlateManager extends
 		getAuditService().audit(creator, AuditType.CREATE_EVENT, plate);
 		
 	    return plate.getId();
+    }
+
+	@Override
+    public long createMasterPlate(User creator, String name,
+                                  MasterPlate masterPlate, Folder folder,
+                                  int numOfPlates) {
+
+    	folder  = folderDAO.merge(folder);
+		creator = userDAO.merge(creator);
+		
+		net.bioclipse.brunn.pojos.MasterPlate copy = masterPlate.makeNewCopy(creator);
+    	copy.setName(name);
+    	copy.setPlatesLeft(numOfPlates);
+    	
+		folder.getObjects().add(copy);
+		
+		masterPlateDAO.save(copy);
+		folderDAO.save(folder);
+		
+		getAuditService().audit(creator, AuditType.CREATE_EVENT, masterPlate);
+		evictfromLazyLoading(masterPlate);
+		evictfromLazyLoading(copy);
+	    return copy.getId();
+    	
     }
 }

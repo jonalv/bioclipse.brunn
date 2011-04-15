@@ -48,13 +48,31 @@ public class SummaryTableModel extends KTableDefaultModel {
 			                   KTable table,
 			                   Summary editor,
 			                   PlateResults plateResults, 
-			                   Map<String, String> cvMap ) {
+			                   Map<String, String> cvMap, boolean sortByCV ) {
 		
 		columnNames = new ArrayList<String>();
 		Collections.addAll( columnNames, new String[] {"Well","Cell Type", "Compound Names", "Concentration"} );
 		columnNames.addAll( plate.getWellFunctionNames() );
 		columnNames.add( "CV%" );
+		this.plate  = plate;
+		this.table  = table;
+		this.editor = editor;
 		
+
+		if (sortByCV) {
+			sortByCV(setupValues(plateResults, cvMap), cvMap);
+		} else {
+			sortBySubstance(setupValues(plateResults, cvMap));
+		}
+
+		rows = matrix.length;
+		cols = columnNames.size();
+	
+
+		initialize();
+	}
+
+	private List<String[]> setupValues(PlateResults plateResults, Map<String, String> cvMap) {
 		/*
 		 * set up the matrix from the plate 
 		 */
@@ -125,6 +143,12 @@ public class SummaryTableModel extends KTableDefaultModel {
 			}
 			values.add(row);
 		}
+		
+		return values;
+	}
+	
+	private void sortBySubstance(List<String[]> values) {
+
 		Collections.sort(values, new Comparator<String[]>() {
 			public int compare(String[] o1, String[] o2) {
 				int c = o1[2].compareTo( o2[2] );
@@ -142,18 +166,32 @@ public class SummaryTableModel extends KTableDefaultModel {
 			}
 		});
 		matrix = new String[values.size()][columnNames.size()];
+		
 		int rowNumber = 0;
 		for(String[] row : values) {
 			matrix[rowNumber++] = row;
 		}
-		rows = matrix.length;
-		cols = columnNames.size();
-		this.plate  = plate;
-		this.table  = table;
-		this.editor = editor;
-		initialize();
 	}
+	
+	private void sortByCV(List<String[]> values, final Map<String, String> cvMap) {
 
+		Collections.sort(values, new Comparator<String[]>() {
+			public int compare(String[] o1, String[] o2) {
+				Double cv1 = Double.parseDouble(cvMap.get(o1[2]+o1[3]));
+				Double cv2 = Double.parseDouble(cvMap.get(o2[2]+o2[3]));
+				
+				return -cv1.compareTo(cv2);
+				
+			}
+		});
+		matrix = new String[values.size()][columnNames.size()];
+		
+		int rowNumber = 0;
+		for(String[] row : values) {
+			matrix[rowNumber++] = row;
+		}
+	}
+	
 	private String getConcentrations(DrugSample[] drugSamples) {
 
 		StringBuffer result = new StringBuffer();

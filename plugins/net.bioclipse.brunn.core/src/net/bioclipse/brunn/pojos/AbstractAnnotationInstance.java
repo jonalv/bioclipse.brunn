@@ -44,5 +44,5 @@ public abstract class AbstractAnnotationInstance extends AbstractBaseObject{
     }
 
 	public abstract AbstractAnnotationInstance deepCopy();
-	public abstract AbstractAnnotationInstance makeNewCopy();
+	public abstract AbstractAnnotationInstance makeNewCopy(User creator);
 }

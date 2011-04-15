@@ -22,6 +22,6 @@ public abstract class AbstractOperation extends AbstractAuditableObject {
     }
 	
 	public abstract AbstractOperation deepCopy();
-	public abstract AbstractOperation makeNewCopy();
+	public abstract AbstractOperation makeNewCopy(User creator);
 }
 

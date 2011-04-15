@@ -1,7 +1,11 @@
 package net.bioclipse.brunn.ui.dialogs;
 
+import java.util.Collection;
+
 import net.bioclipse.brunn.Springcontact;
+import net.bioclipse.brunn.business.plate.IPlateManager;
 import net.bioclipse.brunn.business.plateLayout.IPlateLayoutManager;
+import net.bioclipse.brunn.genericDAO.IMasterPlateDAO;
 import net.bioclipse.brunn.pojos.AbstractBasePlate;
 import net.bioclipse.brunn.pojos.MasterPlate;
 import net.bioclipse.brunn.pojos.PlateLayout;
@@ -37,6 +41,14 @@ public class CreateMasterPlate extends TitleAreaDialog {
 	private int numOfPlates;
 	
 	private PlateLayout[] plateLayouts = new PlateLayout[0];
+	private Button masterPlateButton;
+	private Button plateLayoutButton;
+	private MasterPlate[] masterPlates = new MasterPlate[0];
+	private MasterPlate selectedMasterPlate;
+
+	public MasterPlate getSelectedMasterPlate() {
+		return selectedMasterPlate;
+	}
 
 	/**
 	 * Create the dialog
@@ -92,28 +104,46 @@ public class CreateMasterPlate extends TitleAreaDialog {
 		}
 		comboPlateLayout.setItems(items);
 
+		//populate the comboMasterPlate
+		IPlateManager pm  = (IPlateManager) Springcontact.getBean("plateManager");
+
+		try {
+		    masterPlates = pm.getAllMasterPlates().toArray(masterPlates);
+		}
+		catch (Exception e) {
+	        MessageDialog.openError( 
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+	            "An error has occured", 
+	            "Could not load master plates. Maybe a missing refresh. "
+	            + "If nothing else works please restart." );
+        } 
+		String[] itemsMasterPlate = new String[masterPlates.length];
+		for (int i = 0; i < itemsMasterPlate.length; i++) {
+			itemsMasterPlate[i] = masterPlates[i].getName();
+		}
+		
 		comboMasterPlate = new Combo(basedUponGroup, SWT.NONE|SWT.READ_ONLY);
+		comboMasterPlate.setItems(itemsMasterPlate);
+		
 		final FormData fd_comboMasterPlate = new FormData();
 		fd_comboMasterPlate.bottom = new FormAttachment(0, 86);
 		fd_comboMasterPlate.right = new FormAttachment(0, 268);
 		fd_comboMasterPlate.left = new FormAttachment(0, 144);
 		comboMasterPlate.setLayoutData(fd_comboMasterPlate);
-		comboMasterPlate.setEnabled(false);
+		
 
-		final Button plateLayoutButton = new Button(basedUponGroup, SWT.RADIO);
+		plateLayoutButton = new Button(basedUponGroup, SWT.RADIO);
 		final FormData fd_plateLayoutButton = new FormData();
 		fd_plateLayoutButton.bottom = new FormAttachment(comboPlateLayout, 0, SWT.BOTTOM);
 		fd_plateLayoutButton.left = new FormAttachment(0, 25);
 		plateLayoutButton.setLayoutData(fd_plateLayoutButton);
 		plateLayoutButton.setText("Plate Layout:");
 
-		Button masterPlateButton;
 		masterPlateButton = new Button(basedUponGroup, SWT.RADIO);
 		final FormData fd_masterPlateButton = new FormData();
 		fd_masterPlateButton.right = new FormAttachment(plateLayoutButton, 0, SWT.RIGHT);
 		fd_masterPlateButton.bottom = new FormAttachment(comboMasterPlate, 0, SWT.BOTTOM);
 		masterPlateButton.setLayoutData(fd_masterPlateButton);
-		masterPlateButton.setEnabled(false);
 		masterPlateButton.setText("Master Plate:");
 		
 		plateLayoutButton.setSelection(true);
@@ -175,27 +205,53 @@ public class CreateMasterPlate extends TitleAreaDialog {
 	
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == IDialogConstants.OK_ID) {
-		    if ( comboPlateLayout.getItemCount() > 0 ) {
-		        MessageDialog.openInformation( 
-		            PlatformUI.getWorkbench()
-		                      .getActiveWorkbenchWindow()
-		                      .getShell(), 
-		            "Select a plate layout", 
-		            "Select a plate layout to base the masterplate on" );
-		    }
-			name = text.getText();
-			selectedPlateLayout = plateLayouts[comboPlateLayout.getSelectionIndex()];
-			try {
-				numOfPlates = Integer.parseInt(numOfPlatesText.getText());
+			if (plateLayoutButton.getSelection()) {
+			    if ( comboPlateLayout.getSelectionIndex() == -1 ) {
+			        MessageDialog.openInformation( 
+			            PlatformUI.getWorkbench()
+			                      .getActiveWorkbenchWindow()
+			                      .getShell(), 
+			            "Select a plate layout", 
+			            "Select a plate layout to base the masterplate on" );
+			        return;
+			    }
+				name = text.getText();
+				selectedPlateLayout = plateLayouts[comboPlateLayout.getSelectionIndex()];
+				try {
+					numOfPlates = Integer.parseInt(numOfPlatesText.getText());
+				}
+				catch (NumberFormatException e) {
+					MessageDialog.openInformation( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+							                       "Could not parse number of plates",
+							                       "Number of plates needs to be an int \n" + 
+							                       e.getMessage() );
+					return;
+				}
+			} else {
+			    if ( comboMasterPlate.getSelectionIndex() == -1 ) {
+			        MessageDialog.openInformation( 
+			            PlatformUI.getWorkbench()
+			                      .getActiveWorkbenchWindow()
+			                      .getShell(), 
+			            "Select a master plate", 
+			            "Select a master plate to base the masterplate on" );
+			        return;
+			    }
+				name = text.getText();
+				selectedMasterPlate = masterPlates[comboMasterPlate.getSelectionIndex()];
+				try {
+					numOfPlates = Integer.parseInt(numOfPlatesText.getText());
+				}
+				catch (NumberFormatException e) {
+					MessageDialog.openInformation( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+							                       "Could not parse number of plates",
+							                       "Number of plates needs to be an int \n" + 
+							                       e.getMessage() );
+					return;
+				}
+			
 			}
-			catch (NumberFormatException e) {
-				MessageDialog.openInformation( PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
-						                       "Could not parse number of plates",
-						                       "Number of plates needs to be an int \n" + 
-						                       e.getMessage() );
-				return;
-			}
-		}
+		} 
 		super.buttonPressed(buttonId);
 	}
 
@@ -209,5 +265,9 @@ public class CreateMasterPlate extends TitleAreaDialog {
 
 	public int getNumOfPlates() {
 		return numOfPlates;
+	}
+	
+	public boolean userPickedPlateLayout() {
+		return (selectedMasterPlate == null);
 	}
 }

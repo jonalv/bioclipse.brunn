@@ -95,4 +95,9 @@ public interface IPlateManager {
 	public long createPlate(User currentUser, String name, String barCode,
                             Folder pojo, MasterPlate masterPlate,
                             PatientOrigin patientOrigin, Timestamp timestamp);
+	public long createMasterPlate( User currentUser, 
+	                               String name,
+                                   MasterPlate selectedMasterPlate, 
+                                   Folder pojo,
+                                   int numOfPlates );
 }

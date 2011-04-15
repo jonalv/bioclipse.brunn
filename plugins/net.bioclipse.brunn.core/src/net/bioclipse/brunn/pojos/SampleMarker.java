@@ -83,14 +83,15 @@ public class SampleMarker extends AbstractBaseObject {
 	    return sampleMarker;
     }
 
-	public SampleMarker makeNewCopy() {
+	public SampleMarker makeNewCopy(User creator) {
 		
 		SampleMarker sampleMarker = new SampleMarker();
 		sampleMarker.setName(name);
 		sampleMarker.setCreator(creator);
 		sampleMarker.setDeleted(deleted);
 		if( sample != null ) {
-			sampleMarker.setSample(sample.makeNewCopy());
+			sampleMarker.setSample(sample.makeNewCopy(creator));
+			sampleMarker.getSample().setSampleMarker(sampleMarker);
 		}
 	    return sampleMarker;
     }

@@ -87,14 +87,13 @@ public class CellSample extends AbstractSample {
 		return cellSample;
 	}
 	
-	public CellSample makeNewCopy(){
+	public CellSample makeNewCopy(User creator) {
 		
 		CellSample cellSample = new CellSample();
 		cellSample.setCreator(creator);
 		cellSample.setName(name);
 		cellSample.setCellOrigin(cellOrigin);
 		cellSample.setDefrostingDate(defrostingDate);
-		cellSample.setSampleMarker(sampleMarker);
 		
 		cellSample.cellOrigin.getCellSamples().add(cellSample);
 		

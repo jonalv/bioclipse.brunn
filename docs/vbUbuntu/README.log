@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.6.22)  7 SEP 2010 18:48
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009) (format=pdflatex 2010.6.22)  10 SEP 2010 17:24
 entering extended mode
  %&-line parsing enabled.
 **README.tex
@@ -113,50 +113,76 @@ LaTeX Font Info:    ... okay on input line 8.
 \MPscratchDim=\dimen107
 \MPnumerator=\count92
 \everyMPtoPDFconversion=\toks16
-)
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 21.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 21.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 21.
+) (./README.toc)
+\tf@toc=\write3
+\openout3 = `README.toc'.
+
  [1
 
 {/usr/local/texlive/2009/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<images/1.png, id=8, 263.5446pt x 171.5208pt>
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 31.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 31.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 31.
+ [2] <images/1.png, id=13, 263.5446pt x 171.5208pt>
 File: images/1.png Graphic file (type png)
- <use images/1.png>
-<images/2.png, id=10, 123.8226pt x 84.5559pt>
+
+<use images/1.png> <images/2.png, id=15, 123.8226pt x 84.5559pt>
 File: images/2.png Graphic file (type png)
- <use images/2.png> [2 <./images/1.png> <./images/2.png>] <images/5.png, id=16,
- 262.0992pt x 171.039pt>
+
+<use images/2.png> [3 <./images/1.png> <./images/2.png>]
+<images/5.png, id=21, 262.0992pt x 171.039pt>
 File: images/5.png Graphic file (type png)
-
-<use images/5.png> <images/6.png, id=17, 286.671pt x 227.4096pt>
+ <use images/5.png>
+<images/6.png, id=22, 286.671pt x 227.4096pt>
 File: images/6.png Graphic file (type png)
-
-<use images/6.png> [3 <./images/5.png> <./images/6.png>]
-<images/3.png, id=23, 262.3401pt x 171.039pt>
+ <use images/6.png> [4 <./images/5.png> <./images/6.png>] <images/3.png, id=28,
+ 262.3401pt x 171.039pt>
 File: images/3.png Graphic file (type png)
- <use images/3.png>
-<images/4.png, id=24, 81.906pt x 151.767pt>
+
+<use images/3.png> <images/4.png, id=29, 81.906pt x 151.767pt>
 File: images/4.png Graphic file (type png)
- <use images/4.png> [4 <./images/3.png> <./images/4.png>] (./README.aux) ) 
+
+<use images/4.png> [5 <./images/3.png> <./images/4.png>]
+<images/import.png, id=35, 261.3765pt x 171.7617pt>
+File: images/import.png Graphic file (type png)
+ <use images/import.png>
+<images/changeBarcode.png, id=36, 151.0443pt x 108.8868pt>
+File: images/changeBarcode.png Graphic file (type png)
+
+<use images/changeBarcode.png> [6 <./images/import.png> <./images/changeBarcode
+.png>] <images/testDemo.png, id=43, 268.3626pt x 243.309pt>
+File: images/testDemo.png Graphic file (type png)
+
+<use images/testDemo.png> [7 <./images/testDemo.png>]
+<images/softwareUpdates.png, id=49, 241.6227pt x 188.6247pt>
+File: images/softwareUpdates.png Graphic file (type png)
+
+<use images/softwareUpdates.png>
+<images/Updates.png, id=50, 147.9126pt x 139.2402pt>
+File: images/Updates.png Graphic file (type png)
+ <use images/Updates.png>
+[8 <./images/softwareUpdates.png> <./images/Updates.png>] (./README.aux) ) 
 Here is how much of TeX's memory you used:
- 1516 strings out of 493773
- 18923 string characters out of 3145346
+ 1556 strings out of 493773
+ 19697 string characters out of 3145346
  76309 words of memory out of 3000000
- 4830 multiletter control sequences out of 15000+200000
- 7445 words of font info for 27 fonts, out of 3000000 for 9000
+ 4860 multiletter control sequences out of 15000+200000
+ 9772 words of font info for 35 fonts, out of 3000000 for 9000
  714 hyphenation exceptions out of 8191
- 25i,8n,35p,183b,194s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 25i,8n,35p,183b,172s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr
-/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/l
-ocal/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/
-local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on README.pdf (4 pages, 471263 bytes).
+/local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/
+local/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/lo
+cal/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/loc
+al/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/lo
+cal/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/loc
+al/texlive/2009/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on README.pdf (8 pages, 875635 bytes).
 PDF statistics:
- 40 PDF objects out of 1000 (max. 8388607)
+ 76 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 31 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 

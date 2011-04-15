@@ -141,7 +141,7 @@ public class PlateLayout extends AbstractBasePlate {
 	    return plateLayout;
     }
 
-	public PlateLayout makeNewCopy() {
+	public PlateLayout makeNewCopy(User creator) {
 	    
 		PlateLayout plateLayout = new PlateLayout();
 		plateLayout.setCreator(creator);
@@ -152,19 +152,19 @@ public class PlateLayout extends AbstractBasePlate {
 		plateLayout.setCols(cols);
 		
 	    for (LayoutWell well : layoutWells) {
-	        LayoutWell copy = well.makeNewCopy();
+	        LayoutWell copy = well.makeNewCopy(creator);
 	        copy.setPlateLayout(plateLayout);
 	        plateLayout.getLayoutWells().add(copy);
         }
 	    
 	    for (AbstractAnnotationInstance annotationInstance : getAbstractAnnotationInstances()) {
-	    	AbstractAnnotationInstance copy = annotationInstance.makeNewCopy();
+	    	AbstractAnnotationInstance copy = annotationInstance.makeNewCopy(creator);
 	    	copy.setAbstractAnnotatableObject(plateLayout);
 	    	plateLayout.getAbstractAnnotationInstances().add(copy);
 	    }
 	    
 	    for (PlateFunction function : plateFunctions) {
-	    	PlateFunction copy = function.makeNewCopy();
+	    	PlateFunction copy = function.makeNewCopy(creator);
 	    	copy.setPlate(plateLayout);
 	    	plateLayout.getPlateFunctions().add(copy);
 	    }
