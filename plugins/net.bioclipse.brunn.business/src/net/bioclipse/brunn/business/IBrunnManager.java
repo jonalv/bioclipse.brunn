@@ -16,7 +16,8 @@ import net.bioclipse.core.PublishedMethod;
 import net.bioclipse.managers.business.IBioclipseManager;
 
 @PublishedClass(
-    value="Retrieves data from Brunn."
+    value="Retrieves data from Brunn.",
+    doi={"10.1186/1471-2105-12-179"}
 )
 
 
