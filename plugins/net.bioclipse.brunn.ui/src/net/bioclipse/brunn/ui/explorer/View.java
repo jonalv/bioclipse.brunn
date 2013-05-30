@@ -104,6 +104,9 @@ import org.eclipse.ui.part.ViewPart;
 public class View extends ViewPart implements IUserManagerListener {
 
     public static final String ID = "net.bioclipse.brunn.ui.explorer.View";
+    
+	// The account type
+	public final static String MY_ACCOUNT_TYPE = "BrunnAccountType";
 
 	private TreeViewer treeViewer;
 
@@ -1714,7 +1717,7 @@ public class View extends ViewPart implements IUserManagerListener {
         mgr.add( new Separator(IWorkbenchActionConstants.MB_ADDITIONS) );
 	}
 
-    public void receiveUserManagerEvent( UserManagerEvent event ) {
+    public boolean receiveUserManagerEvent( UserManagerEvent event ) {
 		
 		switch (event) {
 		case LOGIN:
@@ -1726,13 +1729,13 @@ public class View extends ViewPart implements IUserManagerListener {
 					treeViewer.expandToLevel(2);
 				}
 			} );
-			break;
+			return true;
 		case LOGOUT:
 			this.treeRoot.setLoggedOut();
 			treeViewer.refresh();
-			break;
+			return false;
 		default:
-			break;
+			return false;
 		}
 		
 	}
@@ -1803,5 +1806,11 @@ public class View extends ViewPart implements IUserManagerListener {
             return dialog.open();
         }
     }
+
+	@Override
+	public String getAccountType() {
+		// TODO Auto-generated method stub
+		return View.MY_ACCOUNT_TYPE;
+	}
 	
 }

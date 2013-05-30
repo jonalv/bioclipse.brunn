@@ -79,19 +79,25 @@
 			name="BrunnAccountType">
 		<property
 		    name="Brunn user"
-		    required="true" />
+		    required="true"
+		    secret = "false" />
 		<property
 			name="Brunn password" 
-			required="true" />
+			required="true"
+			secret = "true" />
 		<property
 			name="URL"
-			required="true" />
+			required="true"
+			secret = "false" />
         <property
         	name="Database password"
-        	required="true" />
+        	required="true" 
+        	secret = "true"
+        	/>
         <property
             name="Database user"
-            required="true" />
+            required="true"
+            secret = "false" />
 	    </AccountType>
   </extension>
   
