@@ -27,6 +27,9 @@ public class Activator extends AbstractUIPlugin implements IUserManagerListener 
 	// The shared instance
 	private static Activator plugin;
 	
+	// The account type
+	public final static String MY_ACCOUNT_TYPE = "BrunnAccountType";
+	
 	//The currently logged in user
 	private User currentUser;
 	
@@ -117,7 +120,7 @@ public class Activator extends AbstractUIPlugin implements IUserManagerListener 
 		this.currentUser = currentUser;
 	}
 
-    public void receiveUserManagerEvent( UserManagerEvent event ) {
+    public boolean receiveUserManagerEvent( UserManagerEvent event ) {
         switch (event) {
             case LOGIN:
               if( net.bioclipse.usermanager.Activator.getDefault()
@@ -129,14 +132,21 @@ public class Activator extends AbstractUIPlugin implements IUserManagerListener 
                * A bit of a hack to instantiate the platemanager at login
                */
               Springcontact.getBean( "plateManager" );
-              break;
+              return true;
             case LOGOUT:
               currentUser = null;
-              break;
+              return false;
             case UPDATE:
               Springcontact.clearContext();
+              return true;
             default:
-              break;
+            	return false;
         }    
     }
+
+	@Override
+	public String getAccountType() {
+		// TODO Auto-generated method stub
+		return Activator.MY_ACCOUNT_TYPE;
+	}
 }

@@ -17,7 +17,28 @@
    </license>
 
    <requires>
-      <import feature="net.bioclipse.core_feature_patch_241" version="2.4.1.v20100830"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.ui.views.properties.tabbed"/>
+      <import plugin="org.eclipse.ui.workbench.texteditor"/>
+      <import plugin="net.bioclipse.usermanager"/>
+      <import plugin="net.bioclipse.core" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="de.kupzog.ktable" version="2.1.3" match="greaterOrEqual"/>
+      <import plugin="net.bioclipse.ui" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.cheatsheets"/>
+      <import plugin="net.bioclipse.jasper" version="1.2.0" match="greaterOrEqual"/>
+      <import plugin="log4j.over.slf4j"/>
+      <import plugin="net.bioclipse.usermanager" version="0.1.1" match="greaterOrEqual"/>
+      <import plugin="net.bioclipse.encryption" version="0.1.0" match="greaterOrEqual"/>
+      <import plugin="net.bioclipse.core" version="2.4.0" match="greaterOrEqual"/>
+      <import plugin="jcl.over.slf4j"/>
+      <import plugin="org.springframework.bundle.spring.aop"/>
+      <import plugin="org.springframework.bundle.spring.beans"/>
+      <import plugin="net.bioclipse.scripting"/>
+      <import plugin="net.sf.cglib"/>
+      <import plugin="org.springframework.osgi.aopalliance.osgi"/>
+      <import plugin="net.bioclipse.usermanager" version="2.2.0" match="greaterOrEqual"/>
+      <import plugin="net.bioclipse.brunn.core" version="0.9.3" match="greaterOrEqual"/>
    </requires>
 
    <plugin
