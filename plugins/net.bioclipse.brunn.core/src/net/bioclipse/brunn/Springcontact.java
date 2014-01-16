@@ -10,6 +10,7 @@ import net.bioclipse.usermanager.business.IUserManager;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
+import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
@@ -69,5 +70,7 @@ public class Springcontact {
 			System.out.println("See Springcontact.rebuildContext()");
 			CONTEXT = new ClassPathXmlApplicationContext("applicationContext.xml");
 		}
+		
+
     }
 }

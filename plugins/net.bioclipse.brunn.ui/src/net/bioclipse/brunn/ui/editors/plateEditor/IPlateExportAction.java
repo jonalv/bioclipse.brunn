@@ -9,7 +9,7 @@
  */
 package net.bioclipse.brunn.ui.editors.plateEditor;
 
-import net.bioclipse.brunn.pojos.Plate;
+import net.bioclipse.brunn.business.domain.Plate;
 
 
 /**

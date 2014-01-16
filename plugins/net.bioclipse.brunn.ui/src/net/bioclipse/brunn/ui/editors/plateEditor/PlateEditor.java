@@ -1,25 +1,22 @@
 package net.bioclipse.brunn.ui.editors.plateEditor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
 import net.bioclipse.brunn.Springcontact;
 import net.bioclipse.brunn.business.plate.IPlateManager;
-import net.bioclipse.brunn.pojos.ILISObject;
 import net.bioclipse.brunn.pojos.Plate;
 import net.bioclipse.brunn.pojos.PlateFunction;
 import net.bioclipse.brunn.results.PlateResults;
 import net.bioclipse.brunn.ui.Activator;
-import net.bioclipse.brunn.ui.editors.plateEditor.MarkersContentProvider;
-import net.bioclipse.brunn.ui.editors.plateEditor.MarkersLabelProvider;
 import net.bioclipse.brunn.ui.editors.plateEditor.model.MarkersTableRow;
 import net.bioclipse.brunn.ui.editors.plateEditor.model.PlateTableModel;
-import net.bioclipse.brunn.ui.explorer.model.ITreeModelListener;
 import net.bioclipse.brunn.ui.explorer.model.ITreeObject;
-import net.bioclipse.brunn.ui.explorer.model.TreeEvent;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -47,11 +44,10 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.TableColumn;
@@ -463,8 +459,38 @@ public class PlateEditor extends EditorPart implements OutlierChangedListener {
 		goButton.setLayoutData(fd_goButton);
 		goButton.addSelectionListener(new SelectionAdapter() {
 		    public void widgetSelected(final SelectionEvent e) {
-		        exportActions.get( exportActionCombo.getSelectionIndex() )
-		                     .run( toBeSaved );
+//		        exportActions.get( exportActionCombo.getSelectionIndex() )
+//		                     .run( toBeSaved );
+		    	try {
+		    		PlatformUI.getWorkbench().getActiveWorkbenchWindow().run(true, false, new IRunnableWithProgress() {
+						
+						@Override
+						public void run(IProgressMonitor monitor) throws InvocationTargetException,
+								InterruptedException {
+						    int totalUnitsOfWork = IProgressMonitor.UNKNOWN;
+					        monitor.beginTask("Running Export. Please wait...", totalUnitsOfWork);
+							Display.getDefault().asyncExec( new Runnable() {
+								public void run() {
+								   	exportActions.get( exportActionCombo.getSelectionIndex())
+					   					 		 .run( net.bioclipse.brunn.Activator.getDefault()
+					   							 							.getJavaScriptBrunnManager()
+					   							 							.getPlateByBarcode(toBeSaved.getBarcode()));
+	
+								}
+							});
+	
+		  				monitor.done();
+						}
+					});
+		    	}
+		    	catch (InvocationTargetException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				} 
+				catch (InterruptedException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				}
 		    }
 		});
 		goButton.setText("Go");
